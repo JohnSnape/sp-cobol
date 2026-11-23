@@ -62,7 +62,16 @@ if ($sdkPkg.Name -match '^CobolDotNet\.Sdk\.(.+)\.nupkg$') {
 Write-Host "Compiler package: $feed\$($sdkPkg.Name)"
 
 # 2. templates
-& dotnet new install $tplPkg.FullName --force | Out-Null
+# remove any earlier copy first: installing the same package id from a second path with
+# --force leaves two registrations, and then 'dotnet new cobol-screen' fails
+for ($i = 0; $i -lt 5; $i++) {
+    cmd /c "dotnet new uninstall SpCobol.Templates >nul 2>&1"   # via cmd: PS 5.1 turns stderr into errors
+    if ($LASTEXITCODE -ne 0) { break }
+}
+$tplDir = Join-Path $env:LOCALAPPDATA 'SP COBOL\templates'
+New-Item -ItemType Directory -Force $tplDir | Out-Null
+Copy-Item $tplPkg.FullName $tplDir -Force
+& dotnet new install (Join-Path $tplDir $tplPkg.Name) | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "Installing the project templates failed" }
 Write-Host "Project templates installed (dotnet new cobol-screen)"
 

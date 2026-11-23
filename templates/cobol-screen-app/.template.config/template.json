@@ -1,6 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/template",
-  "author": "CobolDotNet (working name)",
+  "author": "SP COBOL",
   "classifications": [ "COBOL", "Console", "Windows", "Desktop" ],
   "identity": "CobolDotNet.ScreenApp",
   "name": "COBOL Screen App",

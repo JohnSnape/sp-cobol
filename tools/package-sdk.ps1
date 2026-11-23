@@ -42,6 +42,9 @@ Other DLLs here come from MSYS2 (GMP: LGPL, gettext/libiconv: LGPL, winpthreads:
 $ver = ([xml](Get-Content (Join-Path $sdk 'CobolDotNet.Sdk.csproj'))).Project.PropertyGroup.Version
 dotnet pack (Join-Path $sdk 'CobolDotNet.Sdk.csproj') -o $feed -v q | Out-Null
 if ($LASTEXITCODE -ne 0) { throw 'pack failed' }
+$userFeed = Join-Path $env:LOCALAPPDATA 'SP COBOL\feed'   # the folder new projects read (template nuget.config)
+New-Item -ItemType Directory -Force $userFeed | Out-Null
+Copy-Item (Join-Path $feed "CobolDotNet.Sdk.$ver.nupkg") $userFeed -Force
 $cache = Join-Path $env:USERPROFILE ".nuget\packages\coboldotnet.sdk\$ver"
 if (Test-Path $cache) { Remove-Item -Recurse -Force $cache }
 "packed CobolDotNet.Sdk $ver -> $feed"

@@ -21,21 +21,33 @@ DOS-style text screen, as a Windows window, or both from the same source.
 
 ## Trying it
 
-From the [Releases](../../releases) page:
-
-- **`CobolDotNet.Editor.vsix`**: close Visual Studio, double-click it, install. Then open any
-  `.cbl`, `.cob` or `.cpy` file. See [EDITOR.md](EDITOR.md) for what each key does.
-- **`CobolDotNet.Sdk.0.1.0.nupkg`**: the compiler and build support. Put it in a folder, then
-  point the template's `nuget.config` at that folder (an installer that does this is planned).
-
-Then:
+You need Windows and the [.NET 9 SDK](https://dot.net). Visual Studio 2022 or 2026 is
+optional, and gets you the COBOL editor. Close Visual Studio, then run this in PowerShell:
 
 ```
-dotnet new install templates\cobol-screen-app
+powershell -ExecutionPolicy Bypass -c "irm https://raw.githubusercontent.com/JohnSnape/sp-cobol/main/tools/install.ps1 | iex"
+```
+
+The installer ([tools/install.ps1](tools/install.ps1)) downloads the latest release and:
+
+- puts the compiler package in `%LOCALAPPDATA%\SP COBOL\feed`, the folder every new COBOL
+  project reads;
+- installs the project template (`dotnet new cobol-screen`; in Visual Studio it's
+  "COBOL Screen App" under New Project);
+- starts the installer for the Visual Studio editor extension, if Visual Studio is present.
+  See [EDITOR.md](EDITOR.md) for what each key does.
+
+Then make and run a program:
+
+```
 dotnet new cobol-screen -n PayDemo
 cd PayDemo
 dotnet build
 ```
+
+That builds `PayDemo.exe` (DOS-style text screen) and `PayDemo-Win.exe` (the same screen in a
+window). If you'd rather not run a script, download the files from the
+[Releases](../../releases) page and run `install.ps1 -From <that folder>`.
 
 ## Building from source
 

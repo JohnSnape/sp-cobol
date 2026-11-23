@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Packs the project templates into one NuGet template package (tools\package-templates.ps1). -->
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <PackageId>SpCobol.Templates</PackageId>
+    <Version>0.1.1</Version>
+    <Title>SP COBOL project templates</Title>
+    <Authors>SP COBOL</Authors>
+    <Description>Project templates for SP COBOL: COBOL programs with SCREEN SECTION screens, built for .NET.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/JohnSnape/sp-cobol</PackageProjectUrl>
+    <PackageTags>COBOL;templates</PackageTags>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="cobol-screen-app\**\*" Exclude="cobol-screen-app\**\bin\**;cobol-screen-app\**\obj\**" />
+  </ItemGroup>
+</Project>

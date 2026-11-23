@@ -248,3 +248,13 @@ These go beyond the user's numbering rule. Each follows from "numbers are the ed
   Otterkit, spikes). The GnuCOBOL changes ship as `compiler/gnucobol-3.2-csharp.patch` plus
   the changed files, which with GnuCOBOL 3.2's public source is the complete corresponding
   source for the cobc.exe in the SDK package.
+
+## How other people install it: a per-user feed folder + install.ps1 (2026-11-23)
+
+- New projects' `nuget.config` reads `%LOCALAPPDATA%\SP COBOL\feed` (NuGet expands the
+  variable), so the template works on any PC with no hand edits.
+- `tools\install.ps1` downloads the latest GitHub release, copies the SDK package there,
+  installs the templates as a NuGet template package (`SpCobol.Templates`), and starts
+  VSIXInstaller. It touches only the user profile, apart from the VS extension installer.
+- Not nuget.org yet: publishing there needs an account and API key (the owner's call), and
+  would remove the feed folder step entirely.

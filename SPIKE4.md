@@ -101,8 +101,8 @@ TargetFramework (`net9.0-windows`), so nothing is restored twice. `Clean` cleans
 - **Multiple programs:** every `.cbl` is compiled with `-x`, and the main one is chosen by
   `CobolMainProgram`, else `Program.cbl`, else the only file. CALL between programs isn't in the
   runtime yet.
-- ~~**Local feed:**~~ Done 2026-11-23: the template's `nuget.config` reads `%LOCALAPPDATA%SP COBOLeed`,
-  which `toolsinstall.ps1` fills (and `package-sdk.ps1` on the dev PC).
+- ~~**Local feed:**~~ Done 2026-11-23: the template's `nuget.config` reads `%LOCALAPPDATA%\SP COBOL\feed`,
+  which `tools\install.ps1` fills (and `package-sdk.ps1` on the dev PC).
 - **Version bumps:** NuGet caches `CobolDotNet.Sdk/0.1.0` per user. `package-sdk.ps1` clears that
   cache entry, so re-packing the same version works on this PC.
 - `dotnet new install` was run once for this PC (`dotnet new uninstall "D:\CALUDE CODE\visual-cobol\templates\cobol-screen-app"` removes it).

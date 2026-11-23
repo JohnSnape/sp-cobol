@@ -83,7 +83,7 @@ shape our C# back end replaces.
 ```
 bash tools/build-cobc-cs.sh                                   # if the compiler changed
 powershell -ExecutionPolicy Bypass -File tools\package-sdk.ps1 # -> dist\feed\CobolDotNet.Sdk.0.1.0.nupkg
-powershell -ExecutionPolicy Bypass -File toolspackage-templates.ps1 # -> distSpCobol.Templates.<ver>.nupkg
+powershell -ExecutionPolicy Bypass -File tools\package-templates.ps1 # -> dist\SpCobol.Templates.<ver>.nupkg
 dotnet new install "D:\CALUDE CODE\visual-cobol\templates\cobol-screen-app"   # once per PC
 dotnet new cobol-screen -n MyApp [--ScreenMode Both|Console|Forms]
 cd MyApp && dotnet build     # or open MyApp.csproj in VS 2022

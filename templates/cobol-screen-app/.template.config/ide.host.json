@@ -1,0 +1,8 @@
+{
+  "$schema": "http://json.schemastore.org/ide.host",
+  "order": 0,
+  "icon": "",
+  "symbolInfo": [
+    { "id": "ScreenMode", "isVisible": true, "persistenceScope": "shared" }
+  ]
+}

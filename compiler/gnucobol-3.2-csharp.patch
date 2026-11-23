@@ -1,0 +1,486 @@
+--- a/cobc/codegen.c
++++ b/cobc/codegen.c
+@@ -564,6 +564,47 @@
+ 
+ /* Output routines */
+ 
++/* COBOL-for-.NET: C# output mode (-fcsharp); all writes funnel through
++   cg_vprintf / cg_putc so the C# filter in csharp.c sees every byte */
++#include "csharp.c"
++
++static void
++cg_vprintf (FILE *fp, const char *fmt, va_list ap)
++{
++	if (cb_flag_csharp) {
++		static char	sbuf[8192];
++		char		*buf = sbuf;
++		va_list		ap2;
++		int		n;
++		va_copy (ap2, ap);
++		n = vsnprintf (sbuf, sizeof (sbuf), fmt, ap);
++		if (n >= (int)sizeof (sbuf)) {
++			buf = cobc_malloc ((size_t)n + 1);
++			vsnprintf (buf, (size_t)n + 1, fmt, ap2);
++		}
++		va_end (ap2);
++		cs_put (fp, buf);
++		if (buf != sbuf) {
++			cobc_free (buf);
++		}
++	} else {
++		vfprintf (fp, fmt, ap);
++	}
++}
++
++static void
++cg_putc (FILE *fp, int c)
++{
++	if (cb_flag_csharp) {
++		char b[2];
++		b[0] = (char)c;
++		b[1] = 0;
++		cs_put (fp, b);
++	} else {
++		fputc (c, fp);
++	}
++}
++
+ static COB_INLINE COB_A_INLINE void
+ increase_output_line ()
+ {
+@@ -580,7 +621,7 @@
+ 	if (output_target) {
+ 		va_list		ap;
+ 		va_start (ap, fmt);
+-		vfprintf (output_target, fmt, ap);
++		cg_vprintf (output_target, fmt, ap);
+ 		va_end (ap);
+ 	}
+ }
+@@ -590,7 +631,7 @@
+ output_newline (void)
+ {
+ 	if (output_target) {
+-		fputc ('\n', output_target);
++		cg_putc (output_target, '\n');
+ 		increase_output_line ();
+ 	}
+ }
+@@ -603,7 +644,7 @@
+ 	if (output_target) {
+ 		int	i;
+ 		for (i = 0; i < output_indent_level; i++) {
+-			fputc (' ', output_target);
++			cg_putc (output_target, ' ');
+ 		}
+ 	}
+ }
+@@ -617,9 +658,9 @@
+ 		va_list		ap;
+ 		output_prefix ();
+ 		va_start (ap, fmt);
+-		vfprintf (output_target, fmt, ap);
++		cg_vprintf (output_target, fmt, ap);
+ 		va_end (ap);
+-		fputc ('\n', output_target);
++		cg_putc (output_target, '\n');
+ 		increase_output_line ();
+ 	}
+ }
+@@ -633,8 +674,8 @@
+ {
+ 	if (output_target) {
+ 		output_prefix ();
+-		fputc ('{', output_target);
+-		fputc ('\n', output_target);
++		cg_putc (output_target, '{');
++		cg_putc (output_target, '\n');
+ 		increase_output_line ();
+ 	}
+ 	output_indent_level += indent_adjust_level;
+@@ -648,8 +689,8 @@
+ 	output_indent_level -= indent_adjust_level;
+ 	if (output_target) {
+ 		output_prefix ();
+-		fputc ('}', output_target);
+-		fputc ('\n', output_target);
++		cg_putc (output_target, '}');
++		cg_putc (output_target, '\n');
+ 		increase_output_line ();
+ 	}
+ }
+@@ -689,7 +730,7 @@
+ 
+ 	if (cb_storage_file) {
+ 		va_start (ap, fmt);
+-		vfprintf (cb_storage_file, fmt, ap);
++		cg_vprintf (cb_storage_file, fmt, ap);
+ 		va_end (ap);
+ 	}
+ }
+@@ -702,7 +743,7 @@
+ 
+ 	if (cb_local_file) {
+ 		va_start (ap, fmt);
+-		vfprintf (cb_local_file, fmt, ap);
++		cg_vprintf (cb_local_file, fmt, ap);
+ 		va_end (ap);
+ 	}
+ }
+@@ -7332,7 +7373,12 @@
+ 		output_line ("\tcob_fatal_error (COB_FERROR_STACK);");
+ 	}
+ 	output_line ("frame_ptr->perform_through = %d;", le ? le->id : lb->id);
+-	if (!cb_flag_computed_goto) {
++	if (cb_flag_csharp) {
++		/* C#: run the paragraph range through the dispatcher;
++		   a GOBACK inside it ends this paragraph's method too */
++		output_line ("if (%s__run (%d) != 0) return -3;",
++			     current_prog->program_id, lb->id);
++	} else if (!cb_flag_computed_goto) {
+ 		l = cobc_parse_malloc (sizeof (struct label_list));
+ 		l->next = label_cache;
+ 		l->id = cb_id;
+@@ -7430,7 +7476,9 @@
+ 		output_line ("}");
+ 	} else {
+ 		output_line ("if (frame_ptr->perform_through == %d)", l->id);
+-		if (!cb_flag_computed_goto) {
++		if (cb_flag_csharp) {
++			output_line ("  return -2;	/* end of PERFORM range */");
++		} else if (!cb_flag_computed_goto) {
+ 			output_line ("  goto P_switch;");
+ 		} else {
+ 			output_line ("  goto *frame_ptr->return_address_ptr;");
+@@ -7874,6 +7922,12 @@
+ 		output_move (cb_space, cb_debug_contents);
+ 	}
+ 
++	if (cb_flag_csharp && cs_is_method_label (lb)) {
++		/* C#: hand the target paragraph to the dispatcher; local
++		   labels (EXIT PARAGRAPH's implicit exit) stay plain gotos */
++		output_line ("return %d;	/* GO TO %s */", lb->id, lb->name);
++		return;
++	}
+ 	output_line ("goto %s%d;", CB_PREFIX_LABEL, lb->id);
+ }
+ 
+@@ -7887,7 +7941,11 @@
+ 	for (l = current_program->entry_list_goto; l; l = CB_CHAIN (l)) {
+ 		struct cb_label *label = CB_LABEL (CB_VALUE (l));
+ 		if (strcmp (name, label->name) == 0) {
+-			output_line ("goto %s%d;", CB_PREFIX_LABEL, label->id);
++			if (cb_flag_csharp) {
++				output_line ("return %d;", label->id);
++			} else {
++				output_line ("goto %s%d;", CB_PREFIX_LABEL, label->id);
++			}
+ 			return;
+ 		}
+ 	}
+@@ -7938,17 +7996,20 @@
+ 	        || p->target == cb_int1) {
+ 		needs_exit_prog = 1;
+ 		/* EXIT FUNCTION */
++		/* C#: leaving the program = leaving the paragraph method with -3;
++		   the dispatcher passes it up to the program function's exit code */
++		const char *exit_stmt = cb_flag_csharp ? "return -3;" : NULL;
+ 		if (current_prog->prog_type == COB_MODULE_TYPE_FUNCTION) {
+-			output_line ("goto exit_function;");
++			output_line ("%s", exit_stmt ? exit_stmt : "goto exit_function;");
+ 		/* GOBACK (target = cb_int1), possibly implied */
+ 		} else if (p->target == cb_int1
+ 		        || cb_flag_implicit_init || current_prog->nested_level) {
+-			output_line ("goto exit_program;");
++			output_line ("%s", exit_stmt ? exit_stmt : "goto exit_program;");
+ 		/* EXIT PROGRAM */
+ 		} else {
+ 			/* Ignore if not a callee */
+-			output_line ("if (module->next)");
+-			output_line ("  goto exit_program;");
++			output_line ("if (module->next != NULL)");
++			output_line ("  %s", exit_stmt ? exit_stmt : "goto exit_program;");
+ 		}
+ 	} else {
+ 		cb_tree target = p->target;
+@@ -8739,6 +8800,10 @@
+ static void
+ output_label (const struct cb_label *lp)
+ {
++	/* C#: every SECTION / paragraph / ENTRY starts a new method */
++	if (cb_flag_csharp && cs_body_fp && cs_is_method_label (lp)) {
++		cs_method_label (lp);
++	}
+ 	if (lp->flag_skip_label) {
+ 		return;
+ 	}
+@@ -12201,12 +12266,25 @@
+ 				output_line ("  module->frame_ptr->module_stmt = 0x%08X;",
+ 					COB_SET_LINE_FILE (lx->source_line, lookup_source (lx->source_file)));
+ 			}
+-			output_line ("  goto %s%d;", CB_PREFIX_LABEL,
+-				     CB_LABEL (lx)->id);
++			if (cb_flag_csharp) {
++				output_line ("  %s__run (%d);", prog->program_id,
++					     CB_LABEL (lx)->id);
++				output_line ("  break;");
++			} else {
++				output_line ("  goto %s%d;", CB_PREFIX_LABEL,
++					     CB_LABEL (lx)->id);
++			}
++		}
++		if (cb_flag_csharp) {
++			output_line ("default:");
++			output_line ("  cob_fatal_error (COB_FERROR_MODULE);");
++			output_line ("  break;");
++			output_block_close ();
++		} else {
++			output_block_close ();
++			output_line ("/* This should never be reached */");
++			output_line ("cob_fatal_error (COB_FERROR_MODULE);");
+ 		}
+-		output_block_close ();
+-		output_line ("/* This should never be reached */");
+-		output_line ("cob_fatal_error (COB_FERROR_MODULE);");
+ 	} else {
+ 		l = CB_PURPOSE (prog->entry_list);
+ 		if (cb_flag_stack_extended) {
+@@ -12215,15 +12293,36 @@
+ 			output_line ("module->frame_ptr->module_stmt = 0x%08X;",
+ 				COB_SET_LINE_FILE (l->source_line, lookup_source (l->source_file)));
+ 		}
+-		output_line ("goto %s%d;", CB_PREFIX_LABEL,
+-			     CB_LABEL (l)->id);
++		if (cb_flag_csharp) {
++			/* run the PROCEDURE DIVISION from the entry paragraph */
++			output_line ("%s__run (%d);", prog->program_id,
++				     CB_LABEL (l)->id);
++		} else {
++			output_line ("goto %s%d;", CB_PREFIX_LABEL,
++				     CB_LABEL (l)->id);
++		}
+ 	}
+ 	output_newline ();
+ 
+ 	/* PROCEDURE DIVISION */
+ 	output_line ("/* PROCEDURE DIVISION */");
+-	for (l = prog->exec_list; l; l = CB_CHAIN (l)) {
+-		output_stmt (CB_VALUE (l));
++	if (cb_flag_csharp) {
++		/* C#: the body becomes paragraph methods, written to a side
++		   file and appended after this function (see csharp.c) */
++		FILE		*saved_target = output_target;
++		const int	saved_indent = output_indent_level;
++		output_target = cs_body_begin (prog);
++		output_indent_level = 2;
++		for (l = prog->exec_list; l; l = CB_CHAIN (l)) {
++			output_stmt (CB_VALUE (l));
++		}
++		cs_body_end ();
++		output_target = saved_target;
++		output_indent_level = saved_indent;
++	} else {
++		for (l = prog->exec_list; l; l = CB_CHAIN (l)) {
++			output_stmt (CB_VALUE (l));
++		}
+ 	}
+ 
+ 	/* End of program / function */
+@@ -12280,7 +12379,7 @@
+ 
+ 	if (!prog->flag_recursive) {
+ 		output_line ("/* Decrement module active count */");
+-		output_line ("if (module->module_active) {");
++		output_line ("if (module->module_active != 0) {");
+ 		output_line ("\tmodule->module_active--;");
+ 		output_line ("}");
+ 		output_newline ();
+@@ -12697,9 +12796,9 @@
+ 	output_line ("/* CANCEL callback handling */");
+ 	output_line ("P_cancel:");
+ 	output_newline ();
+-	output_line ("if (!initialized)");
++	output_line ("if (initialized == 0)");
+ 	output_line ("\treturn 0;");
+-	output_line ("if (module && module->module_active)");
++	output_line ("if (module != NULL && module->module_active != 0)");
+ 	output_line ("\tcob_fatal_error (COB_FERROR_CANCEL);");
+ 	output_newline ();
+ 
+@@ -13566,6 +13665,15 @@
+ output_main_function (struct cb_program *prog)
+ {
+ 	output_line ("/* Main function */");
++	if (cb_flag_csharp) {
++		output_line ("\001public static void Main (string[] argv)");
++		output_line ("\001{");
++		output_line ("\001  cob_init (argv);");
++		output_line ("\001  cob_stop_run (%s ());", prog->program_id);
++		output_line ("\001}");
++		output_newline ();
++		return;
++	}
+ 	if (!cb_flag_winmain) {
+ 		output_line ("int");
+ 		output_line ("main (int argc, char **argv)");
+@@ -13618,6 +13726,10 @@
+ 	const int set_xref = cb_listing_xref;
+ 	int subsequent_call = 0;
+ 	int has_global_file_level = 0 ;
++	if (cb_flag_csharp) {
++		/* C# has no computed goto; use the switch-based PERFORM return */
++		cb_flag_computed_goto = 0;
++	}
+ 	codegen_init (prog, translate_name);
+ 
+ 	/* Temporarily disable cross-reference during C generation */
+@@ -13650,6 +13762,11 @@
+ 	cb_listing_xref = set_xref;
+ 
+ 	codegen_finalize ();
++
++	if (cb_flag_csharp) {
++		cs_epilogue (yyout);
++		cs_flush_all ();
++	}
+ }
+ 
+ void
+@@ -13697,6 +13814,10 @@
+ 	output_header (timestamp_buffer, NULL);
+ 	output_target = cb_storage_file;
+ 	output_header (timestamp_buffer, NULL);
++	if (cb_flag_csharp) {
++		/* the storage file comes first in the merged .cs */
++		cs_prologue (cb_storage_file, prog);
++	}
+ 	{
+ 		struct cb_program *cp;
+ 		for (cp = prog; cp; cp = cp->next_program) {
+@@ -13718,7 +13839,9 @@
+ 	output_newline ();
+ 	output_newline ();
+ 
+-	output_function_prototypes (prog);
++	if (!cb_flag_csharp) {
++		output_function_prototypes (prog);
++	}
+ }
+ 
+ /* Check matching version via constructor attribute / DllMain */
+@@ -13813,7 +13936,9 @@
+ 		output ("/* Functions */");
+ 		output_newline ();
+ 		output_newline ();
+-		output_so_load_version_check (prog);
++		if (!cb_flag_csharp) {
++			output_so_load_version_check (prog);
++		}
+ 	}
+ 
+ 	if (prog->prog_type == COB_MODULE_TYPE_FUNCTION) {
+@@ -13832,6 +13957,10 @@
+ 	}
+ 
+ 	output_internal_function (prog, prog->parameter_list);
++	if (cb_flag_csharp) {
++		/* paragraph methods + dispatcher go right after the program function */
++		cs_body_flush (yyout, prog);
++	}
+ 
+ 	if (!prog->next_program) {
+ 		output_line ("/* End functions */");
+@@ -13954,8 +14083,8 @@
+ 	output_string_cache ();
+ 	output_source_cache ();
+ 
+-	/* Optimizer output */
+-	{
++	/* Optimizer output (inline C helpers; the C# runtime provides these) */
++	if (!cb_flag_csharp) {
+ 		enum cb_optim		optidx;
+ 		for (optidx = COB_OPTIM_MIN; optidx < COB_OPTIM_MAX; ++optidx) {
+ 			if (optimize_defs[optidx]) {
+--- a/cobc/cobc.c
++++ b/cobc/cobc.c
+@@ -7928,6 +7928,23 @@
+ 	cb_listing_file_struct->name = NULL;
+ }
+ 
++/* COBOL-for-.NET: copy one generated piece into the merged .cs, then delete it */
++static void
++cs_append_and_remove (FILE *out, const char *name)
++{
++	FILE	*in = fopen (name, "rb");
++	char	buf[8192];
++	size_t	n;
++	if (!in) {
++		cobc_terminate (name);
++	}
++	while ((n = fread (buf, 1, sizeof (buf), in)) > 0) {
++		fwrite (buf, 1, n, out);
++	}
++	fclose (in);
++	remove (name);
++}
++
+ /* Create single-element C source */
+ 
+ static int
+@@ -8129,6 +8146,33 @@
+ 		}
+ 		p->local_include->local_fp = NULL;
+ 	}
++
++	/* COBOL-for-.NET: merge storage + local + code into one .cs file,
++	   in that order, so C# static initializers run in dependency order */
++	if (cb_flag_csharp && !errorcount) {
++		size_t	n = strlen (fn->translate);
++		char	*csname = cobc_malloc (n + 4);
++		FILE	*out;
++		strcpy (csname, fn->translate);
++		if (n > 2 && strcmp (csname + n - 2, ".c") == 0) {
++			strcpy (csname + n - 2, ".cs");
++		} else {
++			strcat (csname, ".cs");
++		}
++		out = fopen (csname, "wb");
++		if (!out) {
++			cobc_terminate (csname);
++		}
++		cs_append_and_remove (out, fn->trstorage);
++		for (p = current_program; p; p = p->next_program) {
++			if (p->local_include && p->local_include->local_name) {
++				cs_append_and_remove (out, p->local_include->local_name);
++			}
++		}
++		cs_append_and_remove (out, fn->translate);
++		fclose (out);
++		cobc_free (csname);
++	}
+ 	return !!errorcount;
+ }
+ 
+--- a/cobc/typeck.c
++++ b/cobc/typeck.c
+@@ -8122,7 +8122,7 @@
+ 
+ 	if (current_program->flag_screen) {
+ #ifndef WITH_EXTENDED_SCREENIO
+-	if (!warn_screen_done) {
++	if (!warn_screen_done && !cb_flag_csharp) {	/* C# runtime has its own screen I/O */
+ 		warn_screen_done = 1;
+ 		cb_warning (cb_warn_unsupported,
+ 			_("runtime is not configured to support %s"), "SCREEN SECTION");
+--- a/cobc/flag.def
++++ b/cobc/flag.def
+@@ -110,6 +110,9 @@
+ 	_("  -fwinmain             generate WinMain instead of main when compiling\n"
+ 	  "                        as executable"))
+ 
++CB_FLAG (cb_flag_csharp, 1, "csharp",
++	_("  -fcsharp              generate C# for .NET instead of C (use with -C)"))
++
+ CB_FLAG (cb_flag_computed_goto, 0, "computed-goto",
+ 	_("  -fcomputed-goto       generate computed goto C statements"))
+ 

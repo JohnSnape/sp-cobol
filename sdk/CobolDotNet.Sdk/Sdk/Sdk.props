@@ -1,0 +1,26 @@
+<!--
+  CobolDotNet.Sdk: build COBOL programs as .NET apps.
+
+  A project file can be this small:
+
+    <Project Sdk="CobolDotNet.Sdk/0.1.0">
+      <PropertyGroup>
+        <ScreenMode>Both</ScreenMode>   <!- Both | Console | Forms ->
+      </PropertyGroup>
+    </Project>
+
+  Every *.cbl / *.cob file in the project folder is compiled; *.cpy files are copybooks.
+-->
+<Project>
+  <PropertyGroup>
+    <CobolSdkRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..'))\</CobolSdkRoot>
+    <!-- generated C# is an implementation detail: keep VS from offering to "fix" it -->
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <!-- a COBOL project is a program (the .NET SDK would default to a library) -->
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+</Project>

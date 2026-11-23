@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RootNamespace>CobolDotNet.Forms</RootNamespace>
+    <AssemblyName>CobolDotNet.Forms</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CobolDotNet.Runtime\CobolDotNet.Runtime.csproj" />
+  </ItemGroup>
+
+</Project>

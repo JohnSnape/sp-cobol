@@ -1,0 +1,23 @@
+{
+  "profiles": {
+//#if (IsConsole)
+    "CobolApp1": {
+      "commandName": "Project"
+    }
+//#elseif (IsBoth)
+    "CobolApp1 (DOS-style screen)": {
+      "commandName": "Project"
+    },
+    "CobolApp1 (Windows)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "COB_SCREEN": "forms"
+      }
+    }
+//#else
+    "CobolApp1 (Windows)": {
+      "commandName": "Project"
+    }
+//#endif
+  }
+}

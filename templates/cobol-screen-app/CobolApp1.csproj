@@ -1,0 +1,10 @@
+<Project Sdk="CobolDotNet.Sdk/0.1.0">
+
+  <PropertyGroup>
+    <!-- Both    = NAME.exe (DOS-style text screen) + NAME-Win.exe (window), from one source
+         Console = text screen only
+         Forms   = window only (allows any Windows control; no DOS-style version) -->
+    <ScreenMode>SCREENMODE_VALUE</ScreenMode>
+  </PropertyGroup>
+
+</Project>

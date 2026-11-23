@@ -1,0 +1,21 @@
+A=-01234.50 B=+007.0 BIN=-0042
+A/B rounded  = -00176.36
+A/B truncated= -00176.35
+CR    [ 1,234.50CR]
+DB    [ 1,234.50DB]
+CR+   [ 1,234.50  ]
+float [     $5.25]
+float [$98,765.43]
+minus [-  42]
+plus  [+0042]
+zero  [       ]
+date  [11/21/26]
+size error caught, SMALL=99
+after ADD without ON SIZE ERROR SMALL=04
+BIN->C -00042.00
+WHOLE->TXT [0123450   ]
+text->C -00017.25
+just  [   ABC]
+A is negative
+TXT compares equal
+rc=0

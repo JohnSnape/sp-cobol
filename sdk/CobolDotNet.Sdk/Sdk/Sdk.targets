@@ -1,0 +1,144 @@
+<Project>
+
+  <!-- ================================================================
+       Defaults that must be settled before the .NET SDK's targets.
+       ScreenMode:
+         Both    (default) PROG.exe with DOS-style screens + PROG-Win.exe in a window
+         Console           PROG.exe only
+         Forms             PROG.exe is a Windows app only
+       ================================================================ -->
+  <PropertyGroup>
+    <ScreenMode Condition="'$(ScreenMode)' == ''">Both</ScreenMode>
+    <_CobolWantsForms>false</_CobolWantsForms>
+    <_CobolWantsForms Condition="'$(ScreenMode)' == 'Both' or '$(ScreenMode)' == 'Forms'">true</_CobolWantsForms>
+
+    <TargetFramework Condition="'$(TargetFramework)' == '' and '$(TargetFrameworks)' == '' and '$(_CobolWantsForms)' == 'true'">net9.0-windows</TargetFramework>
+    <TargetFramework Condition="'$(TargetFramework)' == '' and '$(TargetFrameworks)' == ''">net9.0</TargetFramework>
+    <UseWindowsForms Condition="'$(_CobolWantsForms)' == 'true'">true</UseWindowsForms>
+    <OutputType Condition="'$(OutputType)' == 'Exe' and '$(ScreenMode)' == 'Forms'">WinExe</OutputType>
+
+    <!-- the Windows twin of a ScreenMode=Both build (see CobolBuildWindowsVersion) -->
+    <AssemblyName Condition="'$(AssemblyName)' == ''">$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(CobolVariant)' == 'Win'">
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>$(AssemblyName)-Win</AssemblyName>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\win\</IntermediateOutputPath>
+  </PropertyGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+  <!-- ================================================================
+       Toolset and runtime inside this package
+       ================================================================ -->
+  <PropertyGroup>
+    <CobolToolsDir>$(CobolSdkRoot)tools\</CobolToolsDir>
+    <CobolCompiler Condition="'$(CobolCompiler)' == ''">$(CobolToolsDir)bin\cobc.exe</CobolCompiler>
+    <CobolRuntimeDir>$(CobolSdkRoot)cobolrt\</CobolRuntimeDir>
+    <!-- fixed (columns 8-72, the classic layout) or free -->
+    <CobolSourceFormat Condition="'$(CobolSourceFormat)' == ''">fixed</CobolSourceFormat>
+    <CobolGeneratedDir>$(IntermediateOutputPath)cobol\</CobolGeneratedDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="CobolDotNet.Runtime">
+      <HintPath>$(CobolRuntimeDir)CobolDotNet.Runtime.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="CobolDotNet.Forms" Condition="'$(_CobolWantsForms)' == 'true'">
+      <HintPath>$(CobolRuntimeDir)CobolDotNet.Forms.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- ================================================================
+       Tasks (inline C#, compiled by MSBuild: works in VS and dotnet build)
+       ================================================================ -->
+  <UsingTask TaskName="CobolCompile" TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <Task>
+      <Code Type="Class" Language="cs" Source="$(MSBuildThisFileDirectory)CobolCompile.cs" />
+    </Task>
+  </UsingTask>
+  <UsingTask TaskName="CobolScreenCheck" TaskFactory="RoslynCodeTaskFactory"
+             AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
+    <Task>
+      <Code Type="Class" Language="cs" Source="$(MSBuildThisFileDirectory)CobolScreenCheck.cs" />
+    </Task>
+  </UsingTask>
+
+  <!-- ================================================================
+       COBOL -> C#  (before the C# compiler runs)
+       ================================================================ -->
+  <Target Name="CobolCompile" BeforeTargets="CoreCompile;GenerateMSBuildEditorConfigFileShouldRun"
+          DependsOnTargets="_CobolCollect">
+    <CobolCompile Sources="@(_CobolSource)" Copybooks="@(_CobolCopybook)"
+                  Compiler="$(CobolCompiler)" ToolsDir="$(CobolToolsDir)"
+                  OutputDir="$(CobolGeneratedDir)" SourceFormat="$(CobolSourceFormat)"
+                  MainProgram="$(CobolMainProgram)" ProjectDir="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="Generated" ItemName="_CobolGenerated" />
+      <Output TaskParameter="MainClass" PropertyName="_CobolMainClass" />
+    </CobolCompile>
+
+    <!-- the Windows twin starts through FormsHost -->
+    <PropertyGroup Condition="'$(CobolVariant)' == 'Win' or '$(ScreenMode)' == 'Forms'">
+      <_CobolWinHost>$(CobolGeneratedDir)WinHost.cs</_CobolWinHost>
+      <_CobolWinHostText>// generated: start the COBOL program in a window
+static class CobolWinHost
+{
+    [System.STAThread]
+    static void Main(string[] args) =>
+        CobolDotNet.Forms.FormsHost.Run($(_CobolMainClass).Main, args, "$(MSBuildProjectName)")%3B
+}
+</_CobolWinHostText>
+    </PropertyGroup>
+    <WriteLinesToFile Condition="'$(_CobolWinHost)' != ''" File="$(_CobolWinHost)" Lines="$(_CobolWinHostText)"
+                      Overwrite="true" WriteOnlyWhenDifferent="true" />
+
+    <ItemGroup>
+      <Compile Include="@(_CobolGenerated)" />
+      <Compile Include="$(_CobolWinHost)" Condition="'$(_CobolWinHost)' != ''" />
+      <FileWrites Include="@(_CobolGenerated);$(_CobolWinHost)" />
+    </ItemGroup>
+    <PropertyGroup>
+      <StartupObject Condition="'$(_CobolWinHost)' != ''">CobolWinHost</StartupObject>
+      <StartupObject Condition="'$(_CobolWinHost)' == ''">$(_CobolMainClass)</StartupObject>
+    </PropertyGroup>
+  </Target>
+
+  <Target Name="_CobolCollect">
+    <ItemGroup>
+      <_CobolSource Include="@(None);@(Content)" Condition="'%(Extension)' == '.cbl' or '%(Extension)' == '.cob'" />
+      <_CobolCopybook Include="@(None);@(Content)" Condition="'%(Extension)' == '.cpy'" />
+    </ItemGroup>
+    <Error Condition="'@(_CobolSource)' == ''" Code="COB0002"
+           Text="This project has no COBOL program. Add a .cbl file (for example Program.cbl) to the project folder." />
+    <Error Condition="'$(ScreenMode)' != 'Both' and '$(ScreenMode)' != 'Console' and '$(ScreenMode)' != 'Forms'" Code="COB0003"
+           Text="ScreenMode is '$(ScreenMode)'. Use Both, Console or Forms." />
+  </Target>
+
+  <!-- ================================================================
+       Forms that would forfeit the DOS-style screens
+       ================================================================ -->
+  <Target Name="CobolScreenCheck" BeforeTargets="CoreCompile" Condition="'$(ScreenMode)' != 'Forms'">
+    <ItemGroup>
+      <_CobolDesignerFile Include="@(Compile)" Condition="$([System.String]::Copy('%(Filename)').EndsWith('.Designer'))" />
+    </ItemGroup>
+    <CobolScreenCheck Files="@(_CobolDesignerFile)" ScreenMode="$(ScreenMode)" Condition="'@(_CobolDesignerFile)' != ''" />
+  </Target>
+
+  <!-- ================================================================
+       ScreenMode=Both: also build PROG-Win.exe next to PROG.exe
+       ================================================================ -->
+  <Target Name="CobolBuildWindowsVersion" AfterTargets="Build"
+          Condition="'$(ScreenMode)' == 'Both' and '$(CobolVariant)' == ''">
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Build"
+             Properties="CobolVariant=Win;OutDir=$(OutDir);Configuration=$(Configuration);Platform=$(Platform)" />
+  </Target>
+  <Target Name="CobolCleanWindowsVersion" AfterTargets="Clean"
+          Condition="'$(ScreenMode)' == 'Both' and '$(CobolVariant)' == ''">
+    <MSBuild Projects="$(MSBuildProjectFullPath)" Targets="Clean"
+             Properties="CobolVariant=Win;OutDir=$(OutDir);Configuration=$(Configuration);Platform=$(Platform)" />
+  </Target>
+
+</Project>

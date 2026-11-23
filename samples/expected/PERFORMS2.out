@@ -1,0 +1,14 @@
+1. EXIT SECTION
+   in section
+2. EXIT PERFORM / EXIT PERFORM CYCLE
+   I=01
+   I=03
+3. GO TO DEPENDING ON
+   two
+4. NEXT SENTENCE
+5. VARYING ... AFTER
+   HITS=12
+6. GOBACK from a nested PERFORM
+   level 1
+   level 2, GOBACK
+rc=0

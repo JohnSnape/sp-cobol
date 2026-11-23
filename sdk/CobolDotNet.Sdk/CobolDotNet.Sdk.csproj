@@ -1,0 +1,20 @@
+<!-- Packs the MSBuild SDK (no code of its own). Run tools\package-sdk.ps1, not this directly. -->
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>CobolDotNet.Sdk</PackageId>
+    <Version>0.1.0</Version>
+    <Description>Build COBOL programs as .NET apps: DOS-style console screens and Windows Forms from one SCREEN SECTION. (Working name.)</Description>
+    <PackageType>MSBuildSdk</PackageType>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <NoWarn>$(NoWarn);NU5128;NU5100</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Sdk\**" Pack="true" PackagePath="Sdk\" />
+    <None Include="stage\tools\**" Pack="true" PackagePath="tools\" />
+    <None Include="stage\cobolrt\**" Pack="true" PackagePath="cobolrt\" />
+  </ItemGroup>
+</Project>

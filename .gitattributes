@@ -1,0 +1,2 @@
+# Keep every file byte-for-byte as committed (shell scripts need LF; test outputs are compared exactly)
+* -text

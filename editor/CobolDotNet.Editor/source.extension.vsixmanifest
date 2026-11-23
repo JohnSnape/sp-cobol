@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="CobolDotNet.Editor.5c1f0b7e-3a52-4d0e-9b8e-6f1e2c7a4d10" Version="0.1.1" Language="en-US" Publisher="SP COBOL" />
+    <DisplayName>SP COBOL Editor</DisplayName>
+    <Description xml:space="preserve">Editing COBOL in Visual Studio: syntax colors, column guides for the fixed-format layout (sequence area, area A, area B, column 72), and sequence numbers kept 000010, 000020, ... automatically as you insert and delete lines.</Description>
+    <License>LICENSE.txt</License>
+    <Tags>COBOL</Tags>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,19.0)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+  </Installation>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+  </Assets>
+</PackageManifest>

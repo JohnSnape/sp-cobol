@@ -1,0 +1,33 @@
+1. plain PERFORM
+   hi
+2. PERFORM inside IF
+   hi
+3. PERFORM n TIMES
+   N=03
+4. PERFORM UNTIL
+   N=07
+5. PERFORM VARYING
+   TOTAL=0010
+6. PERFORM THRU
+   A
+   B
+   C
+7. nested PERFORM
+   outer depth 1
+   inner depth 2
+   back in outer
+8. PERFORM a SECTION
+   helper 1
+   helper 2
+9. GO TO inside a PERFORM range
+   jumper start
+   jumped
+10. EXIT PARAGRAPH
+   before exit
+11. EVALUATE calling paragraphs
+   one
+   other 02
+   other 03
+12. fall through, then GO TO
+done
+rc=0

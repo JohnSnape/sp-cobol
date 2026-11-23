@@ -1,0 +1,14 @@
+# build output
+bin/
+obj/
+.vs/
+*.user
+dist/
+sdk/CobolDotNet.Sdk/stage/
+
+# left out of the public repo (owner's decision, 2026-11-23)
+manuals-text/
+PROGRAMS.md
+src-download/
+otterkit-download/
+spike/

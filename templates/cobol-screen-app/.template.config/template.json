@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "CobolDotNet (working name)",
+  "classifications": [ "COBOL", "Console", "Windows", "Desktop" ],
+  "identity": "CobolDotNet.ScreenApp",
+  "name": "COBOL Screen App",
+  "description": "A COBOL program with a SCREEN SECTION. Builds a DOS-style console version, a Windows version, or both from the same source.",
+  "shortName": "cobol-screen",
+  "sourceName": "CobolApp1",
+  "preferNameDirectory": true,
+  "tags": { "language": "COBOL", "type": "project" },
+  "symbols": {
+    "ScreenMode": {
+      "type": "parameter",
+      "datatype": "choice",
+      "displayName": "Screens",
+      "description": "How the program's screens are shown. You can change this later in the project file.",
+      "defaultValue": "Both",
+      "replaces": "SCREENMODE_VALUE",
+      "choices": [
+        { "choice": "Both", "displayName": "Both: DOS-style console and Windows", "description": "Builds two programs from one source: NAME.exe (text screen) and NAME-Win.exe (window). Only controls with a DOS-screen equivalent can be used." },
+        { "choice": "Console", "displayName": "DOS-style console only", "description": "A text-screen program, like the COBOL systems of the 1980s." },
+        { "choice": "Forms", "displayName": "Windows only", "description": "A window program. Allows any Windows control, but there is no DOS-style version." }
+      ]
+    },
+    "IsConsole": { "type": "computed", "value": "(ScreenMode == \"Console\")" },
+    "IsBoth": { "type": "computed", "value": "(ScreenMode == \"Both\")" }
+  },
+  "primaryOutputs": [ { "path": "CobolApp1.csproj" }, { "path": "Program.cbl" } ],
+  "postActions": []
+}

@@ -1,0 +1,91 @@
+              EMPLOYEE HOURS REPORT
+              =====================
+
+PAGE  1            HOURS               STATUS
+
+DEPARTMENT: ACCOUNTING
+
+  ALICE         38
+  BOB           45
+  CAROL         52
+    ** REVIEW HOURS **
+
+  TOTAL        135    3 EMPLOYEES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HOURS REPORT                           PAGE  1
+
+
+
+PAGE  2            HOURS               STATUS
+
+DEPARTMENT: SHIPPING
+
+  DAVE          40
+  ERIN           0
+  FRANK         61
+    ** REVIEW HOURS **
+  GRACE         33
+
+  TOTAL        134    4 EMPLOYEES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HOURS REPORT                           PAGE  2
+
+
+
+PAGE  3            HOURS               STATUS
+
+DEPARTMENT: SALES
+
+  HEIDI         41
+  IVAN          39
+
+  TOTAL         80    2 EMPLOYEES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+HOURS REPORT                           PAGE  3
+
+
+         END OF REPORT

@@ -1072,6 +1072,32 @@ cs_decl (struct cs_file_state *st, const char *line, struct cs_sbuf *o)
 		} else if (has_dim) {
 			goto fail;
 		}
+	} else if (strncmp (type, "cob_report", 10) == 0 && nptr == 0 && !has_dim && rhs) {
+		/* Report Writer tables (RD lines, fields, controls, SUM counters):
+		   classes whose constructors take the C initializer's values in
+		   struct-member order; "&rl_27" -> "rl_27", NULL -> null */
+		static const char *const rmap[][2] = {
+			{"cob_report", "CobReport"},
+			{"cob_report_line", "CobReportLine"},
+			{"cob_report_field", "CobReportField"},
+			{"cob_report_control", "CobReportControl"},
+			{"cob_report_control_ref", "CobReportControlRef"},
+			{"cob_report_sum", "CobReportSum"},
+			{"cob_report_sum_ctr", "CobReportSumCtr"},
+		};
+		for (i = 0; i < (int)(sizeof (rmap) / sizeof (rmap[0])); i++) {
+			if (strcmp (type, rmap[i][0]) == 0) {
+				cs_type = rmap[i][1];
+			}
+		}
+		if (!cs_type || !cs_brace_inner (rhs, &inner)) {
+			goto fail;
+		}
+		cs_sb_add (&init, "new ");
+		cs_sb_add (&init, cs_type);
+		cs_sb_add (&init, "(");
+		cs_sb_add (&init, inner.p ? inner.p : "");
+		cs_sb_add (&init, ")");
 	} else if (strcmp (type, "char") == 0 && nptr == 1 && !has_dim) {
 		cs_type = "string";
 		if (rhs) {

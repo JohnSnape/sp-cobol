@@ -7,7 +7,7 @@
 # keeps the source of truth: compiler/cobc/* is copied over the pristine
 # GnuCOBOL 3.2 tree before every build.
 set -e
-PROJ="/d/CALUDE CODE/visual-cobol"
+PROJ="${PROJ:-/d/CALUDE CODE/visual-cobol}"   # override to build from a worktree
 TREE=/d/vcobol-build/gnucobol-cs
 
 if [ ! -d "$TREE" ]; then

@@ -468,3 +468,45 @@ method like any other. DECLS checks against stock: USE on a file and on an open 
 46 and goes to the USE procedure even with an AT END phrase, as stock), and a file without
 FILE STATUS whose USE procedure keeps the program running. Not tested yet: USE GLOBAL
 across nested programs, USE FOR DEBUGGING.
+
+## Report Writer (2026-11-24)
+
+runtime/ReportWriter.cs ports libcob's reportio.c step for step: INITIATE, GENERATE (detail
+line or report name), TERMINATE, page heading / footing, PAGE LIMIT / HEADING / FIRST DETAIL
+/ LAST DETAIL / FOOTING placement, LINE absolute and PLUS, NEXT GROUP, control breaks (the
+highest changed level implies the lower ones; footings print the old control value), SUM
+counters including rolled-forward sums of sums and FINAL, GROUP INDICATE, PRESENT WHEN,
+COLUMN LEFT / CENTER / RIGHT (COB_COL_JUST_LRC), CODE IS, PAGE-COUNTER / LINE-COUNTER.
+
+Representation: the C tables (cob_report, cob_report_line, _field, _control, _control_ref,
+_sum, _sum_ctr) are classes CobReport, CobReportLine, ... whose constructors take the C
+initializer's values in struct-member order. csharp.c's cs_decl turns
+`static cob_report_field rf_40 = {NULL,&f_40,...};` into
+`static CobReportField rf_40 = new CobReportField(null,f_40,...);`, so the pointer links are
+object references. In C# mode codegen writes the cob_report initializer on one line and
+leaves out the comments it puts inside initializers.
+
+The report's MOVE / PRESENT WHEN code: C emits it once, inline at the first INITIATE /
+GENERATE / TERMINATE, as a goto-subroutine (rwmove_N / rwfoot_N ... goto P_switch) that
+later statements "perform". A paragraph is a method in C#, so a GENERATE in another
+paragraph can't jump there. In C# mode typeck builds those statement trees once (in stock's
+order, so they are the same trees) and emits them again inline at every GENERATE (both
+parts) and TERMINATE (the footing part): the same statements run at the same moments.
+
+Stock quirk kept: PRESENT WHEN on an elementary field never prints the field. cobc gives
+the field COB_REPORT_PRESENT, and reportio.c prints such a field only when present_now is
+set, which only PRESENT AFTER does; the WHEN code sets `suppress` instead. PRESENT WHEN on a
+LINE works. REPORT2 shows both.
+
+REPORT1 (page breaks, GROUP INDICATE, two control levels + FINAL, a SUM of SUMs, PAGE- /
+LINE-COUNTER, GENERATE in another paragraph than INITIATE) and REPORT2 (report heading /
+footing, control heading, NEXT GROUP PLUS and NEXT PAGE, PRESENT WHEN, a two-line detail
+group, CENTER / RIGHT, two reports, summary reporting with GENERATE report-name) match
+stock byte for byte, report files included.
+
+Not supported: USE BEFORE REPORTING declaratives, and so SUPPRESS PRINTING, which only
+appears in them. libcob returns to the generated code to run the declarative and is
+re-entered with its number, resuming mid-loop; the C# translation stops with a CS-TODO
+error. Untested: CODE IS, PAGE LIMIT etc. given by data items, OCCURS in report lines,
+PRESENT AFTER / ABSENT AFTER, the runtime error paths (their messages lack stock's source
+location).

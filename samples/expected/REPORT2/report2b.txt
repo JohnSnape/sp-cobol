@@ -1,0 +1,20 @@
+DEPARTMENT  STAFF  HOURS
+
+ACCOUNTING    3     135
+SHIPPING      4     134
+SALES         2      80
+
+ALL DEPTS     9     349
+
+
+
+
+
+
+
+
+
+
+
+
+

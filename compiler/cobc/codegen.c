@@ -4072,6 +4072,35 @@ output_funcall_typed_report (struct cb_funcall *p, const char type)
 	/* initialization for report */
 	r = CB_REPORT_PTR (p->argv[0]);
 
+	/* C#: the report's MOVE / PRESENT WHEN statements were emitted inline by
+	   typeck (see cs_emit_report_moves), so there is no rwmove_N subroutine
+	   to perform.  USE BEFORE REPORTING needs GENERATE / TERMINATE to come
+	   back into a declarative paragraph and resume; not supported yet. */
+	if (cb_flag_csharp) {
+		switch (type) {
+		case 'R':
+		case 'T':
+			generate_id++;
+			if (r->has_declarative) {
+				output_line ("\001#error CS-TODO report declaratives (USE BEFORE REPORTING %s)", r->name);
+			}
+			output (type == 'R' ? "cob_report_generate (" : "cob_report_terminate (");
+			output_param (p->argv[0], 0);
+			if (type == 'R') {
+				output (", ");
+				output_param (p->argv[1], 1);
+			}
+			output (", 0)");
+			return;
+		case 'M':
+		case 't':
+		case 'm':
+			return;		/* not emitted in C# mode */
+		default:
+			break;
+		}
+	}
+
 	switch (type) {
 
 	case 'R':	/* Generate REPORT line */
@@ -10240,7 +10269,7 @@ output_report_def_fields (int bgn, int id, struct cb_field *f, struct cb_report 
 	if (f->report_source) {
 		output_param (f->report_source, 0);
 	} else if(f->report_sum_counter) {
-		output_local ("/* SUM */");
+		if (!cb_flag_csharp) output_local ("/* SUM */");	/* C#: no comment inside an initializer */
 		output_param (f->report_sum_counter, 0);
 	} else {
 		output_local ("NULL");
@@ -10468,7 +10497,7 @@ output_report_define_lines (int top, struct cb_field *f, struct cb_report *r)
 		output_local("NULL");
 	}
 	output_local(",%d",f->report_decl_id);
-	if(f->report_decl_id)
+	if(f->report_decl_id && !cb_flag_csharp)
 		output_local("/* Declaratives */");
 	output_local(",%d,%d,%d,%d",f->report_flag&~COB_REPORT_EMITTED,
 				f->report_line, f->step_count,f->next_group_line);
@@ -10628,7 +10657,7 @@ output_report_sum_counters (const int top, struct cb_field *f, struct cb_report 
 		}
 	}
 	if (p == NULL) {
-		output_local("NULL, /* No CONTROL field */");
+		output_local(cb_flag_csharp ? "NULL," : "NULL, /* No CONTROL field */");
 	}
 	if (f && f->report_flag & COB_REPORT_RESET_FINAL) {
 		output_local("1");
@@ -10669,8 +10698,9 @@ output_report_definition (struct cb_report *p, struct cb_report *n)
 	}
 
 	output_local ("\n");
-	output_local ("static cob_report %s%s = {\n", CB_PREFIX_REPORT,p->cname);
-	output_local ("\t\t\"%s\",\n\t\t",p->name);
+	/* C#: the whole initializer on one line, so csharp.c can translate it */
+	output_local (cb_flag_csharp ? "static cob_report %s%s = {" : "static cob_report %s%s = {\n", CB_PREFIX_REPORT,p->cname);
+	output_local (cb_flag_csharp ? "\"%s\"," : "\t\t\"%s\",\n\t\t",p->name);
 	if(n != NULL) {
 		output_local ("&%s%s,", CB_PREFIX_REPORT, n->cname);	/* next report */
 	} else {
@@ -10705,13 +10735,13 @@ output_report_definition (struct cb_report *p, struct cb_report *n)
 	} else {
 		output_local("NULL,");
 	}
-	output_local ("\n");
-	output_local ("\t\t%d,%d,%d,%d,%d,%d,%d,\n",
+	if (!cb_flag_csharp) output_local ("\n");
+	output_local (cb_flag_csharp ? "%d,%d,%d,%d,%d,%d,%d," : "\t\t%d,%d,%d,%d,%d,%d,%d,\n",
 			p->lines,p->columns,p->heading,
 			p->first_detail,p->last_control,
 			p->last_detail,p->footing);
-	output_local ("\t\t0,0,0,0,0,");
-	output_local ("%d,%d\n",p->control_final,p->global);
+	output_local (cb_flag_csharp ? "0,0,0,0,0," : "\t\t0,0,0,0,0,");
+	output_local (cb_flag_csharp ? "%d,%d" : "%d,%d\n",p->control_final,p->global);
 	output_local ("};\n");
 }
 

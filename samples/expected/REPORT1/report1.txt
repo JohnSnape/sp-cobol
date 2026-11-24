@@ -1,0 +1,70 @@
+
+QUARTERLY SALES REPORT                           PAGE   1
+
+REGION  CITY        SALESMAN     QTY       AMOUNT
+
+EAST    BOSTON      ADAMS         12     125.50
+                    BAKER          5      30.00
+                    CHEN          17   1,500.25
+                    CITY TOTAL    34   1,655.75
+EAST    NEW YORK    DIAZ           3       9.99
+                    EVANS         21   2,121.21
+                    FOX            9     450.00
+                    GARCIA        11     333.33
+                    CITY TOTAL    44   2,914.53
+EAST    ALBANY      HILL           2      10.00
+                    CITY TOTAL     2      10.00
+
+        REGION TOTAL EAST         80   4,580.28
+WEST    DENVER      IBARRA        14     700.70
+
+
+
+                   - PAGE  1 LINE 23
+
+QUARTERLY SALES REPORT                           PAGE   2
+
+REGION  CITY        SALESMAN     QTY       AMOUNT
+
+WEST    DENVER      JONES          6      25.00
+                    CITY TOTAL    20     725.70
+WEST    SEATTLE     KIM           30   9,999.99
+                    LOPEZ          1       0.01
+                    MORRIS        12     120.00
+                    NG             8     808.08
+                    CITY TOTAL    51  10,928.08
+WEST    PORTLAND    OWENS          4      44.00
+                    PATEL         19   1,900.19
+                    CITY TOTAL    23   1,944.19
+
+        REGION TOTAL WEST         94  13,597.97
+SOUT    DALLAS      QUINN          7      70.07
+                    REYES         13   1,313.13
+
+
+
+                   - PAGE  2 LINE 23
+
+QUARTERLY SALES REPORT                           PAGE   3
+
+REGION  CITY        SALESMAN     QTY       AMOUNT
+
+SOUT    DALLAS      SMITH         10   1,000.00
+                    TANAKA         2       2.50
+                    CITY TOTAL    32   2,385.70
+SOUT    MIAMI       URBAN         16     160.16
+                    VEGA           5     505.05
+                    CITY TOTAL    21     665.21
+SOUT    ATLANTA     WONG          25   2,500.00
+                    YOUNG          3     303.03
+                    CITY TOTAL    28   2,803.03
+
+        REGION TOTAL SOUT         81   5,853.94
+
+GRAND TOTAL                      255   24,032.19
+
+
+
+
+
+                   - PAGE  3 LINE 23

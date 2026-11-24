@@ -14531,18 +14531,88 @@ cb_emit_report_moves (struct cb_report *r, struct cb_field *f, int forterminate)
 	}
 }
 
+/* C# mode: the report's MOVE / PRESENT WHEN statements, captured once per
+   report.  C emits them a single time, inline at the first INITIATE /
+   GENERATE / TERMINATE, as a goto-subroutine (rwmove_N falls through
+   rwfoot_N to "goto P_switch") that later GENERATEs / TERMINATEs "perform"
+   with a return-address number.  In C# every paragraph is its own method,
+   so a GENERATE in one paragraph cannot jump to a label in another; instead
+   the captured statement trees are emitted again at each GENERATE (both
+   parts, like rwmove_N) and TERMINATE (the footing part, like rwfoot_N).
+   The trees are built exactly once and in stock's order, so the
+   report_in_footing state they depend on is the same as stock's. */
+#define CS_RW_MAX	256
+static cb_tree	cs_rw_moves[CS_RW_MAX][2];
+
+static cb_tree
+cs_list_last (cb_tree l)
+{
+	if (l) {
+		while (CB_CHAIN (l)) {
+			l = CB_CHAIN (l);
+		}
+	}
+	return l;
+}
+
 static void
-cb_emit_report_move_id (cb_tree rep)
+cs_emit_report_moves (const struct cb_report *r, int part)
+{
+	cb_tree	l;
+	if (r->id <= 0 || r->id >= CS_RW_MAX) {
+		return;
+	}
+	for (l = cs_rw_moves[r->id][part]; l; l = CB_CHAIN (l)) {
+		cb_emit (CB_VALUE (l));
+	}
+}
+
+static void
+cb_emit_report_move_id (cb_tree rep, const int kind)
 {
 	struct cb_report *r = CB_REPORT_PTR (rep);
 	if (r
 	 && r->id == 0) {
 		r->id = report_id++;
-		cb_emit (CB_BUILD_FUNCALL_1 ("$M", rep));
-		cb_emit_report_moves(r, r->records, 0);
-		cb_emit (CB_BUILD_FUNCALL_1 ("$t", rep));
-		cb_emit_report_moves(r, r->records, 1);
-		cb_emit (CB_BUILD_FUNCALL_1 ("$m", rep));
+		if (cb_flag_csharp) {
+			cb_tree	last0, last1, l0, l1;
+			last0 = cs_list_last (current_statement->body);
+			cb_emit_report_moves(r, r->records, 0);
+			last1 = cs_list_last (current_statement->body);
+			cb_emit_report_moves(r, r->records, 1);
+			/* detach both parts from the statement body again */
+			l0 = last0 ? CB_CHAIN (last0) : current_statement->body;
+			if (last1 == last0) {
+				l0 = NULL;		/* part 0 was empty */
+				l1 = last1 ? CB_CHAIN (last1) : current_statement->body;
+			} else {
+				l1 = CB_CHAIN (last1);
+				CB_CHAIN (last1) = NULL;
+			}
+			if (last0) {
+				CB_CHAIN (last0) = NULL;
+			} else {
+				current_statement->body = NULL;
+			}
+			if (r->id < CS_RW_MAX) {
+				cs_rw_moves[r->id][0] = l0;
+				cs_rw_moves[r->id][1] = l1;
+			}
+		} else {
+			cb_emit (CB_BUILD_FUNCALL_1 ("$M", rep));
+			cb_emit_report_moves(r, r->records, 0);
+			cb_emit (CB_BUILD_FUNCALL_1 ("$t", rep));
+			cb_emit_report_moves(r, r->records, 1);
+			cb_emit (CB_BUILD_FUNCALL_1 ("$m", rep));
+		}
+	}
+	if (cb_flag_csharp && r) {
+		if (kind == 'R') {		/* perform rwmove_N */
+			cs_emit_report_moves (r, 0);
+			cs_emit_report_moves (r, 1);
+		} else if (kind == 'T') {	/* perform rwfoot_N */
+			cs_emit_report_moves (r, 1);
+		}
 	}
 }
 
@@ -14554,7 +14624,7 @@ cb_emit_initiate (cb_tree rep)
 	if (rep == cb_error_node) {
 		return;
 	}
-	cb_emit_report_move_id (rep);
+	cb_emit_report_move_id (rep, 'I');
 	cb_emit (CB_BUILD_FUNCALL_1 ("$I", rep));
 
 }
@@ -14567,7 +14637,7 @@ cb_emit_terminate (cb_tree rep)
 	if (rep == cb_error_node) {
 		return;
 	}
-	cb_emit_report_move_id (rep);
+	cb_emit_report_move_id (rep, 'T');
 	cb_emit (CB_BUILD_FUNCALL_1 ("$T", rep));
 
 }
@@ -14596,7 +14666,7 @@ cb_emit_generate (cb_tree x)
 		r = CB_REPORT (y);
 		z = cb_build_reference (r->name);
 		CB_REFERENCE (z)->value = CB_TREE (y);
-		cb_emit_report_move_id(z);
+		cb_emit_report_move_id(z, 'R');
 		cb_emit (CB_BUILD_FUNCALL_2 ("$R", z, NULL));
 		return;
 	}
@@ -14608,7 +14678,7 @@ cb_emit_generate (cb_tree x)
 		z = cb_build_reference (f->name);
 		CB_REFERENCE (z)->value = CB_TREE (f->report);
 		x->tag = CB_TAG_REPORT_LINE;
-		cb_emit_report_move_id(z);
+		cb_emit_report_move_id(z, 'R');
 		cb_emit (CB_BUILD_FUNCALL_2 ("$R", z, x));
 	}
 }

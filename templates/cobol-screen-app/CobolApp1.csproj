@@ -1,4 +1,4 @@
-<Project Sdk="CobolDotNet.Sdk/0.1.8">
+<Project Sdk="CobolDotNet.Sdk/0.1.9">
 
   <PropertyGroup>
     <!-- Both    = NAME.exe (DOS-style text screen) + NAME-Win.exe (window), from one source

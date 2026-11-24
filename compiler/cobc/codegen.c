@@ -1888,7 +1888,11 @@ output_call_cache (void)
 		output_local ("\n/* Call pointers */\n");
 	}
 	if (needs_unifunc) {
-		output_local ("cob_call_union\t\tcob_unifunc;\n");
+		if (cb_flag_csharp) {
+			output_local ("\001static CobCall cob_unifunc = new CobCall ();\n");
+		} else {
+			output_local ("cob_call_union\t\tcob_unifunc;\n");
+		}
 	}
 	if ((call_cache || func_call_cache)
 	 && (cb_flag_memory_check & CB_MEMCHK_POINTER)) {
@@ -1900,13 +1904,23 @@ output_call_cache (void)
 	}
 	call_cache = call_list_reverse (call_cache);
 	for (call = call_cache; call; call = call->next) {
-		output_local ("static cob_call_union\tcall_%s;\n",
-			      call->call_name);
+		if (cb_flag_csharp) {
+			output_local ("\001static CobCall call_%s = new CobCall ();\n",
+				      call->call_name);
+		} else {
+			output_local ("static cob_call_union\tcall_%s;\n",
+				      call->call_name);
+		}
 	}
 	func_call_cache = call_list_reverse (func_call_cache);
 	for (call = func_call_cache; call; call = call->next) {
-		output_local ("static cob_call_union\tfunc_%s;\n",
-			      call->call_name);
+		if (cb_flag_csharp) {
+			output_local ("\001static CobCall func_%s = new CobCall ();\n",
+				      call->call_name);
+		} else {
+			output_local ("static cob_call_union\tfunc_%s;\n",
+				      call->call_name);
+		}
 	}
 	if ((call_cache || func_call_cache)
 	 && (cb_flag_memory_check & CB_MEMCHK_POINTER)) {
@@ -1953,6 +1967,31 @@ output_nested_call_table (struct cb_program *prog)
 
 	/* Generate contained program list */
 	output_local ("\n/* Nested call table */\n");
+	if (cb_flag_csharp) {
+		/* C#: name, entry, cancel entry; method groups convert to Delegate */
+		output_local ("\001static CobCallStruct[] cob_nest_tab = {\n");
+		for (nlp = prog->nested_prog_list; nlp; nlp = nlp->next) {
+			if (nlp->nested_prog == prog) {
+				output_local ("\001\tnew CobCallStruct (\"%s\", %s.%s_%d__, null),\n",
+					      nlp->nested_prog->orig_program_id,
+					      cs_prog_class (nlp->nested_prog),
+					      nlp->nested_prog->program_id,
+					      nlp->nested_prog->toplev_count);
+			} else {
+				output_local ("\001\tnew CobCallStruct (\"%s\", %s.%s_%d__, %s.%s_%d_),\n",
+					      nlp->nested_prog->orig_program_id,
+					      cs_prog_class (nlp->nested_prog),
+					      nlp->nested_prog->program_id,
+					      nlp->nested_prog->toplev_count,
+					      cs_prog_class (nlp->nested_prog),
+					      nlp->nested_prog->program_id,
+					      nlp->nested_prog->toplev_count);
+			}
+		}
+		output_local ("\001\tnew CobCallStruct (null, null, null)\n");
+		output_local ("\001};\n");
+		return;
+	}
 	output_local ("static struct cob_call_struct\tcob_nest_tab[] = {\n");
 	for (nlp = prog->nested_prog_list; nlp; nlp = nlp->next) {
 		if (nlp->nested_prog == prog) {
@@ -6449,6 +6488,11 @@ output_bin_field (const cb_tree x, const cob_u32_t id)
 	/* Note: some C compilers (SUN for one) will not accept inline initialization
 	   with 'content_%u.data' because that is a local variable,
 	   therefore generate this part of the assignment separately */
+	if (cb_flag_csharp) {
+		output_line ("\001CobField content_fb_%u = new CobField (%u, default (CobPtr), %s%d);",
+			     id, size, CB_PREFIX_ATTR, i);
+		return;
+	}
 	output_line ("cob_field\tcontent_fb_%u = { %u, NULL, &%s%d };",
 		     id, size, CB_PREFIX_ATTR, i);
 }
@@ -6616,7 +6660,8 @@ output_call (struct cb_call *p)
 				need_brace = 1;
 				output_block_open ();
 			}
-			output_line ("int ret;");
+			/* C# wants it assigned on every path (ON EXCEPTION skips the CALL) */
+			output_line (cb_flag_csharp ? "int ret = 0;" : "int ret;");
 		}
 #ifdef	COB_NON_ALIGNED
 		else {
@@ -6645,7 +6690,11 @@ output_call (struct cb_call *p)
 					need_brace = 1;
 					output_block_open ();
 				}
-				output_line ("cob_content\tcontent_%u;", n);
+				if (cb_flag_csharp) {
+					output_line ("\001CobContent content_%u = new CobContent (8);", n);
+				} else {
+					output_line ("cob_content\tcontent_%u;", n);
+				}
 				output_bin_field (x, n);
 			} else if (CB_CAST_P (x)) {
 				if (!need_brace) {
@@ -6668,6 +6717,24 @@ output_call (struct cb_call *p)
 				if (!need_brace) {
 					need_brace = 1;
 					output_block_open ();
+				}
+				if (cb_flag_csharp) {
+					/* a private copy of the argument (CobContent: bytes + views) */
+					output_prefix ();
+					output ("CobContent content_%u = new CobContent (", n);
+					if (CB_NUMERIC_LITERAL_P (x) || CB_BINARY_OP_P (x) || CB_CAST_P (x)) {
+						output ("8");
+					} else if (CB_REF_OR_FIELD_P (x)) {
+						output ("%u", (cob_u32_t)cb_code_field (x)->size);
+					} else {
+						output_size (x);
+					}
+					output (");");
+					output_newline ();
+					output_line ("\001CobField content_%s%u = new CobField ();", CB_PREFIX_FIELD, n);
+					output_line ("\001CobFieldAttr content_%s%u = null;", CB_PREFIX_ATTR, n);
+					output_bin_field (x, n);
+					break;
 				}
 				output_line ("union {");
 				output_indent_level += indent_adjust_level;
@@ -6948,6 +7015,9 @@ output_call (struct cb_call *p)
 			/* Check contained programs */
 			nlp = find_nested_prog_with_id (name_str);
 			if (nlp) {
+				if (cb_flag_csharp) {
+					output ("%s.", cs_prog_class (nlp->nested_prog));
+				}
 				output ("%s_%d__", name_str,
 					nlp->nested_prog->toplev_count);
 			} else {
@@ -6975,7 +7045,11 @@ output_call (struct cb_call *p)
 			output_prefix ();
 
 			nlp = find_nested_prog_with_id (name_str);
-			if (nlp) {
+			if (nlp && cb_flag_csharp) {
+				output ("call_%s.funcint = %s.%s_%d__;",
+					name_str, cs_prog_class (nlp->nested_prog), name_str,
+					nlp->nested_prog->toplev_count);
+			} else if (nlp) {
 				output ("call_%s.funcint = %s_%d__;",
 					name_str, name_str,
 					nlp->nested_prog->toplev_count);
@@ -7003,7 +7077,14 @@ output_call (struct cb_call *p)
 			}
 			output_newline ();
 		}
-		if (p->stmt1) {
+		if (p->stmt1 && cb_flag_csharp) {
+			/* C# can't goto into the ON EXCEPTION block: use a flag (see below) */
+			except_id = cb_id++;
+			output_line ("\001bool cs_fail_%d = %s%s.funcvoid == null;", except_id,
+				name_str ? "call_" : "cob_unifunc", name_str ? name_str : "");
+			output_line ("\001if (!cs_fail_%d)", except_id);
+			output_block_open ();
+		} else if (p->stmt1) {
 			if (name_str) {
 				output_line ("if (unlikely(call_%s.funcvoid == NULL))", name_str);
 			} else {
@@ -7018,6 +7099,24 @@ output_call (struct cb_call *p)
 			output_block_open ();
 		}
 		output_prefix ();
+		if (cb_flag_csharp) {
+			/* C#: CobCall.Call converts the arguments to the callee's parameters */
+			if (p->call_returning == cb_null) {
+				;
+			} else if (p->call_returning && !ret_ptr) {
+				output ("ret = ");
+			} else if (!(p->convention & CB_CONV_NO_RET_UPD)
+			        && current_prog->cb_return_code && !ret_ptr) {
+				output_integer (current_prog->cb_return_code);
+				output (" = ");
+			}
+			if (name_str) {
+				output ("call_%s.Call", name_str);
+			} else {
+				output ("cob_unifunc.Call");
+			}
+			goto cs_call_args;
+		}
 		/* call frame cast prototype */
 		if (ret_ptr) {
 #ifdef	COB_NON_ALIGNED
@@ -7088,6 +7187,7 @@ output_call (struct cb_call *p)
 	}
 
 	/* Arguments */
+cs_call_args:
 	output (" (");
 	for (l = p->args, n = 1; l; l = CB_CHAIN (l), n++) {
 		x = CB_VALUE (l);
@@ -7136,7 +7236,20 @@ output_call (struct cb_call *p)
 	output (");");
 	output_newline ();
 
-	if (except_id > 0) {
+	if (except_id > 0 && cb_flag_csharp) {
+		/* C#: ON EXCEPTION runs when the program wasn't found, or the
+		   CALL raised EC-PROGRAM; everything after it is the else branch,
+		   closed by "if (dynamic_link && p->stmt1)" at the end */
+		output_line ("\001cs_fail_%d = (cob_glob_ptr.cob_exception_code & 0x%04x) == 0x%04x;",
+			except_id, CB_EXCEPTION_CODE(COB_EC_PROGRAM), CB_EXCEPTION_CODE(COB_EC_PROGRAM));
+		output_block_close ();
+		output_line ("\001if (cs_fail_%d)", except_id);
+		output_block_open ();
+		output_stmt (p->stmt1);
+		output_block_close ();
+		output_line ("else");
+		output_block_open ();
+	} else if (except_id > 0) {
 		output_line ("if (unlikely((cob_glob_ptr->cob_exception_code & 0x%04x) == 0x%04x))",
 			CB_EXCEPTION_CODE(COB_EC_PROGRAM), CB_EXCEPTION_CODE(COB_EC_PROGRAM));
 		output_line ("\tgoto %s%d;", CB_PREFIX_LABEL, except_id);
@@ -7274,9 +7387,13 @@ output_cancel (struct cb_cancel *p)
 		nlp = find_nested_prog_with_id (name_str);
 		output_prefix ();
 		if (nlp) {
-			output ("(void)%s_%d_ (-1", name_str,
+			if (cb_flag_csharp) {
+				output ("%s.", cs_prog_class (nlp->nested_prog));
+			}
+			output ("%s_%d_ (-1", name_str,
 				nlp->nested_prog->toplev_count);
-			for (i = 0; i < nlp->nested_prog->num_proc_params; ++i) {
+			/* C#: the internal function takes only the entry number */
+			for (i = 0; i < nlp->nested_prog->num_proc_params && !cb_flag_csharp; ++i) {
 				output (", NULL");
 			}
 			output (");");
@@ -8692,7 +8809,7 @@ output_handler (const struct cb_statement *stmt)
 	}
 	if (stmt->not_ex_handler) {
 		if (stmt->ex_handler == NULL) {
-			output_line ("if (!cob_glob_ptr->cob_exception_code)");
+			output_line ("if (cob_glob_ptr->cob_exception_code == 0)");
 		}
 		output_block_open ();
 		output_stmt (stmt->not_ex_handler);
@@ -13168,6 +13285,12 @@ output_entry_function (struct cb_program *prog, cb_tree entry,
 	if (gencode) {
 		output_line ("/* ENTRY '%s' */", entry_name);
 		output_newline ();
+		if (cb_flag_csharp && !prog->nested_level) {
+			/* lets the runtime find the program by name (CALL "NAME") */
+			output_line ("\001[CobolProgram (\"%s\")]",
+				strcmp (entry_name, prog->program_id) == 0
+				? prog->orig_program_id : entry_name);
+		}
 	} else {
 		if (!prog->nested_level) {
 			output ("COB_EXT_EXPORT ");
@@ -13252,10 +13375,17 @@ output_entry_function (struct cb_program *prog, cb_tree entry,
 		sticky_ids[parmnum] = f->id;
 		if (!cb_sticky_linkage
 		 && (entry_convention & CB_CONV_COBOL)) {
-			output_line ("cob_u8_t *cob_parm_%d = NULL;"
-				"\t/* linkage for %s */",
-				f->id, cb_name (f_tree)
-			);
+			if (cb_flag_csharp) {
+				output_line ("\001CobPtr cob_parm_%d = default;"
+					"\t/* linkage for %s */",
+					f->id, cb_name (f_tree)
+				);
+			} else {
+				output_line ("cob_u8_t *cob_parm_%d = NULL;"
+					"\t/* linkage for %s */",
+					f->id, cb_name (f_tree)
+				);
+			}
 		}
 		if (CB_PURPOSE_INT (l) == CB_CALL_BY_VALUE) {
 			const char *s = try_get_by_value_parameter_type (f->usage, l);
@@ -13284,9 +13414,9 @@ output_entry_function (struct cb_program *prog, cb_tree entry,
 			output_line("/* Get current number of call parameters,");
 			output_line("   if the parameter count is unknown, set it to all */");
 			if (cb_flag_implicit_init) {
-				output_line ("if (cob_is_initialized () && cob_get_global_ptr ()->cob_current_module) {");
+				output_line ("if (cob_is_initialized () && cob_get_global_ptr ()->cob_current_module != NULL) {");
 			} else {
-				output_line ("if (cob_get_global_ptr ()->cob_current_module) {");
+				output_line ("if (cob_get_global_ptr ()->cob_current_module != NULL) {");
 			}
 			output_line ("\tcob_call_params = cob_get_global_ptr ()->cob_call_params;");
 			output_line ("} else {");
@@ -13447,6 +13577,35 @@ output_entry_function (struct cb_program *prog, cb_tree entry,
 					f2->id);
 			}
 		}
+	}
+
+	if (cb_flag_csharp) {
+		/* C#: the paragraphs are separate methods, so LINKAGE items are fields
+		   of the class; store this call's arguments there, then run */
+		/* (parameter_list is only collected for C prototypes, which C# mode
+		   skips; this entry's USING list is what this call supplies) */
+		for (l2 = using_list; l2; l2 = CB_CHAIN (l2)) {
+			f2 = cb_code_field (CB_VALUE (l2));
+			if (CB_PURPOSE_INT (l2) == CB_CALL_BY_VALUE) {
+				/* the value becomes the item's bytes */
+				output_line ("\001%s.%s%d = cob_value_ptr (%s%d, %u);",
+					cs_prog_class (prog), CB_PREFIX_BASE, f2->id,
+					CB_PREFIX_BASE, f2->id, (unsigned int)f2->size);
+			} else {
+				output_line ("\001%s.%s%d = cob_parm_%d;",
+					cs_prog_class (prog), CB_PREFIX_BASE, f2->id, f2->id);
+			}
+		}
+		if (!prog->nested_level) {
+			output_line ("%s%s_ (%d);", prog->flag_void ? "" : "return ",
+				prog->program_id, progid);
+		} else {
+			output_line ("%s%s_%d_ (%d);", prog->flag_void ? "" : "return ",
+				prog->program_id, prog->toplev_count, progid);
+		}
+		output_block_close ();
+		output_newline ();
+		return;
 	}
 
 	output_prefix ();
@@ -13768,6 +13927,13 @@ codegen (struct cb_program *prog, const char *translate_name)
 	codegen_finalize ();
 
 	if (cb_flag_csharp) {
+		struct cb_program *cp;
+		/* close each later program's class in its local file (opened in codegen_init) */
+		for (cp = prog; cp; cp = cp->next_program) {
+			if (!cp->flag_prototype) {
+				cs_prog_class_close (cp->local_include->local_fp, cp);
+			}
+		}
 		cs_epilogue (yyout);
 		cs_flush_all ();
 	}
@@ -13830,6 +13996,9 @@ codegen_init (struct cb_program *prog, const char *translate_name)
 			}
 			output_target = cp->local_include->local_fp;
 			output_header (timestamp_buffer, cp);
+			if (cb_flag_csharp) {
+				cs_prog_class_open (cp->local_include->local_fp, cp);
+			}
 		}
 	}
 	output_target = yyout;
@@ -13873,6 +14042,22 @@ static void output_so_load_version_check (struct cb_program *prog)
 #endif
 }
 
+/* C#: index items (INDEXED BY, USAGE INDEX) are plain ints in C; see csharp.c */
+static void
+cs_register_int_fields (struct cb_field *f)
+{
+	for (; f; f = f->sister) {
+		if (f->index_type != CB_NORMAL_INDEX) {
+			char b[32];
+			snprintf (b, sizeof (b), "%s%d", CB_PREFIX_BASE, f->id);
+			cs_int_store_add (b);
+		}
+		if (f->children) {
+			cs_register_int_fields (f->children);
+		}
+	}
+}
+
 void
 codegen_internal (struct cb_program *prog, const int subsequent_call)
 {
@@ -13886,6 +14071,20 @@ codegen_internal (struct cb_program *prog, const int subsequent_call)
 	/* skip prototypes */
 	if (prog->flag_prototype) {
 		return;
+	}
+
+	if (cb_flag_csharp) {
+		/* tell the translator which items C keeps in a plain int, before
+		   any code uses them (their declarations come out after the code) */
+		cs_register_int_fields (prog->working_storage);
+		cs_register_int_fields (prog->local_storage);
+		cs_register_int_fields (prog->linkage_storage);
+		if (prog->cb_return_code && CB_REF_OR_FIELD_P (prog->cb_return_code)) {
+			char b[32];
+			snprintf (b, sizeof (b), "%s%d", CB_PREFIX_BASE,
+				  cb_code_field (prog->cb_return_code)->id);
+			cs_int_store_add (b);
+		}
 	}
 
 	/* Clear local program stuff */
@@ -13945,6 +14144,11 @@ codegen_internal (struct cb_program *prog, const int subsequent_call)
 		}
 	}
 
+	if (cb_flag_csharp) {
+		/* a later program's functions go in its own nested class */
+		cs_prog_class_open (yyout, prog);
+	}
+
 	if (prog->prog_type == COB_MODULE_TYPE_FUNCTION) {
 		output_line ("/* FUNCTION-ID '%s' */", prog->orig_program_id);
 		output_newline ();
@@ -13964,6 +14168,7 @@ codegen_internal (struct cb_program *prog, const int subsequent_call)
 	if (cb_flag_csharp) {
 		/* paragraph methods + dispatcher go right after the program function */
 		cs_body_flush (yyout, prog);
+		cs_prog_class_close (yyout, prog);
 	}
 
 	if (!prog->next_program) {

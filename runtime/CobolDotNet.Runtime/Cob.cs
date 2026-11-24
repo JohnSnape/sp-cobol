@@ -40,8 +40,10 @@ public static partial class Cob
     public static bool unlikely(bool b) => b;
     public static bool likely(bool b) => b;
 
-    public static Delegate cob_funcptr(Func<int> f) => f;
-    public static Delegate cob_funcptr(Func<int, int> f) => f;
+    public static Delegate cob_funcptr(Delegate f) => f;     // entries with USING parameters
+
+    /// <summary>libcob's COB_SET_DATA macro: point a field at data, use the field.</summary>
+    public static CobField COB_SET_DATA(CobField f, CobPtr data) { f.data = data; return f; }
 
     // libcob's byte-swap macros: COMP (big-endian) fields read and written in place
     public static short COB_BSWAP_16(short v) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(v);

@@ -37,6 +37,10 @@ foreach ($n in $names) {
     New-Item -ItemType Directory -Force $dir | Out-Null
     Copy-Item (Join-Path $samples "$n.cbl") $dir -Force
     $unix = '/d/vcobol-build/tests/' + $n
+    # more programs CALLed by this one: samples\NAME.sub\*.cbl, built into the same program
+    $subDir = Join-Path $samples "$n.sub"
+    $subs = @(if (Test-Path $subDir) { Get-ChildItem $subDir -Filter *.cbl | ForEach-Object { Copy-Item $_.FullName $dir -Force; $_.Name } })
+    $subList = ($subs | ForEach-Object { " $_" }) -join ''
     $inFile = Join-Path $samples "$n.in"
     $keys = Join-Path $samples "$n.keys"
     $isScreen = Test-Path $keys
@@ -50,7 +54,7 @@ foreach ($n in $names) {
     $expFiles = Join-Path $expect $n
     if (-not $isScreen -and -not (Test-Path $exp)) {
         $stdin = if ($hasIn) { " < ../$n.in" } else { " < /dev/null" }
-        $r = Invoke-Bash "source '/d/CALUDE CODE/visual-cobol/tools/stock-cobc.sh'; cd $unix && rm -rf stockrun && mkdir stockrun && cobc -x $n.cbl -o stock.exe && cd stockrun && ../stock.exe$stdin > ../stock.out 2>&1; echo rc=`$? >> ../stock.out"
+        $r = Invoke-Bash "source '/d/CALUDE CODE/visual-cobol/tools/stock-cobc.sh'; cd $unix && rm -rf stockrun && mkdir stockrun && cobc -x $n.cbl$subList -o stock.exe && cd stockrun && ../stock.exe$stdin > ../stock.out 2>&1; echo rc=`$? >> ../stock.out"
         Copy-Item (Join-Path $dir 'stock.out') $exp
         $made = Get-ChildItem (Join-Path $dir 'stockrun') -File -ErrorAction SilentlyContinue
         if ($made) {
@@ -62,6 +66,12 @@ foreach ($n in $names) {
     # 2. ours: COBOL -> C# -> .NET
     $r = Invoke-Bash "cd '/d/CALUDE CODE/visual-cobol' && bash tools/cobnet.sh $unix/$n.cbl $unix/net"
     if ($LASTEXITCODE -ne 0) { $fail += "$n (cobc): $r"; continue }
+    $subFail = $false
+    foreach ($s in $subs) {
+        $r = Invoke-Bash "cd '/d/CALUDE CODE/visual-cobol' && bash tools/cobnet.sh $unix/$s $unix/net sub"
+        if ($LASTEXITCODE -ne 0) { $fail += "$n (cobc $s): $r"; $subFail = $true }
+    }
+    if ($subFail) { continue }
     $csproj = @"
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>

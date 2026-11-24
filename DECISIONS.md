@@ -348,3 +348,40 @@ READ when the next record has the same alternate key), 21 key sequence error (AC
 SEQUENTIAL WRITE, also after OPEN EXTEND), 22 duplicate key, 23 not found, 39 the file's
 record size or key layout differs from the program's. FILEIDX tests all of these; its
 expected output was worked out by hand, since stock has no indexed support to compare with.
+
+## CALL, CANCEL and multi-program projects (2026-11-24)
+
+- **Finding programs:** every program's entry method carries `[CobolProgram("NAME")]`.
+  `CALL "NAME"` looks the name up among the loaded assemblies (then `NAME.dll` beside the
+  program or on `COB_LIBRARY_PATH`), the way libcob finds a module; exact name first, then
+  ignoring case. Not found: `ON EXCEPTION` runs, or without it the program stops with
+  libcob's `module 'NAME' not found` plus a hint line.
+- **The call itself:** codegen writes `call_NAME.Call(args)` instead of C's function-pointer
+  cast. `Call` converts each argument to the callee's parameter type (CobPtr for BY
+  REFERENCE / BY CONTENT, a number for BY VALUE) and passes defaults for arguments the
+  caller left out, as C passes NULL. ON EXCEPTION uses a flag instead of C's `goto` into
+  another block.
+- **LINKAGE items are class fields.** In C# the paragraphs are separate methods, so the
+  entry method stores its arguments into the class's fields for the LINKAGE items; BY VALUE
+  arguments become a small native-binary buffer, as C's `&b_N`.
+- **One class per program.** All programs in one source file share the outer class
+  `<FIRST>_Program`; each later one (nested, or a second program in the file) gets its own
+  nested class `N_<ID>_<n>`, the way C keeps each program's bookkeeping (`module`,
+  `initialized`, decimals, ...) inside its own function. GLOBAL items of the outer program
+  stay visible to nested ones.
+- **RETURN-CODE and index items** are plain `int`s in C, and a cob_field may point at them
+  (DISPLAY RETURN-CODE). In C# they are 4-byte storage read and written as `.S32`.
+- **CANCEL** calls the program's internal entry with -1 (libcob's cancel path), so its
+  WORKING-STORAGE starts fresh on the next CALL.
+- **Projects with several .cbl files:** the SDK compiles one as the program (`-x`) and the
+  others as subprograms: `CobolMainProgram` if set, else `Program.cbl`, else the only file,
+  else the first file whose PROCEDURE DIVISION has no USING.
+- **`-Wno-unfinished` in the SDK:** GnuCOBOL warns that BY VALUE and PIC N handling are
+  "unfinished" in *its* runtime. Ours implements them (CALLS, NATIONAL), so the warning would
+  only alarm a learner.
+- Not done yet: `PROCEDURE DIVISION RETURNING` (stock 3.2 doesn't implement it either),
+  `CALL ... RETURNING ADDRESS`, program pointers (`SET ptr TO ENTRY`), CALL STATIC.
+
+Note for the book: `CALL ... ON EXCEPTION DISPLAY "x" NOT ON EXCEPTION ...` attaches the NOT
+ON EXCEPTION to the DISPLAY, not the CALL (DISPLAY has its own exception phrases). Write
+`END-DISPLAY`. Stock GnuCOBOL parses it the same way; it's standard COBOL.

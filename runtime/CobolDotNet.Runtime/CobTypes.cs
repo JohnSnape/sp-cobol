@@ -89,7 +89,7 @@ public sealed class CobField
     public CobField() { }
     public CobField(long size, CobPtr data, CobFieldAttr attr) { this.size = size; this.data = data; this.attr = attr; }
     /// <summary>Literal constant: the string's chars are the bytes (Latin-1).</summary>
-    public CobField(long size, string lit, CobFieldAttr attr) { this.size = size; data = CobPtr.FromLatin1(lit); this.attr = attr; }
+    public CobField(long size, string lit, CobFieldAttr attr) { this.size = size; data = lit == null ? default : CobPtr.FromLatin1(lit); this.attr = attr; }   // null: LINKAGE item, data set at CALL
 
     internal Span<byte> Span => data.Span(size);
     internal int Type => attr.type;

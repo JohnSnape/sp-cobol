@@ -69,6 +69,7 @@ public class CobolCompile : Task
         var generated = new List<ITaskItem>();
         string mainClass = null, firstClass = null;
         bool ok = true;
+        string mainName = ChooseMain();
 
         foreach (var src in Sources)
         {
@@ -76,15 +77,18 @@ public class CobolCompile : Task
             string name = Path.GetFileNameWithoutExtension(full);
             string cs = Path.Combine(OutputDir, name + ".cs");
             copyDirs.Add(Path.GetDirectoryName(full));
+            // the main program is an executable (-x); the others are CALLed subprograms
+            bool isMain = name.Equals(mainName, StringComparison.OrdinalIgnoreCase);
 
             bool upToDate = File.Exists(cs)
                 && File.GetLastWriteTimeUtc(cs) >= File.GetLastWriteTimeUtc(full)
                 && File.GetLastWriteTimeUtc(cs) >= newestCopy
-                && File.GetLastWriteTimeUtc(cs) >= compilerTime;
+                && File.GetLastWriteTimeUtc(cs) >= compilerTime
+                && File.ReadAllText(cs).Contains("static void Main (") == isMain;
             if (!upToDate)
             {
                 if (File.Exists(cs)) File.Delete(cs);
-                if (!RunCobc(full, copyDirs) || !File.Exists(cs)) { ok = false; continue; }
+                if (!RunCobc(full, copyDirs, isMain) || !File.Exists(cs)) { ok = false; continue; }
             }
             generated.Add(new TaskItem(cs));
 
@@ -93,9 +97,6 @@ public class CobolCompile : Task
             {
                 string cls = "CobolPrograms." + m.Groups["c"].Value + "_Program";
                 firstClass ??= cls;
-                bool isMain = string.IsNullOrEmpty(MainProgram)
-                    ? Sources.Length == 1 || name.Equals("Program", StringComparison.OrdinalIgnoreCase)
-                    : name.Equals(Path.GetFileNameWithoutExtension(MainProgram), StringComparison.OrdinalIgnoreCase);
                 if (isMain && mainClass == null) mainClass = cls;
             }
         }
@@ -105,9 +106,33 @@ public class CobolCompile : Task
         return ok && !Log.HasLoggedErrors;
     }
 
-    bool RunCobc(string source, IEnumerable<string> copyDirs)
+    static readonly Regex UsingClause = new Regex(@"PROCEDURE\s+DIVISION\s+USING", RegexOptions.IgnoreCase);
+
+    /// <summary>
+    /// The file that is the program (the rest are subprograms it CALLs):
+    /// CobolMainProgram if set, else Program.cbl, else the only file, else the first
+    /// whose PROCEDURE DIVISION has no USING (a main program can't take parameters).
+    /// </summary>
+    string ChooseMain()
     {
-        var args = new StringBuilder("-C -x -fcsharp");
+        if (!string.IsNullOrEmpty(MainProgram)) return Path.GetFileNameWithoutExtension(MainProgram);
+        var names = Sources.Select(s => Path.GetFullPath(Path.Combine(ProjectDir, s.ItemSpec))).ToList();
+        var program = names.FirstOrDefault(n => Path.GetFileNameWithoutExtension(n).Equals("Program", StringComparison.OrdinalIgnoreCase));
+        if (program != null) return "Program";
+        if (names.Count == 1) return Path.GetFileNameWithoutExtension(names[0]);
+        foreach (var n in names)
+        {
+            try { if (!UsingClause.IsMatch(File.ReadAllText(n))) return Path.GetFileNameWithoutExtension(n); }
+            catch (IOException) { }
+        }
+        return names.Count > 0 ? Path.GetFileNameWithoutExtension(names[0]) : null;
+    }
+
+    bool RunCobc(string source, IEnumerable<string> copyDirs, bool isMain)
+    {
+        // -Wno-unfinished: GnuCOBOL flags BY VALUE / PIC N as "unfinished" in ITS runtime;
+        // ours implements them (tests CALLS, NATIONAL), so the warning would only mislead
+        var args = new StringBuilder(isMain ? "-C -x -fcsharp -Wno-unfinished" : "-C -fcsharp -Wno-unfinished");
         if (string.Equals(SourceFormat, "free", StringComparison.OrdinalIgnoreCase)) args.Append(" -free");
         foreach (var d in copyDirs) args.Append(" -I \"").Append(d.TrimEnd('\\')).Append('"');
         args.Append(" \"").Append(source).Append('"');

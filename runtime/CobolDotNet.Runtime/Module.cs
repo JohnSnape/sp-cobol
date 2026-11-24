@@ -8,6 +8,8 @@ namespace CobolDotNet.Runtime;
 public sealed class CobCallUnion
 {
     public Delegate funcptr;
+    public Delegate funcvoid { get => funcptr; set => funcptr = value; }
+    public Delegate funcint { get => funcptr; set => funcptr = value; }
 }
 
 /// <summary>Per-program runtime record (libcob's cob_module).</summary>
@@ -66,6 +68,8 @@ public sealed class CobGlobal
     public int cob_call_params;
     public CobModule cob_current_module;
     public CobFile cob_error_file;      // the file of the last I/O statement (libcob save_status)
+    public int cob_stmt_exception;      // the CALL has ON EXCEPTION
+    public int cob_physical_cancel;     // COB_PHYSICAL_CANCEL: re-resolve on every CALL
 }
 
 public sealed class CobFrame

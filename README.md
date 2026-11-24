@@ -5,8 +5,9 @@ SCREEN SECTION screens) in Visual Studio. Build it into an ordinary .NET program
 DOS-style text screen, as a Windows window, or both from the same source.
 
 > **Preview (0.1).** It works end to end for the sample programs, including files
-> (sequential, line sequential, relative and indexed). Large parts of COBOL (CALL, INSPECT,
-> UNSTRING, SORT, most intrinsic functions) are not in the runtime yet.
+> (sequential, line sequential, relative and indexed) and CALL between programs (also across
+> several .cbl files in one project). Large parts of COBOL (INSPECT, UNSTRING, SORT, most
+> intrinsic functions) are not in the runtime yet.
 
 ## What's here
 

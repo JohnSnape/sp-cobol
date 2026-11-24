@@ -112,7 +112,16 @@ public static partial class Cob
     public static void cob_decimal_alloc(int n, ref CobDecimal a, ref CobDecimal b, ref CobDecimal c, ref CobDecimal d, ref CobDecimal e, ref CobDecimal f) { a ??= new(); b ??= new(); c ??= new(); d ??= new(); e ??= new(); f ??= new(); }
 
     public static void cob_decimal_set_field(CobDecimal d, CobField f) => (d.value, d.scale) = Num.Get(f);
-    public static int cob_decimal_get_field(CobDecimal d, CobField f, int opt) => Num.Store(f, d.value, d.scale, opt);
+    public static int cob_decimal_get_field(CobDecimal d, CobField f, int opt)
+    {
+        // a division by zero earlier in the expression: leave the target alone (libcob)
+        if (d.scale == DecimalNaN)
+        {
+            if (Global.cob_exception_code != CobException.EC_SIZE_ZERO_DIVIDE) SetException(CobException.EC_SIZE_OVERFLOW);
+            return Global.cob_exception_code;
+        }
+        return Num.Store(f, d.value, d.scale, opt);
+    }
     public static void cob_decimal_init(CobDecimal d) { d.value = 0; d.scale = 0; }
     public static void cob_decimal_clear(CobDecimal d) { if (d != null) { d.value = 0; d.scale = 0; } }
     public static void cob_decimal_set_llint(CobDecimal d, long n) { d.value = n; d.scale = 0; }
@@ -124,16 +133,18 @@ public static partial class Cob
         else if (b.scale < a.scale) { b.value *= Num.Pow10(a.scale - b.scale); b.scale = a.scale; }
     }
 
-    public static void cob_decimal_add(CobDecimal a, CobDecimal b) { Align(a, b); a.value += b.value; }
-    public static void cob_decimal_sub(CobDecimal a, CobDecimal b) { Align(a, b); a.value -= b.value; }
-    public static void cob_decimal_mul(CobDecimal a, CobDecimal b) { a.value *= b.value; a.scale += b.scale; }
+    static bool NaN(CobDecimal a, CobDecimal b) { if (a.scale != DecimalNaN && b.scale != DecimalNaN) return false; a.scale = DecimalNaN; return true; }
+    public static void cob_decimal_add(CobDecimal a, CobDecimal b) { if (NaN(a, b)) return; Align(a, b); a.value += b.value; }
+    public static void cob_decimal_sub(CobDecimal a, CobDecimal b) { if (NaN(a, b)) return; Align(a, b); a.value -= b.value; }
+    public static void cob_decimal_mul(CobDecimal a, CobDecimal b) { if (NaN(a, b)) return; a.value *= b.value; a.scale += b.scale; }
 
     public static void cob_decimal_div(CobDecimal a, CobDecimal b)
     {
+        if (NaN(a, b)) return;
         if (b.value.IsZero)
         {
             SetException(CobException.EC_SIZE_ZERO_DIVIDE);
-            a.value = 0; a.scale = 0;
+            a.scale = DecimalNaN;      // the store leaves its target unchanged
             return;
         }
         const int extra = 40; // plenty of fraction digits before the store rounds/truncates

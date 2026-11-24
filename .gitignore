@@ -12,3 +12,6 @@ PROGRAMS.md
 src-download/
 otterkit-download/
 spike/
+
+# Claude Code working folders (agent worktrees)
+.claude/

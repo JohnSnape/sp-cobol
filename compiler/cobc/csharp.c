@@ -1508,6 +1508,16 @@ cs_process_line (struct cs_file_state *st, char *line)
 	}
 
 	/* statement */
+	/* local pointer variable (OCCURS initialization): cob_u8_ptr b_ptr = b_37; */
+	if (strncmp (t, "cob_u8_ptr ", 11) == 0) {
+		cs_sb_addn (&o, line, (size_t)(t - line));
+		cs_sb_add (&o, "CobPtr ");
+		cs_expr (t + 11, &o);
+		cs_write_line (st, o.p);
+		cs_scan_depth (st, o.p);
+		cobc_free (o.p);
+		return;
+	}
 	{
 		char *kl = cs_keyptr_rewrite (line);
 		cs_expr (kl ? kl : line, &o);

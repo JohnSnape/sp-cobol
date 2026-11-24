@@ -440,3 +440,19 @@ decimals, even when the quotient is ROUNDED (DIVREM).
 
 **Class tests** (ClassTests.cs): one fix over stock: libcob's NUMERIC test on COMP-1/COMP-2
 is inverted (true only for NaN/infinity); here a finite float is NUMERIC.
+
+## SORT and MERGE (2026-11-24)
+
+runtime/Sort.cs follows libcob: an SD's records (from USING files or RELEASE) are held in
+memory and come back in key order (GIVING files or RETURN). Keys compare in order, numeric
+ones by value and the rest byte by byte or through the COLLATING SEQUENCE; equal keys keep
+arrival order, so MERGE keeps the first USING file's records first. SORT-RETURN is 0, or
+16 after an error, as libcob. GIVING to a LINE SEQUENTIAL file writes one record per line.
+SORTS checks it against stock, including the five data files byte for byte.
+
+In memory, not in work files: libcob spills to temporary files past its memory chunk; we
+keep everything in memory, which suits the record counts these programs have.
+
+Table SORT (`SORT table ON ... KEY`): stock uses C's qsort, which isn't stable, so the
+order of elements with equal keys depends on the C runtime. Ours is stable (equal elements
+keep their order). Everything else matches; SORTS uses distinct keys.

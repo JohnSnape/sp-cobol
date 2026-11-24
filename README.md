@@ -4,11 +4,15 @@ COBOL for .NET, made for people **learning COBOL**. Write standard COBOL (fixed 
 SCREEN SECTION screens) in Visual Studio. Build it into an ordinary .NET program that runs as a
 DOS-style text screen, as a Windows window, or both from the same source.
 
-> **Preview (0.1).** It works end to end for the sample programs, including files
-> (sequential, line sequential, relative and indexed) and CALL between programs (also across
-> several .cbl files in one project). INSPECT, UNSTRING, the intrinsic
-> functions (FUNCTION UPPER-CASE, NUMVAL, CURRENT-DATE, SQRT, ...) and COMP-1/COMP-2 work
-> too. SORT and MERGE work too. DECLARATIVES (USE AFTER ERROR) works. Still missing: Report Writer.
+> **Preview (0.1).** Results are checked against stock GnuCOBOL 3.2 (screen output and
+> data files, byte for byte) by a regression suite. Working:
+> - files: sequential, line sequential, relative, indexed; DECLARATIVES (USE AFTER ERROR)
+> - CALL / CANCEL, nested programs, several .cbl files in one project
+> - INSPECT, UNSTRING, STRING; SORT and MERGE; Report Writer
+> - the intrinsic functions (UPPER-CASE, NUMVAL, CURRENT-DATE, SQRT, ...); COMP-1/COMP-2
+> - SCREEN SECTION as a DOS-style console screen or a Windows window
+>
+> Not yet: USE BEFORE REPORTING (and so SUPPRESS PRINTING), PROCEDURE DIVISION RETURNING.
 
 ## What's here
 

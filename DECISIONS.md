@@ -385,3 +385,19 @@ expected output was worked out by hand, since stock has no indexed support to co
 Note for the book: `CALL ... ON EXCEPTION DISPLAY "x" NOT ON EXCEPTION ...` attaches the NOT
 ON EXCEPTION to the DISPLAY, not the CALL (DISPLAY has its own exception phrases). Write
 `END-DISPLAY`. Stock GnuCOBOL parses it the same way; it's standard COBOL.
+
+## INSPECT and UNSTRING: libcob's algorithm, exactly (2026-11-24)
+
+runtime/InspectUnstring.cs follows libcob/strings.c step for step, because INSPECT has
+details where implementations differ and the Wang rewrites (Eliza, the converters) lean on
+it: phrases are applied one at a time across the BEFORE/AFTER region, a position counted or
+replaced by one phrase is marked so later phrases skip it, replacements go to a side buffer
+copied back at the end (so BEFORE/AFTER INITIAL searches see the original text), and a
+signed DISPLAY number is inspected without its overpunched sign. Test INSPSTR compares
+against stock: competing phrases, LEADING/FIRST/TRAILING, CHARACTERS, CONVERTING with a
+region, a signed item, and UNSTRING with COUNT/DELIMITER/POINTER/TALLYING, ALL, several
+delimiters, ON OVERFLOW, numeric targets.
+
+Kept as stock: UNSTRING into a `JUSTIFIED RIGHT` item fills it from the left (cobc doesn't
+pass the justified flag for that target; MOVE does justify). Changing it would need codegen
+work and would make results differ from GnuCOBOL; revisit if a program needs it.

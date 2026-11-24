@@ -1,0 +1,24 @@
+TALLY 1  06 02 23
+TALLY 2  01 05
+TALLY 3  05 01 07
+TALLY 4  10
+REPL 1   [   123 YXAXX: xyxy-Q-ABAB     ]
+REPL 2   [   123 YXAXX:*****************]
+REPL 3   [TRAIL.........................]
+REPL 4   [ZZBBZZBB                      ]
+BOTH     03 [HE11O WOR1D                   ]
+SIGNED   -72347
+CONV 1   [MIXED CASE, MOSTLY LOWER      ]
+CONV 2   [a-b-c|x-y-z                   ]
+CONV 3   [a#b#c#                        ]
+UNSTR 1  NO OVERFLOW
+  [SMITH   ][JOHN    ][        ][SAN DIEG][0092101]
+  COUNTS 05 04 DLM [,] FIELDS 05
+UNSTR 2  OVERFLOW, POINTER 18
+  [ONE     ][TWO     ][THREE   ]
+UNSTR 3  [A       ][/ ][B       ][;][C       ][        ]
+UNSTR 4  [ABCDEFGH][IJKL    ]
+MOVE RJ  [      AB]
+MOVE RJ  [    EFGH]
+UNSTR 5  BAD POINTER 50
+rc=0

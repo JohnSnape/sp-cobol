@@ -1679,6 +1679,11 @@ cs_is_method_label (const struct cb_label *lp)
 	if (lp->flag_default_handler) {
 		return 1;	/* the file error handler: PERFORMed after a failed I/O */
 	}
+	if (lp->flag_declarative_exit && lp->flag_section) {
+		/* a USE section in DECLARATIVES: the parser marks the section itself
+		   (it ends with an implicit return); it is PERFORMed like any section */
+		return 1;
+	}
 	if (lp->flag_dummy_exit || lp->flag_next_sentence
 	 || lp->flag_declarative_exit) {
 		return 0;

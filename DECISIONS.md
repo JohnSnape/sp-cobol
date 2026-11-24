@@ -456,3 +456,15 @@ keep everything in memory, which suits the record counts these programs have.
 Table SORT (`SORT table ON ... KEY`): stock uses C's qsort, which isn't stable, so the
 order of elements with equal keys depends on the C runtime. Ours is stable (equal elements
 keep their order). Everything else matches; SORTS uses distinct keys.
+
+## DECLARATIVES (USE AFTER ERROR) (2026-11-24)
+
+Worked in principle already (codegen PERFORMs the USE section after a failed I/O statement)
+but never built: GnuCOBOL marks a USE section's own label with `flag_declarative_exit`
+("this section ends with an implicit return"), and the C# translator had taken that flag
+for a dummy exit label, so no method was started for the section. Now a USE section is a
+method like any other. DECLS checks against stock: USE on a file and on an open mode
+(INPUT, OUTPUT), routing of AT END / INVALID KEY / logic errors (a READ after end of file is
+46 and goes to the USE procedure even with an AT END phrase, as stock), and a file without
+FILE STATUS whose USE procedure keeps the program running. Not tested yet: USE GLOBAL
+across nested programs, USE FOR DEBUGGING.

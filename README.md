@@ -8,7 +8,7 @@ DOS-style text screen, as a Windows window, or both from the same source.
 > (sequential, line sequential, relative and indexed) and CALL between programs (also across
 > several .cbl files in one project). INSPECT, UNSTRING, the intrinsic
 > functions (FUNCTION UPPER-CASE, NUMVAL, CURRENT-DATE, SQRT, ...) and COMP-1/COMP-2 work
-> too. SORT and MERGE work too. Still missing: Report Writer; DECLARATIVES is untested.
+> too. SORT and MERGE work too. DECLARATIVES (USE AFTER ERROR) works. Still missing: Report Writer.
 
 ## What's here
 

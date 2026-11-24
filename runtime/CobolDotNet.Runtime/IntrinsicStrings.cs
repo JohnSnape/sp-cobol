@@ -22,11 +22,10 @@ namespace CobolDotNet.Runtime;
 
 public static partial class Cob
 {
-    const int COB_MAX_DIGITS = 38;
+    // (COB_MAX_DIGITS, EC_IMP_FEATURE_MISSING and NotImplemented are in IntrinsicNumeric.cs)
     const int COB_MAX_UNBOUNDED_SIZE = 2147483646;
     const int EC_DATA_PTR_NULL = 0x0306;
     const int EC_IMP_FEATURE_DISABLED = 0x0604;
-    const int EC_IMP_FEATURE_MISSING = 0x0605;
 
     // ------------------------------------------------------------ helpers
 
@@ -59,13 +58,6 @@ public static partial class Cob
     /// (only cob_set_exception changes it); our SetException keeps one code, so this is it.
     /// </summary>
     static int LastExceptionCode => Global.cob_exception_code;
-
-    static CobField NotImplemented()
-    {
-        // error_not_implemented: COB_EC_IMP_FEATURE_MISSING + fatal COB_FERROR_FUNCTION
-        SetException(EC_IMP_FEATURE_MISSING);
-        throw new CobRuntimeException("attempt to use non-implemented function");
-    }
 
     // ------------------------------------------------------------ LENGTH family
 

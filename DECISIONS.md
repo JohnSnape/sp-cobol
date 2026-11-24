@@ -327,3 +327,24 @@ method like any other, so a failed I/O statement PERFORMs it.
 
 ORGANIZATION INDEXED compiles (our cobc no longer refuses it), but every operation returns
 91 until its file format is decided.
+
+## INDEXED files: SP COBOL's own simple format [USER] (2026-11-24)
+
+Options offered: our own simple format, an SQLite database per file, or VBISAM/C-ISAM
+compatibility with GnuCOBOL. **The user chose our own simple format.** Stock GnuCOBOL keeps
+indexed files in an external library and our reference build has none, so no format was
+there to match anyway.
+
+The format (runtime/IndexedFile.cs): one file; a header (`SPCOBIX1`, record size, key
+offsets/lengths/duplicates); then one slot per record in write order (int64 length, 0 =
+deleted; int64 sequence number; the record). OPEN scans the slots and builds a sorted
+in-memory index per key, so there is no index file to fall out of step with the data.
+Pure .NET, no extra DLLs, and simple enough to explain in the book. Costs: OPEN reads the
+whole file (fine for the record counts beginners and the Wang programs use), and deleted
+slots aren't reused until the file is copied.
+
+Statuses as GnuCOBOL reports them: 02 duplicate alternate key (on WRITE/REWRITE, and on
+READ when the next record has the same alternate key), 21 key sequence error (ACCESS
+SEQUENTIAL WRITE, also after OPEN EXTEND), 22 duplicate key, 23 not found, 39 the file's
+record size or key layout differs from the program's. FILEIDX tests all of these; its
+expected output was worked out by hand, since stock has no indexed support to compare with.

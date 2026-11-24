@@ -1,9 +1,9 @@
-<!-- Packs the MSBuild SDK (no code of its own). Run tools\package-sdk.ps1, not this directly. -->
+﻿<!-- Packs the MSBuild SDK (no code of its own). Run tools\package-sdk.ps1, not this directly. -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>CobolDotNet.Sdk</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Description>Build COBOL programs as .NET apps: DOS-style console screens and Windows Forms from one SCREEN SECTION. (Working name.)</Description>
     <PackageType>MSBuildSdk</PackageType>
     <IncludeBuildOutput>false</IncludeBuildOutput>

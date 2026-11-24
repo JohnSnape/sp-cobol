@@ -154,6 +154,11 @@ cs_is_byref_ident (const char *id)
 	if (id[0] == 'd' && id[1] == '_' && isdigit ((unsigned char)id[2])) {
 		return 1;
 	}
+	/* file handles h_NAME and key tables k_NAME: cob_file_malloc (&h_X, &k_X, ...) */
+	if ((id[0] == 'h' || id[0] == 'k') && id[1] == '_'
+	 && strstr (id, "_status") == NULL) {
+		return 1;
+	}
 	return 0;
 }
 
@@ -244,6 +249,74 @@ cs_deref_accessor (const char *t, size_t len)
 		}
 	}
 	return NULL;
+}
+
+/* A file's key table k_NAME is an array in C#:
+     k_IDX->field         ->  k_IDX[0]->field
+     (k_IDX + 2)->field   ->  k_IDX[2]->field
+   Returns a new string, or NULL when the line has no such access. */
+static char *
+cs_keyptr_rewrite (const char *s)
+{
+	struct cs_sbuf	o = {0};
+	int		changed = 0;
+
+	while (*s) {
+		/* (k_NAME + N)-> */
+		if (s[0] == '(' && s[1] == 'k' && s[2] == '_') {
+			const char *p = s + 1, *nb, *ne, *db, *de;
+			nb = p;
+			while (cs_is_ident (*p)) {
+				p++;
+			}
+			ne = p;
+			p = cs_skip_ws (p);
+			if (*p == '+') {
+				p = cs_skip_ws (p + 1);
+				db = p;
+				while (isdigit ((unsigned char)*p)) {
+					p++;
+				}
+				de = p;
+				p = cs_skip_ws (p);
+				if (de > db && p[0] == ')' && p[1] == '-' && p[2] == '>') {
+					cs_sb_addn (&o, nb, (size_t)(ne - nb));
+					cs_sb_addc (&o, '[');
+					cs_sb_addn (&o, db, (size_t)(de - db));
+					cs_sb_add (&o, "]->");
+					s = p + 3;
+					changed = 1;
+					continue;
+				}
+			}
+		}
+		/* k_NAME-> (not part of a longer identifier) */
+		if (s[0] == 'k' && s[1] == '_'
+		 && (o.len == 0 || !cs_is_ident (o.p[o.len - 1]))) {
+			const char *p = s;
+			while (cs_is_ident (*p)) {
+				p++;
+			}
+			if (p[0] == '-' && p[1] == '>') {
+				cs_sb_addn (&o, s, (size_t)(p - s));
+				cs_sb_add (&o, "[0]->");
+				s = p + 2;
+				changed = 1;
+				continue;
+			}
+			cs_sb_addn (&o, s, (size_t)(p - s));
+			s = p;
+			continue;
+		}
+		cs_sb_addc (&o, *s++);
+	}
+	if (!changed) {
+		if (o.p) {
+			cobc_free (o.p);
+		}
+		return NULL;
+	}
+	return o.p;
 }
 
 /* C narrows on assignment, C# doesn't:  (p).S16 = (p).S16 + 1;  is an int on the right.
@@ -845,6 +918,15 @@ cs_decl (struct cs_file_state *st, const char *line, struct cs_sbuf *o)
 				cs_sb_add (&init, "new CobField()");
 			}
 		}
+	} else if (strcmp (type, "cob_file") == 0 && nptr == 1 && !has_dim) {
+		/* FD / SD: the handle is made by cob_file_malloc at initialization */
+		cs_type = "CobFile";
+	} else if (strcmp (type, "cob_linage") == 0 && nptr == 1 && !has_dim) {
+		/* LINAGE settings of a print file (lingptr = h_X->linorkeyptr) */
+		cs_type = "CobLinage";
+	} else if (strcmp (type, "cob_file_key") == 0 && nptr == 1 && !has_dim) {
+		/* RECORD KEY / ALTERNATE KEY table of an indexed file */
+		cs_type = "CobFileKey[]";
 	} else if (strcmp (type, "cob_field_attr") == 0 && nptr == 0 && !has_dim) {
 		cs_type = "CobFieldAttr";
 		if (!rhs || !cs_brace_inner (rhs, &inner)) {
@@ -1317,7 +1399,13 @@ cs_process_line (struct cs_file_state *st, char *line)
 	}
 
 	/* statement */
-	cs_expr (line, &o);
+	{
+		char *kl = cs_keyptr_rewrite (line);
+		cs_expr (kl ? kl : line, &o);
+		if (kl) {
+			cobc_free (kl);
+		}
+	}
 	cs_narrow_assign (&o);
 	cs_write_line (st, o.p ? o.p : "");
 	cs_scan_depth (st, o.p ? o.p : "");
@@ -1469,8 +1557,11 @@ cs_is_method_label (const struct cb_label *lp)
 	 && strncmp (lp->name, "EXIT SECTION ", 13) == 0) {
 		return 1;
 	}
+	if (lp->flag_default_handler) {
+		return 1;	/* the file error handler: PERFORMed after a failed I/O */
+	}
 	if (lp->flag_dummy_exit || lp->flag_next_sentence
-	 || lp->flag_default_handler || lp->flag_declarative_exit) {
+	 || lp->flag_declarative_exit) {
 		return 0;
 	}
 	return lp->flag_real_label || lp->flag_entry || lp->flag_section

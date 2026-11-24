@@ -45,7 +45,7 @@ bash tools/cobnet.sh samples/X.cbl OUT   # X.cbl -> OUT/X.cs
 bash tools/save-compiler-overlay.sh      # after editing in the build tree: copy back + refresh patch
 ```
 
-**Regression suite** (run after any compiler or runtime change):
+**Regression suite** (run after any compiler or runtime change). Each program runs in its own empty folder under stock GnuCOBOL and ours; the screen output, the exit code, and every data file the program leaves behind must match (stock's files are kept in `samplesexpectedNAME`):
 
 ```
 powershell -ExecutionPolicy Bypass -File tools\run-tests.ps1          # all samples

@@ -289,3 +289,41 @@ the names (swp = big-endian COMP; plain = native COMP-5); arithmetic wraps at th
 width like the C. DISPLAY of a COMP-5 item follows libcob too: raw value, padded to what
 the size holds (5 digits for 2 bytes, 10 for 4, 20 for 8). Samples BINOPS and TABLES2
 check all of this against stock GnuCOBOL.
+
+## File I/O: libcob's behavior and formats, minus its plain bugs (2026-11-24)
+
+SEQUENTIAL, LINE SEQUENTIAL and RELATIVE files (runtime/FileIO.cs) follow GnuCOBOL 3.2's
+libcob: the same FILE STATUS values for each case, the same AT END / INVALID KEY /
+END-OF-PAGE exceptions, and **the same bytes on disk**, so data files move freely between
+SP COBOL and GnuCOBOL programs. The regression suite checks this: each file test runs under
+stock GnuCOBOL and ours, and every data file left behind must match byte for byte
+(FILESEQ, FILEREL, FILELIN).
+
+The rules were taken from fileio.c into a spec (with line references, and the unclear ones
+confirmed by running stock programs). Where stock has a plain bug we do what it clearly
+means to do instead. FILEFIX tests each one, with expected output written by hand:
+
+| Stock 3.2 | SP COBOL |
+|---|---|
+| a TAB, form feed or ESC in a LINE SEQUENTIAL record is rejected with 71 (a macro reads past the byte it checks) | allowed, as the code intends |
+| a quoted ASSIGN name (`"'a.dat'"`) keeps its first quote and fails with 30 | quotes removed |
+| `$VAR` in the middle of a path swallows the next `\` | separators kept |
+| LINE SEQUENTIAL files open in Windows text mode: Ctrl-Z ends the file, and LF-only files lose text when a long line is split | binary reads: CR LF and LF both end a line, Ctrl-Z is data (status 09 like any other control byte) |
+| LINE SEQUENTIAL REWRITE of a shorter record overwrites the CR of the line end | the line end is kept |
+| REWRITE / DELETE of an empty RELATIVE slot gives 00 (REWRITE even writes the data into the empty slot) | 23, record not found |
+| the error message names the last environment variable it looked up (`'missing_dat'`) | it names the ASSIGN value (`'missing.dat'`) |
+
+Kept as in stock, because they are behavior rather than bugs: CR LF line ends written on
+Windows, the variable-record header `[hi][lo][00][00]`, the 8-byte relative slot header,
+LINAGE padding with blank lines instead of form feeds, CLOSE REEL giving 07, the
+"implicit CLOSE" warning at STOP RUN, and exit code 1 after a fatal file error.
+
+Added for learners: after libcob's fatal file error message, one `hint:` line saying what
+to check (for 35, the folder the program looked in). `COB_NO_HINTS=1` turns hints off.
+
+The compiler side: `cob_file` handles become `CobFile` objects; the key table `k_NAME` is
+an array (`(k_X + 1)->field` → `k_X[1].field`); the Default Error Handler is a paragraph
+method like any other, so a failed I/O statement PERFORMs it.
+
+ORGANIZATION INDEXED compiles (our cobc no longer refuses it), but every operation returns
+91 until its file format is decided.

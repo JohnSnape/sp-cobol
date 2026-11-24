@@ -65,6 +65,7 @@ public sealed class CobGlobal
     public string cob_main_argv0;
     public int cob_call_params;
     public CobModule cob_current_module;
+    public CobFile cob_error_file;      // the file of the last I/O statement (libcob save_status)
 }
 
 public sealed class CobFrame
@@ -136,4 +137,32 @@ public static class CobException
     public const int EC_SIZE_OVERFLOW = 0x1004;
     public const int EC_SIZE_TRUNCATION = 0x1005;
     public const int EC_SIZE_ZERO_DIVIDE = 0x1007;
+
+    // I-O exceptions (exception-io.def); AT END tests == 0x0501, INVALID KEY == 0x0506
+    public const int EC_I_O = 0x0500;
+    public const int EC_I_O_AT_END = 0x0501;
+    public const int EC_I_O_EOP = 0x0502;
+    public const int EC_I_O_EOP_OVERFLOW = 0x0503;
+    public const int EC_I_O_FILE_SHARING = 0x0504;
+    public const int EC_I_O_IMP = 0x0505;
+    public const int EC_I_O_INVALID_KEY = 0x0506;
+    public const int EC_I_O_LINAGE = 0x0507;
+    public const int EC_I_O_LOGIC_ERROR = 0x0508;
+    public const int EC_I_O_PERMANENT_ERROR = 0x0509;
+    public const int EC_I_O_RECORD_OPERATION = 0x050A;
+    public const int EC_I_O_RECORD_CONTENT = 0x050B;
+
+    /// <summary>The exception for a FILE STATUS of 10 or more (libcob status_exception).</summary>
+    internal static int IoStatusException(int status) => (status / 10) switch
+    {
+        1 => EC_I_O_AT_END,
+        2 => EC_I_O_INVALID_KEY,
+        3 => EC_I_O_PERMANENT_ERROR,
+        4 => EC_I_O_LOGIC_ERROR,
+        5 => EC_I_O_RECORD_OPERATION,
+        6 => EC_I_O_FILE_SHARING,
+        7 => EC_I_O_RECORD_CONTENT,
+        8 => EC_I_O,
+        _ => EC_I_O_IMP,
+    };
 }

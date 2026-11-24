@@ -1,0 +1,13 @@
+TAB WRITE    00
+TAB READ     00 TAB KEPT
+LF LINE 1    00 [ONE   ]
+CTRL-Z LINE  09
+LF LINE 3    00 [EN    ]
+END          10
+QUOTED NAME  00
+REWRITE HOLE 23
+DELETE HOLE  23
+libcob: error: file does not exist (status = 35) for file NOFILE ('no-such-file.dat')
+  hint: Check the name in ASSIGN. The program looked in D:\vcobol-build\tests\FILEFIX\netrun. Use OPEN OUTPUT (or SELECT OPTIONAL) to create the file.
+libcob: warning: implicit CLOSE of TEXTF ('tabs.txt')
+rc=1

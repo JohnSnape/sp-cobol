@@ -45,10 +45,18 @@ foreach ($n in $names) {
 
     # 1. reference output from stock GnuCOBOL (not for screen tests)
     $exp = Join-Path $expect "$n.out"
+    #    The program runs in its own empty folder (stockrun); data files it leaves there are
+    #    saved as samples\expected\NAME\ and ours must write the same bytes.
+    $expFiles = Join-Path $expect $n
     if (-not $isScreen -and -not (Test-Path $exp)) {
-        $stdin = if ($hasIn) { " < $n.in" } else { " < /dev/null" }
-        $r = Invoke-Bash "source '/d/CALUDE CODE/visual-cobol/tools/stock-cobc.sh'; cd $unix && cobc -x $n.cbl -o stock.exe && ./stock.exe$stdin > stock.out; echo rc=`$? >> stock.out"
+        $stdin = if ($hasIn) { " < ../$n.in" } else { " < /dev/null" }
+        $r = Invoke-Bash "source '/d/CALUDE CODE/visual-cobol/tools/stock-cobc.sh'; cd $unix && rm -rf stockrun && mkdir stockrun && cobc -x $n.cbl -o stock.exe && cd stockrun && ../stock.exe$stdin > ../stock.out 2>&1; echo rc=`$? >> ../stock.out"
         Copy-Item (Join-Path $dir 'stock.out') $exp
+        $made = Get-ChildItem (Join-Path $dir 'stockrun') -File -ErrorAction SilentlyContinue
+        if ($made) {
+            New-Item -ItemType Directory -Force $expFiles | Out-Null
+            $made | Copy-Item -Destination $expFiles
+        }
     }
 
     # 2. ours: COBOL -> C# -> .NET
@@ -105,8 +113,29 @@ foreach ($n in $names) {
 
     $out = Join-Path $dir 'net.out'
     $redir = if ($hasIn) { " < `"$inFile`"" } else { " < NUL" }
-    cmd /c "dotnet `"$dir\net\bin\test.dll`"$redir > `"$out`" 2>&1 & (echo rc=%ERRORLEVEL%)>> `"$out`""
+    $runDir = Join-Path $dir 'netrun'
+    if (Test-Path $runDir) { Remove-Item -Recurse -Force $runDir }
+    New-Item -ItemType Directory $runDir | Out-Null
+    Push-Location $runDir
+    # /v:on and !ERRORLEVEL!: %ERRORLEVEL% would be expanded before the program runs
+    cmd /v:on /c "dotnet `"$dir\net\bin\test.dll`"$redir > `"$out`" 2>&1 & (echo rc=!ERRORLEVEL!)>> `"$out`""
+    Pop-Location
     Remove-Item Env:COB_SCREEN, Env:COB_SCREEN_KEYS -ErrorAction SilentlyContinue
+
+    # data files: same names, same bytes as stock GnuCOBOL's
+    $fileDiffs = @()
+    $ours = @(Get-ChildItem $runDir -File | ForEach-Object Name)
+    $theirs = if (Test-Path $expFiles) { @(Get-ChildItem $expFiles -File | ForEach-Object Name) } else { @() }
+    foreach ($x in $theirs) {
+        if ($ours -notcontains $x) { $fileDiffs += "missing data file $x"; continue }
+        $a = [IO.File]::ReadAllBytes((Join-Path $expFiles $x)); $b = [IO.File]::ReadAllBytes((Join-Path $runDir $x))
+        if ([Convert]::ToBase64String($a) -ne [Convert]::ToBase64String($b)) {
+            $at = 0; while ($at -lt [Math]::Min($a.Length, $b.Length) -and $a[$at] -eq $b[$at]) { $at++ }
+            $fileDiffs += "data file $x differs at byte $at (stock $($a.Length) bytes, ours $($b.Length))"
+        }
+    }
+    foreach ($x in $ours) { if ($theirs -notcontains $x) { $fileDiffs += "extra data file $x" } }
+    if ($fileDiffs) { $fail += "$n (files): " + ($fileDiffs -join '; '); continue }
 
     if ($isScreen -and -not (Test-Path $exp)) {
         Copy-Item $out $exp

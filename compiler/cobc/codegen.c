@@ -11153,7 +11153,7 @@ output_error_handler (struct cb_program *prog)
 		output_line ("default:");
 		output_block_open ();
 	}
-	output_line ("if (!(cob_glob_ptr->cob_error_file->flag_select_features & COB_SELECT_FILE_STATUS))");
+	output_line ("if ((cob_glob_ptr->cob_error_file->flag_select_features & COB_SELECT_FILE_STATUS) == 0)");
 	output_line ("\tcob_fatal_error (COB_FERROR_FILE);");
 	if (seen) {
 		output_line ("break;");
@@ -12316,6 +12316,10 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 		for (l = prog->exec_list; l; l = CB_CHAIN (l)) {
 			output_stmt (CB_VALUE (l));
 		}
+		/* the file error handler is a dispatch target too (USE / default handler) */
+		if (prog->file_list || prog->flag_gen_error || has_global_file) {
+			output_error_handler (prog);
+		}
 		cs_body_end ();
 		output_target = saved_target;
 		output_indent_level = saved_indent;
@@ -12518,9 +12522,9 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 	output_newline ();
 
 	/* Error handlers */
-	if (prog->file_list
+	if (!cb_flag_csharp && (prog->file_list
 	 || prog->flag_gen_error
-	 || has_global_file) {
+	 || has_global_file)) {
 		output_error_handler (prog);
 	}
 

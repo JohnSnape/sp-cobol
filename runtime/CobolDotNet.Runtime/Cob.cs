@@ -81,6 +81,7 @@ public static partial class Cob
     public static void cob_stop_run(int status)
     {
         Out.Flush();
+        CloseAllFiles();
         ScreenShutdown();
         Err.Flush();
         Environment.Exit(status);
@@ -88,6 +89,7 @@ public static partial class Cob
 
     public static void cob_fatal_error(int code)
     {
+        if (code == COB_FERROR_FILE) FileFatalError();   // libcob's message, implicit CLOSEs, exit 1
         string msg = code switch
         {
             COB_FERROR_CANCEL => "attempt to CANCEL an active program",
@@ -176,6 +178,12 @@ public static partial class Cob
     {
         var (v, s) = Num.Get(f);
         return (int)Num.Rescale(v, s, 0, false);
+    }
+
+    public static long cob_get_llint(CobField f)
+    {
+        var (v, s) = Num.Get(f);
+        return (long)Num.Rescale(v, s, 0, false);
     }
 
     public static void cob_set_packed_zero(CobField f)

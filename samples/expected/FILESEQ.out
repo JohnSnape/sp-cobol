@@ -1,0 +1,34 @@
+DELETE MISSING  35
+OPEN OUTPUT     00
+OPEN AGAIN      41
+WRITE           00
+READ ON OUTPUT  47
+CLOSE           00
+CLOSE AGAIN     42
+READ CLOSED     47
+EXTEND WRITE    00
+REWRITE NO READ 43
+REWRITE         00
+WRITE ON I-O    48
+  [1ST       ] 00
+  [SECOND    ] 00
+  [THIRD     ] 00
+  [FOURTH    ] 00
+AT END          10
+READ AFTER END  46
+VAR TOO SHORT   44
+  03 [ABC                           ]
+  07 [DEFGHIJ                       ]
+  30 [ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ]
+  [ONE         ] 00
+  [            ] 00
+  [  INDENTED  ] 00
+  [THIS LINE IS] 06
+  [ FAR TOO LON] 06
+  [G FOR LREC  ] 00
+OPEN OPTIONAL   05
+  AT END 10
+READ AGAIN      46
+CLOSE OPTIONAL  00
+REPORT          00
+rc=0

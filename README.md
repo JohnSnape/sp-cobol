@@ -58,6 +58,22 @@ That builds `PayDemo.exe` (DOS-style text screen) and `PayDemo-Win.exe` (the sam
 window). If you'd rather not run a script, download the files from the
 [Releases](../../releases) page and run `install.ps1 -From <that folder>`.
 
+## Debugging
+
+Press F5 in Visual Studio. Breakpoints and stepping work on the `.cbl` lines. In the Watch
+window, type a data item's name with `_` for `-`:
+
+| Watch | Shows |
+|---|---|
+| `WS_PAY` | `0712.50`, type `PIC 9(4)V99` |
+| `CUSTOMER` | the whole group; expand it for `CUST-NAME`, `CUST-CITY`, ... |
+| `MONTH_ENTRY[2]` | occurrence 2 of a table (expand `MONTH_ENTRY` to see them all) |
+| `COBOL` | every 01 / 77 item of the program |
+| `COBOL["ws-pay"]` | any item by its COBOL name |
+
+An item inside a table (`MONTH_SALES`) shows its first occurrence; use the table's `[n]`
+for the others.
+
 ## Building from source
 
 See [BUILD.md](BUILD.md). The compiler needs MSYS2 (UCRT64) and the GnuCOBOL 3.2 source with

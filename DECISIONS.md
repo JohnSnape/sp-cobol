@@ -555,3 +555,33 @@ paragraph.
 The user's call: don't implement it, since GnuCOBOL 3.2 doesn't either (cobc warns "program
 RETURNING is not implemented"). SP COBOL behaves the same as stock. A called program passes a
 result back through RETURN-CODE (CALL ... RETURNING receives it) or a BY REFERENCE argument.
+
+## Watch window: COBOL names (2026-11-24)
+
+- Each program class gets one static property per data item, named after the COBOL name in
+  upper case with every non-alphanumeric as `_` (WS-PAY -> `WS_PAY`; a leading digit gets `_`).
+  Typing `WS_PAY` in the Watch window shows the DISPLAY form of the value, and the Type column
+  shows its PICTURE and USAGE (`PIC S9(7)V99 COMP-3`, `group`, `... OCCURS 3`). Groups expand
+  to their items, tables to `(1)..(n)` and then the items of each occurrence.
+  Runtime: `CobVar` / `CobData` in DebugView.cs; compiler: `cs_output_debug_view` in codegen.c.
+- `COBOL` lists every 01/77 item; `COBOL["ws-pay"]` finds any item by its COBOL name,
+  case-insensitively. `MONTH_ENTRY[2]` is occurrence 2 of a table.
+- The properties read storage live (base + offset each time), so LINKAGE items show
+  "(no data ...)" until the program is CALLed rather than stale values.
+- An item inside a table shows its first occurrence; use the table item's `[n]` for others.
+- Duplicate names (qualified with OF/IN in COBOL): only the first one gets a property; the
+  others are still reachable by expanding their group.
+- Left out: FILLER (elementary), 66/88/78 levels, special registers (flag_internal_register),
+  COB-CRT-STATUS, EXTERNAL, LOCAL-STORAGE (its base isn't a class member), ANY LENGTH.
+  The FD's synthetic "NAME Record" item (level 0) is skipped; its 01 records are shown.
+- Why properties rather than a custom debugger engine/expression evaluator: works in any VS
+  (and VS Code / Rider) with no extension, and the Watch window already evaluates C# members.
+
+## #line was one COBOL line late (fixed 2026-11-24)
+
+- csharp.c wrote `#line N` before codegen's `/* Line: N ... */` comment, so the comment was
+  line N and the statement's code N+1: a breakpoint on a line stopped before the line ABOVE
+  it had run, and stepping highlighted the line after the one executing. Found by the
+  watch-window test. The directive now follows the comment.
+- In-VS test: editor\vs-test\watch-test.ps1 (DTE only, no keystrokes) breaks on a line of
+  samples\WATCH.cbl and checks eight Watch expressions.

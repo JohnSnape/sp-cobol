@@ -1418,11 +1418,14 @@ cs_process_line (struct cs_file_state *st, char *line)
 	/* inside a multi-line comment, or blank / comment-only line */
 	if (started_in_comment || *t == 0
 	 || (t[0] == '/' && t[1] == '*' && strstr (t, "*/") == t + strlen (t) - 2)) {
+		/* the comment first: "#line N" numbers the NEXT line N, and that
+		   must be the statement's code, not this comment (it was, until
+		   2026-11-24, which put every statement one COBOL line late) */
+		cs_write_line (st, line);
+		cs_scan_depth (st, line);
 		if (!started_in_comment) {
 			cs_line_directive (st, t);
 		}
-		cs_write_line (st, line);
-		cs_scan_depth (st, line);
 		return;
 	}
 

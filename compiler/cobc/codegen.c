@@ -14174,6 +14174,232 @@ cs_register_int_fields (struct cb_field *f)
 	}
 }
 
+/* ---- C#: COBOL names for the debugger's Watch window ----
+   One static property per data item, named after the COBOL name
+   (WS-PAY -> WS_PAY), returning a CobVar (runtime DebugView.cs) that
+   reads the item's storage live; COBOL lists every 01 / 77 item. */
+
+struct cs_dbuf {
+	char	*s;
+	size_t	len, cap;
+};
+
+static void
+cs_dbuf_add (struct cs_dbuf *b, const char *fmt, ...)
+{
+	va_list	ap;
+	int	n;
+	for (;;) {
+		va_start (ap, fmt);
+		n = vsnprintf (b->s ? b->s + b->len : NULL, b->s ? b->cap - b->len : 0, fmt, ap);
+		va_end (ap);
+		if (b->s && (size_t)n < b->cap - b->len) {
+			b->len += n;
+			return;
+		}
+		b->cap = (b->cap + n + 1) * 2;
+		b->s = cobc_realloc (b->s, b->cap);
+	}
+}
+
+/* items the debug view can show: real data, in storage it can reach */
+static int
+cs_dbg_showable (const struct cb_field *f)
+{
+	const struct cb_field	*f01;
+	if (f->flag_internal_register || f->flag_internal_constant
+	 || (f->name && strcasecmp (f->name, "COB-CRT-STATUS") == 0)) {
+		return 0;
+	}
+	if (f->level == 0 || f->level == 66 || f->level == 88 || f->level == 78 || f->flag_item_78
+	 || f->flag_any_length || f->index_type != CB_NORMAL_INDEX
+	 || f->size <= 0) {
+		return 0;
+	}
+	f01 = real_field_founder (f);
+	if (f01->flag_external || f01->flag_local_storage
+	 || f01->index_type != CB_NORMAL_INDEX) {
+		return 0;
+	}
+	return 1;
+}
+
+static const char *
+cs_dbg_usage (const struct cb_field *f)
+{
+	switch (f->usage) {
+	case CB_USAGE_BINARY:		return " COMP";
+	case CB_USAGE_COMP_5:		return " COMP-5";
+	case CB_USAGE_COMP_X:		return " COMP-X";
+	case CB_USAGE_PACKED:		return " COMP-3";
+	case CB_USAGE_COMP_6:		return " COMP-6";
+	case CB_USAGE_FLOAT:		return "COMP-1";
+	case CB_USAGE_DOUBLE:		return "COMP-2";
+	case CB_USAGE_INDEX:		return "INDEX";
+	case CB_USAGE_POINTER:		return "POINTER";
+	case CB_USAGE_PROGRAM_POINTER:	return "PROGRAM-POINTER";
+	case CB_USAGE_NATIONAL:		return "";
+	default:			return "";
+	}
+}
+
+static void
+cs_dbg_var (struct cs_dbuf *b, struct cb_field *f)
+{
+	struct cb_field	*c;
+	const char	*usage = cs_dbg_usage (f);
+	int		first = 1;
+
+	create_field (f, cb_build_field_reference (f, NULL));	/* registers f_N and its attribute */
+	cs_dbuf_add (b, "new CobVar(\"%s\", \"", f->flag_filler ? "FILLER" : f->name);
+	if (f->children) {
+		cs_dbuf_add (b, "group");
+	} else if (f->pic && f->pic->orig && (*usage == 0 || *usage == ' ')) {
+		cs_dbuf_add (b, "PIC %s%s", f->pic->orig, usage);
+	} else {
+		cs_dbuf_add (b, "%s", *usage == ' ' ? usage + 1 : usage);
+	}
+	if (f->flag_occurs && f->occurs_max > 1) {
+		cs_dbuf_add (b, " OCCURS %d", f->occurs_max);
+	}
+	cs_dbuf_add (b, "\", new CobField(%d, %s%d + %d, %s%d.attr), %d, %d",
+		f->size, CB_PREFIX_BASE, real_field_founder (f)->id, f->offset,
+		CB_PREFIX_FIELD, f->id,
+		(f->flag_occurs && f->occurs_max > 1) ? f->occurs_max : 0, f->size);
+	for (c = f->children; c; c = c->sister) {
+		if (!cs_dbg_showable (c) || (c->flag_filler && !c->children)) {
+			continue;
+		}
+		cs_dbuf_add (b, first ? ",\n\001    " : ",\n\001    ");
+		first = 0;
+		cs_dbg_var (b, c);
+	}
+	cs_dbuf_add (b, ")");
+}
+
+/* C# property name: WS-PAY -> @WS_PAY; NULL when not a usable name */
+static char *
+cs_dbg_prop_name (const struct cb_field *f, char *buf, size_t size)
+{
+	size_t		n = 0;
+	const char	*s;
+	if (f->flag_filler || !f->name) {
+		return NULL;
+	}
+	if (isdigit ((unsigned char)f->name[0])) {
+		buf[n++] = '_';
+	}
+	for (s = f->name; *s && n + 1 < size; s++) {
+		buf[n++] = isalnum ((unsigned char)*s) ? (char)toupper ((unsigned char)*s) : '_';
+	}
+	buf[n] = 0;
+	return buf;
+}
+
+struct cs_dbg_name {
+	struct cs_dbg_name	*next;
+	char			*name;
+};
+
+static int
+cs_dbg_name_taken (struct cs_dbg_name **list, const char *n)
+{
+	struct cs_dbg_name	*p;
+	for (p = *list; p; p = p->next) {
+		if (strcmp (p->name, n) == 0) {
+			return 1;
+		}
+	}
+	if (cs_name_used (n) || strcmp (n, "COBOL") == 0) {
+		return 1;
+	}
+	p = cobc_malloc (sizeof (*p));
+	p->name = cobc_strdup (n);
+	p->next = *list;
+	*list = p;
+	return 0;
+}
+
+/* properties for f's subordinate items, found through the 01's tree */
+static void
+cs_dbg_sub_props (struct cb_field *f, const char *root, struct cs_dbg_name **names)
+{
+	struct cb_field	*c;
+	char		pn[COB_MINI_BUFF + 4];
+	char		line[COB_MINI_BUFF * 3 + 64];
+	for (c = f->children; c; c = c->sister) {
+		if (!cs_dbg_showable (c)) {
+			continue;
+		}
+		if (cs_dbg_prop_name (c, pn, sizeof (pn)) && !cs_dbg_name_taken (names, pn)) {
+			snprintf (line, sizeof (line),
+				"\001static CobVar @%s => @%s.Get(\"%s\");\n", pn, root, c->name);
+			cs_put (yyout, line);
+		}
+		cs_dbg_sub_props (c, root, names);
+	}
+}
+
+static void
+cs_dbg_record (struct cb_field *f, struct cs_dbuf *roots, struct cs_dbg_name **names)
+{
+	struct cs_dbuf	b = { NULL, 0, 0 };
+	char		pn[COB_MINI_BUFF + 4];
+
+	if (!cs_dbg_showable (f) || !cs_dbg_prop_name (f, pn, sizeof (pn))
+	 || cs_dbg_name_taken (names, pn)) {
+		return;
+	}
+	cs_dbuf_add (&b, "\001static CobVar @%s => ", pn);
+	cs_dbg_var (&b, f);
+	cs_dbuf_add (&b, ";\n");
+	cs_put (yyout, b.s);
+	cobc_free (b.s);
+	cs_dbuf_add (roots, roots->len ? ", @%s" : "@%s", pn);
+	cs_dbg_sub_props (f, pn, names);
+}
+
+static void
+cs_output_debug_view (struct cb_program *prog)
+{
+	struct cs_dbuf		roots = { NULL, 0, 0 };
+	struct cs_dbg_name	*names = NULL, *nx;
+	struct cb_field		*f, *s;
+	cb_tree			l;
+
+	cs_forget (yyout);
+	cs_put (yyout, "\001\n\001#line hidden\n"
+		"\001/* ---- COBOL names for the debugger: type WS_PAY or COBOL in the Watch window ---- */\n");
+	for (l = prog->file_list; l; l = CB_CHAIN (l)) {
+		struct cb_file	*fl = CB_FILE (CB_VALUE (l));
+		if (!fl || !fl->record) {
+			continue;
+		}
+		cs_dbg_record (fl->record, &roots, &names);
+		for (s = fl->record->sister; s && s->redefines == fl->record; s = s->sister) {
+			cs_dbg_record (s, &roots, &names);
+		}
+	}
+	for (f = prog->working_storage; f; f = f->sister) {
+		cs_dbg_record (f, &roots, &names);
+	}
+	for (f = prog->linkage_storage; f; f = f->sister) {
+		cs_dbg_record (f, &roots, &names);
+	}
+	if (!cs_name_used ("COBOL")) {
+		cs_dbuf_add (&roots, "");
+		cs_put (yyout, "\001static CobData COBOL => new CobData(");
+		cs_put (yyout, roots.s);
+		cs_put (yyout, ");\n\n");
+	}
+	cobc_free (roots.s);
+	for (; names; names = nx) {
+		nx = names->next;
+		cobc_free (names->name);
+		cobc_free (names);
+	}
+}
+
 void
 codegen_internal (struct cb_program *prog, const int subsequent_call)
 {
@@ -14284,6 +14510,7 @@ codegen_internal (struct cb_program *prog, const int subsequent_call)
 	if (cb_flag_csharp) {
 		/* paragraph methods + dispatcher go right after the program function */
 		cs_body_flush (yyout, prog);
+		cs_output_debug_view (prog);
 		cs_prog_class_close (yyout, prog);
 	}
 

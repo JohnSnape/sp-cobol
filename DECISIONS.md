@@ -258,3 +258,34 @@ These go beyond the user's numbering rule. Each follows from "numbers are the ed
   VSIXInstaller. It touches only the user profile, apart from the VS extension installer.
 - Not nuget.org yet: publishing there needs an account and API key (the owner's call), and
   would remove the feed folder step entirely.
+
+## DISPLAY of PIC N shows characters, unlike stock GnuCOBOL (2026-11-24)
+
+GnuCOBOL 3.2 keeps national (PIC N) data as UTF-16 big-endian and its DISPLAY writes those
+bytes raw, so `N"ABC"` prints as NUL A NUL B NUL C. GnuCOBOL itself warns that national
+support is "unfinished". For a learner that output is useless, so our DISPLAY (console and
+screen) decodes the field and prints the characters (anything above U+00FF as `?`, since
+console output is Latin-1). Storage is unchanged, so MOVEs and comparisons still match
+stock. This is the one place the suite expects different output from stock GnuCOBOL:
+`samples/expected/NATIONAL.out` is written by hand.
+
+## Pointer casts in generated code become typed CobPtr views (2026-11-24)
+
+codegen writes `*(short *)(p)`, `*(cob_u8_ptr)(p)` and the like when a binary (COMP) field
+or a single byte is read or written in place: a COMP subscript, a PIC 9 initialized to
+zero, a COMP field in arithmetic. The C# filter now turns these into `(p).S16`,
+`(p)[0]`, ... (`ref` properties on CobPtr, so they can also be assigned), and
+`COB_BSWAP_16/32/64` are runtime functions. Before this, any program with a COMP subscript
+or a PIC 9 item without VALUE failed to build.
+
+## cobc's inline optimizer helpers live in the runtime (2026-11-24)
+
+For COMP, COMP-5 and COMP-3 items used as counters, subscripts or in simple ADD/SUBTRACT/IF,
+cobc's codeoptim.c writes small C functions into each program (cob_cmpswp_u16,
+cob_addswp_s32, cob_setswp_u24, cob_add_packed_int, ...; about 130 of them). In C# mode
+they are not emitted. The runtime has all of them instead (BinaryOps.cs), built on four
+generic load/store routines, so their behavior is defined in one place. Byte order follows
+the names (swp = big-endian COMP; plain = native COMP-5); arithmetic wraps at the field
+width like the C. DISPLAY of a COMP-5 item follows libcob too: raw value, padded to what
+the size holds (5 digits for 2 bytes, 10 for 4, 20 for 8). Samples BINOPS and TABLES2
+check all of this against stock GnuCOBOL.

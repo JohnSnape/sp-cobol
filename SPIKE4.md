@@ -15,7 +15,7 @@ plus `Program.cbl`. Building it produces **PayDemo.exe** (DOS-style text screen)
 **PayDemo-Win.exe** (the same screen in a window). The debug info points at `Program.cbl`
 lines.
 
-Regression suite: 8 tests. The 7 from spike 3 pass, and the template's own program (WELCOME)
+Regression suite: 8 tests at the time (11 since 2026-11-24, with TABLES2, BINOPS, NATIONAL). The 7 from spike 3 pass, and the template's own program (WELCOME)
 is a new screen test.
 
 ## Pieces

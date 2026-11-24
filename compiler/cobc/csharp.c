@@ -179,8 +179,168 @@ static const char *const cs_casts[][2] = {
 	{"(cob_u64_t)",			"(ulong)"},
 	{"(size_t)",			"(long)"},
 	{"(unsigned int)",		"(uint)"},
+	{"(unsigned short)",		"(ushort)"},
+	{"(unsigned long long)",	"(ulong)"},
+	{"(long long)",			"(long)"},
+	{"(signed char)",		"(sbyte)"},
 	{NULL, NULL}
 };
+
+/* Dereference through a pointer cast:  *(T *)(p)  ->  (p).ACC  where ACC is a
+   typed view on CobPtr (S16, U32, ...), or (p)[0] for byte pointers.
+   Types are compared with all blanks removed.  Codegen writes these for binary
+   (COMP) fields accessed in place, e.g. a COMP subscript, and for single-byte
+   stores such as initializing a PIC 9 field. */
+static const char *const cs_deref_types[][2] = {
+	{"cob_u8_ptr",			".U8"},
+	{"cob_s8_ptr",			".S8"},
+	{"cob_u16_ptr",			".U16"},
+	{"cob_s16_ptr",			".S16"},
+	{"cob_u32_ptr",			".U32"},
+	{"cob_s32_ptr",			".S32"},
+	{"cob_u64_ptr",			".U64"},
+	{"cob_s64_ptr",			".S64"},
+	{"cob_s8_t*",			".S8"},
+	{"signedchar*",			".S8"},
+	{"unsignedchar*",		".U8"},
+	{"cob_u8_t*",			".U8"},
+	{"char*",			".U8"},
+	{"short*",			".S16"},
+	{"cob_s16_t*",			".S16"},
+	{"unsignedshort*",		".U16"},
+	{"cob_u16_t*",			".U16"},
+	{"int*",			".S32"},
+	{"cob_s32_t*",			".S32"},
+	{"unsignedint*",		".U32"},
+	{"cob_u32_t*",			".U32"},
+	{"cob_s64_t*",			".S64"},
+	{"longlong*",			".S64"},
+	{"cob_u64_t*",			".U64"},
+	{"unsignedlonglong*",		".U64"},
+	{"float*",			".F32"},
+	{"double*",			".F64"},
+	{NULL, NULL}
+};
+
+/* accessor for a cast's type text (between the parentheses), or NULL */
+static const char *
+cs_deref_accessor (const char *t, size_t len)
+{
+	char	buf[64];
+	size_t	i, n = 0;
+
+	for (i = 0; i < len && n + 1 < sizeof (buf); i++) {
+		if (t[i] != ' ' && t[i] != '\t') {
+			buf[n++] = t[i];
+		}
+	}
+	buf[n] = 0;
+	if (strncmp (buf, "const", 5) == 0) {
+		memmove (buf, buf + 5, n - 4);
+	}
+	for (i = 0; cs_deref_types[i][0]; i++) {
+		if (strcmp (buf, cs_deref_types[i][0]) == 0) {
+			return cs_deref_types[i][1];
+		}
+	}
+	return NULL;
+}
+
+/* C narrows on assignment, C# doesn't:  (p).S16 = (p).S16 + 1;  is an int on the right.
+   For a translated statement whose target is a 1- or 2-byte typed view, wrap the
+   right-hand side in the matching cast:  (p).S16 = (short)((p).S16 + 1);
+   (Arithmetic is unchecked, so this truncates exactly like the C original.) */
+static void
+cs_narrow_assign (struct cs_sbuf *o)
+{
+	static const char *const narrow[][2] = {
+		{".S16", "(short)"}, {".U16", "(ushort)"},
+		{".S8", "(sbyte)"}, {".U8", "(byte)"},
+		{NULL, NULL}
+	};
+	const char	*p, *eq = NULL, *semi;
+	const char	*cast = NULL;
+	char		*lhs_end;
+	int		i;
+	struct cs_sbuf	n = {0};
+
+	if (!o->p) {
+		return;
+	}
+	/* the first plain '=' (not ==, !=, <=, >=, or a compound assignment) */
+	for (p = o->p; *p; p++) {
+		if (*p == '"' || *p == '\'') {
+			const char q = *p++;
+			while (*p && *p != q) {
+				if (*p == '\\' && p[1]) {
+					p++;
+				}
+				p++;
+			}
+			if (!*p) {
+				return;
+			}
+			continue;
+		}
+		if (*p == '=') {
+			if (p[1] == '=') {
+				return;
+			}
+			if (p > o->p && strchr ("=!<>+-*/%&|^", p[-1])) {
+				return;
+			}
+			eq = p;
+			break;
+		}
+	}
+	if (!eq) {
+		return;
+	}
+	/* the target: strip blanks and closing parentheses, then look at the accessor */
+	lhs_end = (char *)eq;
+	while (lhs_end > o->p && (lhs_end[-1] == ' ' || lhs_end[-1] == ')')) {
+		lhs_end--;
+	}
+	for (i = 0; narrow[i][0]; i++) {
+		const size_t al = strlen (narrow[i][0]);
+		if ((size_t)(lhs_end - o->p) >= al
+		 && strncmp (lhs_end - al, narrow[i][0], al) == 0) {
+			cast = narrow[i][1];
+			break;
+		}
+	}
+	if (!cast) {
+		return;
+	}
+	semi = strrchr (eq, ';');
+	if (!semi) {
+		return;
+	}
+	cs_sb_addn (&n, o->p, (size_t)(eq + 1 - o->p));
+	cs_sb_addc (&n, ' ');
+	cs_sb_add (&n, cast);
+	cs_sb_addc (&n, '(');
+	cs_sb_addn (&n, eq + 1, (size_t)(semi - eq - 1));
+	cs_sb_addc (&n, ')');
+	cs_sb_add (&n, semi);
+	cobc_free (o->p);
+	*o = n;
+}
+
+/* end of a balanced (...) group starting at s ('(' at s[0]); points at the ')' or NULL */
+static const char *
+cs_paren_end (const char *s)
+{
+	int lvl = 0;
+	for (; *s; s++) {
+		if (*s == '(') {
+			lvl++;
+		} else if (*s == ')' && --lvl == 0) {
+			return s;
+		}
+	}
+	return NULL;
+}
 
 /* ---------- token-level C -> C# rewrite of one statement line ---------- */
 
@@ -281,6 +441,38 @@ cs_expr (const char *s, struct cs_sbuf *o)
 			const char prev = cs_last_sig (o);
 			if (!(cs_is_ident (prev) || prev == ')' || prev == ']')) {
 				const char *n = cs_skip_ws (s + 1);
+				/* *(T *)OPERAND : typed access (see cs_deref_types) */
+				if (*n == '(') {
+					const char *ce = cs_paren_end (n);
+					const char *acc = ce ? cs_deref_accessor (n + 1, (size_t)(ce - n - 1)) : NULL;
+					if (acc) {
+						const char *b = cs_skip_ws (ce + 1);
+						const char *e = NULL;
+						if (*b == '(') {
+							e = cs_paren_end (b);
+							if (e) {
+								e++;
+							}
+						} else if (cs_is_ident_start (*b)) {
+							e = b;
+							while (cs_is_ident (*e)) {
+								e++;
+							}
+						}
+						if (e) {
+							char *opnd = cobc_malloc ((size_t)(e - b) + 1);
+							memcpy (opnd, b, (size_t)(e - b));
+							opnd[e - b] = 0;
+							cs_sb_addc (o, '(');
+							cs_expr (opnd, o);
+							cs_sb_addc (o, ')');
+							cs_sb_add (o, acc);
+							cobc_free (opnd);
+							s = e;
+							continue;
+						}
+					}
+				}
 				if (*n == '(') {
 					int lvl = 0;
 					const char *e = n;
@@ -1126,6 +1318,7 @@ cs_process_line (struct cs_file_state *st, char *line)
 
 	/* statement */
 	cs_expr (line, &o);
+	cs_narrow_assign (&o);
 	cs_write_line (st, o.p ? o.p : "");
 	cs_scan_depth (st, o.p ? o.p : "");
 	if (o.p) {

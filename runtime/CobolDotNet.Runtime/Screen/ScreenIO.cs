@@ -501,7 +501,7 @@ public static partial class Cob
         var g = Grid;
         if (ttyRow < 0) ttyRow = 0;
         var sb = new StringBuilder();
-        foreach (var f in fields) if (f != null) sb.Append(IsNumeric(f.Type) ? Num.Pretty(f) : Latin1(f.Span));
+        foreach (var f in fields) if (f != null) sb.Append(IsNumeric(f.Type) ? Num.Pretty(f) : IsNational(f.Type) ? NationalText(f) : Latin1(f.Span));
         string text = sb.ToString();
         while (true)
         {

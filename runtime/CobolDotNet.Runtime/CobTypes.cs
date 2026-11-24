@@ -25,6 +25,20 @@ public readonly struct CobPtr : IEquatable<CobPtr>
 
     public ref byte this[long i] => ref Arr[Off + (int)i];
 
+    // Typed views of the bytes at this pointer, for C's  *(short *)(p)  and friends
+    // (binary COMP fields read or written in place, e.g. a COMP subscript).
+    // Native byte order, unaligned, readable and assignable, like the C original.
+    public ref byte U8 => ref Arr[Off];
+    public ref sbyte S8 => ref System.Runtime.CompilerServices.Unsafe.As<byte, sbyte>(ref Arr[Off]);
+    public ref short S16 => ref System.Runtime.CompilerServices.Unsafe.As<byte, short>(ref Arr[Off]);
+    public ref ushort U16 => ref System.Runtime.CompilerServices.Unsafe.As<byte, ushort>(ref Arr[Off]);
+    public ref int S32 => ref System.Runtime.CompilerServices.Unsafe.As<byte, int>(ref Arr[Off]);
+    public ref uint U32 => ref System.Runtime.CompilerServices.Unsafe.As<byte, uint>(ref Arr[Off]);
+    public ref long S64 => ref System.Runtime.CompilerServices.Unsafe.As<byte, long>(ref Arr[Off]);
+    public ref ulong U64 => ref System.Runtime.CompilerServices.Unsafe.As<byte, ulong>(ref Arr[Off]);
+    public ref float F32 => ref System.Runtime.CompilerServices.Unsafe.As<byte, float>(ref Arr[Off]);
+    public ref double F64 => ref System.Runtime.CompilerServices.Unsafe.As<byte, double>(ref Arr[Off]);
+
     public Span<byte> Span(long len) => Arr.AsSpan(Off, (int)len);
 
     public static CobPtr FromLatin1(string s)
@@ -107,6 +121,7 @@ public static class CobConst
     public const int TYPE_ALPHANUMERIC_ALL = 0x22;
     public const int TYPE_ALPHANUMERIC_EDITED = 0x23;
     public const int TYPE_NATIONAL = 0x40;
+    public const int TYPE_NATIONAL_EDITED = 0x41;
 
     public const int FLAG_HAVE_SIGN = 0x0001;
     public const int FLAG_SIGN_SEPARATE = 0x0002;
@@ -124,6 +139,7 @@ public static class CobConst
     public const int STORE_TRUNC_ON_OVERFLOW = 1 << 2;
 
     internal static bool IsNumeric(int type) => type >= 0x10 && type <= 0x1B;
+    internal static bool IsNational(int type) => (type & TYPE_NATIONAL) != 0;   // COB_FIELD_IS_NATIONAL
 }
 
 /// <summary>Arbitrary-precision decimal: value × 10^-scale.</summary>

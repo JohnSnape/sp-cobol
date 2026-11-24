@@ -43,6 +43,14 @@ public static partial class Cob
     public static Delegate cob_funcptr(Func<int> f) => f;
     public static Delegate cob_funcptr(Func<int, int> f) => f;
 
+    // libcob's byte-swap macros: COMP (big-endian) fields read and written in place
+    public static short COB_BSWAP_16(short v) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(v);
+    public static ushort COB_BSWAP_16(ushort v) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(v);
+    public static int COB_BSWAP_32(int v) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(v);
+    public static uint COB_BSWAP_32(uint v) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(v);
+    public static long COB_BSWAP_64(long v) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(v);
+    public static ulong COB_BSWAP_64(ulong v) => System.Buffers.Binary.BinaryPrimitives.ReverseEndianness(v);
+
     // ------------------------------------------------------------ lifecycle
 
     public static void cob_init(string[] argv)
@@ -348,6 +356,10 @@ public static partial class Cob
             {
                 foreach (char c in Num.Pretty(f)) o.WriteByte((byte)c);
             }
+            else if (IsNational(f.Type))
+            {
+                foreach (char c in NationalText(f)) o.WriteByte(c < 256 ? (byte)c : (byte)'?');
+            }
             else
             {
                 o.Write(f.Span);
@@ -355,5 +367,18 @@ public static partial class Cob
         }
         if (newline != 0) o.Write(NewLine);
         o.Flush();
+    }
+
+    /// <summary>
+    /// The characters of a PIC N field. GnuCOBOL 3.2 stores national data as UTF-16
+    /// big-endian, and its own DISPLAY writes those raw bytes (NUL A NUL B ...).
+    /// We show the characters instead (decision of 2026-11-24, DECISIONS.md).
+    /// </summary>
+    internal static string NationalText(CobField f)
+    {
+        var s = f.Span;
+        var sb = new System.Text.StringBuilder(s.Length / 2);
+        for (int i = 0; i + 1 < s.Length; i += 2) sb.Append((char)((s[i] << 8) | s[i + 1]));
+        return sb.ToString();
     }
 }

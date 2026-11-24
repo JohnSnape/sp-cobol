@@ -281,8 +281,20 @@ internal static class Num
     // ---------------------------------------------------------------- display
 
     /// <summary>DISPLAY form of a numeric item: sign, digits, decimal point.</summary>
+    // digits shown for a native binary item, by size in bytes (libcob termio.c bin_digits)
+    static readonly int[] BinDigits = { 1, 3, 5, 8, 10, 13, 15, 17, 20 };
+
     internal static string Pretty(CobField f)
     {
+        // COMP-5 / native binary: the raw value, not cut to the PIC, padded to what the
+        // size can hold, sign first if signed (libcob cob_print_realbin)
+        if (f.Type == TYPE_NUMERIC_COMP5 || (f.Type == TYPE_NUMERIC_BINARY && f.Has(FLAG_REAL_BINARY)))
+        {
+            var raw = GetBinary(f);
+            int width = f.Type == TYPE_NUMERIC_COMP5 ? f.attr.digits : BinDigits[Math.Min((int)f.size, 8)];
+            var text = BigInteger.Abs(raw).ToString().PadLeft(width, '0');
+            return f.Has(FLAG_HAVE_SIGN) ? (raw.Sign < 0 ? "-" : "+") + text : text;
+        }
         var (v, scale) = Get(f);
         int digits = f.attr.digits;
         if (digits <= 0) digits = BigInteger.Abs(v).ToString().Length;

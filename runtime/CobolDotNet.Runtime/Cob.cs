@@ -284,6 +284,11 @@ public static partial class Cob
 
     public static int memcmp(CobPtr a, CobPtr b, long n) => a.Span(n).SequenceCompareTo(b.Span(n));
 
+    // libcob's comparison buffers: cobc writes  memcmp (b_17, COB_SPACES_ALPHABETIC, 40)  for
+    // IF x = SPACES / ZEROS on items up to 1024 bytes
+    public static readonly CobPtr COB_SPACES_ALPHABETIC = CobPtr.FromLatin1(new string(' ', 1024));
+    public static readonly CobPtr COB_ZEROES_ALPHABETIC = CobPtr.FromLatin1(new string('0', 1024));
+
     public static CobField COB_SET_FLD(CobField f, long size, CobPtr data, CobFieldAttr attr)
     {
         f.size = size; f.data = data; f.attr = attr;

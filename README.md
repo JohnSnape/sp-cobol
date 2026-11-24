@@ -6,8 +6,9 @@ DOS-style text screen, as a Windows window, or both from the same source.
 
 > **Preview (0.1).** It works end to end for the sample programs, including files
 > (sequential, line sequential, relative and indexed) and CALL between programs (also across
-> several .cbl files in one project). INSPECT and UNSTRING work too. Large parts of
-> COBOL (SORT, most intrinsic functions) are not in the runtime yet.
+> several .cbl files in one project). INSPECT, UNSTRING, the intrinsic
+> functions (FUNCTION UPPER-CASE, NUMVAL, CURRENT-DATE, SQRT, ...) and COMP-1/COMP-2 work
+> too. Still missing: SORT and MERGE, Report Writer, DECLARATIVES.
 
 ## What's here
 

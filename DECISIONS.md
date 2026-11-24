@@ -401,3 +401,42 @@ delimiters, ON OVERFLOW, numeric targets.
 Kept as stock: UNSTRING into a `JUSTIFIED RIGHT` item fills it from the left (cobc doesn't
 pass the justified flag for that target; MOVE does justify). Changing it would need codegen
 work and would make results differ from GnuCOBOL; revisit if a program needs it.
+
+## Intrinsic functions, COMP-1/COMP-2, DIVIDE REMAINDER, class tests (2026-11-24)
+
+**Intrinsic functions** (runtime IntrinsicCore/Strings/Numeric/Dates.cs) port libcob's
+intrinsic.c, aiming at identical printed results, because DISPLAY FUNCTION X prints
+according to the result field's type: result fields are built exactly as libcob builds them
+(4- or 8-byte binary, or display with GMP's mpz_sizeinbase width, which can be one too
+big). The work was split three ways and each group proved against stock (FUNCSTR, FUNCNUM,
+FUNCDATE):
+- Numeric: libcob's own decimal steps (divide keeps 38 extra digits, truncating);
+  transcendental functions in 160-digit BigInteger arithmetic rounded to 96 significant
+  digits, as stock's mpf_get_str; RANDOM is GMP's Mersenne Twister with its seeding, so
+  sequences match stock (seeds cut to 32 bits, as stock).
+- Dates: integer dates from 1601-01-01, all FORMATTED-* forms, ACCEPT FROM DATE / DAY /
+  DAY-OF-WEEK / TIME, command-line arguments and environment variables, COB_CURRENT_DATE.
+- Not implemented in libcob 3.2 either (stop with "attempt to use non-implemented
+  function", as stock): BOOLEAN-OF-INTEGER, INTEGER-OF-BOOLEAN, STANDARD-COMPARE,
+  CHAR-NATIONAL, DISPLAY-OF, NATIONAL-OF, EXCEPTION-FILE-N, EXCEPTION-LOCATION-N.
+- Stock quirks kept (they define what GnuCOBOL users see): TEST-NUMVAL-C rejects a
+  multi-character currency string; EXCEPTION-FILE treats any 0x05xx code as a file error;
+  short negative UTC offsets print as +00mm; COMBINED-DATETIME overflows for large days;
+  SECONDS-PAST-MIDNIGHT ignores COB_CURRENT_DATE.
+- Stock bug not kept: SECONDS-FROM-FORMATTED-TIME with decimals can pick up a leftover
+  scale from another function's work decimal in stock; ours uses scale 0.
+- Known limits: EXCEPTION-STATUS reads the current exception code (stock keeps the "last"
+  one separately); EXCEPTION-STATEMENT is spaces; CONTENT-OF sees every pointer as NULL.
+
+**COMP-1 / COMP-2** (Float.cs): double to decimal = exact value rounded to 96 significant
+digits; decimal to double = truncated toward zero (GMP's mpf_get_d truncates); DISPLAY =
+the Windows C runtime's "%.16G" / "%.8G" (three-digit exponent with one leading zero
+removed, so E-05, E+20). FLOATS checks it, with FUNCTION RANDOM, against stock.
+
+**Division by zero** now leaves the receiving field unchanged (it stored 0): the decimal is
+marked NaN through the rest of the expression, and the store raises SIZE ERROR, as libcob.
+**DIVIDE ... REMAINDER**: the remainder uses the quotient truncated to the quotient field's
+decimals, even when the quotient is ROUNDED (DIVREM).
+
+**Class tests** (ClassTests.cs): one fix over stock: libcob's NUMERIC test on COMP-1/COMP-2
+is inverted (true only for NaN/infinity); here a finite float is NUMERIC.

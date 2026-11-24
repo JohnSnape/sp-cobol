@@ -527,3 +527,11 @@ loops, and run the labelled code from there; whatever came before the label is s
 with libcob's goto. SUPPRESS PRINTING now works (it only appears in these declaratives).
 REPORT3 checks every resume point against stock, including stock's habit of running a
 control-heading declarative again on a GENERATE with no control break.
+
+**Fix over stock 3.2 (report declaratives):** a USE BEFORE REPORTING section for a DETAIL
+line makes libcob return from two checks that have no resume point, so on the call back it
+starts GENERATE over: the detail is added into the SUM counters twice (every total doubled),
+control-heading declaratives run again, and the page heading can print twice. We resume
+right after those checks instead. REPORT3's expected output is therefore checked by hand,
+not taken from stock: totals 300.50 / 300.00 / 650.75 where stock prints 601.00 / 600.00 /
+1,301.50.

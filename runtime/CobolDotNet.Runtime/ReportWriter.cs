@@ -962,9 +962,14 @@ public static partial class Cob
     // loop, so here the loops skip ahead to the remembered control / line instead and run the
     // labelled code from there; everything before the label is skipped, as with the goto.
 
-    enum RwResume { None, Footing, Heading, FirstHeading, Detail, FootingFinal, ReportFooting }
+    enum RwResume { None, Footing, Heading, FirstHeading, Detail, DetailCheck, FootingFinal, ReportFooting }
 
     static int rwInDetailDecl;              // libcob inDetailDecl
+    // Fix over stock 3.2: libcob has no resume point for the two "before this detail line"
+    // returns below, so it starts GENERATE again from the top and adds the detail into the SUM
+    // counters twice (and re-runs control-heading declaratives). We resume right after them.
+    static int rwDetailPoint;               // 1: group-line check, 2: detail-line check
+    static CobReportLine rwDetailLine;      // the line being generated at that point
     static CobReportLine rwXpl;             // libcob xpl: detail line to resume at
 
     /// <summary>A control reference whose line (or print line) is declarative ctl.</summary>
@@ -1113,11 +1118,12 @@ public static partial class Cob
                     }
                 }
             }
-            // not found: carry on from the start, keeping last_use (libcob)
+            if (resume == RwResume.None && rwDetailPoint != 0 && ctl == rwLastUse) resume = RwResume.DetailCheck;
+            // otherwise not found: carry on from the start, keeping last_use (libcob)
         }
-        else rwLastUse = 0;
+        else { rwLastUse = 0; rwDetailPoint = 0; }
 
-        if (resume != RwResume.Detail)
+        if (resume != RwResume.Detail && resume != RwResume.DetailCheck)
         {
             if (resume == RwResume.None && r.incr_line)
             {
@@ -1326,45 +1332,67 @@ public static partial class Cob
         {
             // GENERATE <report-name>: summary reporting, no detail line
         }
-        else if (l.suppress != 0)
+        else if (l.suppress != 0 && resume != RwResume.DetailCheck)
         {
             l.suppress = 0;
         }
         else
         {
-            if (l.fields == null && l.child != null && l.child.sister != null)
+            // entry 0: from the start; 1: after the group-line check; 2: after the detail check
+            int entry = 0;
+            if (resume == RwResume.DetailCheck)
             {
-                if (l.use_decl != 0 && l.use_decl != rwLastUse)
+                entry = rwDetailPoint;
+                l = rwDetailLine;
+                rwDetailPoint = 0;
+                rwDetailLine = null;
+            }
+            if (entry == 0)
+            {
+                if (l.fields == null && l.child != null && l.child.sister != null)
                 {
-                    rwLastUse = l.use_decl;
-                    return l.use_decl;
+                    if (l.use_decl != 0 && l.use_decl != rwLastUse)
+                    {
+                        rwLastUse = l.use_decl;
+                        rwDetailPoint = 1; rwDetailLine = l;
+                        return l.use_decl;
+                    }
+                    l = l.child;                // Multiple Detail Lines in group
+                    rwGengrp = 1;
                 }
+                else rwGengrp = 0;
+            }
+            else if (entry == 1)
+            {
                 l = l.child;                    // Multiple Detail Lines in group
                 rwGengrp = 1;
             }
-            else rwGengrp = 0;
 
-            rwNum = rwLn = 0;
-            for (pl = l; pl != null; pl = pl.sister)
+            if (entry != 2)
             {
-                if (RwNotDetail(pl.flags)) break;
-                if ((pl.flags & COB_REPORT_LINE_PLUS) != 0 && pl.line > 1) rwLn += pl.line;
-                rwNum++;
-                if (rwGengrp == 0) break;
-            }
-            if (rwNum > 1 && (r.curr_line + rwLn) > r.def_last_detail)
-            {   // Page overflow
-                RwDoPageFooting(r);
-                r.curr_line = 1;
-                RwDoPageHeading(r);
-                r.first_detail = false;
-                RwSaveLineCounter(r);
-            }
+                rwNum = rwLn = 0;
+                for (pl = l; pl != null; pl = pl.sister)
+                {
+                    if (RwNotDetail(pl.flags)) break;
+                    if ((pl.flags & COB_REPORT_LINE_PLUS) != 0 && pl.line > 1) rwLn += pl.line;
+                    rwNum++;
+                    if (rwGengrp == 0) break;
+                }
+                if (rwNum > 1 && (r.curr_line + rwLn) > r.def_last_detail)
+                {   // Page overflow
+                    RwDoPageFooting(r);
+                    r.curr_line = 1;
+                    RwDoPageHeading(r);
+                    r.first_detail = false;
+                    RwSaveLineCounter(r);
+                }
 
-            if (l.use_decl != 0 && l.use_decl != rwLastUse)
-            {
-                rwLastUse = l.use_decl;
-                return l.use_decl;
+                if (l.use_decl != 0 && l.use_decl != rwLastUse)
+                {
+                    rwLastUse = l.use_decl;
+                    rwDetailPoint = 2; rwDetailLine = l;
+                    return l.use_decl;
+                }
             }
             for (pl = l; pl != null; pl = pl.sister)
             {

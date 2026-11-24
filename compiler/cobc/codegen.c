@@ -4942,6 +4942,14 @@ static void
 output_initialize_fp (cb_tree x, struct cb_field *f)
 {
 	output_prefix ();
+	if (cb_flag_csharp) {
+		/* C#: the typed view of the item's bytes (CobPtr.F32 / .F64) */
+		output ("(");
+		output_data (x);
+		output (").%s = 0;", f->usage == CB_USAGE_FLOAT ? "F32" : "F64");
+		output_newline ();
+		return;
+	}
 	if (f->usage == CB_USAGE_FLOAT) {
 		output ("{float temp = 0.0;");
 	} else {

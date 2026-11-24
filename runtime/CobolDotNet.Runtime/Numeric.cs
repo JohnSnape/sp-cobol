@@ -34,6 +34,8 @@ internal static class Num
             case TYPE_NUMERIC_BINARY:
             case TYPE_NUMERIC_COMP5: return (GetBinary(f), f.attr.scale);
             case TYPE_NUMERIC_EDITED: return DeEdit(f);
+            case TYPE_NUMERIC_FLOAT:
+            case TYPE_NUMERIC_DOUBLE: return Float.ToDecimal(Float.Read(f));
             default: return ParseText(f.Span);
         }
     }
@@ -182,6 +184,7 @@ internal static class Num
     /// </summary>
     internal static int Store(CobField f, BigInteger v, int scale, int opt)
     {
+        if (Float.IsFloat(f.Type)) return Float.Store(f, v, scale, opt);   // COMP-1 / COMP-2: no rescale
         v = Rescale(v, scale, f.attr.scale, (opt & STORE_ROUND) != 0);
 
         int cap = DigitCapacity(f);
@@ -288,6 +291,7 @@ internal static class Num
     {
         // COMP-5 / native binary: the raw value, not cut to the PIC, padded to what the
         // size can hold, sign first if signed (libcob cob_print_realbin)
+        if (Float.IsFloat(f.Type)) return Float.Pretty(f);       // COMP-1 / COMP-2: printf %G
         if (f.Type == TYPE_NUMERIC_COMP5 || (f.Type == TYPE_NUMERIC_BINARY && f.Has(FLAG_REAL_BINARY)))
         {
             var raw = GetBinary(f);

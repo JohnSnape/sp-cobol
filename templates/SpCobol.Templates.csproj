@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageType>Template</PackageType>
     <PackageId>SpCobol.Templates</PackageId>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Title>SP COBOL project templates</Title>
     <Authors>SP COBOL</Authors>
     <Description>Project templates for SP COBOL: COBOL programs with SCREEN SECTION screens, built for .NET.</Description>

@@ -7647,7 +7647,9 @@ output_perform_call (struct cb_label *lb, struct cb_label *le)
 static void
 output_perform_exit (struct cb_label *l)
 {
-	if (l->flag_global) {
+	if (l->flag_global && !cb_flag_csharp) {
+		/* (C#: the global entry dispatch PERFORMs the section and returns itself;
+		   a paragraph method has no 'entry' to test) */
 		output_newline ();
 		output_line ("/* Implicit GLOBAL DECLARATIVE return */");
 		output_line ("if (entry == %d) {", l->id);
@@ -12154,6 +12156,12 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 			i, frame_type);
 		output_line ("frame_ptr = frame_stack;");
 	} else {
+		if (cb_flag_csharp && prog->global_list) {
+			/* C#: frame_ptr is a class field, not a local; a nested program can come
+			   back in for a USE GLOBAL declarative while this program is mid-PERFORM,
+			   so keep the caller's position (restored by the global entry dispatch) */
+			output_line ("\001CobFramePtr cs_frame_save = frame_ptr;");
+		}
 		output_line ("/* Set frame stack pointer */");
 		output_line ("frame_ptr = frame_stack;");
 		output_line ("frame_ptr->perform_through = 0;");
@@ -12265,6 +12273,22 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 				output_line ("\t%s%d = save_%s%d;",
 					CB_PREFIX_BASE, f->id,
 					CB_PREFIX_BASE, f->id);
+			}
+			if (cb_flag_csharp) {
+				/* C#: PERFORM the USE section, then return to the nested program
+				   (C: goto the section; its "Implicit GLOBAL DECLARATIVE return") */
+				const int gid = CB_LABEL (CB_VALUE (l))->id;
+				/* push on top of this program's own PERFORMs (it is active,
+				   calling the nested program), not over them */
+				output_line ("\001\tif (!cs_frame_save.IsNull) frame_ptr = cs_frame_save;");
+				output_line ("\tframe_ptr++;");
+				output_line ("\tframe_ptr->perform_through = %d;", gid);
+				output_line ("\t%s__run (%d);", prog->program_id, gid);
+				output_line ("\tframe_ptr = cs_frame_save;");
+				output_line ("\tcob_module_leave (module);");
+				output_line ("\treturn 0;");
+				output_line ("}");
+				continue;
 			}
 			output_line ("\tgoto %s%d;",
 					CB_PREFIX_LABEL,

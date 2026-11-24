@@ -535,3 +535,23 @@ control-heading declaratives run again, and the page heading can print twice. We
 right after those checks instead. REPORT3's expected output is therefore checked by hand,
 not taken from stock: totals 300.50 / 300.00 / 650.75 where stock prints 601.00 / 600.00 /
 1,301.50.
+
+## USE GLOBAL across nested programs (2026-11-24)
+
+A nested program's I/O error goes to the outer program's USE GLOBAL section: the nested
+program calls the outer program's internal function with the section's number. In C that
+function jumps to the section and returns from it ("Implicit GLOBAL DECLARATIVE return").
+In C# the paragraphs are methods, so the global entry dispatch PERFORMs the section through
+the dispatcher and returns. One extra step: C keeps the PERFORM stack local to each call, but
+in C# it is a class field that the internal function resets, so the dispatch remembers the
+outer program's position and pushes the declarative on top of it; otherwise the outer
+program's PERFORM in progress (the one that CALLed the nested program) was overwritten and
+never returned. USEGLOB checks against stock: a GLOBAL file used by the outer and a nested
+program, a nested program's own file by open mode, and the CALLs inside a PERFORMed
+paragraph.
+
+## PROCEDURE DIVISION RETURNING: not implemented [USER] (2026-11-24)
+
+The user's call: don't implement it, since GnuCOBOL 3.2 doesn't either (cobc warns "program
+RETURNING is not implemented"). SP COBOL behaves the same as stock. A called program passes a
+result back through RETURN-CODE (CALL ... RETURNING receives it) or a BY REFERENCE argument.

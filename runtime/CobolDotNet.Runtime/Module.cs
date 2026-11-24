@@ -101,6 +101,9 @@ public struct CobFramePtr : IEquatable<CobFramePtr>
 
     CobFramePtr(CobFrame[] a, int i) { arr = a; idx = i; }
 
+    /// <summary>Not set yet (the program hasn't run): default(CobFramePtr).</summary>
+    public bool IsNull => arr == null;
+
     CobFrame Cur => idx < arr.Length
         ? arr[idx]
         : throw new CobRuntimeException("PERFORM nesting is too deep (stack overflow). Check for a paragraph that PERFORMs itself.");

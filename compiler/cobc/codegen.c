@@ -4064,6 +4064,31 @@ output_param (cb_tree x, int id)
 
 /* Function call */
 
+/* C#: the generate loop's ctl variable, and the PERFORM of each USE BEFORE REPORTING
+   section a GENERATE / TERMINATE may hand back (through the paragraph dispatcher) */
+static int	cs_rw_ctl_id;
+
+static void
+cs_emit_decl_case (struct cb_field *f)
+{
+	struct cb_field		*p;
+
+	for (p = f; p; p = p->sister) {
+		if (p->report_decl_id) {
+			output_line ("case %d:\t/* %s */", p->report_decl_id, p->name);
+			output_line ("\tframe_ptr++;");
+			output_line ("\tframe_ptr->perform_through = %d;", p->report_decl_id);
+			output_line ("\tif (%s__run (%d) != 0) return -3;",
+				current_prog->program_id, p->report_decl_id);
+			output_line ("\tframe_ptr--;");
+			output_line ("\tbreak;");
+		}
+		if (p->children) {
+			cs_emit_decl_case (p->children);
+		}
+	}
+}
+
 static void
 output_funcall_typed_report (struct cb_funcall *p, const char type)
 {
@@ -4078,12 +4103,40 @@ output_funcall_typed_report (struct cb_funcall *p, const char type)
 	   back into a declarative paragraph and resume; not supported yet. */
 	if (cb_flag_csharp) {
 		switch (type) {
+		case 'B':
+			/* USE BEFORE REPORTING: open the loop that repeats the report moves and
+			   GENERATE / TERMINATE until no declarative is returned (C: gen_N / switch) */
+			generate_id++;
+			cs_rw_ctl_id = generate_id;
+			output_line ("{");
+			output_line ("int ctl_%d = 0;", cs_rw_ctl_id);
+			output_line ("for (;;)");
+			output ("{");
+			return;
 		case 'R':
 		case 'T':
-			generate_id++;
 			if (r->has_declarative) {
-				output_line ("\001#error CS-TODO report declaratives (USE BEFORE REPORTING %s)", r->name);
+				output_newline ();
+				output_prefix ();
+				output ("ctl_%d = ", cs_rw_ctl_id);
+				output (type == 'R' ? "cob_report_generate (" : "cob_report_terminate (");
+				output_param (p->argv[0], 0);
+				if (type == 'R') {
+					output (", ");
+					output_param (p->argv[1], 1);
+				}
+				output (", ctl_%d);", cs_rw_ctl_id);
+				output_newline ();
+				output_line ("if (ctl_%d == 0) break;", cs_rw_ctl_id);
+				output_line ("switch (ctl_%d)", cs_rw_ctl_id);
+				output_line ("{");
+				cs_emit_decl_case (r->records);
+				output_line ("}");
+				output_line ("}");
+				output ("}");
+				return;
 			}
+			generate_id++;
 			output (type == 'R' ? "cob_report_generate (" : "cob_report_terminate (");
 			output_param (p->argv[0], 0);
 			if (type == 'R') {
@@ -4361,6 +4414,7 @@ output_funcall_typed (struct cb_funcall *p, const char type)
 		}
 		break;
 
+	case 'B':	/* C#: begin GENERATE / TERMINATE loop for USE BEFORE REPORTING */
 	case 'R':	/* Generate REPORT line */
 	case 'T':	/* Terminate REPORT */
 	case 'M':	/* Move data for REPORT */

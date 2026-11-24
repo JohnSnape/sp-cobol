@@ -1,0 +1,62 @@
+         SALES BY DEPARTMENT
+
+ DEPT  SALES
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         SALES BY DEPARTMENT
+         SALES BY DEPARTMENT
+
+ DEPT  SALES
+   ADAMS          100.50
+   BAKER          200.00  BIG
+   DEPT TOTAL     601.00
+
+ DEPT  ADMIN
+   CLARK           50.25
+
+ DEPT  IT
+   DAVIS          300.00  BIG
+   DEPT TOTAL     600.00
+
+   GRAND TOTAL  1,301.50
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   END OF REPORT

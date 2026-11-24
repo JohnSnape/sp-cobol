@@ -510,3 +510,20 @@ re-entered with its number, resuming mid-loop; the C# translation stops with a C
 error. Untested: CODE IS, PAGE LIMIT etc. given by data items, OCCURS in report lines,
 PRESENT AFTER / ABSENT AFTER, the runtime error paths (their messages lack stock's source
 location).
+
+## USE BEFORE REPORTING / SUPPRESS PRINTING (2026-11-24)
+
+libcob's protocol: GENERATE / TERMINATE return the number of a USE BEFORE REPORTING section
+when one is due; the generated code PERFORMs that section, re-runs the report's MOVEs, and
+calls again with the number, and libcob resumes with a goto to the label just after the
+point it returned from, often inside nested loops (PrintFooting, PrintHeading,
+PrintFirstHeading, do_detail, PrintFootingFinal, PrintReportFooting).
+
+In C#: typeck marks the start of the loop (`$B`) before the report MOVEs, and codegen writes
+`for (;;) { moves; ctl = cob_report_generate (..., ctl); if (ctl == 0) break; switch (ctl)
+{ case N: PERFORM section N } }`. The runtime can't jump into a loop, so cob_report_generate /
+terminate find the control and line the number belongs to, skip ahead to it in the same
+loops, and run the labelled code from there; whatever came before the label is skipped, as
+with libcob's goto. SUPPRESS PRINTING now works (it only appears in these declaratives).
+REPORT3 checks every resume point against stock, including stock's habit of running a
+control-heading declarative again on a GENERATE with no control break.

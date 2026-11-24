@@ -14607,6 +14607,11 @@ cb_emit_report_move_id (cb_tree rep, const int kind)
 		}
 	}
 	if (cb_flag_csharp && r) {
+		if ((kind == 'R' || kind == 'T') && r->has_declarative) {
+			/* USE BEFORE REPORTING: the moves and the GENERATE / TERMINATE call
+			   repeat until no declarative is left to run (codegen: $B opens the loop) */
+			cb_emit (CB_BUILD_FUNCALL_1 ("$B", rep));
+		}
 		if (kind == 'R') {		/* perform rwmove_N */
 			cs_emit_report_moves (r, 0);
 			cs_emit_report_moves (r, 1);

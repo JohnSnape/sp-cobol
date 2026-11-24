@@ -8,11 +8,11 @@ DOS-style text screen, as a Windows window, or both from the same source.
 > data files, byte for byte) by a regression suite. Working:
 > - files: sequential, line sequential, relative, indexed; DECLARATIVES (USE AFTER ERROR)
 > - CALL / CANCEL, nested programs, several .cbl files in one project
-> - INSPECT, UNSTRING, STRING; SORT and MERGE; Report Writer
+> - INSPECT, UNSTRING, STRING; SORT and MERGE; Report Writer (incl. USE BEFORE REPORTING)
 > - the intrinsic functions (UPPER-CASE, NUMVAL, CURRENT-DATE, SQRT, ...); COMP-1/COMP-2
 > - SCREEN SECTION as a DOS-style console screen or a Windows window
 >
-> Not yet: USE BEFORE REPORTING (and so SUPPRESS PRINTING), PROCEDURE DIVISION RETURNING.
+> Not yet: PROCEDURE DIVISION RETURNING (stock GnuCOBOL 3.2 lacks it too).
 
 ## What's here
 

@@ -13,10 +13,9 @@
 // the lines land on the page, and the output must match stock byte for byte). The debug-log
 // dumps (COB_DEBUG_LOG) are not ported.
 //
-// Not supported: USE BEFORE REPORTING declaratives. libcob returns to the generated code to
-// run the declarative and is then called again with the declarative's number, resuming in the
-// middle of its loops (gotos into loop bodies). The C# code generator does not emit that
-// protocol, so use_decl is always 0 here and ctl is always 0.
+// USE BEFORE REPORTING: GENERATE / TERMINATE return a declarative section's number, the
+// generated code PERFORMs it and calls again with that number; see "USE BEFORE REPORTING"
+// below for how the resume points (gotos into loops in libcob) are reproduced.
 
 using System;
 using static CobolDotNet.Runtime.CobConst;
@@ -954,7 +953,28 @@ public static partial class Cob
         cob_stop_run(1);
     }
 
-    /// <summary>TERMINATE report; returns a declarative's number (never, here) or 0</summary>
+    // ------------------------------------------------------------ USE BEFORE REPORTING
+    //
+    // libcob returns a USE BEFORE REPORTING section's number to the generated code, which
+    // PERFORMs that section and calls again with the number (ctl). libcob then jumps with a
+    // goto to the label right after the "return for declaratives" point it left from, often
+    // inside nested loops (PrintFooting, PrintHeading, do_detail, ...). C# can't jump into a
+    // loop, so here the loops skip ahead to the remembered control / line instead and run the
+    // labelled code from there; everything before the label is skipped, as with the goto.
+
+    enum RwResume { None, Footing, Heading, FirstHeading, Detail, FootingFinal, ReportFooting }
+
+    static int rwInDetailDecl;              // libcob inDetailDecl
+    static CobReportLine rwXpl;             // libcob xpl: detail line to resume at
+
+    /// <summary>A control reference whose line (or print line) is declarative ctl.</summary>
+    static bool RwRefIs(CobReportControlRef rr, int ctl, out CobReportLine pl)
+    {
+        pl = RwGetPrintLine(rr.ref_line);
+        return rr.ref_line.use_decl == ctl || (pl != rr.ref_line && pl.use_decl == ctl);
+    }
+
+    /// <summary>TERMINATE report; returns a USE BEFORE REPORTING section's number, or 0 when done</summary>
     public static int cob_report_terminate(CobReport r, int ctl)
     {
         if (!r.initiate_done)
@@ -964,18 +984,63 @@ public static partial class Cob
             RwHardFailure();
         }
         if (r.first_generate) return 0;     // No GENERATE was ever done
-        if (ctl > 0) throw new CobRuntimeException("USE BEFORE REPORTING is not supported");
+
+        var resume = RwResume.None;
+        CobReportControl resRc = null;
+        CobReportControlRef resRr = null;
+        CobReportLine pl;
+        bool runFootings = true;
+        if (ctl > 0)
+        {   // Continue processing footings from the point we left
+            runFootings = false;
+            for (var rc = r.controls; rc != null && resume == RwResume.None; rc = rc.next)
+            {
+                for (var rr = rc.control_ref; rr != null; rr = rr.next)
+                {
+                    int f = rr.ref_line.flags;
+                    if ((f & COB_REPORT_CONTROL_FOOTING) != 0 && RwRefIs(rr, ctl, out _))
+                    { resume = RwResume.Footing; resRc = rc; resRr = rr; break; }
+                    if ((f & COB_REPORT_CONTROL_FOOTING_FINAL) != 0 && RwRefIs(rr, ctl, out _))
+                    { resume = RwResume.FootingFinal; break; }
+                    if ((f & COB_REPORT_FOOTING) != 0 && RwRefIs(rr, ctl, out _))
+                    { resume = RwResume.ReportFooting; break; }
+                }
+            }
+            if (resume == RwResume.None)
+            {
+                pl = RwGetLineType(r, r.first_line, COB_REPORT_CONTROL_FOOTING_FINAL);
+                if (pl != null && pl.use_decl == ctl) resume = RwResume.FootingFinal;
+                else
+                {
+                    pl = RwGetLineType(r, r.first_line, COB_REPORT_FOOTING);
+                    if (pl != null && pl.use_decl == ctl) resume = RwResume.ReportFooting;
+                }
+            }
+            if (resume == RwResume.Footing) runFootings = true;
+        }
 
         // Do CONTROL FOOTING breaks
-        for (var rc = r.controls; rc != null; rc = rc.next)
+        if (runFootings)
         {
-            for (var rr = rc.control_ref; rr != null; rr = rr.next)
+            bool skipping = resume == RwResume.Footing;
+            for (var rc = r.controls; rc != null; rc = rc.next)
             {
-                if ((rr.ref_line.flags & COB_REPORT_CONTROL_FOOTING) != 0)
+                if (skipping && rc != resRc) continue;
+                for (var rr = rc.control_ref; rr != null; rr = rr.next)
                 {
-                    if (rr.ref_line.use_decl != 0) return rr.ref_line.use_decl;
-                    var pl = RwGetPrintLine(rr.ref_line);
-                    if (pl != rr.ref_line && pl.use_decl != 0) return pl.use_decl;
+                    if ((rr.ref_line.flags & COB_REPORT_CONTROL_FOOTING) == 0) continue;
+                    if (skipping)
+                    {
+                        if (rr != resRr) continue;
+                        skipping = false;
+                        pl = RwGetPrintLine(rr.ref_line);
+                    }
+                    else
+                    {
+                        if (rr.ref_line.use_decl != 0) return rr.ref_line.use_decl;
+                        pl = RwGetPrintLine(rr.ref_line);
+                        if (pl != rr.ref_line && pl.use_decl != 0) return pl.use_decl;
+                    }
                     if (!rc.suppress) RwReportLineAnd(r, rr.ref_line, COB_REPORT_CONTROL_FOOTING);
                     rc.suppress = false;
                     RwZeroAllCounters(r, COB_REPORT_CONTROL_FOOTING, pl);
@@ -983,21 +1048,24 @@ public static partial class Cob
             }
         }
 
-        // Do CONTROL FOOTING FINAL
-        var fl = RwGetLineType(r, r.first_line, COB_REPORT_CONTROL_FOOTING_FINAL);
-        if (fl != null)
+        if (resume != RwResume.ReportFooting)
         {
-            if (fl.use_decl != 0) return fl.use_decl;
-            RwReportLineType(r, r.first_line, COB_REPORT_CONTROL_FOOTING_FINAL);
+            // Do CONTROL FOOTING FINAL
+            var fl = RwGetLineType(r, r.first_line, COB_REPORT_CONTROL_FOOTING_FINAL);
+            if (fl != null)
+            {
+                if (resume != RwResume.FootingFinal && fl.use_decl != 0) return fl.use_decl;
+                RwReportLineType(r, r.first_line, COB_REPORT_CONTROL_FOOTING_FINAL);
+            }
+            RwZeroAllCounters(r, COB_REPORT_CONTROL_FOOTING_FINAL, null);
+
+            RwDoPageFooting(r);
         }
-        RwZeroAllCounters(r, COB_REPORT_CONTROL_FOOTING_FINAL, null);
 
-        RwDoPageFooting(r);
-
-        fl = RwGetLineType(r, r.first_line, COB_REPORT_FOOTING);
-        if (fl != null)
+        var rf = RwGetLineType(r, r.first_line, COB_REPORT_FOOTING);
+        if (rf != null)
         {
-            if (fl.use_decl != 0) return fl.use_decl;
+            if (resume != RwResume.ReportFooting && rf.use_decl != 0) return rf.use_decl;
             r.in_report_footing = true;
             RwReportLineType(r, r.first_line, COB_REPORT_FOOTING);
             r.in_report_footing = false;
@@ -1008,7 +1076,10 @@ public static partial class Cob
         return 0;
     }
 
-    /// <summary>GENERATE detail line l, or GENERATE report-name when l is null (summary reporting)</summary>
+    /// <summary>
+    /// GENERATE detail line l, or GENERATE report-name when l is null (summary reporting);
+    /// returns a USE BEFORE REPORTING section's number, or 0 when done
+    /// </summary>
     public static int cob_report_generate(CobReport r, CobReportLine l, int ctl)
     {
         if (!r.initiate_done)
@@ -1019,146 +1090,239 @@ public static partial class Cob
         }
 
         r.foot_next_page = false;
-        if (ctl > 0) throw new CobRuntimeException("USE BEFORE REPORTING is not supported");
-        rwLastUse = 0;
-
-        if (r.incr_line)
-        {
-            r.incr_line = false;
-            r.curr_line++;
-            RwSaveLineCounter(r);
-        }
+        var resume = RwResume.None;
+        CobReportControl resRc = null;
+        CobReportControlRef resRr = null;
         CobReportLine pl;
-        if (r.first_generate)
-        {
-            // First GENERATE of the report
-            if (r.first_line.use_decl != 0 && r.first_line.use_decl != rwLastUse)
+        if (ctl > 0)
+        {   // Continue processing from the point we left for the declarative
+            if (ctl == rwInDetailDecl) resume = RwResume.Detail;
+            else
             {
-                rwLastUse = r.first_line.use_decl;
-                return r.first_line.use_decl;
-            }
-            RwReportLineType(r, r.first_line, COB_REPORT_HEADING);
-            RwDoPageHeading(r);
-            // do CONTROL Headings
-            for (var rc = r.controls; rc != null; rc = rc.next)
-            {
-                for (var rr = rc.control_ref; rr != null; rr = rr.next)
-                {
-                    if ((rr.ref_line.flags & COB_REPORT_CONTROL_HEADING) != 0)
-                    {
-                        if (rr.ref_line.use_decl != 0) return rr.ref_line.use_decl;
-                        pl = RwGetPrintLine(rr.ref_line);
-                        if (pl != rr.ref_line && pl.use_decl != 0) return pl.use_decl;
-                        RwReportLineAnd(r, rr.ref_line, COB_REPORT_CONTROL_HEADING);
-                    }
-                }
-                cob_move(rc.f, rc.val);         // Save current field data
-                rc.data_change = false;
-            }
-        }
-        else
-        {
-            if (r.curr_line > r.def_last_detail)
-            {   // Page overflow
-                RwDoPageFooting(r);
-                r.curr_line = 1;
-                RwDoPageHeading(r);
-                r.first_detail = false;
-            }
-            else if (r.curr_line <= 1 || r.first_detail)
-            {
-                if (r.first_detail) r.curr_line = 1;
-                RwDoPageHeading(r);
-                r.first_detail = false;
-            }
-
-            // Check for FOOTINGs on other GENERATEs
-            rwMaxctl = 0;
-            for (var rc = r.controls; rc != null; rc = rc.next)
-            {
-                rc.data_change = cob_cmp(rc.f, rc.val) != 0;
-                if (rc.data_change)
-                {   // Data change, implies control break at lower levels
-                    cob_move(rc.f, rc.sf);      // Save new CONTROL value
-                    cob_move(rc.val, rc.f);     // Prev value for FOOTING
-                    if (rc.sequence > rwMaxctl) rwMaxctl = rc.sequence;
-                }
-            }
-            if (rwMaxctl > 0)
-            {
-                for (var rp = r.controls; rp != null; rp = rp.next)
-                {
-                    if (rp.sequence < rwMaxctl && !rp.data_change)
-                    {
-                        rp.data_change = true;
-                        cob_move(rp.f, rp.sf);  // Save CONTROL value
-                        cob_move(rp.val, rp.f); // Prev value for FOOTING
-                    }
-                }
-            }
-
-            for (var rc = r.controls; rc != null; rc = rc.next)
-                if (rc.data_change)             // Check for PRESENT WHEN control-id
-                    RwLineControlChg(r, r.first_line, rc.f);
-
-            for (var rc = r.controls; rc != null; rc = rc.next)
-            {
-                if (!rc.data_change) continue;
-                for (var rr = rc.control_ref; rr != null; rr = rr.next)
-                {
-                    if ((rr.ref_line.flags & COB_REPORT_CONTROL_FOOTING) != 0)
-                    {
-                        if (rr.ref_line.use_decl != 0) return rr.ref_line.use_decl;
-                        pl = RwGetPrintLine(rr.ref_line);
-                        if (pl != rr.ref_line && pl.use_decl != 0) return pl.use_decl;
-                        if (!rc.suppress && rr.ref_line.suppress == 0)
-                            RwReportLineAnd(r, rr.ref_line, COB_REPORT_CONTROL_FOOTING);
-                        rc.suppress = false;
-                        rr.ref_line.suppress = 0;
-                        RwZeroAllCounters(r, COB_REPORT_CONTROL_FOOTING, pl);
-                        RwClearGroupIndicate(r.first_line);
-                        r.next_just_set = false;
-                        if (r.next_page)
-                        {
-                            r.foot_next_page = true;
-                            r.next_page = false;
-                        }
-                    }
-                }
-                cob_move(rc.sf, rc.f);          // Put new CONTROL value back
-            }
-            if (r.foot_next_page)
-            {
-                r.next_page = false;
-                r.foot_next_page = false;
-                RwDoPageFooting(r);
-                RwDoPageHeading(r);
-            }
-            // Check for Control Headings
-            for (var rc = r.controls; rc != null; rc = rc.next)
-            {
-                if (rc.data_change)
+                for (var rc = r.controls; rc != null && resume == RwResume.None; rc = rc.next)
                 {
                     for (var rr = rc.control_ref; rr != null; rr = rr.next)
                     {
-                        if ((rr.ref_line.flags & COB_REPORT_CONTROL_HEADING) != 0)
+                        if ((rr.ref_line.flags & COB_REPORT_CONTROL_FOOTING) != 0 && RwRefIs(rr, ctl, out _))
+                        { resume = RwResume.Footing; resRc = rc; resRr = rr; break; }
+                        if ((rr.ref_line.flags & COB_REPORT_CONTROL_HEADING) != 0 && RwRefIs(rr, ctl, out _))
+                        {
+                            resume = r.first_generate ? RwResume.FirstHeading : RwResume.Heading;
+                            resRc = rc; resRr = rr; break;
+                        }
+                    }
+                }
+            }
+            // not found: carry on from the start, keeping last_use (libcob)
+        }
+        else rwLastUse = 0;
+
+        if (resume != RwResume.Detail)
+        {
+            if (resume == RwResume.None && r.incr_line)
+            {
+                r.incr_line = false;
+                r.curr_line++;
+                RwSaveLineCounter(r);
+            }
+            if (r.first_generate && resume is RwResume.None or RwResume.FirstHeading)
+            {
+                // First GENERATE of the report
+                bool skipping = resume == RwResume.FirstHeading;
+                if (!skipping)
+                {
+                    if (r.first_line.use_decl != 0 && r.first_line.use_decl != rwLastUse)
+                    {
+                        rwLastUse = r.first_line.use_decl;
+                        return r.first_line.use_decl;
+                    }
+                    RwReportLineType(r, r.first_line, COB_REPORT_HEADING);
+                    RwDoPageHeading(r);
+                }
+                // do CONTROL Headings
+                for (var rc = r.controls; rc != null; rc = rc.next)
+                {
+                    if (skipping && rc != resRc) continue;
+                    for (var rr = rc.control_ref; rr != null; rr = rr.next)
+                    {
+                        if ((rr.ref_line.flags & COB_REPORT_CONTROL_HEADING) == 0) continue;
+                        if (skipping)
+                        {
+                            if (rr != resRr) continue;
+                            skipping = false;
+                        }
+                        else
                         {
                             if (rr.ref_line.use_decl != 0) return rr.ref_line.use_decl;
                             pl = RwGetPrintLine(rr.ref_line);
                             if (pl != rr.ref_line && pl.use_decl != 0) return pl.use_decl;
-                            if (rr.ref_line.suppress == 0)
-                                RwReportLineAnd(r, rr.ref_line, COB_REPORT_CONTROL_HEADING);
-                            rr.ref_line.suppress = 0;
+                        }
+                        RwReportLineAnd(r, rr.ref_line, COB_REPORT_CONTROL_HEADING);
+                    }
+                    cob_move(rc.f, rc.val);         // Save current field data
+                    rc.data_change = false;
+                }
+            }
+            else if (!r.first_generate || resume != RwResume.None)
+            {
+                if (resume == RwResume.None)
+                {
+                    if (r.curr_line > r.def_last_detail)
+                    {   // Page overflow
+                        RwDoPageFooting(r);
+                        r.curr_line = 1;
+                        RwDoPageHeading(r);
+                        r.first_detail = false;
+                    }
+                    else if (r.curr_line <= 1 || r.first_detail)
+                    {
+                        if (r.first_detail) r.curr_line = 1;
+                        RwDoPageHeading(r);
+                        r.first_detail = false;
+                    }
+
+                    // Check for FOOTINGs on other GENERATEs
+                    rwMaxctl = 0;
+                    for (var rc = r.controls; rc != null; rc = rc.next)
+                    {
+                        rc.data_change = cob_cmp(rc.f, rc.val) != 0;
+                        if (rc.data_change)
+                        {   // Data change, implies control break at lower levels
+                            cob_move(rc.f, rc.sf);      // Save new CONTROL value
+                            cob_move(rc.val, rc.f);     // Prev value for FOOTING
+                            if (rc.sequence > rwMaxctl) rwMaxctl = rc.sequence;
                         }
                     }
-                    cob_move(rc.f, rc.val);     // Save current field data
+                    if (rwMaxctl > 0)
+                    {
+                        for (var rp = r.controls; rp != null; rp = rp.next)
+                        {
+                            if (rp.sequence < rwMaxctl && !rp.data_change)
+                            {
+                                rp.data_change = true;
+                                cob_move(rp.f, rp.sf);  // Save CONTROL value
+                                cob_move(rp.val, rp.f); // Prev value for FOOTING
+                            }
+                        }
+                    }
+
+                    for (var rc = r.controls; rc != null; rc = rc.next)
+                        if (rc.data_change)             // Check for PRESENT WHEN control-id
+                            RwLineControlChg(r, r.first_line, rc.f);
                 }
-                rc.data_change = false;
+
+                if (resume is RwResume.None or RwResume.Footing)
+                {
+                    bool skipping = resume == RwResume.Footing;
+                    for (var rc = r.controls; rc != null; rc = rc.next)
+                    {
+                        if (skipping && rc != resRc) continue;
+                        if (!rc.data_change) continue;
+                        for (var rr = rc.control_ref; rr != null; rr = rr.next)
+                        {
+                            if ((rr.ref_line.flags & COB_REPORT_CONTROL_FOOTING) == 0) continue;
+                            if (skipping)
+                            {
+                                if (rr != resRr) continue;
+                                skipping = false;
+                                pl = RwGetPrintLine(rr.ref_line);
+                            }
+                            else
+                            {
+                                if (rr.ref_line.use_decl != 0) return rr.ref_line.use_decl;
+                                pl = RwGetPrintLine(rr.ref_line);
+                                if (pl != rr.ref_line && pl.use_decl != 0) return pl.use_decl;
+                            }
+                            if (!rc.suppress && rr.ref_line.suppress == 0)
+                                RwReportLineAnd(r, rr.ref_line, COB_REPORT_CONTROL_FOOTING);
+                            rc.suppress = false;
+                            rr.ref_line.suppress = 0;
+                            RwZeroAllCounters(r, COB_REPORT_CONTROL_FOOTING, pl);
+                            RwClearGroupIndicate(r.first_line);
+                            r.next_just_set = false;
+                            if (r.next_page)
+                            {
+                                r.foot_next_page = true;
+                                r.next_page = false;
+                            }
+                        }
+                        cob_move(rc.sf, rc.f);          // Put new CONTROL value back
+                    }
+                    if (r.foot_next_page)
+                    {
+                        r.next_page = false;
+                        r.foot_next_page = false;
+                        RwDoPageFooting(r);
+                        RwDoPageHeading(r);
+                    }
+                }
+                // Check for Control Headings
+                {
+                    bool skipping = resume == RwResume.Heading;
+                    for (var rc = r.controls; rc != null; rc = rc.next)
+                    {
+                        if (skipping && rc != resRc) continue;
+                        if (rc.data_change)
+                        {
+                            for (var rr = rc.control_ref; rr != null; rr = rr.next)
+                            {
+                                if ((rr.ref_line.flags & COB_REPORT_CONTROL_HEADING) == 0) continue;
+                                if (skipping)
+                                {
+                                    if (rr != resRr) continue;
+                                    skipping = false;
+                                }
+                                else
+                                {
+                                    if (rr.ref_line.use_decl != 0) return rr.ref_line.use_decl;
+                                    pl = RwGetPrintLine(rr.ref_line);
+                                    if (pl != rr.ref_line && pl.use_decl != 0) return pl.use_decl;
+                                }
+                                if (rr.ref_line.suppress == 0)
+                                    RwReportLineAnd(r, rr.ref_line, COB_REPORT_CONTROL_HEADING);
+                                rr.ref_line.suppress = 0;
+                            }
+                            cob_move(rc.f, rc.val);     // Save current field data
+                        }
+                        rc.data_change = false;
+                    }
+                }
             }
+
+            RwSumAllDetail(r);                      // SUM detail counters
         }
 
-        RwSumAllDetail(r);                      // SUM detail counters
-        if (l == null)
+        if (resume == RwResume.Detail)
+        {
+            // libcob do_detail: print the line the declarative was for (l is still the
+            // GENERATE's line, as in C), then carry on with the following detail lines
+            rwInDetailDecl = 0;
+            pl = rwXpl;
+            rwXpl = null;
+            RwReportLine(r, l);
+            l.suppress = 0;
+            if (rwGengrp != 0)
+            {
+                for (pl = pl?.sister; pl != null; pl = pl.sister)
+                {
+                    if (RwNotDetail(pl.flags)) break;
+                    l = RwGetPrintLine(pl);
+                    if (l.suppress == 0)
+                    {
+                        r.next_just_set = false;
+                        if (l.use_decl != 0 && l.use_decl != rwLastUse)
+                        {
+                            rwXpl = pl;
+                            rwInDetailDecl = l.use_decl;
+                            return l.use_decl;
+                        }
+                        RwReportLine(r, l);
+                    }
+                    l.suppress = 0;
+                }
+            }
+        }
+        else if (l == null)
         {
             // GENERATE <report-name>: summary reporting, no detail line
         }
@@ -1209,7 +1373,12 @@ public static partial class Cob
                 if (l.suppress == 0)
                 {
                     r.next_just_set = false;
-                    if (l.use_decl != 0 && l.use_decl != rwLastUse) return l.use_decl;
+                    if (l.use_decl != 0 && l.use_decl != rwLastUse)
+                    {   // libcob keeps its place (xpl) and resumes at do_detail
+                        rwXpl = pl;
+                        rwInDetailDecl = l.use_decl;
+                        return l.use_decl;
+                    }
                     RwReportLine(r, l);         // Generate this DETAIL line
                 }
                 l.suppress = 0;

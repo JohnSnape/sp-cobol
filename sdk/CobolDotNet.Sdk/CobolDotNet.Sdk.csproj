@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>CobolDotNet.Sdk</PackageId>
-    <Version>0.1.11</Version>
+    <Version>0.1.12</Version>
     <Description>Build COBOL programs as .NET apps: DOS-style console screens and Windows Forms from one SCREEN SECTION. (Working name.)</Description>
     <PackageType>MSBuildSdk</PackageType>
     <IncludeBuildOutput>false</IncludeBuildOutput>

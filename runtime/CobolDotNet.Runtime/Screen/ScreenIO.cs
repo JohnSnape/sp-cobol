@@ -229,10 +229,36 @@ public static partial class Cob
         return (ScreenText(tmp), null);
     }
 
+    /// <summary>Digits (and a sign where the field keeps one) exactly as a DISPLAY item stores them.</summary>
+    static bool IsStoredDigits(CobField f, string s)
+    {
+        bool signed = f.Has(FLAG_HAVE_SIGN), separate = signed && f.Has(FLAG_SIGN_SEPARATE);
+        bool leading = signed && f.Has(FLAG_SIGN_LEADING);
+        for (int i = 0; i < s.Length; i++)
+        {
+            char c = s[i];
+            bool signPos = signed && (leading ? i == 0 : i == s.Length - 1);
+            if (char.IsAsciiDigit(c)) continue;
+            if (signPos && separate && (c == '+' || c == '-')) continue;
+            if (signPos && !separate && c >= 'p' && c <= 'y') continue;   // negative overpunch
+            return false;
+        }
+        return !separate || s.Length > 0 && (leading ? s[0] : s[^1]) is '+' or '-';
+    }
+
     static void StoreTyped(CobField f, string text)
     {
         if (IsNumericItem(f))
         {
+            // A USAGE DISPLAY field shows its stored digits (PIC 9(3)V99 holding 12.50 shows
+            // 01250, as GnuCOBOL does) and the check above puts typed input in that form:
+            // digits filling the field are the stored bytes, not a number to parse again
+            if (f.Type == TYPE_NUMERIC_DISPLAY && text.Length == f.size && IsStoredDigits(f, text))
+            {
+                var d = f.Span;
+                for (int i = 0; i < d.Length; i++) d[i] = (byte)text[i];
+                return;
+            }
             var (shown, error) = CheckNumber(f, text);
             if (error != null) return;              // leave the old value
             var src = new CobField(shown.Length, CobPtr.FromLatin1(shown),
@@ -360,13 +386,53 @@ public static partial class Cob
         // fields are visited top to bottom, left to right (as GnuCOBOL does)
         placed.Sort((a, b) => a.Row != b.Row ? a.Row.CompareTo(b.Row) : a.Col.CompareTo(b.Col));
         int focus = placed.FindIndex(p => (p.Item.attr & INITIAL) != 0);
-        int key = RunAccept(placed.ConvertAll(p => p.Input), placed.ConvertAll(p => p.Item.field), Math.Max(focus, 0));
+        // SPECIAL-NAMES CURSOR IS item: start on the field under that line/column
+        var cursor = CursorField;
+        if (cursor != null && CursorFromProgram(cursor) is (int cl, int cc))
+        {
+            int at = placed.FindIndex(p => p.Input.Row == cl && cc >= p.Input.Col && cc < p.Input.Col + p.Input.Length);
+            if (at >= 0) focus = at;
+        }
+        var inputs = placed.ConvertAll(p => p.Input);
+        int key = RunAccept(inputs, placed.ConvertAll(p => p.Item.field), Math.Max(focus, 0), out int last);
+        if (cursor != null && last >= 0 && last < inputs.Count)
+            CursorToProgram(cursor, inputs[last].Row + 1, inputs[last].Col + 1);
         ttyRow = Math.Max(ttyRow, accRow + 1);
         SetCrtStatus(key);
     }
 
+    static CobField CursorField =>
+        (Global.cob_current_module ?? (ModuleStack.Count > 0 ? ModuleStack.Peek() : null))?.cursor_pos;
+
+    /// <summary>The CURSOR IS item as a 0-based (row, column): RRCC or RRRCCC (libcob screenio.c).</summary>
+    static (int, int)? CursorFromProgram(CobField f)
+    {
+        int max = f.size == 4 ? 100 : f.size == 6 ? 1000 : 0;
+        if (max == 0 && !IsNumeric(f.Type)) return null;
+        int v;
+        if (IsNumeric(f.Type)) v = cob_get_int(f);
+        else if (!int.TryParse(Latin1(f.Span), out v)) return null;
+        if (max == 0) max = 1000;
+        int line = v / max, col = v % max;
+        if (line < 1 || col < 1) return null;
+        return (line - 1, col - 1);
+    }
+
+    /// <summary>Where the cursor ended up, back into the CURSOR IS item (1-based).</summary>
+    static void CursorToProgram(CobField f, int line, int col)
+    {
+        if (IsNumeric(f.Type) && f.Type != TYPE_NUMERIC_DISPLAY) { cob_set_int(f, line * 1000 + col); return; }
+        string s = f.size == 4 ? (line * 100 + col).ToString("D4") : f.size == 6 ? (line * 1000 + col).ToString("D6") : null;
+        if (s == null) return;
+        var d = f.Span;
+        for (int i = 0; i < d.Length; i++) d[i] = (byte)s[i];
+    }
+
     /// <summary>The ACCEPT loop shared by screens and single fields: edit, then check REQUIRED.</summary>
-    static int RunAccept(List<ScreenInput> inputs, List<CobField> fields, int focus)
+    static int RunAccept(List<ScreenInput> inputs, List<CobField> fields, int focus) =>
+        RunAccept(inputs, fields, focus, out _);
+
+    static int RunAccept(List<ScreenInput> inputs, List<CobField> fields, int focus, out int lastFocus)
     {
         var req = new AcceptRequest
         {
@@ -409,6 +475,7 @@ public static partial class Cob
         }
         ScreenRenderer.Present(Grid);
         shownSinceAccept = false;
+        lastFocus = req.Focus;
         return key;
     }
 
@@ -531,6 +598,8 @@ public static partial class Cob
     /// <summary>Plain ACCEPT item: a line from the keyboard (or stdin).</summary>
     public static void cob_accept(CobField f)
     {
+        // STOP "literal" passes no field: wait for Enter and keep nothing
+        f ??= new CobField(1, new CobPtr(new byte[1], 0), new CobFieldAttr(TYPE_ALPHANUMERIC, 0, 0, 0, null));
         if (PlainIoOnScreen) { AcceptOnScreen(f); return; }
         Out.Flush();
         string line = Console.In.ReadLine();
@@ -539,6 +608,7 @@ public static partial class Cob
             SetException(EC_IMP_ACCEPT);     // end of input: the field is blanked (as GnuCOBOL does)
             line = "";
         }
+        if (f == null) return;           // STOP "literal": wait for Enter, keep nothing
         if (IsNumericItem(f))
         {
             var src = new CobField(line.Length, CobPtr.FromLatin1(line), new CobFieldAttr(TYPE_ALPHANUMERIC, 0, 0, 0, null));

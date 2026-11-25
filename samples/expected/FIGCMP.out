@@ -1,0 +1,7 @@
+H=HV
+L=LV
+H=FF
+M<HV
+M>LV
+M=HV
+rc=0

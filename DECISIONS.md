@@ -613,3 +613,51 @@ result back through RETURN-CODE (CALL ... RETURNING receives it) or a BY REFEREN
   2026-11-24: don't implement what GnuCOBOL doesn't), and a learner gets the message when
   compiling instead of from a program that half runs: "XML PARSE is not implemented
   (GnuCOBOL 3.2 doesn't implement it either)".
+
+## The 27 problems found by the language reference examples (2026-11-25)
+
+Writing and running the reference site's examples turned up 27 places where SP COBOL
+differed from GnuCOBOL 3.2. Each now has a suite test (samples\NAME.cbl); 23 match stock
+byte for byte, 2 are screen tests checked against libcob's screenio.c, and 3 are deliberate.
+
+Fixed to match GnuCOBOL 3.2:
+- Conditions: arithmetic in a condition (C's comma list -> `cob_seq (() => {...})` lambda,
+  CONDEXPR); constant conditions (`if (1)` -> `true`, LITCOND, EVALANY); figurative
+  constants and ALL literals repeat across the other operand (cob_cmp_all, FIGCMP).
+- MULTIPLY ... BY / DIVIDE ... INTO without GIVING (cob_mul / cob_div, MULDIV);
+  ROUNDED MODE IS (all eight modes, libcob cob_decimal_do_round incl. its NEAREST-EVEN
+  check and PROHIBITED, RNDMODE); MOVE to several targets from a computed source
+  (cob_put/get_indirect_field, MOVEMULT); STOP "literal" (waits for Enter, STOPLIT);
+  STRING WITH POINTER starting outside the target raises ON OVERFLOW (STRPTR).
+- Data: alphanumeric-edited moves (X / B 0, ALNUMED); P scaling in store, ADD and DISPLAY
+  (PSCALE); DISPLAY of SIGN TRAILING SEPARATE puts the sign last (SIGNSEP); DECIMAL-POINT IS
+  COMMA and CURRENCY SIGN in edited pictures (DPCOMMA, CURRSIGN); user CLASS tests (USERCLAS);
+  ALPHABET as PROGRAM COLLATING SEQUENCE (COLLSEQ) and on SORT (SORTCOLL); EXTERNAL items
+  (one area per name, EXTERNL); USAGE POINTER (`*(unsigned char **)p` -> `p.Ptr`, an id in a
+  registry of addresses; NULL -> CobPtr.Null, POINTERS); SPECIAL-NAMES switches with
+  COB_SWITCH_n (SWITCHES).
+- Program structure: LOCAL-STORAGE (LOCALST); RECURSIVE programs (RECURSE): C keeps the
+  module, frame stack, parameter list and decimals in function locals, our C# in class
+  fields, so a recursive program snapshots them (and the entry wrapper the LINKAGE bases)
+  and restores them at exit; ALTER (the altered GO TO returns the paragraph id to the
+  dispatcher, ALTERGO); USE FOR DEBUGGING with COB_SET_DEBUG=Y (DEBUGDCL, checked both ways).
+- Files and reports: RELATIVE READ NEXT with a record number too big for the key: status 14,
+  record still read, key set to 0, position kept (RELKEY14); a report ASSIGN TO DISPLAY
+  pads its last page (stdout honours BEFORE/AFTER ADVANCING, RPTDISP); RD CODE IS builds and,
+  as in GnuCOBOL 3.2, writes an empty report (RPTCODE).
+- Screens: a numeric field with an implied point (PIC 9(3)V99) keeps what is typed
+  (SCRNUMV); SPECIAL-NAMES CURSOR IS starts the ACCEPT on the field under it and gets the
+  position back (CURSORIS; we return the field's start, curses the exact column).
+
+Deliberately different (hand-checked expected output):
+- RELPREV: after READ NEXT gave record 7, GnuCOBOL's READ PREVIOUS skips record 5; and after
+  a random WRITE its READ NEXT is at end of file. The standard says WRITE doesn't move the
+  file position, and PREVIOUS is the record before: we give 5, then 2, and read from the start.
+- RELWRT24: a sequential WRITE whose record number doesn't fit the RELATIVE KEY: GnuCOBOL
+  writes the record, says 00 and leaves the key at 0; we say 24 (the standard's code for
+  it) and write nothing.
+- BOUNDS: a subscript past the end of the table. GnuCOBOL without -debug reads or writes the
+  bytes after the item (padding, or the next item); our items are separate byte arrays, so
+  we stop with one message and a hint, as GnuCOBOL does with -debug. Uncaught runtime
+  errors now print `libcob: error:` + hint instead of a .NET stack trace (exit code 1);
+  under the debugger Visual Studio still stops on the statement first.

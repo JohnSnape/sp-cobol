@@ -2107,7 +2107,9 @@ static void
 output_call_parameter_stack_pointers (struct cb_program *prog)
 {
 	output_local ("\n/* Call parameters */\n");
-	if (cb_flag_stack_on_heap || prog->flag_recursive) {
+	if (cb_flag_csharp && (cb_flag_stack_on_heap || prog->flag_recursive)) {
+		output_local ("\001static CobField[] cob_procedure_params;\n");
+	} else if (cb_flag_stack_on_heap || prog->flag_recursive) {
 		output_local ("cob_field\t\t**cob_procedure_params;\n");
 	} else {
 		output_local ("cob_field\t\t*cob_procedure_params[%u];\n",
@@ -4514,9 +4516,9 @@ output_cond (cb_tree x, const int save_flag)
 	switch (CB_TREE_TAG (x)) {
 	case CB_TAG_CONST:
 		if (x == cb_true) {
-			output ("1");
+			output (cb_flag_csharp ? "true" : "1");
 		} else if (x == cb_false) {
-			output ("0");
+			output (cb_flag_csharp ? "false" : "0");
 		/* LCOV_EXCL_START */
 		} else {
 			cobc_err_msg ("invalid constant");
@@ -4620,6 +4622,29 @@ output_cond (cb_tree x, const int save_flag)
 			COBC_ABORT ();
 		}
 		/* LCOV_EXCL_STOP */
+		if (cb_flag_csharp) {
+			/* C# has no comma operator: (a, b, cmp) becomes a lambda
+			   cob_seq (() => { a; b; return cmp; }) */
+			--inside_check;
+			output ("cob_seq (() => {");
+			output_newline ();
+			for (; x; x = CB_CHAIN (x)) {
+				if (CB_CHAIN (x)) {
+					output_stmt (CB_VALUE (x));
+				} else {
+					output ("return (int)(");
+					inside_stack[inside_check++] = 0;
+					output_stmt (CB_VALUE (x));
+					--inside_check;
+					output (");");
+				}
+			}
+			output ("})");
+			if (save_flag) {
+				output (")");
+			}
+			break;
+		}
 		output ("(");
 		output_newline ();
 		for (; x; x = CB_CHAIN (x)) {
@@ -8816,7 +8841,13 @@ output_alter_check (const struct cb_label *lp)
 	output_block_open ();
 	for (aid = lp->alter_gotos; aid; aid = aid->next) {
 		output_line ("case %d:", aid->goto_id);
-		output_line ("goto %s%d;", CB_PREFIX_LABEL, aid->goto_id);
+		if (cb_flag_csharp) {
+			/* C#: an ALTER target is a paragraph, i.e. a method: go there
+			   through the dispatcher, like GO TO */
+			output_line ("return %d;", aid->goto_id);
+		} else {
+			output_line ("goto %s%d;", CB_PREFIX_LABEL, aid->goto_id);
+		}
 	}
 	output_block_close ();
 	output_newline ();
@@ -9074,8 +9105,13 @@ output_label (const struct cb_label *lp)
 #else
 		output_line ("if (!cob_glob_ptr->cob_debugging_mode)");
 #endif
-		output_line ("\tgoto %s%d;",
-			CB_PREFIX_LABEL, CB_LABEL (lp->exit_label)->id);
+		if (cb_flag_csharp) {
+			/* C#: the section is a method; its exit label is the next one's */
+			output_line ("\treturn %d;", CB_LABEL (lp->exit_label)->id);
+		} else {
+			output_line ("\tgoto %s%d;",
+				CB_PREFIX_LABEL, CB_LABEL (lp->exit_label)->id);
+		}
 	}
 
 	if ((cb_old_trace && cobc_wants_debug)	/* CHECKME: was that really the case? */
@@ -10857,6 +10893,20 @@ output_alphabet_name_definition (struct cb_alphabet_name *p)
 	}
 
 	/* Output the table */
+	if (cb_flag_csharp) {
+		/* one pre-converted C# line: the filter translates line by line */
+		output_local ("\001static readonly CobPtr %s%s = new CobPtr(new byte[] {",
+			      CB_PREFIX_SEQUENCE, p->cname);
+		for (i = 0; i < 256; i++) {
+			output_local (i == 255 ? "%d" : "%d,", p->values[i]);
+		}
+		output_local ("}, 0);\n");
+		i = lookup_attr (COB_TYPE_ALPHANUMERIC, 0, 0, 0, NULL, 0);
+		output_local ("\001static readonly CobField %s%s = new CobField(256, %s%s, %s%d);\n\n",
+			CB_PREFIX_FIELD, p->cname, CB_PREFIX_SEQUENCE, p->cname,
+			CB_PREFIX_ATTR, i);
+		return;
+	}
 	output_local ("static const unsigned char %s%s[256] = {\n",
 		      CB_PREFIX_SEQUENCE, p->cname);
 	for (i = 0; i < 256; i++) {
@@ -10893,10 +10943,15 @@ output_class_name_definition (struct cb_class_name *p)
 	int		upper;
 	int		vals[256];
 
-	output_line ("static int");
-	output_line ("%s (cob_field *f)", p->cname);
+	if (cb_flag_csharp) {	/* pre-converted: IF tests a bool */
+		output_line ("\001public static bool");
+		output_line ("\001%s (CobField f)", p->cname);
+	} else {
+		output_line ("static int");
+		output_line ("%s (cob_field *f)", p->cname);
+	}
 	output_block_open ();
-	output_line ("size_t\ti;");
+	output_line (cb_flag_csharp ? "long\ti;" : "size_t\ti;");
 	output_newline ();
 	output_line ("for (i = 0; i < f->size; i++)");
 	output_block_open ();
@@ -10945,10 +11000,10 @@ output_class_name_definition (struct cb_class_name *p)
 	}
 	output_line ("    break;");
 	output_line ("default:");
-	output_line ("    return 0;");
+	output_line (cb_flag_csharp ? "    return false;" : "    return 0;");
 	output_line ("}");
 	output_block_close ();
-	output_line ("return 1;");
+	output_line (cb_flag_csharp ? "return true;" : "return 1;");
 	output_block_close ();
 	output_newline ();
 }
@@ -12089,6 +12144,25 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 		output_newline ();
 	}
 
+	if (cb_flag_csharp && prog->flag_recursive) {
+		/* C#: what C keeps in locals of this function (module, frame stack,
+		   parameter list, decimals) and the LINKAGE bases are class fields,
+		   so a call to itself would overwrite the caller's: keep them and
+		   put them back at the program exit */
+		output_line ("\001CobModule cs_r_module = module; CobFramePtr cs_r_frame_ptr = frame_ptr, cs_r_frame_stack = frame_stack;");
+		output_line ("\001CobField[] cs_r_params = cob_procedure_params;");
+		for (inc = 0; inc < prog->decimal_index_max; inc++) {
+			output_line ("\001CobDecimal cs_r_%s%u = %s%u;",
+				CB_PREFIX_DECIMAL, inc, CB_PREFIX_DECIMAL, inc);
+		}
+		for (f = prog->linkage_storage; f; f = f->sister) {
+			if (!f->redefines && !f->flag_is_returning) {
+				output_line ("\001CobPtr cs_r_%s%d = %s%d;",
+					CB_PREFIX_BASE, f->id, CB_PREFIX_BASE, f->id);
+			}
+		}
+		output_line ("\001module = null;\t/* a fresh module record for this call */");
+	}
 	output_line ("/* Check initialized, check module allocated, */");
 	output_line ("/* set global pointer, */");
 	output_line ("/* push module stack, save call parameter count */");
@@ -12121,7 +12195,10 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 
 	/* Module Parameters */
 	output_line ("/* Set address of module parameter list */");
-	if (cb_flag_stack_on_heap || prog->flag_recursive) {
+	if (cb_flag_csharp && (cb_flag_stack_on_heap || prog->flag_recursive)) {
+		output_line ("\001cob_procedure_params = new CobField[%d];",
+			     prog->max_call_param ? prog->max_call_param : 1);
+	} else if (cb_flag_stack_on_heap || prog->flag_recursive) {
 		output_line ("cob_procedure_params = cob_malloc (%dU * sizeof(void *));",
 			     prog->max_call_param ? prog->max_call_param : 1);
 	}
@@ -12152,8 +12229,12 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 			i = cb_stack_size;
 		}
 		output_line ("/* Set recursive frame stack pointer */");
-		output_line ("frame_stack = cob_malloc (%dU * sizeof(struct %s));",
-			i, frame_type);
+		if (cb_flag_csharp) {
+			output_line ("\001frame_stack = new CobFramePtr(%d);", i);
+		} else {
+			output_line ("frame_stack = cob_malloc (%dU * sizeof(struct %s));",
+				i, frame_type);
+		}
 		output_line ("frame_ptr = frame_stack;");
 	} else {
 		if (cb_flag_csharp && prog->global_list) {
@@ -12223,6 +12304,11 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 	if (prog->local_storage) {
 		if (local_mem) {
 			output_line ("/* Allocate LOCAL storage */");
+			if (cb_flag_csharp) {
+				/* C#: cob_local_ptr is a static field; keep the caller's
+				   (a RECURSIVE program calling itself) and restore it on exit */
+				output_line ("\001CobPtr cob_local_outer = cob_local_ptr;");
+			}
 			output_line ("cob_local_ptr = cob_malloc (%dU);",
 				     local_mem);
 			if (prog->flag_global_use) {
@@ -12647,6 +12733,9 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 	if (prog->local_storage) {
 		output_line ("/* Deallocate LOCAL storage */");
 		if (local_mem) {
+			if (cb_flag_csharp) {
+				output_line ("\001cob_local_ptr = cob_local_outer;");
+			} else {
 			output_line ("if (cob_local_ptr) {");
 			output_line ("\tcob_free (cob_local_ptr);");
 			output_line ("\tcob_local_ptr = NULL;");
@@ -12654,6 +12743,7 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 				output_line ("\tcob_local_save = NULL;");
 			}
 			output_line ("}");
+			}
 		}
 		for (f = prog->local_storage; f; f = f->sister) {
 			if (f->flag_item_based) {
@@ -12679,7 +12769,7 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 		output_newline ();
 	}
 
-	if (cb_flag_stack_on_heap || prog->flag_recursive) {
+	if ((cb_flag_stack_on_heap || prog->flag_recursive) && !cb_flag_csharp) {
 		output_line ("/* Free frame stack / call parameters */");
 		output_line ("cob_free (frame_stack);");
 		output_line ("cob_free (cob_procedure_params);");
@@ -12711,6 +12801,22 @@ output_internal_function (struct cb_program *prog, cb_tree parameter_list)
 		output_line ("/* Free for recursive module */");
 		output_line ("cob_module_free (&module);");
 		output_newline ();
+		if (cb_flag_csharp) {
+			/* back to the caller's state (see the start of the function) */
+			output_line ("\001module = cs_r_module; frame_ptr = cs_r_frame_ptr; frame_stack = cs_r_frame_stack;");
+			output_line ("\001cob_procedure_params = cs_r_params;");
+			for (inc = 0; inc < prog->decimal_index_max; inc++) {
+				output_line ("\001%s%u = cs_r_%s%u;",
+					CB_PREFIX_DECIMAL, inc, CB_PREFIX_DECIMAL, inc);
+			}
+			for (f = prog->linkage_storage; f; f = f->sister) {
+				if (!f->redefines && !f->flag_is_returning) {
+					output_line ("\001%s%d = cs_r_%s%d;",
+						CB_PREFIX_BASE, f->id, CB_PREFIX_BASE, f->id);
+				}
+			}
+			output_newline ();
+		}
 	}
 
 	/* Implicit CANCEL for INITIAL program */
@@ -13700,6 +13806,14 @@ output_entry_function (struct cb_program *prog, cb_tree entry,
 		   of the class; store this call's arguments there, then run */
 		/* (parameter_list is only collected for C prototypes, which C# mode
 		   skips; this entry's USING list is what this call supplies) */
+		if (prog->flag_recursive) {
+			/* a call to itself would overwrite the caller's arguments: keep them */
+			for (l2 = using_list; l2; l2 = CB_CHAIN (l2)) {
+				f2 = cb_code_field (CB_VALUE (l2));
+				output_line ("\001CobPtr cs_w_%d = %s.%s%d;", f2->id,
+					cs_prog_class (prog), CB_PREFIX_BASE, f2->id);
+			}
+		}
 		for (l2 = using_list; l2; l2 = CB_CHAIN (l2)) {
 			f2 = cb_code_field (CB_VALUE (l2));
 			if (CB_PURPOSE_INT (l2) == CB_CALL_BY_VALUE) {
@@ -13711,6 +13825,23 @@ output_entry_function (struct cb_program *prog, cb_tree entry,
 				output_line ("\001%s.%s%d = cob_parm_%d;",
 					cs_prog_class (prog), CB_PREFIX_BASE, f2->id, f2->id);
 			}
+		}
+		if (prog->flag_recursive && using_list && !prog->flag_void) {
+			if (!prog->nested_level) {
+				output_line ("\001int cs_rc = %s_ (%d);", prog->program_id, progid);
+			} else {
+				output_line ("\001int cs_rc = %s_%d_ (%d);",
+					prog->program_id, prog->toplev_count, progid);
+			}
+			for (l2 = using_list; l2; l2 = CB_CHAIN (l2)) {
+				f2 = cb_code_field (CB_VALUE (l2));
+				output_line ("\001%s.%s%d = cs_w_%d;",
+					cs_prog_class (prog), CB_PREFIX_BASE, f2->id, f2->id);
+			}
+			output_line ("\001return cs_rc;");
+			output_block_close ();
+			output_newline ();
+			return;
 		}
 		if (!prog->nested_level) {
 			output_line ("%s%s_ (%d);", prog->flag_void ? "" : "return ",

@@ -1,0 +1,3 @@
+libcob: error: a subscript, index or reference modification is outside its data item
+  hint: Check the subscript against the OCCURS size (or the (start:length) against the item's size). Run it in Visual Studio (F5) to stop on the statement.
+rc=1

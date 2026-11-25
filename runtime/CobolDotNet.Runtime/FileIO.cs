@@ -338,6 +338,7 @@ public static partial class Cob
         f.lock_mode &= ~COB_LOCK_OPEN_EXCLUSIVE;
         if ((f.flag_select_features & (COB_SELECT_STDIN | COB_SELECT_STDOUT)) != 0)
         {
+            if (f.needsNewline) { Out.Write(NewLine); f.needsNewline = false; }   // last AFTER ADVANCING line
             f.open_mode = COB_OPEN_CLOSED; Out.Flush(); SaveStatus(f, fnstatus, 0); return;
         }
         if (remfil != 0) OpenFiles.Remove(f);
@@ -905,15 +906,30 @@ public static partial class Cob
         catch (IOException) { return 30; }
     }
 
-    // ASSIGN DISPLAY: records go to standard output as lines
+    // ASSIGN DISPLAY: records go to standard output as lines, with the same
+    // BEFORE / AFTER ADVANCING rules as a LINE SEQUENTIAL file (a report's page
+    // padding is blank lines written that way)
     static void WriteStdout(CobFile f, CobField rec, int opt)
     {
         long size = rec.size;
         var s = rec.Span;
         int n = (int)size;
         while (n > 0 && s[n - 1] == (byte)' ') n--;
+        if ((opt & COB_WRITE_AFTER) != 0) { StdoutAdvance(opt); f.needsNewline = true; }
         Out.Write(s.Slice(0, n));
-        Out.Write(NewLine);
+        if (opt == 0) { Out.Write(NewLine); f.needsNewline = false; }
+        if ((opt & COB_WRITE_BEFORE) != 0) { StdoutAdvance(opt); f.needsNewline = false; }
+    }
+
+    static void StdoutAdvance(int opt)
+    {
+        if ((opt & COB_WRITE_PAGE) != 0) { Out.WriteByte((byte)'\f'); return; }
+        if ((opt & COB_WRITE_LINES) != 0)
+        {
+            int n = opt & COB_WRITE_MASK;
+            if (n == 0) Out.WriteByte((byte)'\r');
+            for (int i = 0; i < n; i++) Out.Write(NewLine);
+        }
     }
 
     // ------------------------------------------------------------ RELATIVE
@@ -984,7 +1000,18 @@ public static partial class Cob
                 var buf = new byte[f.record_max];
                 if (ReadFully(fs, buf, f.record_max) < f.record_max) return 30;
                 long slot = pos / rs + 1;
-                if (!SetRelKey(f, slot)) { fs.Position = pos; return 14; }
+                if (!SetRelKey(f, slot))
+                {
+                    // status 14: the record number doesn't fit the RELATIVE KEY. Like
+                    // GnuCOBOL: the record is still read, the key is set to 0, and the file
+                    // stays on this record (libcob relative_read_next)
+                    Num.Store(f.keys[0].field, 0, 0, 0);
+                    buf.AsSpan().CopyTo(f.record.data.Span(f.record_max));
+                    f.record.size = len;
+                    f.relSlot = slot;
+                    fs.Position = pos;
+                    return 14;
+                }
                 buf.AsSpan().CopyTo(f.record.data.Span(f.record_max));
                 f.record.size = len;
                 f.relSlot = slot;

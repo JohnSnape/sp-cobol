@@ -24,7 +24,11 @@ public static partial class Cob
         if (ptr != null)
         {
             strPos = cob_get_int(ptr) - 1;
-            if (strPos < 0 || strPos >= dst.size) strOverflow = true;
+            if (strPos < 0 || strPos >= dst.size)
+            {
+                strOverflow = true;   // pointer outside the target: ON OVERFLOW (libcob cob_string_init)
+                SetException(CobException.EC_OVERFLOW_STRING);
+            }
         }
     }
 

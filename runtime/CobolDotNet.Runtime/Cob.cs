@@ -59,6 +59,41 @@ public static partial class Cob
     {
         Args = argv ?? Array.Empty<string>();
         Global.cob_main_argv0 = Environment.ProcessPath;
+        AppDomain.CurrentDomain.UnhandledException -= OnUnhandled;
+        AppDomain.CurrentDomain.UnhandledException += OnUnhandled;
+    }
+
+    /// <summary>
+    /// A runtime error nobody caught: one plain message, as libcob prints, not a .NET stack
+    /// trace. A subscript, index or reference modification past the end of its item lands
+    /// here as an out-of-range access: GnuCOBOL without -debug quietly reads or overwrites
+    /// the bytes that follow; we stop, as GnuCOBOL does with -debug (DECISIONS.md).
+    /// </summary>
+    static void OnUnhandled(object sender, UnhandledExceptionEventArgs e)
+    {
+        string msg, hint = null;
+        switch (e.ExceptionObject)
+        {
+            case CobRuntimeException c:
+                msg = c.Message;
+                break;
+            case IndexOutOfRangeException or ArgumentOutOfRangeException:
+                msg = "a subscript, index or reference modification is outside its data item";
+                hint = "Check the subscript against the OCCURS size (or the (start:length) against the item's size). Run it in Visual Studio (F5) to stop on the statement.";
+                break;
+            default:
+                return;   // a real bug in SP COBOL: let .NET show everything
+        }
+        try
+        {
+            Out.Flush();
+            Err.Write(Latin1Bytes($"libcob: error: {msg}\n"));
+            if (hint != null && Environment.GetEnvironmentVariable("COB_NO_HINTS") != "1")
+                Err.Write(Latin1Bytes($"  hint: {hint}\n"));
+            Err.Flush();
+        }
+        catch { }
+        Environment.Exit(1);
     }
 
     public static bool cob_module_global_enter(ref CobModule module, ref CobGlobal glob,
@@ -111,6 +146,15 @@ public static partial class Cob
     public static void cob_decimal_alloc(int n, ref CobDecimal a, ref CobDecimal b, ref CobDecimal c, ref CobDecimal d, ref CobDecimal e) { a ??= new(); b ??= new(); c ??= new(); d ??= new(); e ??= new(); }
     public static void cob_decimal_alloc(int n, ref CobDecimal a, ref CobDecimal b, ref CobDecimal c, ref CobDecimal d, ref CobDecimal e, ref CobDecimal f) { a ??= new(); b ??= new(); c ??= new(); d ??= new(); e ??= new(); f ??= new(); }
 
+    // RECURSIVE programs: fresh decimals for each call; the caller's come back at its exit
+    public static void cob_decimal_push(int n, ref CobDecimal a) { a = new(); }
+    public static void cob_decimal_push(int n, ref CobDecimal a, ref CobDecimal b) { a = new(); b = new(); }
+    public static void cob_decimal_push(int n, ref CobDecimal a, ref CobDecimal b, ref CobDecimal c) { a = new(); b = new(); c = new(); }
+    public static void cob_decimal_push(int n, ref CobDecimal a, ref CobDecimal b, ref CobDecimal c, ref CobDecimal d) { a = new(); b = new(); c = new(); d = new(); }
+    public static void cob_decimal_push(int n, ref CobDecimal a, ref CobDecimal b, ref CobDecimal c, ref CobDecimal d, ref CobDecimal e) { a = new(); b = new(); c = new(); d = new(); e = new(); }
+    public static void cob_decimal_push(int n, ref CobDecimal a, ref CobDecimal b, ref CobDecimal c, ref CobDecimal d, ref CobDecimal e, ref CobDecimal f) { a = new(); b = new(); c = new(); d = new(); e = new(); f = new(); }
+    public static void cob_decimal_pop(int n, params CobDecimal[] d) { }
+
     public static void cob_decimal_set_field(CobDecimal d, CobField f) => (d.value, d.scale) = Num.Get(f);
     public static int cob_decimal_get_field(CobDecimal d, CobField f, int opt)
     {
@@ -152,6 +196,19 @@ public static partial class Cob
         a.scale = a.scale + extra - b.scale;
     }
 
+    // f1 := f1 op f2 (libcob numeric.c cob_add / cob_sub / cob_mul / cob_div):
+    // MULTIPLY a BY b and DIVIDE a INTO b without GIVING
+    static void FieldOp(CobField f1, CobField f2, int opt, Action<CobDecimal, CobDecimal> op)
+    {
+        var d1 = new CobDecimal(); var d2 = new CobDecimal();
+        cob_decimal_set_field(d1, f1);
+        cob_decimal_set_field(d2, f2);
+        op(d1, d2);
+        cob_decimal_get_field(d1, f1, opt);
+    }
+    public static void cob_mul(CobField f1, CobField f2, int opt) => FieldOp(f1, f2, opt, cob_decimal_mul);
+    public static void cob_div(CobField f1, CobField f2, int opt) => FieldOp(f1, f2, opt, cob_decimal_div);
+
     public static int cob_decimal_cmp(CobDecimal a, CobDecimal b)
     {
         var x = new CobDecimal { value = a.value, scale = a.scale };
@@ -165,6 +222,7 @@ public static partial class Cob
     public static int cob_add_int(CobField f, int n, int opt)
     {
         var (v, s) = Num.Get(f);
+        if (s < 0) { v *= Num.Pow10(-s); s = 0; }   // PIC 99PPP
         return Num.Store(f, v + n * Num.Pow10(s), s, opt);
     }
 
@@ -253,17 +311,115 @@ public static partial class Cob
             int s = Math.Max(sa, sb);
             return Num.Rescale(a, sa, s, false).CompareTo(Num.Rescale(b, sb, s, false));
         }
+        // a figurative constant or ALL literal repeats across the other operand (libcob cob_cmp_all)
+        if (f2.Type == TYPE_ALPHANUMERIC_ALL) return CompareAll(f1, f2);
+        if (f1.Type == TYPE_ALPHANUMERIC_ALL) return -CompareAll(f2, f1);
         // alphanumeric compare: shorter operand padded with spaces
         var x = f1.Span; var y = f2.Span;
         int len = Math.Max(x.Length, y.Length);
+        var col = Collating;
         for (int i = 0; i < len; i++)
         {
             int cx = i < x.Length ? x[i] : ' ';
             int cy = i < y.Length ? y[i] : ' ';
+            if (col != null) { cx = col[cx]; cy = col[cy]; }
             if (cx != cy) return cx < cy ? -1 : 1;
         }
         return 0;
     }
+
+    // LOCAL-STORAGE: a fresh zeroed area per call (the garbage collector frees it)
+    public static CobPtr cob_malloc(long size) => new CobPtr(size);
+    public static void cob_free(CobPtr p) { }
+
+    // SPECIAL-NAMES switches (SWITCH-0 .. SWITCH-36): set from COB_SWITCH_n=ON at start,
+    // then by SET switch TO ON / OFF (libcob common.c)
+    static int[] switches;
+
+    static int[] Switches
+    {
+        get
+        {
+            if (switches != null) return switches;
+            var s = new int[37];
+            for (int i = 0; i < s.Length; i++)
+            {
+                var v = Environment.GetEnvironmentVariable("COB_SWITCH_" + i);
+                s[i] = v != null && (v.StartsWith('1') || v.Equals("ON", StringComparison.OrdinalIgnoreCase)) ? 1 : 0;
+            }
+            return switches = s;
+        }
+    }
+
+    public static bool cob_get_switch(int n) => n >= 0 && n <= 36 && Switches[n] != 0;
+
+    public static void cob_set_switch(int n, int flag)
+    {
+        if (n < 0 || n > 36) return;
+        if (flag == 0 || flag == 1) Switches[n] = flag;
+    }
+
+    // EXTERNAL items: one storage area per name for the whole run, shared by every program
+    // that declares it (libcob cob_external_addr)
+    static readonly Dictionary<string, byte[]> Externals = new(StringComparer.Ordinal);
+    public static bool cob_initial_external;
+
+    public static CobPtr cob_external_addr(string name, int size)
+    {
+        lock (Externals)
+        {
+            cob_initial_external = !Externals.TryGetValue(name, out var area);
+            if (area == null || area.Length < size)
+            {
+                var bigger = new byte[size];
+                area?.CopyTo(bigger, 0);
+                Externals[name] = area = bigger;
+            }
+            return new CobPtr(area, 0);
+        }
+    }
+
+    /// <summary>OBJECT-COMPUTER ... PROGRAM COLLATING SEQUENCE: the alphabet's order table, or null.</summary>
+    static byte[] Collating
+    {
+        get
+        {
+            var m = Global.cob_current_module ?? (ModuleStack.Count > 0 ? ModuleStack.Peek() : null);
+            return m?.collating_sequence is CobPtr p && !p.IsNull ? p.Arr : null;
+        }
+    }
+
+    static int CompareAll(CobField f, CobField all)
+    {
+        var p = all.Span;
+        if (IsNumeric(f.Type) && p.Length > 0 && p.IndexOfAnyExcept((byte)'0') < 0)
+            return Math.Sign(Num.Get(f).Item1.Sign);       // numeric item compared with ZERO
+        var x = IsNumeric(f.Type) ? System.Text.Encoding.Latin1.GetBytes(Num.Pretty(f)) : f.Span.ToArray();
+        if (p.Length == 0) return 0;
+        for (int i = 0; i < x.Length; i++)
+        {
+            int cx = x[i], cy = p[i % p.Length];
+            if (Collating is byte[] col) { cx = col[cx]; cy = col[cy]; }
+            if (cx != cy) return cx < cy ? -1 : 1;
+        }
+        return 0;
+    }
+
+    // MOVE src TO a b ... with a computed src (subscript, reference modification, FUNCTION):
+    // cobc copies src once, then moves the copy to each target (libcob intrinsic.c)
+    [ThreadStatic] static CobField moveField;
+
+    public static void cob_put_indirect_field(CobField f)
+    {
+        var copy = new byte[f.size];
+        f.Span.CopyTo(copy);
+        moveField = new CobField(f.size, new CobPtr(copy, 0), f.attr);
+    }
+
+    public static void cob_get_indirect_field(CobField f) => cob_move(moveField, f);
+
+    /// <summary>C's comma operator in a condition: (a, b, cmp) runs a and b, then cmp's value.</summary>
+    public static int cob_seq(Func<int> steps) => steps();
 
     // ------------------------------------------------------------ memory
 
@@ -321,10 +477,36 @@ public static partial class Cob
             int digits = Math.Max(src.attr.digits, 1);
             var text = BigInteger.Abs(v).ToString().PadLeft(digits, '0');
             if (text.Length > digits) text = text.Substring(text.Length - digits);
+            if (dt == TYPE_ALPHANUMERIC_EDITED) { MoveAlnumEdited(CobPtr.FromLatin1(text).Span(text.Length), dst); return; }
             MoveAlnum(CobPtr.FromLatin1(text).Span(text.Length), dst);
             return;
         }
+        if (dt == TYPE_ALPHANUMERIC_EDITED) { MoveAlnumEdited(src.Span, dst); return; }
         MoveAlnum(src.Span, dst);
+    }
+
+    /// <summary>Into an alphanumeric-edited item: X A 9 take the next character, / B 0 are
+    /// inserted (libcob cob_move_alphanum_to_edited).</summary>
+    static void MoveAlnumEdited(ReadOnlySpan<byte> s, CobField dst)
+    {
+        var d = dst.Span;
+        int si = 0, di = 0;
+        foreach (var p in dst.attr.pic ?? Array.Empty<CobPicSymbol>())
+        {
+            if (p.symbol == '\0') break;
+            for (int n = p.times_repeated; n > 0 && di < d.Length; n--)
+            {
+                d[di++] = p.symbol switch
+                {
+                    'X' or 'A' or '9' => si < s.Length ? s[si++] : (byte)' ',
+                    '/' => (byte)'/',
+                    'B' => (byte)' ',
+                    '0' => (byte)'0',
+                    _ => (byte)'?',
+                };
+            }
+        }
+        for (; di < d.Length; di++) d[di] = (byte)' ';
     }
 
     static void MoveAlnum(ReadOnlySpan<byte> s, CobField dst)

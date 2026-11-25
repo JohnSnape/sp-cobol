@@ -271,6 +271,7 @@ static const char *const cs_casts[][2] = {
 	{"(void)",			""},	/* discarded result: (void)f (x) */
 	{"(char *)",			""},
 	{"(const char *)",		""},
+	{"(char*)",			""},	/* r_X.code_is = (char*)"AB"; (Report Writer CODE IS) */
 	{"(unsigned char)",		"(byte)"},
 	{"(cob_u8_t)",			"(byte)"},
 	{"(cob_s8_t)",			"(sbyte)"},
@@ -303,6 +304,11 @@ static const char *const cs_deref_types[][2] = {
 	{"cob_s32_ptr",			".S32"},
 	{"cob_u64_ptr",			".U64"},
 	{"cob_s64_ptr",			".S64"},
+	/* a POINTER item: the 8 bytes hold an id in the runtime's pointer registry */
+	{"unsignedchar**",		".Ptr"},
+	{"cob_u8_t**",			".Ptr"},
+	{"void**",			".Ptr"},
+	{"char**",			".Ptr"},
 	{"cob_s8_t*",			".S8"},
 	{"signedchar*",			".S8"},
 	{"unsignedchar*",		".U8"},
@@ -979,7 +985,13 @@ cs_decl (struct cs_file_state *st, const char *line, struct cs_sbuf *o)
 	}
 
 	/* ---- map ---- */
-	if (strcmp (type, "cob_u8_t") == 0 || strcmp (type, "unsigned char") == 0
+	if (strcmp (type, "char") == 0 && has_dim && nptr == 0 && rhs
+	 && *cs_skip_ws (rhs) == '"') {
+		/* static const char st_1[] = "START PROGRAM";  (USE FOR DEBUGGING names):
+		   a string, which memcpy (dst, string, n) copies byte for byte */
+		cs_type = "string";
+		cs_expr (rhs, &init);
+	} else if (strcmp (type, "cob_u8_t") == 0 || strcmp (type, "unsigned char") == 0
 	 || strcmp (type, "cob_u8_ptr") == 0) {
 		cs_type = "CobPtr";
 		if (has_dim && nptr == 0 && strcmp (type, "cob_u8_ptr") != 0) {
@@ -1336,6 +1348,19 @@ cs_scan_depth (struct cs_file_state *st, const char *s)
 static void
 cs_write_line (struct cs_file_state *st, const char *s)
 {
+	/* a USAGE POINTER line (.Ptr): C's NULL is a CobPtr there, not a C# null */
+	if (strstr (s, ".Ptr") && strstr (s, "null")) {
+		const char *p = s, *q;
+		while ((q = strstr (p, "null")) != NULL) {
+			int word = (q == s || !cs_is_ident (q[-1])) && !cs_is_ident (q[4]);
+			fwrite (p, 1, (size_t)(q - p), st->fp);
+			fputs (word ? "CobPtr.Null" : "null", st->fp);
+			p = q + 4;
+		}
+		fputs (p, st->fp);
+		fputc ('\n', st->fp);
+		return;
+	}
 	fputs (s, st->fp);
 	fputc ('\n', st->fp);
 }

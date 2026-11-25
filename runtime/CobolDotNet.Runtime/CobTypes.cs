@@ -23,6 +23,27 @@ public readonly struct CobPtr : IEquatable<CobPtr>
     public static CobPtr operator +(CobPtr p, long n) => new(p.Arr, p.Off + (int)n);
     public static CobPtr operator -(CobPtr p, long n) => new(p.Arr, p.Off - (int)n);
 
+    /// <summary>C's NULL as a pointer (the translator writes it on POINTER lines).</summary>
+    public static readonly CobPtr Null = default;
+
+    /// <summary>Pointer difference: same storage -> offset distance; 0 means "same address".</summary>
+    public static long operator -(CobPtr a, CobPtr b)
+    {
+        if (ReferenceEquals(a.Arr, b.Arr)) return a.IsNull ? 0 : a.Off - b.Off;
+        return a.IsNull ? -1 : 1;
+    }
+
+    /// <summary>
+    /// The pointer stored in a USAGE POINTER item at this address (C's *(unsigned char **)p).
+    /// A managed reference can't live in COBOL's bytes, so the 8 bytes hold an id from a
+    /// registry of addresses; 0 is NULL.
+    /// </summary>
+    public CobPtr Ptr
+    {
+        get => PointerRegistry.Get(S64);
+        set => S64 = PointerRegistry.Id(value);
+    }
+
     public ref byte this[long i] => ref Arr[Off + (int)i];
 
     // Typed views of the bytes at this pointer, for C's  *(short *)(p)  and friends
@@ -53,6 +74,37 @@ public readonly struct CobPtr : IEquatable<CobPtr>
     public override int GetHashCode() => HashCode.Combine(Arr, Off);
     public static bool operator ==(CobPtr a, CobPtr b) => a.Equals(b);
     public static bool operator !=(CobPtr a, CobPtr b) => !a.Equals(b);
+}
+
+/// <summary>Addresses stored in USAGE POINTER items, by id (see CobPtr.Ptr).</summary>
+internal static class PointerRegistry
+{
+    sealed class ArrRef : System.Collections.Generic.IEqualityComparer<(byte[] a, int o)>
+    {
+        public bool Equals((byte[] a, int o) x, (byte[] a, int o) y) => ReferenceEquals(x.a, y.a) && x.o == y.o;
+        public int GetHashCode((byte[] a, int o) k) => HashCode.Combine(System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(k.a), k.o);
+    }
+
+    static readonly System.Collections.Generic.Dictionary<(byte[], int), long> ids = new(new ArrRef());
+    static readonly System.Collections.Generic.List<CobPtr> ptrs = new() { default };
+
+    internal static long Id(CobPtr p)
+    {
+        if (p.IsNull) return 0;
+        lock (ptrs)
+        {
+            if (ids.TryGetValue((p.Arr, p.Off), out long id)) return id;
+            id = ptrs.Count;
+            ptrs.Add(p);
+            ids[(p.Arr, p.Off)] = id;
+            return id;
+        }
+    }
+
+    internal static CobPtr Get(long id)
+    {
+        lock (ptrs) return id > 0 && id < ptrs.Count ? ptrs[(int)id] : default;
+    }
 }
 
 /// <summary>One PICTURE symbol and its repeat count, e.g. ('*', 3).</summary>

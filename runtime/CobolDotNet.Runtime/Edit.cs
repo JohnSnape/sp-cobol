@@ -23,6 +23,19 @@ namespace CobolDotNet.Runtime;
 
 internal static class Edit
 {
+    /// <summary>
+    /// The PICTURE keeps the program's own symbols: with DECIMAL-POINT IS COMMA it is
+    /// ZZ.ZZ9,99, with CURRENCY SIGN IS "#" it is ###9. The editing below works in the
+    /// default symbols (. point, , separator, $ currency) and prints the program's.
+    /// </summary>
+    static char Canonical(char c)
+    {
+        if (c == Cob.DecimalPoint) return '.';
+        if (c == Cob.NumericSeparator) return ',';
+        if (c == Cob.CurrencySymbol) return '$';
+        return c;
+    }
+
     static string Expand(CobPicSymbol[] pic)
     {
         var sb = new StringBuilder();
@@ -33,7 +46,7 @@ internal static class Edit
             // cobc stores CR / DB as one symbol 'C' / 'D' (two print positions)
             if (p.symbol == 'C') { sb.Append("CR"); continue; }
             if (p.symbol == 'D') { sb.Append("DB"); continue; }
-            sb.Append(p.symbol, p.times_repeated);
+            sb.Append(Canonical(p.symbol), p.times_repeated);
         }
         return sb.ToString();
     }

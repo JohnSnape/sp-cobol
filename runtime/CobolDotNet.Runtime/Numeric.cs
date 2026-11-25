@@ -156,6 +156,57 @@ internal static class Num
     // ---------------------------------------------------------------- encode
 
     /// <summary>Round or truncate (value, scale) to a new scale.</summary>
+    // ROUNDED MODE IS ... (libcob COB_STORE_* bits 4-11)
+    const int AwayFromZero = 1 << 4, NearAwayFromZero = 1 << 5, NearEven = 1 << 6, NearTowardZero = 1 << 7,
+        Prohibited = 1 << 8, TowardGreater = 1 << 9, TowardLesser = 1 << 10, Truncation = 1 << 11;
+    const int RoundModeMask = 0xFF0;
+
+    /// <summary>
+    /// libcob cob_decimal_do_round: adjusts v (scale s) so that truncating it to the target scale
+    /// gives the rounded value. True for PROHIBITED when digits would be lost (even zeros).
+    /// </summary>
+    static bool RoundMode(ref BigInteger v, ref int s, int target, int opt)
+    {
+        int sign = v.Sign;
+        if (sign == 0 || target >= s) return false;
+        BigInteger p;
+        switch (opt & RoundModeMask)
+        {
+            case Truncation: return false;
+            case Prohibited: return true;
+            case AwayFromZero:
+            case TowardGreater:
+            case TowardLesser:
+                p = Pow10(s - target);
+                if (!BigInteger.Remainder(v, p).IsZero)
+                {
+                    int m = opt & RoundModeMask;
+                    if (m == AwayFromZero || (m == TowardGreater && sign > 0) || (m == TowardLesser && sign < 0))
+                        v += sign * p;
+                }
+                return false;
+            case NearTowardZero:
+            case NearEven:
+            {
+                p = Pow10(s - target - 1) * 5;
+                bool exact = BigInteger.Remainder(v, p).IsZero;
+                v = Rescale(v, s, target + 1, false); s = target + 1;   // keep one extra digit
+                if (exact)
+                {
+                    if ((opt & RoundModeMask) == NearTowardZero) return false;
+                    int last2 = (int)BigInteger.Remainder(BigInteger.Abs(v), 100);
+                    if (last2 is 5 or 25 or 45 or 65 or 85) return false;   // tie, kept digit even
+                }
+                v += sign * 5;
+                return false;
+            }
+            default:   // NEAREST-AWAY-FROM-ZERO
+                v = Rescale(v, s, target + 1, false); s = target + 1;
+                v += sign * 5;
+                return false;
+        }
+    }
+
     internal static BigInteger Rescale(BigInteger v, int scale, int newScale, bool round)
     {
         if (scale == newScale) return v;
@@ -175,7 +226,8 @@ internal static class Num
                 return f.attr.digits;
             return -1; // limited only by the bytes
         }
-        return f.attr.digits;
+        // PIC 99PPP: digits 5, scale -3, but only 2 digits are stored
+        return f.attr.scale < 0 ? f.attr.digits + f.attr.scale : f.attr.digits;
     }
 
     /// <summary>
@@ -185,7 +237,18 @@ internal static class Num
     internal static int Store(CobField f, BigInteger v, int scale, int opt)
     {
         if (Float.IsFloat(f.Type)) return Float.Store(f, v, scale, opt);   // COMP-1 / COMP-2: no rescale
-        v = Rescale(v, scale, f.attr.scale, (opt & STORE_ROUND) != 0);
+        if ((opt & STORE_ROUND) != 0 && (opt & RoundModeMask) != 0)
+        {
+            // ROUNDED MODE IS ...
+            if (RoundMode(ref v, ref scale, f.attr.scale, opt))
+            {
+                Cob.SetException(CobException.EC_SIZE_TRUNCATION);   // PROHIBITED: target unchanged
+                return Cob.Global.cob_exception_code;
+            }
+            v = Rescale(v, scale, f.attr.scale, false);
+        }
+        else
+            v = Rescale(v, scale, f.attr.scale, (opt & STORE_ROUND) != 0);
 
         int cap = DigitCapacity(f);
         if (cap >= 0)
@@ -287,6 +350,34 @@ internal static class Num
     // digits shown for a native binary item, by size in bytes (libcob termio.c bin_digits)
     static readonly int[] BinDigits = { 1, 3, 5, 8, 10, 13, 15, 17, 20 };
 
+    /// <summary>The sign for DISPLAY: after the digits for SIGN TRAILING SEPARATE (123-), else before.</summary>
+    static string SignAt(CobField f, BigInteger v, string body)
+    {
+        char sign = v.Sign < 0 ? '-' : '+';
+        return f.Type == TYPE_NUMERIC_DISPLAY && f.Has(FLAG_SIGN_SEPARATE) && !f.Has(FLAG_SIGN_LEADING)
+            ? body + sign : sign + body;
+    }
+
+    /// <summary>DISPLAY of a P-scaled item: 99PPP shows 12000, PPP99 shows .00012.</summary>
+    static string PrettyScaled(CobField f, BigInteger v, int scale)
+    {
+        int digits = f.attr.digits;
+        string body;
+        if (scale < 0)
+        {
+            int stored = Math.Max(digits + scale, 1);
+            var d = BigInteger.Abs(v).ToString().PadLeft(stored, '0');
+            body = d.Substring(d.Length - stored) + new string('0', -scale);
+        }
+        else
+        {
+            var d = BigInteger.Abs(v).ToString().PadLeft(digits, '0');
+            body = Cob.DecimalPoint + new string('0', scale - digits) + d.Substring(d.Length - digits);
+        }
+        if (f.Has(FLAG_HAVE_SIGN)) body = SignAt(f, v, body);
+        return body;
+    }
+
     internal static string Pretty(CobField f)
     {
         // COMP-5 / native binary: the raw value, not cut to the PIC, padded to what the
@@ -300,6 +391,7 @@ internal static class Num
             return f.Has(FLAG_HAVE_SIGN) ? (raw.Sign < 0 ? "-" : "+") + text : text;
         }
         var (v, scale) = Get(f);
+        if (scale < 0 || scale > f.attr.digits) return PrettyScaled(f, v, scale);
         int digits = f.attr.digits;
         if (digits <= 0) digits = BigInteger.Abs(v).ToString().Length;
         var abs = BigInteger.Abs(v).ToString().PadLeft(digits, '0');
@@ -309,7 +401,7 @@ internal static class Num
             body = abs.Substring(0, digits - scale) + Cob.DecimalPoint + abs.Substring(digits - scale);
         else
             body = abs;
-        if (f.Has(FLAG_HAVE_SIGN)) body = (v.Sign < 0 ? "-" : "+") + body;
+        if (f.Has(FLAG_HAVE_SIGN)) body = SignAt(f, v, body);
         return body;
     }
 }

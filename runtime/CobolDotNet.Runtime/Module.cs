@@ -70,6 +70,17 @@ public sealed class CobGlobal
     public CobFile cob_error_file;      // the file of the last I/O statement (libcob save_status)
     public int cob_stmt_exception;      // the CALL has ON EXCEPTION
     public int cob_physical_cancel;     // COB_PHYSICAL_CANCEL: re-resolve on every CALL
+
+    /// <summary>USE FOR DEBUGGING declaratives run only with COB_SET_DEBUG=Y (libcob runtime.cfg).</summary>
+    public bool cob_debugging_mode = EnvBool("COB_SET_DEBUG");
+
+    static bool EnvBool(string name)
+    {
+        var v = Environment.GetEnvironmentVariable(name)?.Trim();
+        return v != null && (v == "1" || v.Equals("Y", StringComparison.OrdinalIgnoreCase)
+            || v.Equals("YES", StringComparison.OrdinalIgnoreCase) || v.Equals("ON", StringComparison.OrdinalIgnoreCase)
+            || v.Equals("TRUE", StringComparison.OrdinalIgnoreCase));
+    }
 }
 
 public sealed class CobFrame

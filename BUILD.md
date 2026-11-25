@@ -22,6 +22,17 @@ cd gnucobol-3.2
 make -j8 && make install
 ```
 
+A second stock build WITH XML and JSON is the reference the suite uses
+(`tools/stock-cobc-ml.sh`). Packages: `mingw-w64-ucrt-x86_64-libxml2 mingw-w64-ucrt-x86_64-cjson
+mingw-w64-ucrt-x86_64-pkgconf`.
+
+```bash
+cd /d/vcobol-build-ml && tar -xf ...gnucobol-3.2.tar.xz && cd gnucobol-3.2
+./configure --prefix=/d/vcobol-stock-ml --without-db --with-curses=no \n            --with-xml2 --with-json=cjson CFLAGS='-O2 -std=gnu17'
+# libxml2 2.14+ moved xmlCleanupParser out of the headers GnuCOBOL 3.2 includes:
+make -j8 CFLAGS='-O2 -std=gnu17 -I/ucrt64/include/libxml2 -include libxml/parser.h' && make install
+```
+
 Gotchas hit:
 
 1. **gcc 15+ defaults to C23**, which rejects GnuCOBOL 3.2's old-style function pointers

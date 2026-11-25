@@ -15255,7 +15255,7 @@ cb_emit_xml_generate (cb_tree out, cb_tree from, cb_tree count,
 	unsigned char decimal_point;
 
 #ifndef WITH_XML2
-	if (!warn_xml_done) {
+	if (!warn_xml_done && !cb_flag_csharp) {	/* C# runtime has XML GENERATE */
 		warn_xml_done = 1;
 		cb_warning (cb_warn_unsupported,
 			_("runtime is not configured to support %s"), "XML");
@@ -15306,6 +15306,13 @@ cb_emit_xml_parse (cb_tree data, cb_tree proc,
 {
 	cb_tree ref;
 
+	if (cb_flag_csharp) {
+		/* GnuCOBOL 3.2's runtime doesn't implement XML PARSE either (it stops
+		   with "XML PARSE is not implemented"); say so now, not at run time */
+		cb_error (_("%s is not implemented (GnuCOBOL 3.2 doesn't implement it either)"),
+			"XML PARSE");
+		return;
+	}
 #ifndef WITH_XML2
 	if (!warn_xml_done) {
 		warn_xml_done = 1;
@@ -15344,7 +15351,7 @@ cb_emit_json_generate (cb_tree out, cb_tree from, cb_tree count,
 	  	current_statement->handler_type = NO_HANDLER;
 #endif
 #if	!defined (WITH_CJSON) && !defined (WITH_JSON_C)
-	if (!warn_json_done) {
+	if (!warn_json_done && !cb_flag_csharp) {	/* C# runtime has JSON GENERATE */
 		warn_json_done = 1;
 		cb_warning (cb_warn_unsupported,
 			_("runtime is not configured to support %s"), "JSON");

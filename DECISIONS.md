@@ -585,3 +585,31 @@ result back through RETURN-CODE (CALL ... RETURNING receives it) or a BY REFEREN
   watch-window test. The directive now follows the comment.
 - In-VS test: editor\vs-test\watch-test.ps1 (DTE only, no keystrokes) breaks on a line of
   samples\WATCH.cbl and checks eight Watch expressions.
+
+## XML GENERATE and JSON GENERATE (2026-11-25)
+
+- Runtime MlGenerate.cs is a port of libcob mlio.c. Stock GnuCOBOL passes the tree to
+  libxml2 (xmlTextWriter) and cJSON; we write the same text ourselves, so no native library
+  ships with SP COBOL. Copied from those libraries: libxml2's escaping (`&amp; &lt; &gt; &quot;`,
+  `&#13;`; in attributes also `&#10; &#9;`), `<x/>` for an empty element, namespace
+  declarations after the attributes, `<?xml version="1.0"?>` + newline; cJSON's unformatted
+  print and string escapes (`\" \ \t \n \uXXXX`).
+- Stock's own behaviour is kept, quirks included: only the first occurrence of an OCCURS item
+  is generated (cobc warns "not implemented"); attribute values are the raw bytes
+  (`BALANCE="001234u"` for -123.45); non-printable data becomes a `hex.NAME` element and
+  XML-CODE 417; on overflow COUNT IN includes the trailing newline (213 vs 212).
+  COMP-1/COMP-2 items stop the program, as in libcob ("TO-DO: Implement!").
+- Reference: a second stock build, D:\vcobol-stock-ml (libxml2 + cJSON from MSYS2; GnuCOBOL 3.2
+  needs `-include libxml/parser.h` with libxml2 2.14+). run-tests.ps1 now uses it for new
+  expected outputs (tools/stock-cobc-ml.sh). MLGEN / MLGEN2 are byte-identical to it.
+- DISPLAY now writes a line feed inside data as CR LF on Windows, as stock's C runtime does
+  (stdout in text mode). Seen with the XML declaration's newline.
+- cobc's "runtime is not configured to support XML/JSON" warnings are off in C# mode.
+
+## XML PARSE: a compile error [follows the USER's RETURNING call] (2026-11-25)
+
+- GnuCOBOL 3.2 doesn't implement XML PARSE: its runtime sends START-OF-DOCUMENT and then stops
+  with "XML PARSE is not implemented". Same rule as PROCEDURE DIVISION RETURNING (user,
+  2026-11-24: don't implement what GnuCOBOL doesn't), and a learner gets the message when
+  compiling instead of from a program that half runs: "XML PARSE is not implemented
+  (GnuCOBOL 3.2 doesn't implement it either)".

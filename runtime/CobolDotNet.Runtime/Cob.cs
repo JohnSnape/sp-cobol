@@ -388,11 +388,25 @@ public static partial class Cob
             }
             else
             {
-                o.Write(f.Span);
+                WriteText(o, f.Span);
             }
         }
         if (newline != 0) o.Write(NewLine);
         o.Flush();
+    }
+
+    /// <summary>
+    /// Data bytes to the screen. On Windows, GnuCOBOL's C runtime writes stdout in text mode,
+    /// so a line feed inside the data (an XML GENERATE declaration, X"0A") comes out as CR LF.
+    /// </summary>
+    static void WriteText(Stream o, ReadOnlySpan<byte> s)
+    {
+        if (!OperatingSystem.IsWindows() || s.IndexOf((byte)'\n') < 0) { o.Write(s); return; }
+        foreach (var b in s)
+        {
+            if (b == '\n') o.WriteByte((byte)'\r');
+            o.WriteByte(b);
+        }
     }
 
     /// <summary>

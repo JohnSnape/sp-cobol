@@ -55,7 +55,7 @@ foreach ($n in $names) {
     if (-not $isScreen -and -not (Test-Path $exp)) {
         $stdin = if ($hasIn) { " < ../$n.in" } else { " < /dev/null" }
         Remove-Item (Join-Path $dir 'stock.out') -ErrorAction SilentlyContinue
-        $r = Invoke-Bash "source '/d/CALUDE CODE/visual-cobol/tools/stock-cobc.sh'; cd $unix && rm -rf stockrun && mkdir stockrun && cobc -x $n.cbl$subList -o stock.exe && cd stockrun && ../stock.exe$stdin > ../stock.out 2>&1; echo rc=`$? >> ../stock.out"
+        $r = Invoke-Bash "source '/d/CALUDE CODE/visual-cobol/tools/stock-cobc-ml.sh'; cd $unix && rm -rf stockrun && mkdir stockrun && cobc -x $n.cbl$subList -o stock.exe && cd stockrun && ../stock.exe$stdin > ../stock.out 2>&1; echo rc=`$? >> ../stock.out"
         if (-not (Test-Path (Join-Path $dir 'stock.out'))) {
             $fail += "$n (stock GnuCOBOL can't compile it, so there's no reference): " + (($r | Where-Object { $_ -match 'error' }) -join ' ')
             continue

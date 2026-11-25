@@ -1023,6 +1023,11 @@ cs_decl (struct cs_file_state *st, const char *line, struct cs_sbuf *o)
 	} else if (strcmp (type, "cob_file") == 0 && nptr == 1 && !has_dim) {
 		/* FD / SD: the handle is made by cob_file_malloc at initialization */
 		cs_type = "CobFile";
+	} else if ((strcmp (type, "cob_ml_tree") == 0 || strcmp (type, "cob_ml_attr") == 0)
+		&& nptr == 0 && !has_dim && !rhs) {
+		/* XML / JSON GENERATE: a node of the tree, filled by cob_set_ml_tree/attr */
+		cs_type = type[7] == 't' ? "CobMlTree" : "CobMlAttr";
+		cs_sb_add (&init, type[7] == 't' ? "new CobMlTree()" : "new CobMlAttr()");
 	} else if (strcmp (type, "cob_linage") == 0 && nptr == 1 && !has_dim) {
 		/* LINAGE settings of a print file (lingptr = h_X->linorkeyptr) */
 		cs_type = "CobLinage";

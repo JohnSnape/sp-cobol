@@ -11,10 +11,11 @@ DOS-style text screen, as a Windows window, or both from the same source.
 > - CALL / CANCEL, nested programs, several .cbl files in one project
 > - INSPECT, UNSTRING, STRING; SORT and MERGE; Report Writer (incl. USE BEFORE REPORTING)
 > - the intrinsic functions (UPPER-CASE, NUMVAL, CURRENT-DATE, SQRT, ...); COMP-1/COMP-2
+> - XML GENERATE and JSON GENERATE (no extra libraries needed)
 > - SCREEN SECTION as a DOS-style console screen or a Windows window
 >
 > Not supported, as in GnuCOBOL 3.2: PROCEDURE DIVISION RETURNING (pass results back through
-> RETURN-CODE or a BY REFERENCE argument).
+> RETURN-CODE or a BY REFERENCE argument) and XML PARSE.
 
 ## What's here
 

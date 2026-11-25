@@ -1,0 +1,68 @@
+title: JSON GENERATE
+summary: Turn a group item and its fields into JSON text.
+keywords: JSON GENERATE FROM COUNT IN NAME OF OMITTED SUPPRESS ON EXCEPTION JSON-CODE END-JSON web API JavaScript object notation
+---
+<h2>Syntax</h2>
+<pre class="syntax">JSON GENERATE identifier-1 FROM identifier-2
+    [ COUNT IN identifier-3 ]
+    [ NAME OF { identifier-4 IS { literal-1 | OMITTED } } ... ]
+    [ SUPPRESS identifier-5 ... ]
+    [ ON EXCEPTION imperative-statement-1 ]
+    [ NOT ON EXCEPTION imperative-statement-2 ]
+[ END-JSON ]</pre>
+
+<h2>What it does</h2>
+<p>JSON (JavaScript Object Notation) is the text format most web services use to exchange
+data. It looks like <code>{"name":"value","count":42}</code>. JSON GENERATE takes the data item
+after <code>FROM</code>, usually a group, and writes it as JSON into the alphanumeric field
+<code>identifier-1</code>.</p>
+
+<h3>How the data becomes JSON</h3>
+<ul>
+<li>A group becomes an object, <code>{"GROUP-NAME":{...}}</code>, with one member per item
+inside it, in order. Groups inside it become objects inside the object.</li>
+<li>The member names are the COBOL data names, exactly as written (upper case, with hyphens).</li>
+<li>Numeric items become JSON numbers: leading zeros are dropped, the sign and decimal point are
+shown (<code>00042</code> becomes <code>42</code>, <code>-123.45</code> stays as it is).</li>
+<li>Alphanumeric items become JSON strings, with trailing spaces removed. A field of all spaces
+becomes a string of one space. Quotes and backslashes are escaped (<code>\"</code>).</li>
+<li>FILLER items are left out.</li>
+</ul>
+<p>The JSON text goes at the start of the output field, and is usually shorter than the field.
+Use <code>COUNT IN</code> to get that length, and refer to <code>JSON-OUT (1:LEN)</code> to
+use just the JSON.</p>
+
+<h3>NAME OF and SUPPRESS</h3>
+<p><code>NAME OF CUST-ID IS "id"</code> uses a name of your choosing instead of the COBOL name,
+which matters when the receiving program expects lower-case names. <code>NAME OF CUSTOMER IS
+OMITTED</code>, for the group after FROM, leaves out the outer wrapper so the result is just
+<code>{"id":42,...}</code>.</p>
+<p><code>SUPPRESS CITY ACTIVE</code> leaves those items out of the output.</p>
+
+<h3>JSON-CODE and ON EXCEPTION</h3>
+<p>After the statement, the special register <code>JSON-CODE</code> is zero if all went well.
+If the output field is too small, JSON-CODE is set to 1, the field holds as much of the text as
+fit, and the <code>ON EXCEPTION</code> statements run. <code>NOT ON EXCEPTION</code> runs when
+the statement succeeded.</p>
+
+<h2>Example</h2>
+<!-- example JSONGEN1 -->
+<p>The first JSON GENERATE writes the whole CUSTOMER group: CUST-ID loses its leading zeros,
+the quotes inside the name are escaped, CITY (all spaces) becomes <code>" "</code> and the
+FILLER is skipped. The second renames two members, omits the outer CUSTOMER wrapper and
+suppresses CITY and ACTIVE. The third writes into a 20-character field, which is too small, so
+JSON-CODE is 1 and the field holds the first 20 characters.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL writes JSON itself, so no extra library has to be installed (GnuCOBOL uses the
+cJSON library for this). The text is the same as GnuCOBOL 3.2 produces, character for
+character.</p>
+<div class="warn">A table (an item with <a href="occurs.html">OCCURS</a>) is not written as a
+JSON array: only its first entry is generated, as a single object. The compiler warns that this
+is "not implemented". This is GnuCOBOL 3.2's behavior, kept so that results match. If you need
+an array, build that part of the text yourself with <a href="string.html">STRING</a>.</div>
+
+<h2>See also</h2>
+<p><a href="xml-generate.html">XML GENERATE</a>, <a href="string.html">STRING</a>,
+<a href="special-registers.html">special registers</a> (JSON-CODE),
+<a href="referring-to-data.html">reference modification</a>.</p>

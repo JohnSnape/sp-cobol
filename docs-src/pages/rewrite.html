@@ -1,0 +1,49 @@
+title: REWRITE
+summary: Replace a record that is already in a file with a changed version.
+keywords: REWRITE FROM INVALID KEY NOT INVALID KEY END-REWRITE update record in place I-O 43 49 23
+badge: differs
+---
+<h2>Syntax</h2>
+<pre class="syntax">REWRITE record-name [ FROM { identifier-1 | literal-1 } ]
+    [ INVALID KEY imperative-statement-1 ]
+    [ NOT INVALID KEY imperative-statement-2 ]
+[ END-REWRITE ]</pre>
+
+<h2>What it does</h2>
+<p>REWRITE puts a changed record back in the place of an existing one. The file must be open
+<code>I-O</code> (status 49 otherwise). <code>FROM item</code> moves <code>item</code> to the
+record first, as with <a href="write.html">WRITE</a>.</p>
+<p>Which record is replaced depends on the access mode:</p>
+<ul>
+<li><b>Sequential access</b> (all SEQUENTIAL and LINE SEQUENTIAL files): the record the last
+READ returned. The pattern is READ, change fields, REWRITE. Without a successful READ just
+before, the status is 43. In a SEQUENTIAL file the record must keep its length.</li>
+<li><b>Random or dynamic access</b>: the record with the key you set, the slot number in the
+RELATIVE KEY or the value in the RECORD KEY. No READ is needed first. If there is no such
+record, the status is 23 and <code>INVALID KEY</code> runs.</li>
+</ul>
+<p>For an INDEXED file the RECORD KEY in the record says which record is replaced, so to
+change a record's key, DELETE it and WRITE a new one. Alternate key fields may be changed
+by REWRITE.</p>
+
+<h2>Examples</h2>
+<!-- example REWRITE1 -->
+<p>The file is opened I-O. Each READ is followed by a COMPUTE and a REWRITE, which puts the
+higher price back where the record was. Reading the file again shows the new prices.</p>
+<!-- example REWRITE2 -->
+<p>Member 1 exists and is replaced. Slot 2 lies between two used slots but is empty, so the
+second REWRITE finds no record: status 23 and the INVALID KEY branch.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">
+<p>REWRITE of an empty RELATIVE slot gives 23 (record not found) in SP COBOL. GnuCOBOL 3.2
+reports 00 and even writes the record into the empty slot, which is a bug in its file
+handler. That's why the second example's output differs from GnuCOBOL's.</p>
+</div>
+<p>When a LINE SEQUENTIAL record is rewritten with a shorter one, SP COBOL keeps the line end
+intact; GnuCOBOL 3.2 overwrites the CR in that case.</p>
+
+<h2>See also</h2>
+<p><a href="read.html">READ</a>, <a href="write.html">WRITE</a>,
+<a href="delete.html">DELETE</a>, <a href="open.html">OPEN</a> (I-O),
+<a href="files.html">Files</a>, <a href="file-status.html">FILE STATUS codes</a>.</p>

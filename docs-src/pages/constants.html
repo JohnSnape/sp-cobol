@@ -1,0 +1,41 @@
+title: Constants (level 78 and CONSTANT)
+summary: Give a name to a fixed value that the compiler substitutes wherever you use it.
+keywords: 78 level-78 CONSTANT AS named constant LENGTH OF table size fixed value
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: level 78
+78 constant-name VALUE [ IS ] literal-1 .
+
+Format 2: CONSTANT (COBOL 2002 style)
+01 constant-name CONSTANT AS { literal-1 | LENGTH OF data-name-1 } .</pre>
+
+<h2>What it does</h2>
+<p>A constant is a name for a value that never changes. It takes no storage: wherever the name
+appears, the compiler uses the value instead, as if you had typed the literal there. So a
+constant can go in places where only a literal is allowed, such as the number of
+occurrences in <code>OCCURS</code> or the length in a PICTURE.</p>
+<p>Both forms do the same job. <code>78</code> is the older form that GnuCOBOL took over from
+Micro Focus COBOL; <code>CONSTANT AS</code> is the form in the 2002 COBOL standard, and it can
+also take the length of an item or of another constant with <code>LENGTH OF</code>.</p>
+
+<h3>What you can use one for</h3>
+<ul>
+<li>a table size: <code>OCCURS MAX-ITEMS</code>, and the same name as the loop limit, so
+changing one line changes both;</li>
+<li>a size in a PICTURE: <code>PIC X(TITLE-LEN)</code>;</li>
+<li>a value in an expression, a comparison, a MOVE or a DISPLAY, like any literal.</li>
+</ul>
+<p>Because it isn't a data item, you can't MOVE anything into a constant or change it in any
+other way.</p>
+
+<h2>Example</h2>
+<!-- example CONST1 -->
+<p>MAX-ITEMS sets the table size (5 prices of 5 bytes, 25 bytes) and is also the loop limit and
+a subscript. TITLE-LEN is the length of the text constant SHOP-NAME, 12, and sizes the
+HEADING-TXT field to fit it exactly. TAX-RATE is used in a COMPUTE like any number: 50.00 times
+0.0775 is 3.875, rounded to 3.88.</p>
+
+<h2>See also</h2>
+<p><a href="literals.html">Literals</a>, <a href="level-numbers.html">Level numbers</a>,
+<a href="occurs.html">OCCURS</a>, <a href="figurative-constants.html">Figurative constants</a>,
+<a href="value.html">VALUE</a>.</p>

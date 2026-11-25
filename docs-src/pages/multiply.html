@@ -1,0 +1,58 @@
+title: MULTIPLY
+summary: Multiply two numbers and store the product.
+keywords: BY GIVING ROUNDED SIZE ERROR END-MULTIPLY times product multiplication
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: multiply each receiving field in place
+MULTIPLY { identifier-1 | literal-1 } BY { identifier-2 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-MULTIPLY ]
+
+Format 2: store the product somewhere else
+MULTIPLY { identifier-1 | literal-1 } BY { identifier-2 | literal-2 }
+    GIVING { identifier-3 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-MULTIPLY ]</pre>
+
+<h2>What it does</h2>
+<p><b>Format 1</b> multiplies each field after <code>BY</code> by the first value and stores the
+answer back in that field. <code>MULTIPLY 2 BY N</code> means "N = 2 &times; N".</p>
+<p><b>Format 2</b> multiplies the two values and puts the product in every field after
+<code>GIVING</code>. The two values don't change. <code>MULTIPLY PRICE BY QTY GIVING TOTAL</code>
+means "TOTAL = PRICE &times; QTY". A <code>GIVING</code> field only receives the answer, so it
+may be a numeric-edited field such as <code>PIC $$,$$9.99</code>.</p>
+
+<h3>Decimals and rounding</h3>
+<p>The product can have more decimal places than either value (0.25 &times; 0.5 = 0.125).
+If the receiving field has fewer decimal places, the extra digits are dropped, unless you
+write <code>ROUNDED</code> after that field. Each field gets its own choice: one may be
+rounded and the next truncated.</p>
+
+<h3>SIZE ERROR</h3>
+<p>If the product has more digits in front of the decimal point than the receiving field can
+hold, that is a size error. Without <code>ON SIZE ERROR</code>, the high-order digits are lost
+silently. With it, the receiving field keeps its old value and your statements run instead.
+<code>NOT ON SIZE ERROR</code> runs when the answer fit. Use <code>END-MULTIPLY</code> when the
+statement sits inside an IF or another statement.</p>
+
+<h2>Example</h2>
+<!-- example MULT1 -->
+<p>12.99 &times; 3 is stored twice, once in a plain numeric field and once in an edited one.
+38.97 &times; 0.0725 is 2.825325: TAX is rounded to 2.83 while TAX-CUT is cut to 2.82.
+25 &times; 10 = 250 doesn't fit in <code>PIC 99</code>, so TINY keeps 25 and the SIZE ERROR
+message shows. 25 &times; 7 = 175 without a SIZE ERROR phrase keeps only the last two digits,
+75.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview, Format 1 (<code>MULTIPLY a BY b</code> with no
+<code>GIVING</code>) doesn't build: the generated C# calls a runtime routine that is missing,
+and the build fails with "The name 'cob_mul' does not exist". Until that is fixed, write
+<code>MULTIPLY a BY b GIVING b</code>, as the example does, or use
+<a href="compute.html">COMPUTE</a> <code>b = a * b</code>.</div>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a> for whole formulas, <a href="add.html">ADD</a>,
+<a href="subtract.html">SUBTRACT</a>, <a href="divide.html">DIVIDE</a>,
+<a href="picture.html">PICTURE</a>.</p>

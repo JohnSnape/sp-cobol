@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Program structure - SP COBOL Reference</title>
+<meta name="description" content="How a COBOL program is built from divisions, sections, paragraphs, sentences and statements.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details open><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html" class="current" aria-current="page">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Getting started</p>
+<h1>Program structure </h1>
+<p class="lede">How a COBOL program is built from divisions, sections, paragraphs, sentences and statements.</p>
+<h2>Syntax</h2>
+<pre class="syntax">IDENTIFICATION DIVISION.
+PROGRAM-ID. <var>program-name</var>.
+[ ENVIRONMENT DIVISION.
+    <var>environment-entries</var> ]
+[ DATA DIVISION.
+    <var>data-entries</var> ]
+[ PROCEDURE DIVISION [ USING <var>data-name-1</var> ... ].
+    [ <var>section-name</var> SECTION. ]
+    <var>paragraph-name</var>.
+        <var>statement-1</var> [ <var>statement-2</var> ] ... .
+    ... ]
+[ <var>nested-program</var> ... ]
+[ END PROGRAM <var>program-name</var>. ]</pre>
+
+<h2>What it does</h2>
+<p>A COBOL program is a nest of named parts, from large to small:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Part</th><th>What it is</th></tr>
+<tr><td>division</td><td>The four main parts, always in this order:
+<a href="identification-division.html">IDENTIFICATION</a> (the program's name),
+<a href="environment-division.html">ENVIRONMENT</a> (the computer and the files),
+<a href="data-division.html">DATA</a> (every data item) and
+<a href="procedure-division.html">PROCEDURE</a> (the code). Only the IDENTIFICATION DIVISION
+is required; leave out any other division you don't need.</td></tr>
+<tr><td>section</td><td>A named group inside a division. The ENVIRONMENT and DATA divisions
+have fixed sections (WORKING-STORAGE SECTION, ...). In the PROCEDURE DIVISION you name your
+own sections, or use none.</td></tr>
+<tr><td>paragraph</td><td>In the PROCEDURE DIVISION, a name followed by a period, starting in
+area A, and the code after it up to the next paragraph or section name. Paragraphs are what
+<a href="perform.html">PERFORM</a> and <a href="go-to.html">GO TO</a> refer to.</td></tr>
+<tr><td>sentence</td><td>One or more statements ended by a period.</td></tr>
+<tr><td>statement</td><td>One action, starting with a COBOL verb: <code>MOVE</code>,
+<code>ADD</code>, <code>IF</code>, ...</td></tr>
+</table>
+</div>
+
+<h3>The period</h3>
+<p>In the PROCEDURE DIVISION, a period ends a sentence, and it also ends <em>every</em>
+statement that is still open, however deeply nested. That is the classic COBOL trap: a period
+inside an IF ends the IF there, and the lines after it run whether the condition was true or
+not. The safe modern style is to write one period at the end of each paragraph and none
+inside it, closing each statement with its scope terminator instead.</p>
+<p>Outside the PROCEDURE DIVISION, periods end each header and each entry
+(<code>01 TOTAL PIC 9(5).</code>) and are required.</p>
+
+<h3>Scope terminators</h3>
+<p>Statements that contain other statements, or that have phrases like
+<code>ON SIZE ERROR</code> or <code>AT END</code>, can be closed with a matching
+<code>END-</code> word: <code>END-IF</code>, <code>END-PERFORM</code>, <code>END-EVALUATE</code>,
+<code>END-READ</code>, <code>END-ADD</code>, <code>END-COMPUTE</code>, <code>END-STRING</code>,
+<code>END-CALL</code> and so on. The terminator shows exactly where the statement stops, so
+you can nest one IF inside another without periods.</p>
+
+<h3>Several programs in one file</h3>
+<p>A source file may hold more than one program. Each one starts with its own
+IDENTIFICATION DIVISION and ends with <code>END PROGRAM name.</code> A program placed before its
+outer program's END PROGRAM is a <em>nested</em> program: it belongs to the outer program and
+is called with <a href="call.html">CALL</a>. A program placed after another's END PROGRAM is a
+separate program that happens to share the file. When a file has only one program, END PROGRAM
+is optional.</p>
+
+<h2>Example: the parts of a program</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PROGSTR1.cbl" download>PROGSTR1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PROGSTR1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  COUNTER             PIC 9     VALUE 0.
+<span class="seq">000060</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000070</span> MAIN-LOGIC <span class="kw">SECTION</span>.
+<span class="seq">000080</span> START-HERE.
+<span class="seq">000090</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;START-HERE&quot;</span>
+<span class="seq">000100</span>     <span class="kw">PERFORM</span> COUNT-UP 3 TIMES
+<span class="seq">000110</span>     <span class="kw">IF</span> COUNTER &gt; 2
+<span class="seq">000120</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;COUNTER IS &quot;</span> COUNTER
+<span class="seq">000130</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;STILL INSIDE THE IF&quot;</span>
+<span class="seq">000140</span>     <span class="kw">END-IF</span>
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER END-IF&quot;</span>.
+<span class="seq">000160</span>     <span class="kw">IF</span> COUNTER &gt; 5
+<span class="seq">000170</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;NOT SHOWN&quot;</span>.
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;THE PERIOD ENDED THAT IF&quot;</span>.
+<span class="seq">000190</span>     <span class="kw">PERFORM</span> HELPERS
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COUNTER IS NOW &quot;</span> COUNTER
+<span class="seq">000210</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000220</span> HELPERS <span class="kw">SECTION</span>.
+<span class="seq">000230</span> COUNT-UP.
+<span class="seq">000240</span>     <span class="kw">ADD</span> 1 TO COUNTER.
+<span class="seq">000250</span> SAY-DONE.
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SAY-DONE RUNS AS PART OF HELPERS&quot;</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">START-HERE
+COUNTER IS 3
+STILL INSIDE THE IF
+AFTER END-IF
+THE PERIOD ENDED THAT IF
+SAY-DONE RUNS AS PART OF HELPERS
+COUNTER IS NOW 4</pre>
+</figure>
+<p>The PROCEDURE DIVISION has two sections. In MAIN-LOGIC, the first IF is closed by
+END-IF, so "AFTER END-IF" is shown no matter what. The second IF is ended by the period after
+<code>DISPLAY "NOT SHOWN"</code>, so the next sentence runs as usual. <code>PERFORM HELPERS</code>
+runs the whole HELPERS section: both its paragraphs, so COUNT-UP adds 1 a fourth time and
+SAY-DONE speaks. STOP RUN ends the program before control could fall into HELPERS on its
+own.</p>
+
+<h2>Example: programs in one file</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PROGSTR2.cbl" download>PROGSTR2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PROGSTR2.
+<span class="seq">000030</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;IN THE OUTER PROGRAM&quot;</span>
+<span class="seq">000050</span>     <span class="kw">CALL</span> <span class="str">&quot;PROGSTR2IN&quot;</span>
+<span class="seq">000060</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BACK IN THE OUTER PROGRAM&quot;</span>
+<span class="seq">000070</span>     <span class="kw">CALL</span> <span class="str">&quot;PROGSTR2NEXT&quot;</span>
+<span class="seq">000080</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000090</span>
+<span class="seq">000100</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">PROGRAM-ID</span>. PROGSTR2IN.
+<span class="seq">000120</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;  IN THE NESTED PROGRAM&quot;</span>
+<span class="seq">000140</span>     <span class="kw">GOBACK</span>.
+<span class="seq">000150</span> <span class="kw">END</span> PROGRAM PROGSTR2IN.
+<span class="seq">000160</span> <span class="kw">END</span> PROGRAM PROGSTR2.
+<span class="seq">000170</span>
+<span class="seq">000180</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000190</span> <span class="kw">PROGRAM-ID</span>. PROGSTR2NEXT.
+<span class="seq">000200</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;  IN THE SECOND PROGRAM OF THE FILE&quot;</span>
+<span class="seq">000220</span>     <span class="kw">GOBACK</span>.
+<span class="seq">000230</span> <span class="kw">END</span> PROGRAM PROGSTR2NEXT.</code></pre>
+<div class="out-label">Output</div><pre class="output">IN THE OUTER PROGRAM
+  IN THE NESTED PROGRAM
+BACK IN THE OUTER PROGRAM
+  IN THE SECOND PROGRAM OF THE FILE</pre>
+</figure>
+<p>PROGSTR2IN sits inside PROGSTR2 (before <code>END PROGRAM PROGSTR2</code>), so it is a
+nested program. PROGSTR2NEXT comes after PROGSTR2's END PROGRAM, so it is a separate program
+in the same file. Both are reached with CALL and come back with GOBACK.</p>
+
+<h2>See also</h2>
+<p><a href="source-format.html">Source format</a>, <a href="procedure-division.html">PROCEDURE
+DIVISION</a> for how control moves between paragraphs, <a href="call.html">CALL</a>,
+<a href="perform.html">PERFORM</a>, <a href="if.html">IF</a>,
+<a href="identification-division.html">IDENTIFICATION DIVISION</a> for COMMON and INITIAL
+programs.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="source-format.html">&larr; Source format</a><a class="next" href="identification-division.html">IDENTIFICATION DIVISION &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

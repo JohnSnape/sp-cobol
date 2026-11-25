@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>START - SP COBOL Reference</title>
+<meta name="description" content="Position a relative or indexed file so the next READ NEXT begins at a chosen key.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html" class="current" aria-current="page">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>START </h1>
+<p class="lede">Position a relative or indexed file so the next READ NEXT begins at a chosen key.</p>
+<h2>Syntax</h2>
+<pre class="syntax">START <var>file-name</var>
+    [ KEY IS { EQUAL TO | = | GREATER THAN | &gt; | NOT LESS THAN | NOT &lt;
+             | GREATER THAN OR EQUAL TO | &gt;= | LESS THAN | &lt;
+             | NOT GREATER THAN | NOT &gt; | LESS THAN OR EQUAL TO | &lt;= }
+          <var>data-name-1</var> ]
+    [ INVALID KEY <var>imperative-statement-1</var> ]
+    [ NOT INVALID KEY <var>imperative-statement-2</var> ]
+[ END-START ]</pre>
+
+<h2>What it does</h2>
+<p>START doesn't read anything. It finds the first record that meets a condition on its key
+and makes it the <em>current position</em>, so the next <code>READ ... NEXT</code> returns that
+record and later ones follow in key order. Use it to browse a RELATIVE or INDEXED file from a
+point in the middle, such as "all customers from M on". The file must be open INPUT or I-O,
+with sequential or dynamic access.</p>
+<p>Set the key first, then START:</p>
+<ul>
+<li>RELATIVE: the slot number in the RELATIVE KEY item; <code>KEY IS</code> names that
+item.</li>
+<li>INDEXED: the value in the RECORD KEY field, or in an alternate key field. <code>KEY
+IS</code> names the field, and that key also becomes the order for the READ NEXTs that
+follow.</li>
+</ul>
+<p>Without a KEY phrase the condition is "equal to the RECORD KEY (or RELATIVE KEY)".
+<code>&gt;=</code> and <code>NOT &lt;</code> mean the same thing. With <code>&lt;</code> or
+<code>&lt;=</code> the position is the last record below (or at) the value.</p>
+<p>If no record meets the condition, the status is 23 and <code>INVALID KEY</code> runs.</p>
+
+<h2>Examples</h2>
+<h3>Relative file</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/START1.cbl" download>START1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. START1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> DAYS-F ASSIGN TO <span class="str">&quot;days.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS DYNAMIC
+<span class="seq">000080</span>         RELATIVE KEY IS DAY-NO <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  DAYS-F.
+<span class="seq">000120</span> 01  DAY-REC             PIC X(10).
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  DAY-NO              PIC 99.
+<span class="seq">000150</span> 01  FS                  PIC XX.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">OPEN</span> OUTPUT DAYS-F
+<span class="seq">000180</span>     <span class="kw">MOVE</span> 3 TO DAY-NO <span class="kw">MOVE</span> <span class="str">&quot;DENTIST&quot;</span> TO DAY-REC <span class="kw">WRITE</span> DAY-REC
+<span class="seq">000190</span>     <span class="kw">MOVE</span> 8 TO DAY-NO <span class="kw">MOVE</span> <span class="str">&quot;HAIRCUT&quot;</span> TO DAY-REC <span class="kw">WRITE</span> DAY-REC
+<span class="seq">000200</span>     <span class="kw">MOVE</span> 9 TO DAY-NO <span class="kw">MOVE</span> <span class="str">&quot;PARTY&quot;</span> TO DAY-REC <span class="kw">WRITE</span> DAY-REC
+<span class="seq">000210</span>     <span class="kw">CLOSE</span> DAYS-F
+<span class="seq">000220</span>     <span class="kw">OPEN</span> INPUT DAYS-F
+<span class="seq">000230</span>     <span class="kw">MOVE</span> 5 TO DAY-NO
+<span class="seq">000240</span>     <span class="kw">START</span> DAYS-F KEY IS GREATER THAN OR EQUAL TO DAY-NO
+<span class="seq">000250</span>     <span class="kw">READ</span> DAYS-F NEXT
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST FROM DAY 5: &quot;</span> DAY-NO <span class="str">&quot; &quot;</span> DAY-REC
+<span class="seq">000270</span>     <span class="kw">MOVE</span> 8 TO DAY-NO
+<span class="seq">000280</span>     <span class="kw">START</span> DAYS-F KEY &gt; DAY-NO
+<span class="seq">000290</span>     <span class="kw">READ</span> DAYS-F NEXT
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST AFTER DAY 8: &quot;</span> DAY-NO <span class="str">&quot; &quot;</span> DAY-REC
+<span class="seq">000310</span>     <span class="kw">MOVE</span> 3 TO DAY-NO
+<span class="seq">000320</span>     <span class="kw">START</span> DAYS-F KEY = DAY-NO
+<span class="seq">000330</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;NOTHING ON DAY 3&quot;</span>
+<span class="seq">000340</span>         NOT INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;DAY 3 IS BOOKED&quot;</span>
+<span class="seq">000350</span>     <span class="kw">END-START</span>
+<span class="seq">000360</span>     <span class="kw">MOVE</span> 9 TO DAY-NO
+<span class="seq">000370</span>     <span class="kw">START</span> DAYS-F KEY &gt; DAY-NO
+<span class="seq">000380</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;NOTHING AFTER DAY 9, STATUS &quot;</span> FS
+<span class="seq">000390</span>     <span class="kw">END-START</span>
+<span class="seq">000400</span>     <span class="kw">CLOSE</span> DAYS-F
+<span class="seq">000410</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">FIRST FROM DAY 5: 08 HAIRCUT   
+FIRST AFTER DAY 8: 09 PARTY     
+DAY 3 IS BOOKED
+NOTHING AFTER DAY 9, STATUS 23</pre>
+</figure>
+<p>There is no day 5, so <code>KEY IS GREATER THAN OR EQUAL TO</code> positions at day 8.
+<code>KEY &gt; DAY-NO</code> with 8 positions at day 9. Day 3 exists, so the
+<code>KEY =</code> START succeeds. Nothing comes after day 9: status 23 and INVALID KEY.
+After a successful START and READ NEXT the RELATIVE KEY holds the slot number actually
+read.</p>
+
+<h3>Indexed file, alternate key</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/START2.cbl" download>START2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. START2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> STAFF ASSIGN TO <span class="str">&quot;staff.idx&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS INDEXED ACCESS MODE IS DYNAMIC
+<span class="seq">000080</span>         RECORD KEY IS EMP-ID
+<span class="seq">000090</span>         ALTERNATE RECORD KEY IS DEPT WITH DUPLICATES
+<span class="seq">000100</span>         <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000110</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000130</span> <span class="kw">FD</span>  STAFF.
+<span class="seq">000140</span> 01  STAFF-REC.
+<span class="seq">000150</span>     05  EMP-ID          PIC 9(3).
+<span class="seq">000160</span>     05  DEPT            PIC X(5).
+<span class="seq">000170</span>     05  EMP-NAME        PIC X(8).
+<span class="seq">000180</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000190</span> 01  FS                  PIC XX.
+<span class="seq">000200</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000210</span>     <span class="kw">OPEN</span> OUTPUT STAFF
+<span class="seq">000220</span>     <span class="kw">MOVE</span> <span class="str">&quot;101SALESAVA     &quot;</span> TO STAFF-REC <span class="kw">WRITE</span> STAFF-REC
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;102ADMINBRUNO   &quot;</span> TO STAFF-REC <span class="kw">WRITE</span> STAFF-REC
+<span class="seq">000240</span>     <span class="kw">MOVE</span> <span class="str">&quot;103SALESCHEN    &quot;</span> TO STAFF-REC <span class="kw">WRITE</span> STAFF-REC
+<span class="seq">000250</span>     <span class="kw">MOVE</span> <span class="str">&quot;104STOREDINA    &quot;</span> TO STAFF-REC <span class="kw">WRITE</span> STAFF-REC
+<span class="seq">000260</span>     <span class="kw">CLOSE</span> STAFF
+<span class="seq">000270</span>     <span class="kw">OPEN</span> INPUT STAFF
+<span class="seq">000280</span>     <span class="kw">MOVE</span> <span class="str">&quot;SALES&quot;</span> TO DEPT
+<span class="seq">000290</span>     <span class="kw">START</span> STAFF KEY IS NOT LESS THAN DEPT
+<span class="seq">000300</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;NO SUCH DEPARTMENT&quot;</span>
+<span class="seq">000310</span>     <span class="kw">END-START</span>
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SALES AND AFTER, BY DEPARTMENT:&quot;</span>
+<span class="seq">000330</span>     <span class="kw">PERFORM</span> UNTIL FS NOT = <span class="str">&quot;00&quot;</span> AND FS NOT = <span class="str">&quot;02&quot;</span>
+<span class="seq">000340</span>         <span class="kw">READ</span> STAFF NEXT
+<span class="seq">000350</span>         <span class="kw">IF</span> FS = <span class="str">&quot;00&quot;</span> OR <span class="str">&quot;02&quot;</span>
+<span class="seq">000360</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;  &quot;</span> DEPT <span class="str">&quot; &quot;</span> EMP-NAME <span class="str">&quot; (&quot;</span> FS <span class="str">&quot;)&quot;</span>
+<span class="seq">000370</span>         <span class="kw">END-IF</span>
+<span class="seq">000380</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000390</span>     <span class="kw">CLOSE</span> STAFF
+<span class="seq">000400</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SALES AND AFTER, BY DEPARTMENT:
+  SALES AVA      (02)
+  SALES CHEN     (00)
+  STORE DINA     (00)</pre>
+</figure>
+<p>The START uses the alternate key DEPT, so the READ NEXTs that follow go in department
+order, from SALES on. The 02 status on Ava's record means the next record has the same
+department. This example isn't compared with stock GnuCOBOL, whose reference build has no
+indexed file support.</p>
+
+<h2>See also</h2>
+<p><a href="read.html">READ</a>, <a href="files.html">Files</a> for RELATIVE KEY, RECORD KEY
+and ALTERNATE RECORD KEY, <a href="file-status.html">FILE STATUS codes</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="sort.html">&larr; SORT</a><a class="next" href="stop.html">STOP &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

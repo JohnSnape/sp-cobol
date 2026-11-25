@@ -1,0 +1,29 @@
+title: INITIATE
+summary: Start a Report Writer report, resetting its page and line counters and its totals.
+keywords: report writer start report begin PAGE-COUNTER LINE-COUNTER RD
+---
+<h2>Syntax</h2>
+<pre class="syntax">INITIATE report-name-1 ...</pre>
+
+<h2>What it does</h2>
+<p><code>INITIATE</code> gets a report (an <code>RD</code> in the
+<a href="report-writer.html">REPORT SECTION</a>) ready to print. It sets
+<code>PAGE-COUNTER</code> to 1 and <code>LINE-COUNTER</code> to 0, sets every SUM counter
+to zero, and forgets the previous values of the control fields. It doesn't print anything:
+the report heading and the first page heading appear at the first
+<a href="generate.html">GENERATE</a>.</p>
+<p>The report's file must already be open for output (<code>OPEN OUTPUT</code>). You can
+name several reports in one INITIATE. Once a report has been ended with
+<a href="terminate.html">TERMINATE</a>, you may INITIATE it again to print it a second
+time, in the same file or after reopening it.</p>
+
+<h2>Example</h2>
+<!-- example INITIATE1 -->
+<p>Straight after INITIATE, PAGE-COUNTER is 1 and LINE-COUNTER is 0, and nothing has been
+printed yet. The report is then printed twice. The second INITIATE starts the page number
+at 1 again and the TOTAL starts from zero, so it shows 22, not 137. Each run is padded to
+its 6-line page.</p>
+
+<h2>See also</h2>
+<p><a href="report-writer.html">Report Writer</a>, <a href="generate.html">GENERATE</a>,
+<a href="terminate.html">TERMINATE</a>, <a href="open.html">OPEN</a>.</p>

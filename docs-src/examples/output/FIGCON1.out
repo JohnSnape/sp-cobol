@@ -1,0 +1,11 @@
+VALUE SPACES:  [      ]
+VALUE ZERO:    [0000]
+ZEROS:         [000000]
+ALL "AB":      [ABABAB]
+ALL "*":       [******]
+QUOTES:        [""""""]
+SPACE:         [      ]
+HIGH-VALUES:   FIRST BYTE IS 255
+LOW-VALUES:    FIRST BYTE IS 000
+ZEROES:        [0000]
+THE LAST THREE BYTES ARE SPACES

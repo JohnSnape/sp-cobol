@@ -1,0 +1,36 @@
+title: SYNCHRONIZED
+summary: Line binary items up on memory boundaries, adding unused bytes in front of them.
+keywords: SYNCHRONIZED SYNC LEFT RIGHT alignment slack bytes boundary binary COMP
+---
+<h2>Syntax</h2>
+<pre class="syntax">{ SYNCHRONIZED | SYNC } [ LEFT | RIGHT ]</pre>
+
+<h2>What it does</h2>
+<p>Processors read a 4-byte or 8-byte binary number fastest when it starts at an address that
+is a multiple of its size. <code>SYNCHRONIZED</code> asks the compiler to place a binary item
+(<code>COMP</code>, <code>BINARY</code>, <code>COMP-5</code>, <code>POINTER</code>, ...) on such
+a boundary. To do that inside a record, it inserts unused bytes, called <em>slack bytes</em>,
+in front of the item, so the record gets longer.</p>
+<p>In SP COBOL, as in GnuCOBOL 3.2, this really changes the layout: the example's record grows
+from 14 to 24 bytes. On a DISPLAY item SYNC has no effect. Values and arithmetic are the same
+either way.</p>
+
+<h3>When to use it</h3>
+<p>Rarely. On a modern PC the speed difference is too small to notice, and the slack bytes
+change the record's length and the position of every item after them. Use SYNC only when a
+record layout must match one that was defined with it, such as a file written by another
+program or a structure passed to a C library.</p>
+
+<h3>LEFT and RIGHT</h3>
+<p>The words <code>LEFT</code> and <code>RIGHT</code> are accepted and give the same alignment
+as plain SYNC. The compiler warns that RIGHT "is not implemented", but the layout is the same
+as with LEFT.</p>
+
+<h2>Example</h2>
+<!-- example SYNC1 -->
+<p>Without SYNC the four items are packed: 1 + 4 + 1 + 8 = 14 bytes. With SYNC, 3 slack bytes
+put S-COUNT at offset 4, S-CODE follows at offset 8, and 7 slack bytes put S-TOTAL at offset
+16, for 24 bytes in all. The arithmetic works as usual.</p>
+
+<h2>See also</h2>
+<p><a href="usage.html">USAGE</a>, <a href="level-numbers.html">Level numbers</a>.</p>

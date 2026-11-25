@@ -1,0 +1,92 @@
+title: WRITE
+summary: Add a record to a file, with line spacing for printed reports.
+keywords: WRITE FROM ADVANCING BEFORE AFTER LINES LINE PAGE AT END-OF-PAGE EOP INVALID KEY END-WRITE LINAGE LINAGE-COUNTER form feed report print
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: sequential and line sequential files
+WRITE record-name [ FROM { identifier-1 | literal-1 } ]
+    [ { BEFORE | AFTER } ADVANCING { { integer-1 | identifier-2 } [ LINE | LINES ] | PAGE } ]
+    [ AT { END-OF-PAGE | EOP } imperative-statement-1 ]
+    [ NOT AT { END-OF-PAGE | EOP } imperative-statement-2 ]
+[ END-WRITE ]
+
+Format 2: relative and indexed files
+WRITE record-name [ FROM { identifier-1 | literal-1 } ]
+    [ INVALID KEY imperative-statement-3 ]
+    [ NOT INVALID KEY imperative-statement-4 ]
+[ END-WRITE ]</pre>
+
+<h2>What it does</h2>
+<p>WRITE adds the record in the record area to the file. Notice that you write a
+<em>record</em> name (the 01 under the FD), while READ takes a <em>file</em> name.</p>
+<p><code>WRITE record FROM item</code> first moves <code>item</code> into the record, then
+writes it. It saves a separate <a href="move.html">MOVE</a>, and lets you build lines in
+WORKING-STORAGE.</p>
+<p>The file must be open OUTPUT or EXTEND (sequential access), or OUTPUT or I-O (RELATIVE
+and INDEXED files with random or dynamic access). Otherwise the status is 48.</p>
+
+<h3>Where the record goes</h3>
+<ul>
+<li>SEQUENTIAL and LINE SEQUENTIAL: after the last record written.</li>
+<li>RELATIVE: with sequential access, in the next slot (1, 2, 3, ...), and the slot number is
+put in the RELATIVE KEY item. With random or dynamic access, in the slot whose number you put
+in the RELATIVE KEY first. If that slot is in use, the status is 22 and
+<code>INVALID KEY</code> runs.</li>
+<li>INDEXED: by the value of its RECORD KEY. A key that already exists gives 22 and
+<code>INVALID KEY</code>. With sequential access, keys must come in ascending order (21
+otherwise).</li>
+</ul>
+
+<h3>Line spacing: ADVANCING</h3>
+<p>ADVANCING is for report files (LINE SEQUENTIAL). <code>AFTER ADVANCING 2 LINES</code> moves
+the paper up two lines and then prints the record, leaving one blank line before it.
+<code>BEFORE ADVANCING 1 LINE</code> prints first, then moves up. <code>PAGE</code> starts a
+new page: a form feed character in the file, or blank lines to the end of the page when the
+file has LINAGE.</p>
+<div class="warn">
+<p>A plain WRITE (no ADVANCING) prints the record and then ends the line. A WRITE ... AFTER
+ADVANCING moves first and does <em>not</em> end its own line. So a plain WRITE straight after
+an AFTER ADVANCING one lands on the same line, right after the previous record. In a report,
+use AFTER ADVANCING on every WRITE (or BEFORE on every WRITE); don't mix them with plain
+WRITEs.</p>
+</div>
+
+<h3>Pages: LINAGE and END-OF-PAGE</h3>
+<p>An FD with <code>LINAGE IS 4 LINES WITH FOOTING AT 3 LINES AT TOP 1 LINES AT BOTTOM
+1</code> describes a page with a 1-line top margin, a body of 4 lines, and a 1-line bottom
+margin. The <em>footing area</em> is lines 3 and 4 of the body. The special register
+<code>LINAGE-COUNTER</code> holds the line of the body the next WRITE will use. When a WRITE
+reaches the footing area, or the page is full and the runtime moves to the next page, the
+<code>AT END-OF-PAGE</code> statements run; that is where a program prints page totals or a
+new heading.</p>
+
+<h2>Examples</h2>
+<h3>WRITE FROM and ADVANCING</h3>
+<!-- example WRITE1 -->
+<p>Every WRITE uses AFTER ADVANCING, so each record moves down first: the file starts with an
+empty line, and the 2-line advances leave a blank line before TEA and before END. The program
+reads the file back to show the lines.</p>
+
+<h3>LINAGE and AT END-OF-PAGE</h3>
+<!-- example WRITE2 -->
+<p>After line 2, LINAGE-COUNTER is 3, the start of the footing, so AT END-OF-PAGE runs; again
+after line 3. Line 4 fills the page, the runtime moves to the next page and LINAGE-COUNTER
+starts again at 1. On the second page line 6 reaches the footing. <code>AFTER ADVANCING
+PAGE</code> pads the rest of the page with blank lines and prints at the top of a new
+one.</p>
+
+<h3>INVALID KEY on a relative file</h3>
+<!-- example WRITE3 -->
+<p>Locker 12 is free the first time, so the NOT INVALID KEY branch runs. The second WRITE to
+slot 12 finds it in use: status 22, INVALID KEY.</p>
+
+<h2>SP COBOL notes</h2>
+<p>As in GnuCOBOL 3.2, LINAGE files get blank lines rather than form feeds between pages, and
+lines end with CR LF.</p>
+
+<h2>See also</h2>
+<p><a href="read.html">READ</a>, <a href="rewrite.html">REWRITE</a>,
+<a href="open.html">OPEN</a>, <a href="files.html">Files</a>,
+<a href="file-status.html">FILE STATUS codes</a>, <a href="report-writer.html">Report
+Writer</a> for reports with headings and totals, <a href="release.html">RELEASE</a> (the WRITE
+of a sort).</p>

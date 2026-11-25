@@ -1,0 +1,29 @@
+title: SUPPRESS
+summary: Stop one Report Writer group from printing, from inside a USE BEFORE REPORTING declarative.
+keywords: SUPPRESS PRINTING USE BEFORE REPORTING declaratives report writer skip footing
+---
+<h2>Syntax</h2>
+<pre class="syntax">SUPPRESS [ PRINTING ]</pre>
+
+<h2>What it does</h2>
+<p><code>SUPPRESS PRINTING</code> tells the <a href="report-writer.html">Report Writer</a>
+not to print the report group that is about to print, this one time. It is only allowed in
+a <code>USE BEFORE REPORTING</code> section of the <a href="use.html">DECLARATIVES</a>:
+that section runs just before its group prints, decides, and may suppress it.</p>
+<p>Suppressing a group does not stop anything else. SUM counters are still reset after a
+suppressed control footing, and the next GENERATE carries on as usual.</p>
+
+<h2>Example</h2>
+<!-- example SUPPR1 -->
+<p>The BEFORE-TOTAL section runs before every TEAM-TOTAL footing. While a footing prints,
+the control field still holds the team that is ending, so WS-TEAM is "SOLO" when SOLO's
+footing is due, and that total is suppressed. The REDS and BLUES totals print normally.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SUPPRESS and USE BEFORE REPORTING work as in GnuCOBOL 3.2, except for declaratives on
+DETAIL groups, where SP COBOL fixes a GnuCOBOL bug that doubles the totals (see
+<a href="report-writer.html">Report Writer</a>).</p>
+
+<h2>See also</h2>
+<p><a href="report-writer.html">Report Writer</a>, <a href="use.html">USE</a>,
+<a href="generate.html">GENERATE</a>.</p>

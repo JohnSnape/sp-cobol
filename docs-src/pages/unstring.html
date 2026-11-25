@@ -1,0 +1,77 @@
+title: UNSTRING
+summary: Split text into separate fields at the delimiters you name.
+keywords: DELIMITED BY ALL OR INTO DELIMITER IN COUNT IN WITH POINTER TALLYING IN ON OVERFLOW END-UNSTRING split parse CSV comma separated
+---
+<h2>Syntax</h2>
+<pre class="syntax">UNSTRING identifier-1
+    [ DELIMITED BY [ ALL ] { identifier-2 | literal-1 }
+              [ OR [ ALL ] { identifier-3 | literal-2 } ] ... ]
+    INTO { identifier-4 [ DELIMITER IN identifier-5 ] [ COUNT IN identifier-6 ] } ...
+    [ WITH POINTER identifier-7 ]
+    [ TALLYING IN identifier-8 ]
+    [ ON OVERFLOW imperative-statement-1 ]
+    [ NOT ON OVERFLOW imperative-statement-2 ]
+[ END-UNSTRING ]</pre>
+
+<h2>What it does</h2>
+<p>UNSTRING is the opposite of <a href="string.html">STRING</a>. It reads
+<code>identifier-1</code> from left to right and cuts it into pieces wherever it finds a
+<em>delimiter</em>, such as a comma. The first piece goes into the first field after
+<code>INTO</code>, the second into the second, and so on. Each piece is moved as an
+alphanumeric MOVE would move it: padded with spaces or cut to fit. The delimiters themselves
+are not copied.</p>
+
+<h3>DELIMITED BY</h3>
+<p>You can name several delimiters joined with <code>OR</code>; whichever comes first in the
+text ends the current piece. Two delimiters next to each other mean an empty piece, so
+<code>"A,,B"</code> split on commas gives A, an empty field (spaces), and B. Writing
+<code>ALL</code> in front of a delimiter treats a run of them as one, which is what you want for
+words separated by several spaces.</p>
+<p>Without DELIMITED BY, the text is simply cut into lengths: each receiving field takes as
+many characters as it holds.</p>
+
+<h3>DELIMITER IN and COUNT IN</h3>
+<p>For each receiving field you may ask for two extra results. <code>DELIMITER IN</code>
+receives the delimiter that ended this piece, which tells you which of several delimiters was
+found (it gets spaces if the piece ended at the end of the text). <code>COUNT IN</code>
+receives the number of characters in the piece, before any padding or cutting, so you can tell
+how long a name really was.</p>
+
+<h3>WITH POINTER</h3>
+<p>The pointer is a numeric field holding the position in <code>identifier-1</code> where
+UNSTRING starts reading. Set it (to 1, normally) before the statement; afterwards it holds the
+position just past the last character read. You can then carry on with another UNSTRING from
+where the first one stopped. Without a pointer, UNSTRING starts at position 1.</p>
+
+<h3>TALLYING IN</h3>
+<p><code>TALLYING IN</code> adds the number of receiving fields that were filled to a counter.
+Like INSPECT's counters, it is added to, not replaced, so set it to zero first.</p>
+
+<h3>OVERFLOW</h3>
+<p><code>ON OVERFLOW</code> runs if all the receiving fields are used up while text is still
+left, or if the pointer starts outside the text. Otherwise <code>NOT ON OVERFLOW</code> runs.
+Fields after the last piece found are left unchanged, not cleared.</p>
+
+<h2>Example</h2>
+<!-- example UNSTR1 -->
+<p>The CSV line is split at commas into four fields. The two commas in a row give an empty
+third field. COUNT IN shows that SMITH was 5 characters long. The last piece runs to the end of
+the 30-character line, so its count is 18 (SAN DIEGO and its trailing spaces), and it is cut to
+8 characters in F4. TALLYING IN counts four fields filled, the empty one included.</p>
+<p>The second UNSTRING splits words at runs of spaces or at a semicolon. It has only two
+fields to fill, so after ONE and TWO text is left over: ON OVERFLOW runs, and the pointer shows
+that reading stopped at position 11. DELIMITER IN shows that ONE ended at a space. The third
+UNSTRING starts from that pointer and picks up the rest.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">UNSTRING into a <code>JUSTIFIED RIGHT</code> field fills it from the left,
+as an ordinary field, while MOVE into the same field does right-justify. This is how
+GnuCOBOL 3.2 behaves, and SP COBOL keeps it so that results match. If you need the piece
+right-justified, UNSTRING into an ordinary field and then MOVE it.</div>
+<p>SP COBOL's UNSTRING follows GnuCOBOL's own algorithm, so COUNT IN, DELIMITER IN, POINTER and
+TALLYING results are the same as in GnuCOBOL 3.2.</p>
+
+<h2>See also</h2>
+<p><a href="string.html">STRING</a>, <a href="inspect.html">INSPECT</a>,
+<a href="justified.html">JUSTIFIED</a>, <a href="move.html">MOVE</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a> (TRIM, NUMVAL).</p>

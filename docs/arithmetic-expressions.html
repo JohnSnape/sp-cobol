@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arithmetic expressions - SP COBOL Reference</title>
+<meta name="description" content="Formulas built from numbers, data items and the operators + - * / **, as used in COMPUTE.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details open><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html" class="current" aria-current="page">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Using data</p>
+<h1>Arithmetic expressions </h1>
+<p class="lede">Formulas built from numbers, data items and the operators + - * / **, as used in COMPUTE.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><var>operand</var>  [ { + | - | * | / | ** } <var>operand</var> ] ...
+
+<var>operand</var>:
+    <var>identifier</var> | <var>numeric-literal</var> | FUNCTION <var>function-name</var> [ ( <var>arguments</var> ) ]
+  | ( <var>arithmetic-expression</var> ) | { + | - } <var>operand</var></pre>
+
+<h2>What it does</h2>
+<p>An arithmetic expression is a formula: numbers and numeric data items joined by
+operators. Its main home is <a href="compute.html">COMPUTE</a>:
+<code>COMPUTE PAY = HOURS * RATE</code>. Expressions are also allowed in reference modification
+(<code>TEXT-1 (N - 2 : N + 1)</code>) and in relation conditions (see SP
+COBOL notes).</p>
+<div class="table-wrap">
+<table>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code>+</code></td><td>add</td><td><code>A + B</code></td></tr>
+<tr><td><code>-</code></td><td>subtract (or, in front of one operand, negate)</td>
+<td><code>A - B</code>, <code>- A</code></td></tr>
+<tr><td><code>*</code></td><td>multiply</td><td><code>A * B</code></td></tr>
+<tr><td><code>/</code></td><td>divide</td><td><code>A / B</code></td></tr>
+<tr><td><code>**</code></td><td>raise to a power</td><td><code>2 ** 10</code>,
+<code>9 ** 0.5</code> (square root)</td></tr>
+</table>
+</div>
+<div class="warn">Put a space on both sides of every operator. <code>A-B</code> is not
+"A minus B": a hyphen between letters makes it one name, <code>A-B</code>. Write <code>A - B</code>.</div>
+
+<h3>Order of operations</h3>
+<p>As in ordinary arithmetic:</p>
+<ol>
+<li>parentheses, innermost first;</li>
+<li>a sign in front of an operand (unary <code>+</code> or <code>-</code>);</li>
+<li><code>**</code>;</li>
+<li><code>*</code> and <code>/</code>, left to right;</li>
+<li><code>+</code> and <code>-</code>, left to right.</li>
+</ol>
+<p>So <code>A + B * 2</code> multiplies first, and <code>A - B - 1</code> is
+<code>(A - B) - 1</code>. Several <code>**</code> in a row are worked from the right in
+GnuCOBOL: <code>2 ** 3 ** 2</code> is <code>2 ** 9</code>, 512. When in doubt, add
+parentheses.</p>
+
+<h3>Precision of the working values</h3>
+<p>While an expression is worked out, COBOL keeps far more digits than any field holds, so
+<code>A / B</code> is not cut to the size of A or B. The answer is only fitted to the
+receiving field at the end: extra decimal places are dropped, or rounded if you write
+<code>ROUNDED</code>. Because of that, the order of operations still matters for division.
+<code>1 / 3 * 3</code> works out <code>1 / 3</code> as 0.3333... with many digits but not
+infinitely many, so the product is a little under 1 and a field with two decimals gets 0.99;
+with ROUNDED it gets 1.00. Multiplying first (<code>1 * 3 / 3</code>) avoids the problem.</p>
+<p>If the answer is too big for the receiving field, or you divide by zero, that is a size
+error; see <a href="compute.html">COMPUTE</a> for <code>ON SIZE ERROR</code>.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/ARITH1.cbl" download>ARITH1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. ARITH1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  A                   PIC 99    VALUE 10.
+<span class="seq">000060</span> 01  B                   PIC 99    VALUE 4.
+<span class="seq">000070</span> 01  R                   PIC S9(5)V99.
+<span class="seq">000080</span> 01  SHOWN               PIC -(5)9.99.
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span>     <span class="kw">COMPUTE</span> R = A + B * 2
+<span class="seq">000110</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;A + B * 2      = &quot;</span> SHOWN
+<span class="seq">000120</span>     <span class="kw">COMPUTE</span> R = (A + B) * 2
+<span class="seq">000130</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;(A + B) * 2    = &quot;</span> SHOWN
+<span class="seq">000140</span>     <span class="kw">COMPUTE</span> R = A - B - 1
+<span class="seq">000150</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;A - B - 1      = &quot;</span> SHOWN
+<span class="seq">000160</span>     <span class="kw">COMPUTE</span> R = A / B
+<span class="seq">000170</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;A / B          = &quot;</span> SHOWN
+<span class="seq">000180</span>     <span class="kw">COMPUTE</span> R = 2 ** 10
+<span class="seq">000190</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;2 ** 10        = &quot;</span> SHOWN
+<span class="seq">000200</span>     <span class="kw">COMPUTE</span> R = 2 ** 3 ** 2
+<span class="seq">000210</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;2 ** 3 ** 2    = &quot;</span> SHOWN
+<span class="seq">000220</span>     <span class="kw">COMPUTE</span> R = - A + 3
+<span class="seq">000230</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;- A + 3        = &quot;</span> SHOWN
+<span class="seq">000240</span>     <span class="kw">COMPUTE</span> R = 9 ** 0.5
+<span class="seq">000250</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;9 ** 0.5       = &quot;</span> SHOWN
+<span class="seq">000260</span>     <span class="kw">COMPUTE</span> R = 1 / 3 * 3
+<span class="seq">000270</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;1 / 3 * 3      = &quot;</span> SHOWN
+<span class="seq">000280</span>     <span class="kw">COMPUTE</span> R ROUNDED = 1 / 3 * 3
+<span class="seq">000290</span>     <span class="kw">MOVE</span> R TO SHOWN  <span class="kw">DISPLAY</span> <span class="str">&quot;SAME, ROUNDED  = &quot;</span> SHOWN
+<span class="seq">000300</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">A + B * 2      =     18.00
+(A + B) * 2    =     28.00
+A - B - 1      =      5.00
+A / B          =      2.50
+2 ** 10        =   1024.00
+2 ** 3 ** 2    =    512.00
+- A + 3        =     -7.00
+9 ** 0.5       =      3.00
+1 / 3 * 3      =      0.99
+SAME, ROUNDED  =      1.00</pre>
+</figure>
+<p>Each result is stored in R (<code>PIC S9(5)V99</code>) and shown through an edited
+picture. <code>A / B</code> is 10 / 4 = 2.50. <code>- A + 3</code> negates A first, giving -7.
+<code>9 ** 0.5</code> takes a square root. The last two lines show the truncated and the
+ROUNDED result of <code>1 / 3 * 3</code>.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview, an arithmetic expression inside a condition doesn't build:
+<code>IF A * 2 &gt; B + 10</code>, <code>IF A + 1 &gt; 5</code>,
+<code>PERFORM UNTIL A * 2 &gt; 30</code> and <code>EVALUATE TRUE WHEN A * 2 &gt; B</code> all
+fail with a C# compile error. Until it is fixed, COMPUTE the value into a field and compare the
+field. Expressions in COMPUTE and in reference modification work.</div>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a>, <a href="add.html">ADD</a>,
+<a href="subtract.html">SUBTRACT</a>, <a href="multiply.html">MULTIPLY</a>,
+<a href="divide.html">DIVIDE</a>, <a href="conditions.html">conditions</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="conditions.html">&larr; Conditions</a><a class="next" href="accept.html">ACCEPT &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

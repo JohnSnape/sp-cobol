@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CONTINUE - SP COBOL Reference</title>
+<meta name="description" content="A statement that does nothing, for places where COBOL needs a statement but you have nothing to do.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html" class="current" aria-current="page">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>CONTINUE </h1>
+<p class="lede">A statement that does nothing, for places where COBOL needs a statement but you have nothing to do.</p>
+<h2>Syntax</h2>
+<pre class="syntax">CONTINUE</pre>
+
+<h2>What it does</h2>
+<p><code>CONTINUE</code> does nothing, and the program carries on with whatever comes next. It
+exists because some places in COBOL must hold at least one statement: the branch of an
+<a href="if.html">IF</a>, a <code>WHEN</code> of an <a href="evaluate.html">EVALUATE</a>, or the
+<code>ON SIZE ERROR</code> of an arithmetic statement. Writing CONTINUE there says "nothing to do
+in this case" on purpose.</p>
+<p>A common use is an IF whose interesting case is the ELSE: <code>IF BALANCE &gt;= 0 CONTINUE
+ELSE ...</code>. You could reverse the condition instead (<code>IF BALANCE &lt; 0</code>), and
+often that reads better; CONTINUE is handy when the condition is easier to state the positive
+way.</p>
+<p>In an EVALUATE, a <code>WHEN</code> with CONTINUE catches a case that needs no action, so it
+doesn't fall into <code>WHEN OTHER</code>.</p>
+<div class="note">CONTINUE is not the same as <code>NEXT SENTENCE</code>. CONTINUE goes on with
+the statement after the END-IF; NEXT SENTENCE jumps past the next period, which can skip
+statements you meant to run. The <a href="if.html">IF</a> page shows the difference.</div>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/CONT1.cbl" download>CONT1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. CONT1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  BALANCE         PIC S9(4) VALUE -25.
+<span class="seq">000060</span> 01  CODE-IN         PIC X     VALUE <span class="str">&quot;B&quot;</span>.
+<span class="seq">000070</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span>     <span class="kw">IF</span> BALANCE &gt;= 0
+<span class="seq">000090</span>         <span class="kw">CONTINUE</span>
+<span class="seq">000100</span>     <span class="kw">ELSE</span>
+<span class="seq">000110</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;OVERDRAWN BY &quot;</span> BALANCE
+<span class="seq">000120</span>     <span class="kw">END-IF</span>
+<span class="seq">000130</span>     <span class="kw">EVALUATE</span> CODE-IN
+<span class="seq">000140</span>         <span class="kw">WHEN</span> <span class="str">&quot;A&quot;</span>
+<span class="seq">000150</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;CODE A&quot;</span>
+<span class="seq">000160</span>         <span class="kw">WHEN</span> <span class="str">&quot;B&quot;</span>
+<span class="seq">000170</span>             <span class="kw">CONTINUE</span>
+<span class="seq">000180</span>         <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000190</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;UNKNOWN CODE&quot;</span>
+<span class="seq">000200</span>     <span class="kw">END-EVALUATE</span>
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DONE&quot;</span>
+<span class="seq">000220</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">OVERDRAWN BY -0025
+DONE</pre>
+</figure>
+<p>BALANCE is negative, so the ELSE branch prints the message; had it been zero or more,
+CONTINUE would have done nothing. CODE-IN is <code>"B"</code>, whose WHEN does nothing, so neither
+"CODE A" nor "UNKNOWN CODE" appears and the program goes straight on to DONE.</p>
+
+<h2>See also</h2>
+<p><a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>, <a href="exit.html">EXIT</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a> (statements and sentences).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="compute.html">&larr; COMPUTE</a><a class="next" href="delete.html">DELETE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

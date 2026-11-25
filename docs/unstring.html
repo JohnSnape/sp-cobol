@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UNSTRING - SP COBOL Reference</title>
+<meta name="description" content="Split text into separate fields at the delimiters you name.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html" class="current" aria-current="page">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>UNSTRING </h1>
+<p class="lede">Split text into separate fields at the delimiters you name.</p>
+<h2>Syntax</h2>
+<pre class="syntax">UNSTRING <var>identifier-1</var>
+    [ DELIMITED BY [ ALL ] { <var>identifier-2</var> | <var>literal-1</var> }
+              [ OR [ ALL ] { <var>identifier-3</var> | <var>literal-2</var> } ] ... ]
+    INTO { <var>identifier-4</var> [ DELIMITER IN <var>identifier-5</var> ] [ COUNT IN <var>identifier-6</var> ] } ...
+    [ WITH POINTER <var>identifier-7</var> ]
+    [ TALLYING IN <var>identifier-8</var> ]
+    [ ON OVERFLOW <var>imperative-statement-1</var> ]
+    [ NOT ON OVERFLOW <var>imperative-statement-2</var> ]
+[ END-UNSTRING ]</pre>
+
+<h2>What it does</h2>
+<p>UNSTRING is the opposite of <a href="string.html">STRING</a>. It reads
+<code>identifier-1</code> from left to right and cuts it into pieces wherever it finds a
+<em>delimiter</em>, such as a comma. The first piece goes into the first field after
+<code>INTO</code>, the second into the second, and so on. Each piece is moved as an
+alphanumeric MOVE would move it: padded with spaces or cut to fit. The delimiters themselves
+are not copied.</p>
+
+<h3>DELIMITED BY</h3>
+<p>You can name several delimiters joined with <code>OR</code>; whichever comes first in the
+text ends the current piece. Two delimiters next to each other mean an empty piece, so
+<code>"A,,B"</code> split on commas gives A, an empty field (spaces), and B. Writing
+<code>ALL</code> in front of a delimiter treats a run of them as one, which is what you want for
+words separated by several spaces.</p>
+<p>Without DELIMITED BY, the text is simply cut into lengths: each receiving field takes as
+many characters as it holds.</p>
+
+<h3>DELIMITER IN and COUNT IN</h3>
+<p>For each receiving field you may ask for two extra results. <code>DELIMITER IN</code>
+receives the delimiter that ended this piece, which tells you which of several delimiters was
+found (it gets spaces if the piece ended at the end of the text). <code>COUNT IN</code>
+receives the number of characters in the piece, before any padding or cutting, so you can tell
+how long a name really was.</p>
+
+<h3>WITH POINTER</h3>
+<p>The pointer is a numeric field holding the position in <code>identifier-1</code> where
+UNSTRING starts reading. Set it (to 1, normally) before the statement; afterwards it holds the
+position just past the last character read. You can then carry on with another UNSTRING from
+where the first one stopped. Without a pointer, UNSTRING starts at position 1.</p>
+
+<h3>TALLYING IN</h3>
+<p><code>TALLYING IN</code> adds the number of receiving fields that were filled to a counter.
+Like INSPECT's counters, it is added to, not replaced, so set it to zero first.</p>
+
+<h3>OVERFLOW</h3>
+<p><code>ON OVERFLOW</code> runs if all the receiving fields are used up while text is still
+left, or if the pointer starts outside the text. Otherwise <code>NOT ON OVERFLOW</code> runs.
+Fields after the last piece found are left unchanged, not cleared.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/UNSTR1.cbl" download>UNSTR1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. UNSTR1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  CSV-LINE       PIC X(30) VALUE <span class="str">&quot;SMITH,JOHN,,SAN DIEGO&quot;</span>.
+<span class="seq">000060</span> 01  F1             PIC X(8).
+<span class="seq">000070</span> 01  F2             PIC X(8).
+<span class="seq">000080</span> 01  F3             PIC X(8).
+<span class="seq">000090</span> 01  F4             PIC X(8).
+<span class="seq">000100</span> 01  LEN1           PIC 99.
+<span class="seq">000110</span> 01  LEN4           PIC 99.
+<span class="seq">000120</span> 01  FIELDS         PIC 99.
+<span class="seq">000130</span> 01  WORDS-IN       PIC X(30) VALUE <span class="str">&quot;ONE   TWO;THREE FOUR&quot;</span>.
+<span class="seq">000140</span> 01  DLM            PIC X.
+<span class="seq">000150</span> 01  PTR            PIC 99.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">MOVE</span> 0 TO FIELDS
+<span class="seq">000180</span>     <span class="kw">UNSTRING</span> CSV-LINE DELIMITED BY <span class="str">&quot;,&quot;</span>
+<span class="seq">000190</span>         INTO F1 COUNT IN LEN1
+<span class="seq">000200</span>              F2 F3
+<span class="seq">000210</span>              F4 COUNT IN LEN4
+<span class="seq">000220</span>         TALLYING IN FIELDS
+<span class="seq">000230</span>     <span class="kw">END-UNSTRING</span>
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> F1 <span class="str">&quot;][&quot;</span> F2 <span class="str">&quot;][&quot;</span> F3 <span class="str">&quot;][&quot;</span> F4 <span class="str">&quot;]&quot;</span>
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LENGTHS &quot;</span> LEN1 <span class="str">&quot; &quot;</span> LEN4 <span class="str">&quot;  FIELDS FILLED &quot;</span> FIELDS
+<span class="seq">000260</span>     <span class="kw">MOVE</span> 1 TO PTR
+<span class="seq">000270</span>     <span class="kw">UNSTRING</span> WORDS-IN DELIMITED BY ALL SPACE OR <span class="str">&quot;;&quot;</span>
+<span class="seq">000280</span>         INTO F1 DELIMITER IN DLM
+<span class="seq">000290</span>              F2
+<span class="seq">000300</span>         WITH POINTER PTR
+<span class="seq">000310</span>         ON OVERFLOW <span class="kw">DISPLAY</span> <span class="str">&quot;MORE TEXT LEFT AT POSITION &quot;</span> PTR
+<span class="seq">000320</span>         NOT ON OVERFLOW <span class="kw">DISPLAY</span> <span class="str">&quot;ALL TEXT USED&quot;</span>
+<span class="seq">000330</span>     <span class="kw">END-UNSTRING</span>
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> F1 <span class="str">&quot;] ENDED BY [&quot;</span> DLM <span class="str">&quot;]  [&quot;</span> F2 <span class="str">&quot;]&quot;</span>
+<span class="seq">000350</span>     <span class="kw">UNSTRING</span> WORDS-IN DELIMITED BY ALL SPACE OR <span class="str">&quot;;&quot;</span>
+<span class="seq">000360</span>         INTO F3 F4
+<span class="seq">000370</span>         WITH POINTER PTR
+<span class="seq">000380</span>     <span class="kw">END-UNSTRING</span>
+<span class="seq">000390</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;REST: [&quot;</span> F3 <span class="str">&quot;][&quot;</span> F4 <span class="str">&quot;]&quot;</span>
+<span class="seq">000400</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">[SMITH   ][JOHN    ][        ][SAN DIEG]
+LENGTHS 05 18  FIELDS FILLED 04
+MORE TEXT LEFT AT POSITION 11
+[ONE     ] ENDED BY [ ]  [TWO     ]
+REST: [THREE   ][FOUR    ]</pre>
+</figure>
+<p>The CSV line is split at commas into four fields. The two commas in a row give an empty
+third field. COUNT IN shows that SMITH was 5 characters long. The last piece runs to the end of
+the 30-character line, so its count is 18 (SAN DIEGO and its trailing spaces), and it is cut to
+8 characters in F4. TALLYING IN counts four fields filled, the empty one included.</p>
+<p>The second UNSTRING splits words at runs of spaces or at a semicolon. It has only two
+fields to fill, so after ONE and TWO text is left over: ON OVERFLOW runs, and the pointer shows
+that reading stopped at position 11. DELIMITER IN shows that ONE ended at a space. The third
+UNSTRING starts from that pointer and picks up the rest.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">UNSTRING into a <code>JUSTIFIED RIGHT</code> field fills it from the left,
+as an ordinary field, while MOVE into the same field does right-justify. This is how
+GnuCOBOL 3.2 behaves, and SP COBOL keeps it so that results match. If you need the piece
+right-justified, UNSTRING into an ordinary field and then MOVE it.</div>
+<p>SP COBOL's UNSTRING follows GnuCOBOL's own algorithm, so COUNT IN, DELIMITER IN, POINTER and
+TALLYING results are the same as in GnuCOBOL 3.2.</p>
+
+<h2>See also</h2>
+<p><a href="string.html">STRING</a>, <a href="inspect.html">INSPECT</a>,
+<a href="justified.html">JUSTIFIED</a>, <a href="move.html">MOVE</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a> (TRIM, NUMVAL).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="terminate.html">&larr; TERMINATE</a><a class="next" href="use.html">USE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

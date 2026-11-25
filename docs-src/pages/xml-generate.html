@@ -1,0 +1,104 @@
+title: XML GENERATE
+summary: Turn a group item and its fields into XML text.
+keywords: XML GENERATE FROM COUNT IN XML-DECLARATION ATTRIBUTES NAME OF TYPE OF ATTRIBUTE ELEMENT CONTENT SUPPRESS WHEN NAMESPACE NAMESPACE-PREFIX ON EXCEPTION XML-CODE END-XML markup
+---
+<h2>Syntax</h2>
+<pre class="syntax">XML GENERATE identifier-1 FROM identifier-2
+    [ COUNT IN identifier-3 ]
+    [ WITH XML-DECLARATION ]
+    [ WITH ATTRIBUTES ]
+    [ NAMESPACE IS { identifier-4 | literal-1 }
+        [ NAMESPACE-PREFIX IS { identifier-5 | literal-2 } ] ]
+    [ NAME OF { identifier-6 IS literal-3 } ... ]
+    [ TYPE OF { identifier-7 IS { ATTRIBUTE | ELEMENT | CONTENT } } ... ]
+    [ SUPPRESS { identifier-8 ...
+               | WHEN { SPACES | ZEROS | LOW-VALUES | HIGH-VALUES } } ]
+    [ ON EXCEPTION imperative-statement-1 ]
+    [ NOT ON EXCEPTION imperative-statement-2 ]
+[ END-XML ]</pre>
+
+<h2>What it does</h2>
+<p>XML is a text format that marks data with named tags, like
+<code>&lt;PRICE&gt;4.50&lt;/PRICE&gt;</code>. XML GENERATE takes the data item after
+<code>FROM</code>, usually a group, and writes it as XML into the alphanumeric field
+<code>identifier-1</code>.</p>
+
+<h3>How the data becomes XML</h3>
+<ul>
+<li>Each item becomes an <em>element</em>: a start tag with the item's COBOL name, the value,
+and an end tag. A group's element contains the elements of its items.</li>
+<li>Numeric values are written as numbers: leading zeros are dropped, and the sign and the
+decimal point are shown (<code>0017</code> becomes <code>17</code>).</li>
+<li>Text values lose their trailing spaces; a field of all spaces becomes one space.</li>
+<li>The characters that have a meaning in XML are <em>escaped</em>: <code>&amp;</code> becomes
+<code>&amp;amp;</code>, <code>&lt;</code> becomes <code>&amp;lt;</code>, <code>&gt;</code>
+becomes <code>&amp;gt;</code> and a double quote becomes <code>&amp;quot;</code>.</li>
+<li>FILLER items are left out.</li>
+</ul>
+<p>The XML text goes at the start of the output field. <code>COUNT IN</code> gives its length,
+so <code>XML-OUT (1:LEN)</code> is exactly the XML.</p>
+
+<h3>The optional phrases</h3>
+<ul>
+<li><code>WITH XML-DECLARATION</code> starts the text with <code>&lt;?xml version="1.0"?&gt;</code>
+and a line break.</li>
+<li><code>WITH ATTRIBUTES</code> writes elementary items as <em>attributes</em> of their
+group's start tag (<code>&lt;ITEM ITEM-NO="0017"&gt;</code>) instead of as separate elements.
+Groups stay elements.</li>
+<li><code>TYPE OF item IS ATTRIBUTE</code> or <code>IS ELEMENT</code> chooses for one item,
+overriding WITH ATTRIBUTES. <code>IS CONTENT</code> writes the value as the bare text of the
+group's element, without a tag of its own.</li>
+<li><code>NAME OF item IS "name"</code> uses your own tag name instead of the COBOL name.</li>
+<li><code>SUPPRESS item ...</code> leaves the named items out. <code>SUPPRESS WHEN SPACES</code>
+(or ZEROS, LOW-VALUES, HIGH-VALUES) leaves out every element whose value is all spaces (or zero,
+and so on).</li>
+<li><code>NAMESPACE IS</code> adds an XML namespace (a URI that identifies the vocabulary) to
+the outer element. With <code>NAMESPACE-PREFIX IS "m"</code> every tag gets the prefix
+<code>m:</code>.</li>
+</ul>
+
+<h3>XML-CODE and ON EXCEPTION</h3>
+<p>The special register <code>XML-CODE</code> is zero after a successful XML GENERATE. If the
+output field is too small, XML-CODE is 400, the field holds what fit, and the
+<code>ON EXCEPTION</code> statements run. Other nonzero codes report bad data: for example, a
+text field containing control characters is written as hexadecimal in an element called
+<code>hex.NAME</code> and XML-CODE is 417, and a namespace that isn't a valid URI gives 416.
+<code>NOT ON EXCEPTION</code> runs when there was no exception.</p>
+
+<h2>Examples</h2>
+<!-- example XMLGEN1 -->
+<p>The first XML GENERATE uses no options: every item is an element, ITEM-NO loses its leading
+zeros, and the ampersand in the description is escaped. The second adds the XML declaration,
+renames ITEM and ITEM-NO, makes ITEM-NO an attribute and drops NOTE-TEXT because it is all
+spaces. The third writes all the elementary items as attributes, except the SIZES group. Note
+that attribute values are the field's raw characters: <code>0017</code> and
+<code>00450</code>, with no decimal point. The last one doesn't fit in 20 characters, so
+XML-CODE is 400.</p>
+
+<!-- example XMLGEN2 -->
+<p>In the first statement WITH ATTRIBUTES makes X-POS, Y-POS and QTY attributes, while TYPE OF
+keeps LABEL-TEXT an element. QTY is zero but still appears: SUPPRESS WHEN only removes items
+written as elements. The second statement writes elements with a namespace and the prefix
+<code>m:</code>, and this time the zero QTY element is suppressed.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL writes the XML itself, so no extra library has to be installed (GnuCOBOL uses
+libxml2). The text, the XML-CODE values and the COUNT IN results are the same as in
+GnuCOBOL 3.2, quirks included:</p>
+<div class="warn">
+<ul>
+<li>A table (<a href="occurs.html">OCCURS</a>) is not repeated: only its first entry is
+generated, and the compiler warns that this is "not implemented".</li>
+<li>Attribute values are the raw characters of the field, so a negative number shows its sign
+as an overpunched last character (<code>-123.45</code> in <code>PIC S9(5)V99</code> appears
+as <code>001234u</code>).</li>
+<li>When the output field is too small, COUNT IN is one more than the length of the complete XML text (it counts a final line break).</li>
+<li>A <code>COMP-1</code> or <code>COMP-2</code> item in the data stops the program with a
+runtime error, as GnuCOBOL's runtime does. Move such values to a display field first.</li>
+</ul>
+</div>
+
+<h2>See also</h2>
+<p><a href="json-generate.html">JSON GENERATE</a>, <a href="xml-parse.html">XML PARSE</a>
+(not supported), <a href="special-registers.html">special registers</a> (XML-CODE),
+<a href="string.html">STRING</a>.</p>

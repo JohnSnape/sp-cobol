@@ -1,0 +1,61 @@
+title: SUBTRACT
+summary: Subtract one or more numbers from a field and store the difference.
+keywords: FROM GIVING ROUNDED SIZE ERROR END-SUBTRACT CORRESPONDING CORR minus subtraction difference
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: subtract from each receiving field
+SUBTRACT { identifier-1 | literal-1 } ... FROM { identifier-2 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-SUBTRACT ]
+
+Format 2: store the difference somewhere else
+SUBTRACT { identifier-1 | literal-1 } ... FROM { identifier-2 | literal-2 }
+    GIVING { identifier-3 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-SUBTRACT ]
+
+Format 3: subtract matching fields of two groups
+SUBTRACT { CORRESPONDING | CORR } group-1 FROM group-2 [ ROUNDED ]
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-SUBTRACT ]</pre>
+
+<h2>What it does</h2>
+<p><b>Format 1</b> adds up every value before <code>FROM</code> and subtracts that total from
+each field after <code>FROM</code>. <code>SUBTRACT A B FROM C</code> means "C = C - (A + B)".
+</p>
+<p><b>Format 2</b> does the same subtraction but puts the answer in the <code>GIVING</code>
+field, leaving the field after <code>FROM</code> unchanged. <code>SUBTRACT A FROM B GIVING
+C</code> means "C = B - A". A GIVING field may be numeric-edited, such as
+<code>PIC -(4)9.99</code>.</p>
+<p><b>Format 3</b> subtracts each numeric item of the first group from the item with the same
+name in the second group. Items with no partner are skipped.</p>
+
+<h3>Negative answers</h3>
+<p>Subtraction often gives a negative answer, so the receiving field usually needs an
+<code>S</code> in its picture (or a <code>-</code> if it is edited). If the field is unsigned,
+the sign is simply dropped: 5 - 8 stored in <code>PIC 9(3)</code> becomes 3, not -3, and this
+is <em>not</em> a size error.</p>
+
+<h3>Rounding and SIZE ERROR</h3>
+<p>Extra decimal places are cut off unless you write <code>ROUNDED</code> after the receiving
+field. If the answer has too many digits in front of the decimal point to fit, that is a size
+error. With <code>ON SIZE ERROR</code> the field keeps its old value and your statements run;
+without it, the high-order digits are lost. <code>NOT ON SIZE ERROR</code> runs when the answer
+fit. These work exactly as in <a href="add.html">ADD</a>.</p>
+
+<h2>Example</h2>
+<!-- example SUBTR1 -->
+<p>The fee comes off BALANCE, leaving 97.50. The GIVING form subtracts the fee and the refund
+(12.50 together) from BALANCE without changing it, so LEFT-OVER is 85.00. 85.00 - 0.50 is 84.50,
+which ROUNDED makes 85 in a whole-number field. 97.50 - 200 is shown with a minus sign in an
+edited field. STOCK has no sign, so 5 - 8 leaves 3. SMALL is signed but only two digits long:
+-95 - 10 = -105 doesn't fit, so SMALL keeps -95. SUBTRACT CORRESPONDING takes SALES from SALES
+and RETURNS from RETURNS: 900 - 150 and 40 - 15.</p>
+
+<h2>See also</h2>
+<p><a href="add.html">ADD</a>, <a href="multiply.html">MULTIPLY</a>,
+<a href="divide.html">DIVIDE</a>, <a href="compute.html">COMPUTE</a>,
+<a href="sign.html">SIGN</a> and <a href="picture.html">PICTURE</a> for signed fields.</p>

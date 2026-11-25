@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FILE STATUS codes - SP COBOL Reference</title>
+<meta name="description" content="The two-character code set after every file operation, what each value means, and how to test it.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html" class="current" aria-current="page">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Topics</p>
+<h1>FILE STATUS codes </h1>
+<p class="lede">The two-character code set after every file operation, what each value means, and how to test it.</p>
+<h2>Syntax</h2>
+<pre class="syntax">SELECT <var>file-name</var> ASSIGN TO ...
+    FILE STATUS IS <var>identifier-1</var> .
+
+WORKING-STORAGE SECTION.
+01 <var>identifier-1</var> PIC XX.
+   [ 88 <var>condition-name</var> VALUE "<var>nn</var>" [ "<var>nn</var>" ] ... . ] ...</pre>
+
+<h2>What it does</h2>
+<p>After every OPEN, CLOSE, READ, WRITE, REWRITE, DELETE and START on a file, the runtime
+stores a two-character code in the file's FILE STATUS item. <code>"00"</code> means the
+statement worked. Anything else tells you what happened, so you can react instead of letting
+the program stop.</p>
+<p>The first character is the <em>class</em> of the result:</p>
+<ul>
+<li><b>0</b>: success. The second digit may add a remark (a duplicate alternate key, a
+missing OPTIONAL file, a shortened record).</li>
+<li><b>1</b>: AT END. There is no next record.</li>
+<li><b>2</b>: INVALID KEY. A key was wrong for this operation: not found, already there,
+or out of order.</li>
+<li><b>3</b>: a permanent error, usually with the file itself: missing, not allowed, or not
+the shape the program expects.</li>
+<li><b>4</b>: a logic error: the statement didn't make sense at that moment, such as reading
+a file that isn't open.</li>
+<li><b>9</b>: other errors from the runtime.</li>
+</ul>
+<p>When a statement fails (class 3, 4 or 9, or 1 and 2 with no AT END / INVALID KEY phrase)
+and the file has neither a FILE STATUS item nor a <a href="use.html">USE</a> procedure, the
+program stops with an error message. With a FILE STATUS item, the program carries on and it's
+up to you to look at the code.</p>
+
+<h3>Declaring and testing it</h3>
+<p>Declare the item as <code>PIC XX</code> in WORKING-STORAGE, and name it in the SELECT.
+Testing it with <a href="condition-names.html">88-level condition names</a> makes the code read
+well: <code>IF FS-NOT-FOUND</code> rather than <code>IF FS = "35"</code>. Check it right after
+the statement; the next file statement replaces it. To act on a whole class, test the first
+character: <code>IF FS(1:1) = "3"</code>.</p>
+
+<h3>The codes</h3>
+<div class="table-wrap"><table>
+<tr><th>Code</th><th>Meaning</th><th>What to check</th></tr>
+<tr><td>00</td><td>Success.</td><td></td></tr>
+<tr><td>02</td><td>Success, and another record has the same alternate key value (INDEXED,
+<code>WITH DUPLICATES</code>). On READ it means the next record has the same key.</td>
+<td>Nothing, unless the key was meant to be unique.</td></tr>
+<tr><td>04</td><td>Success, but the record read was not the length the FD allows (too short
+or too long for a variable-length record).</td><td>The RECORD VARYING sizes against the
+file.</td></tr>
+<tr><td>05</td><td>OPEN of an <code>OPTIONAL</code> file that doesn't exist. The open
+worked; reading gives end of file at once.</td><td>Nothing; this is how OPTIONAL files
+work.</td></tr>
+<tr><td>06</td><td>READ of a LINE SEQUENTIAL line longer than the record: you got the first
+part, the next READ returns the rest.</td><td>Make the record longer.</td></tr>
+<tr><td>07</td><td>CLOSE REEL / UNIT or NO REWIND on a disk file: done, but the phrase
+has no meaning on disk.</td><td>Use a plain CLOSE.</td></tr>
+<tr><td>09</td><td>READ of a LINE SEQUENTIAL line containing a control character such as
+Ctrl-Z.</td><td>The file may not be text.</td></tr>
+<tr><td>10</td><td>End of file: no next record (sequential READ, READ NEXT, RETURN).</td>
+<td>Normal at the end of a loop.</td></tr>
+<tr><td>14</td><td>Sequential READ of a RELATIVE file reached a slot number too big for the
+RELATIVE KEY item.</td><td>Give the RELATIVE KEY more digits.</td></tr>
+<tr><td>21</td><td>Key out of order: an INDEXED file with sequential access must be written in
+ascending key order (after OPEN EXTEND too: above the highest key already there).</td><td>Sort the
+data first, or use random access.</td></tr>
+<tr><td>22</td><td>Duplicate key: WRITE to a RELATIVE slot that is in use, or WRITE of an
+INDEXED record whose RECORD KEY is already in the file.</td><td>Read
+first, or REWRITE instead.</td></tr>
+<tr><td>23</td><td>Record not found: READ, START, REWRITE or DELETE of a key or slot that
+isn't there.</td><td>The key value; normal when looking things up.</td></tr>
+<tr><td>24</td><td>Key outside the file's limits, such as RELATIVE KEY 0.</td><td>Slot numbers
+start at 1.</td></tr>
+<tr><td>30</td><td>Permanent error reported by Windows while reading or writing.</td>
+<td>The disk, the path, the file.</td></tr>
+<tr><td>31</td><td>The file name is empty or badly quoted.</td><td>The ASSIGN data item has a
+name in it when OPEN runs.</td></tr>
+<tr><td>35</td><td>OPEN INPUT, I-O or EXTEND of a file that doesn't exist.</td><td>The name,
+and the current folder. Use OPEN OUTPUT or <code>SELECT OPTIONAL</code> to create it.</td></tr>
+<tr><td>37</td><td>Permission denied: the file is read-only, or the name is a folder.</td>
+<td>The file's properties.</td></tr>
+<tr><td>38</td><td>OPEN of a file closed earlier <code>WITH LOCK</code>.</td><td>Don't lock it
+if you need it again.</td></tr>
+<tr><td>39</td><td>The file doesn't match the program: wrong record size, or (INDEXED) a
+different key layout.</td><td>The FD against the program that wrote the file.</td></tr>
+<tr><td>41</td><td>OPEN of a file that is already open.</td><td>CLOSE it first.</td></tr>
+<tr><td>42</td><td>CLOSE of a file that isn't open.</td><td></td></tr>
+<tr><td>43</td><td>REWRITE or DELETE with sequential access, with no successful READ just
+before.</td><td>READ the record first.</td></tr>
+<tr><td>44</td><td>Record size wrong: WRITE or REWRITE of a record shorter or longer than the
+FD allows.</td><td>The DEPENDING ON item before WRITE.</td></tr>
+<tr><td>46</td><td>READ after the previous READ already hit end of file or failed.</td>
+<td>Stop the loop at status 10.</td></tr>
+<tr><td>47</td><td>READ or START on a file that isn't open for INPUT or I-O (or is
+closed).</td><td>The OPEN mode.</td></tr>
+<tr><td>48</td><td>WRITE on a file that isn't open for OUTPUT, EXTEND (or I-O for RELATIVE and
+INDEXED).</td><td>The OPEN mode.</td></tr>
+<tr><td>49</td><td>REWRITE or DELETE on a file not open I-O.</td><td>Open it I-O.</td></tr>
+<tr><td>57</td><td>The LINAGE values make no sense (footing beyond the page, for
+example).</td><td>The LINAGE clause.</td></tr>
+<tr><td>61</td><td>The file is already open elsewhere, in this program or another one.</td>
+<td>Close the other user, such as Excel.</td></tr>
+<tr><td>91</td><td>The operation isn't available for this kind of file.</td><td></td></tr>
+</table></div>
+<p>GnuCOBOL also defines 34 (disk full or a boundary passed) and 51 (record locked);
+SP COBOL doesn't produce them.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FSTAT1.cbl" download>FSTAT1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FSTAT1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> DATAF ASSIGN TO <span class="str">&quot;fstat.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS SEQUENTIAL
+<span class="seq">000080</span>         <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  DATAF.
+<span class="seq">000120</span> 01  DATA-REC            PIC X(5).
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  FS                  PIC XX.
+<span class="seq">000150</span>     88  FS-OK           VALUE <span class="str">&quot;00&quot;</span>.
+<span class="seq">000160</span>     88  FS-AT-END       VALUE <span class="str">&quot;10&quot;</span>.
+<span class="seq">000170</span>     88  FS-NOT-FOUND    VALUE <span class="str">&quot;35&quot;</span>.
+<span class="seq">000180</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000190</span>     <span class="kw">OPEN</span> INPUT DATAF
+<span class="seq">000200</span>     <span class="kw">IF</span> FS-NOT-FOUND
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;OPEN INPUT, NO FILE YET   &quot;</span> FS
+<span class="seq">000220</span>     <span class="kw">END-IF</span>
+<span class="seq">000230</span>     <span class="kw">OPEN</span> OUTPUT DATAF
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;OPEN OUTPUT               &quot;</span> FS
+<span class="seq">000250</span>     <span class="kw">OPEN</span> OUTPUT DATAF
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;OPEN AGAIN                &quot;</span> FS
+<span class="seq">000270</span>     <span class="kw">READ</span> DATAF
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;READ A FILE OPEN OUTPUT   &quot;</span> FS
+<span class="seq">000290</span>     <span class="kw">MOVE</span> <span class="str">&quot;ONE&quot;</span> TO DATA-REC
+<span class="seq">000300</span>     <span class="kw">WRITE</span> DATA-REC
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE                     &quot;</span> FS
+<span class="seq">000320</span>     <span class="kw">CLOSE</span> DATAF
+<span class="seq">000330</span>     <span class="kw">CLOSE</span> DATAF
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CLOSE A CLOSED FILE       &quot;</span> FS
+<span class="seq">000350</span>     <span class="kw">WRITE</span> DATA-REC
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE A CLOSED FILE       &quot;</span> FS
+<span class="seq">000370</span>     <span class="kw">OPEN</span> INPUT DATAF
+<span class="seq">000380</span>     <span class="kw">READ</span> DATAF
+<span class="seq">000390</span>     <span class="kw">IF</span> FS-OK
+<span class="seq">000400</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;READ                      &quot;</span> FS <span class="str">&quot; &quot;</span> DATA-REC
+<span class="seq">000410</span>     <span class="kw">END-IF</span>
+<span class="seq">000420</span>     <span class="kw">READ</span> DATAF
+<span class="seq">000430</span>     <span class="kw">IF</span> FS-AT-END
+<span class="seq">000440</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;READ AT END               &quot;</span> FS
+<span class="seq">000450</span>     <span class="kw">END-IF</span>
+<span class="seq">000460</span>     <span class="kw">READ</span> DATAF
+<span class="seq">000470</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;READ AGAIN AFTER END      &quot;</span> FS
+<span class="seq">000480</span>     <span class="kw">REWRITE</span> DATA-REC
+<span class="seq">000490</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;REWRITE, FILE OPEN INPUT  &quot;</span> FS
+<span class="seq">000500</span>     <span class="kw">CLOSE</span> DATAF
+<span class="seq">000510</span>     <span class="kw">OPEN</span> I-O DATAF
+<span class="seq">000520</span>     <span class="kw">REWRITE</span> DATA-REC
+<span class="seq">000530</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;REWRITE BEFORE ANY READ   &quot;</span> FS
+<span class="seq">000540</span>     <span class="kw">CLOSE</span> DATAF
+<span class="seq">000550</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">OPEN INPUT, NO FILE YET   35
+OPEN OUTPUT               00
+OPEN AGAIN                41
+READ A FILE OPEN OUTPUT   47
+WRITE                     00
+CLOSE A CLOSED FILE       42
+WRITE A CLOSED FILE       48
+READ                      00 ONE  
+READ AT END               10
+READ AGAIN AFTER END      46
+REWRITE, FILE OPEN INPUT  49
+REWRITE BEFORE ANY READ   43</pre>
+</figure>
+<p>Each line shows the status after one statement on a sequential file: 35 because the file
+doesn't exist yet, 41 for opening twice, 47 for reading a file opened for output, 42 for
+closing twice, 48 for writing a closed file, 10 at the end, 46 for reading past the end,
+49 for REWRITE when the file is open INPUT, and 43 for REWRITE with no READ before it.</p>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FSTAT2.cbl" download>FSTAT2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FSTAT2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> SLOTS ASSIGN TO <span class="str">&quot;slots.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS RANDOM
+<span class="seq">000080</span>         RELATIVE KEY IS RK <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span>     <span class="kw">SELECT</span> VARF ASSIGN TO <span class="str">&quot;var.dat&quot;</span>
+<span class="seq">000100</span>         ORGANIZATION IS SEQUENTIAL <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000110</span>     <span class="kw">SELECT</span> WIDE ASSIGN TO <span class="str">&quot;lines.txt&quot;</span>
+<span class="seq">000120</span>         ORGANIZATION IS LINE SEQUENTIAL <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000130</span>     <span class="kw">SELECT</span> NARROW ASSIGN TO <span class="str">&quot;lines.txt&quot;</span>
+<span class="seq">000140</span>         ORGANIZATION IS LINE SEQUENTIAL <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000150</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000160</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000170</span> <span class="kw">FD</span>  SLOTS.
+<span class="seq">000180</span> 01  SLOT-REC            PIC X(4).
+<span class="seq">000190</span> <span class="kw">FD</span>  VARF RECORD VARYING 2 TO 10 CHARACTERS DEPENDING ON VLEN.
+<span class="seq">000200</span> 01  VAR-REC             PIC X(10).
+<span class="seq">000210</span> <span class="kw">FD</span>  WIDE.
+<span class="seq">000220</span> 01  WIDE-REC            PIC X(10).
+<span class="seq">000230</span> <span class="kw">FD</span>  NARROW.
+<span class="seq">000240</span> 01  NARROW-REC          PIC X(6).
+<span class="seq">000250</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000260</span> 01  FS                  PIC XX.
+<span class="seq">000270</span> 01  RK                  PIC 99.
+<span class="seq">000280</span> 01  VLEN                PIC 99.
+<span class="seq">000290</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000300</span>     <span class="kw">OPEN</span> OUTPUT SLOTS
+<span class="seq">000310</span>     <span class="kw">MOVE</span> 1 TO RK <span class="kw">MOVE</span> <span class="str">&quot;AAAA&quot;</span> TO SLOT-REC <span class="kw">WRITE</span> SLOT-REC
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE SLOT 1          &quot;</span> FS
+<span class="seq">000330</span>     <span class="kw">WRITE</span> SLOT-REC
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE SLOT 1 AGAIN    &quot;</span> FS
+<span class="seq">000350</span>     <span class="kw">MOVE</span> 0 TO RK <span class="kw">WRITE</span> SLOT-REC
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE SLOT 0          &quot;</span> FS
+<span class="seq">000370</span>     <span class="kw">CLOSE</span> SLOTS
+<span class="seq">000380</span>     <span class="kw">OPEN</span> INPUT SLOTS
+<span class="seq">000390</span>     <span class="kw">MOVE</span> 5 TO RK <span class="kw">READ</span> SLOTS
+<span class="seq">000400</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;READ EMPTY SLOT 5     &quot;</span> FS
+<span class="seq">000410</span>     <span class="kw">CLOSE</span> SLOTS
+<span class="seq">000420</span>     <span class="kw">OPEN</span> OUTPUT VARF
+<span class="seq">000430</span>     <span class="kw">MOVE</span> 1 TO VLEN <span class="kw">WRITE</span> VAR-REC
+<span class="seq">000440</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE 1 CHARACTER     &quot;</span> FS
+<span class="seq">000450</span>     <span class="kw">CLOSE</span> VARF
+<span class="seq">000460</span>     <span class="kw">OPEN</span> OUTPUT WIDE
+<span class="seq">000470</span>     <span class="kw">MOVE</span> <span class="str">&quot;ABCDEFGHIJ&quot;</span> TO WIDE-REC <span class="kw">WRITE</span> WIDE-REC
+<span class="seq">000480</span>     <span class="kw">CLOSE</span> WIDE
+<span class="seq">000490</span>     <span class="kw">OPEN</span> INPUT NARROW
+<span class="seq">000500</span>     <span class="kw">READ</span> NARROW
+<span class="seq">000510</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LINE TOO LONG         &quot;</span> FS <span class="str">&quot; &quot;</span> NARROW-REC
+<span class="seq">000520</span>     <span class="kw">READ</span> NARROW
+<span class="seq">000530</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;REST OF THE LINE      &quot;</span> FS <span class="str">&quot; &quot;</span> NARROW-REC
+<span class="seq">000540</span>     <span class="kw">CLOSE</span> NARROW REEL
+<span class="seq">000550</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CLOSE REEL            &quot;</span> FS
+<span class="seq">000560</span>     <span class="kw">CLOSE</span> NARROW
+<span class="seq">000570</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WRITE SLOT 1          00
+WRITE SLOT 1 AGAIN    22
+WRITE SLOT 0          24
+READ EMPTY SLOT 5     23
+WRITE 1 CHARACTER     44
+LINE TOO LONG         06 ABCDEF
+REST OF THE LINE      00 GHIJ  
+CLOSE REEL            07</pre>
+</figure>
+<p>The key and record codes: 22 for a slot already in use, 24 for slot 0, 23 for an empty
+slot, 44 for a 1-character record when the FD says at least 2. Reading a 10-character line
+into a 6-character record gives 06 and the first six characters; the next READ returns the
+rest with 00. <code>CLOSE ... REEL</code> on a disk file gives 07 and leaves the file open,
+so a plain CLOSE follows.</p>
+
+<h2>SP COBOL notes</h2>
+<p>The codes are the ones GnuCOBOL 3.2 sets in each situation. The exceptions are the plain
+GnuCOBOL bugs listed on the <a href="files.html">Files</a> page, for example REWRITE or DELETE
+of an empty RELATIVE slot, which gives 23 here and 00 in GnuCOBOL.</p>
+<p>When a file error stops the program, SP COBOL adds a <code>hint:</code> line under
+GnuCOBOL's message saying what to check. <code>COB_NO_HINTS=1</code> turns it off.</p>
+
+<h2>See also</h2>
+<p><a href="files.html">Files</a>, <a href="use.html">USE</a> for error procedures,
+<a href="open.html">OPEN</a>, <a href="read.html">READ</a>, <a href="write.html">WRITE</a>,
+<a href="condition-names.html">condition names</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="files.html">&larr; Files</a><a class="next" href="report-writer.html">Report Writer &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

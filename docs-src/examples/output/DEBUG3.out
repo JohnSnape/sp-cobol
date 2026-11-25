@@ -1,0 +1,3 @@
+OPENING THE FILE
+libcob: error: file does not exist (status = 35) for file CUSTOMERS ('customers.dat')
+  hint: Check the name in ASSIGN. The program looked in C:\Work. Use OPEN OUTPUT (or SELECT OPTIONAL) to create the file.

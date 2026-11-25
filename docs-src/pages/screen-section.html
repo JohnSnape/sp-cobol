@@ -1,0 +1,209 @@
+title: SCREEN SECTION
+summary: Lay out a full-screen form with labels, input fields and colors, then DISPLAY and ACCEPT it.
+keywords: SCREEN SECTION screen form LINE COL COLUMN PLUS VALUE USING FROM TO BLANK SCREEN BLANK LINE ERASE EOL EOS FOREGROUND-COLOR BACKGROUND-COLOR HIGHLIGHT LOWLIGHT REVERSE-VIDEO UNDERLINE BLINK SECURE REQUIRED AUTO FULL BELL CRT STATUS function keys F1 F3 Esc COB-CRT-STATUS console window COB_SCREEN DISPLAY AT ACCEPT AT
+badge: differs
+---
+<p>A SCREEN SECTION describes a whole screen at once: where each label goes, which fields
+the user can type into, and their colors. <code>DISPLAY screen-name</code> draws it and
+<code>ACCEPT screen-name</code> lets the user fill it in, moving between fields with Tab,
+until they press Enter or a function key. In SP COBOL the same program runs as a DOS-style
+text screen in a console window, or as a real Windows window.</p>
+
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: describe a screen (last section of the DATA DIVISION)
+SCREEN SECTION.
+01 screen-name [ attributes ] .
+   nn [ item-name ]
+      [ LINE NUMBER IS [ PLUS ] integer-1 ]
+      [ { COLUMN | COL } NUMBER IS [ PLUS ] integer-2 ]
+      { VALUE IS literal-1
+      | { PICTURE | PIC } IS picture-string
+          { USING identifier-1 | FROM { identifier-2 | literal-2 } | TO identifier-3 } ... }
+      [ attributes ] .
+
+attributes:
+    BLANK SCREEN | BLANK LINE | ERASE { EOL | EOS }
+    FOREGROUND-COLOR integer-3 | BACKGROUND-COLOR integer-4
+    HIGHLIGHT | LOWLIGHT | REVERSE-VIDEO | UNDERLINE | BLINK
+    SECURE | REQUIRED | AUTO | FULL | BELL
+
+Format 2: show and fill in a screen
+DISPLAY screen-name
+ACCEPT screen-name
+
+Format 3: one field at a position
+DISPLAY { identifier-4 | literal-3 } LINE integer-5 { COLUMN | COL } integer-6
+    [ WITH { BLANK SCREEN | BLANK LINE | ERASE { EOL | EOS } | HIGHLIGHT
+           | REVERSE-VIDEO | UNDERLINE | FOREGROUND-COLOR integer-3
+           | BACKGROUND-COLOR integer-4 } ... ]
+ACCEPT identifier-5 LINE integer-5 { COLUMN | COL } integer-6
+    [ WITH { AUTO | SECURE | REQUIRED | UPPER | LOWER | UPDATE | HIGHLIGHT ... } ... ]
+
+Format 4: which key ended the ACCEPT (ENVIRONMENT DIVISION)
+SPECIAL-NAMES.
+    CRT STATUS IS identifier-6.</pre>
+
+<h2>What it does</h2>
+
+<h3>Screen items</h3>
+<p>Screen items are numbered like data items: an 01 for the whole screen, and 05 (or any
+higher level) for the parts. An item is one of three kinds:</p>
+<ul>
+<li>a <b>literal</b>, <code>VALUE "Name:"</code>: text that is shown and can't be
+changed;</li>
+<li>a <b>field</b>, <code>PIC X(20) USING CUST-NAME</code>: a place on the screen tied to a
+WORKING-STORAGE item;</li>
+<li>a <b>group</b> with no PIC or VALUE, which holds other items and passes its attributes
+(such as colors) down to them.</li>
+</ul>
+<p>A field's PIC sets how wide it is and how its value looks, so an edited picture such as
+<code>ZZ,ZZ9.99</code> works on screens as it does in <a href="move.html">MOVE</a>. Three
+words say which way the data goes:</p>
+<div class="table-wrap"><table>
+<tr><th>Clause</th><th>DISPLAY shows</th><th>ACCEPT stores what was typed into</th></tr>
+<tr><td><code>FROM item</code></td><td>the item's value</td><td>nothing: the field is output only</td></tr>
+<tr><td><code>TO item</code></td><td>an empty field</td><td>the item</td></tr>
+<tr><td><code>USING item</code></td><td>the item's value</td><td>the same item</td></tr>
+</table></div>
+
+<h3>Positions</h3>
+<p>Lines are numbered from 1 at the top and columns from 1 at the left, on an 80 by 25
+screen. <code>LINE 3 COL 10</code> is an absolute position. <code>LINE PLUS 2</code> is two
+lines below the previous item, and <code>COL PLUS 2</code> starts two columns after the end
+of the previous item (so one blank column between them). An item with no LINE stays on the
+previous item's line, and one with no COL follows straight on after the previous item.</p>
+
+<h3>Clearing</h3>
+<ul>
+<li><code>BLANK SCREEN</code> clears the whole screen before the screen is drawn, in the
+colors given with it.</li>
+<li><code>BLANK LINE</code> clears the item's line first; <code>ERASE EOL</code> clears from
+the item to the end of its line; <code>ERASE EOS</code> from the item to the end of the
+screen.</li>
+</ul>
+
+<h3>Colors and looks</h3>
+<p><code>FOREGROUND-COLOR</code> is the color of the characters and
+<code>BACKGROUND-COLOR</code> the color behind them. The numbers are the eight colors of
+the PC text screen:</p>
+<div class="table-wrap"><table>
+<tr><th>Number</th><th>Color</th><th>Number</th><th>Color</th></tr>
+<tr><td>0</td><td>black</td><td>4</td><td>red</td></tr>
+<tr><td>1</td><td>blue</td><td>5</td><td>magenta</td></tr>
+<tr><td>2</td><td>green</td><td>6</td><td>brown (yellow when HIGHLIGHT)</td></tr>
+<tr><td>3</td><td>cyan</td><td>7</td><td>white (light gray)</td></tr>
+</table></div>
+<p><code>HIGHLIGHT</code> uses the bright version of the foreground color,
+<code>REVERSE-VIDEO</code> swaps the foreground and background colors, and
+<code>UNDERLINE</code> underlines. <code>LOWLIGHT</code>, <code>BLINK</code> and
+<code>BELL</code> are accepted but have no visible effect in SP COBOL.</p>
+
+<h3>Input fields</h3>
+<ul>
+<li><code>SECURE</code>: what is typed shows as <code>*</code>, and the field is drawn empty
+afterwards. Use it for passwords.</li>
+<li><code>REQUIRED</code>: Enter is refused while this field is empty; the cursor goes to it
+with the message "Please fill in this field."</li>
+<li><code>AUTO</code>: when the field is full, the cursor moves on to the next field by
+itself (on the last field, the ACCEPT ends as if Enter was pressed).</li>
+<li><code>FULL</code> is accepted but not enforced by SP COBOL.</li>
+</ul>
+<p>While a screen is accepted the keys work like this: typing replaces or overwrites
+characters (Insert switches to inserting), Left/Right, Home/End, Backspace and Delete edit,
+Tab or Down goes to the next field, Shift+Tab or Up to the previous one. Fields are visited
+top to bottom, left to right. Enter, Esc, PgUp, PgDn and the function keys end the ACCEPT.
+Input fields show an underscore in each empty position.</p>
+
+<h3>CRT STATUS: which key was pressed</h3>
+<p>Name a 4-digit field in <code>CRT STATUS IS</code> (in SPECIAL-NAMES, see
+<a href="environment-division.html">ENVIRONMENT DIVISION</a>) and every ACCEPT puts there
+the key that ended it:</p>
+<div class="table-wrap"><table>
+<tr><th>Key</th><th>Code</th></tr>
+<tr><td>Enter</td><td>0000</td></tr>
+<tr><td>F1 to F24</td><td>1001 to 1024</td></tr>
+<tr><td>Page Up / Page Down</td><td>2001 / 2002</td></tr>
+<tr><td>Esc</td><td>2005</td></tr>
+<tr><td>ACCEPT of a screen that has no input fields</td><td>8000</td></tr>
+</table></div>
+<p>Without a CRT STATUS clause the code goes to the special register
+<code>COB-CRT-STATUS</code> (see <a href="special-registers.html">special registers</a>).
+Up and Down move between fields rather than ending the ACCEPT, so they don't return a code.</p>
+
+<h3>Single fields with LINE and COL</h3>
+<p>Without a SCREEN SECTION you can still place things: <code>DISPLAY "Age:" LINE 3 COL 1</code>
+shows a value at a position, and <code>ACCEPT WS-AGE LINE 3 COL 8</code> reads one field
+there. Such an ACCEPT starts with an empty field; add <code>WITH UPDATE</code> to start from
+the item's current value. <code>WITH UPPER</code> or <code>LOWER</code> changes the case of
+letters as they are typed. Once the screen is in use, a plain DISPLAY (without LINE/COL)
+writes on the next line of the screen. See also <a href="accept.html">ACCEPT</a> and
+<a href="display.html">DISPLAY</a>.</p>
+
+<h2>One program, two kinds of screen</h2>
+<p>SP COBOL draws the same SCREEN SECTION in two ways. The <b>console</b> version is a
+DOS-style text screen in a console window. The <b>Windows</b> version is a window with a
+grid of character cells, where the input fields are real text boxes. The program's logic
+is the same in both: ACCEPT waits until Enter or a function key, then returns with the
+fields filled in.</p>
+<p>A "COBOL Screen App" project has a <code>ScreenMode</code> property: <code>Both</code>
+(the default) builds <code>NAME.exe</code> (console) and <code>NAME-Win.exe</code>
+(window) from the one source; <code>Console</code> or <code>Forms</code> builds only one.
+When running, the environment variable <code>COB_SCREEN=console</code> or
+<code>COB_SCREEN=forms</code> picks the kind of screen.</p>
+
+<h2>Examples</h2>
+<p>These examples are run with keystrokes from a script; the boxes show the screen as it
+looked at each ACCEPT and when the program ended, and the lines under a box say which key
+ended that ACCEPT (<code>[key 0]</code> is Enter) and any message or beep. Colors are not
+shown.</p>
+
+<h3>A data-entry screen</h3>
+<!-- example SCREEN1 -->
+<p>The keys were Tab, Enter, "LONDON", Tab, "1234", Enter. The name field starts with
+"ADA LOVELACE" because of USING; Tab leaves it unchanged. The first Enter is refused,
+since City is REQUIRED and empty, so there is a beep, a message, and a second round of
+ACCEPT. The PIN shows as stars while typed and is blanked afterwards, but the program
+received 1234. "Customers so far:" comes from FROM: shown, never typed into. The last
+lines are single-field DISPLAYs with LINE and COL.</p>
+
+<h3>Function keys and CRT STATUS</h3>
+<!-- example SCREEN2 -->
+<p>The keys were F1, "12" Enter, F5, F3. Each ACCEPT puts the key code in WS-KEY (1001 for
+F1, 0 for Enter, 1005, 1003 for F3) and the EVALUATE picks a message, which the next
+DISPLAY shows. ERASE EOL clears the rest of line 5 each time.</p>
+
+<h3>Single fields, and number checks</h3>
+<!-- example SCREEN3 -->
+<p>The keys were "a42" Enter, "1.5" Enter, "-5" Enter, "7" Enter, "abc". The letter "a" is
+refused in a numeric field. "1.5" is refused because WS-QTY is PIC 9(3), whole numbers
+only, and "-5" because it has no sign; each time the cursor stays in the field. The 7 is
+shown as 007, the way PIC 9(3) shows it. The Code field is AUTO and UPPER, so "abc"
+becomes ABC and the ACCEPT ends when the third letter fills it.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn"><b>Differs from GnuCOBOL 3.2</b>, on purpose, to suit beginners (plain
+DISPLAY and ACCEPT without screens are not affected):
+<ul>
+<li>An item with no color given takes the colors of the last BLANK SCREEN, not the
+terminal's default colors.</li>
+<li>The first key typed in a field replaces its old contents, like a Windows text box.
+GnuCOBOL overwrites in place. To edit the old value instead, press an arrow key, Home or
+End first.</li>
+<li>Numeric fields are checked when you leave them, with plain-English messages ("This
+field holds whole numbers only."), and are shown again through their PICTURE.</li>
+</ul></div>
+<div class="warn">A numeric input field whose PICTURE has an assumed decimal point but no
+printed one (<code>PIC 9(3)V99</code>) loses what is typed: the item keeps its old value.
+Give the screen field an edited picture with a real point, such as
+<code>PIC ZZ9.99 USING WS-PRICE</code>.</div>
+<p>On <code>ACCEPT ... LINE ... COL</code>, the phrases for TIMEOUT, SCROLL, SIZE, CONTROL and
+CURSOR are accepted but ignored. JUSTIFIED and BLANK WHEN ZERO on screen items are accepted;
+JUSTIFIED RIGHT had no visible effect in a test.</p>
+<p>Screen examples can't be compared with stock GnuCOBOL, because the reference build has no
+screen support, so the screens above were checked by eye.</p>
+
+<h2>See also</h2>
+<p><a href="accept.html">ACCEPT</a>, <a href="display.html">DISPLAY</a>,
+<a href="environment-division.html">ENVIRONMENT DIVISION</a> (CRT STATUS),
+<a href="picture.html">PICTURE</a>, <a href="differences.html">Differences from
+GnuCOBOL</a>.</p>

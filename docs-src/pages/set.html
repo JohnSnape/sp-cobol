@@ -1,0 +1,79 @@
+title: SET
+summary: Set or move a table index, turn on a condition name, or point a LINKAGE item at data.
+keywords: TO UP BY DOWN BY TRUE FALSE index condition-name 88 ADDRESS OF pointer switch ON OFF ENTRY
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: give an index (or a number) a value
+SET { index-name-1 | identifier-1 } ... TO { index-name-2 | identifier-2 | integer-1 }
+
+Format 2: move an index forward or back
+SET index-name-1 ... { UP | DOWN } BY { identifier-3 | integer-2 }
+
+Format 3: make a condition name true or false
+SET condition-name-1 ... TO { TRUE | FALSE }
+
+Format 4: point a LINKAGE SECTION item at some data
+SET ADDRESS OF identifier-4 TO ADDRESS OF identifier-5</pre>
+
+<h2>What it does</h2>
+
+<h3>Indexes</h3>
+<p>An <em>index</em> is the counter named in a table's <code>INDEXED BY</code> clause (see
+<a href="occurs.html">OCCURS</a>). It holds an entry number, but internally it is stored in a
+form the computer can use quickly, so you can't <a href="move.html">MOVE</a> to it or ADD to it
+like an ordinary field. SET is how you change it:</p>
+<ul>
+<li><code>SET DX TO 1</code> points the index at entry 1. The value can be a number, a numeric
+field, or another index.</li>
+<li><code>SET DX UP BY 4</code> moves it four entries forward; <code>DOWN BY</code> moves it
+back.</li>
+<li><code>SET SLOT TO DX</code> goes the other way: it copies the entry number out of the index
+into an ordinary numeric field, where you can display it or do arithmetic.</li>
+</ul>
+
+<h3>Condition names</h3>
+<p>A <a href="condition-names.html">condition name</a> (a level-88 item) stands for one or
+more values of its parent field. <code>SET ORDER-SHIPPED TO TRUE</code> moves the condition's
+value (its first value, if it has several) into the parent field, so that the condition becomes
+true. This reads better than <code>MOVE "S" TO ORDER-STATUS</code> and keeps the actual code
+letter in one place.</p>
+<p><code>SET ... TO FALSE</code> works only when the 88 item has a <code>FALSE</code> phrase,
+as in <code>88 ALL-DONE VALUE "Y" FALSE "N"</code>; it moves the FALSE value into the
+field.</p>
+
+<h3>ADDRESS OF</h3>
+<p>An item in the <a href="data-division.html">LINKAGE SECTION</a> has no storage of its own;
+normally it describes data passed in by a <a href="call.html">CALL</a>.
+<code>SET ADDRESS OF VIEW TO ADDRESS OF GREETING</code> makes VIEW describe the bytes of
+GREETING, so reading or changing VIEW reads or changes GREETING. This is an advanced feature;
+most programs never need it.</p>
+
+<h2>Examples</h2>
+<!-- example SET1 -->
+<p>The index starts at entry 1 (MON), moves up four to FRI and down two to WED. Setting it from
+SLOT, which holds 2, points it at TUE, and <code>SET SLOT TO DX</code> copies the 2 back out.
+<code>SET ORDER-SHIPPED TO TRUE</code> puts "S" in ORDER-STATUS, so the IF finds the condition
+true. ALL-DONE has a FALSE value, so it can be set either way.</p>
+
+<!-- example SET2 -->
+<p>VIEW is a LINKAGE SECTION item. After the SET it describes GREETING's five bytes, so
+displaying VIEW shows HELLO, and moving WORLD into VIEW changes GREETING.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">Not working in this preview, although they compile in GnuCOBOL 3.2:
+<ul>
+<li>Setting a <code>USAGE POINTER</code> item (<code>SET ptr TO ADDRESS OF x</code>,
+<code>SET ptr TO NULL</code>): the C# build fails.
+Use <code>SET ADDRESS OF x TO ADDRESS OF y</code> directly, as in the example.</li>
+<li><code>SET switch-name TO ON / OFF</code> and testing the switch's ON STATUS / OFF STATUS
+conditions (switches declared in SPECIAL-NAMES): the C# build fails. Use an ordinary field
+with 88-level condition names instead.</li>
+<li><code>SET program-pointer TO ENTRY "name"</code> is not supported (see
+<a href="call.html">CALL</a>).</li>
+</ul>
+</div>
+
+<h2>See also</h2>
+<p><a href="occurs.html">OCCURS</a>, <a href="search.html">SEARCH</a>,
+<a href="condition-names.html">condition names</a>, <a href="perform.html">PERFORM VARYING</a>
+(which can vary an index), <a href="call.html">CALL</a>, <a href="usage.html">USAGE</a>.</p>

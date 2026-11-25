@@ -1,0 +1,100 @@
+title: PERFORM
+summary: Run a paragraph, a section or a block of statements, once or in a loop.
+keywords: THRU THROUGH TIMES UNTIL VARYING FROM BY AFTER WITH TEST BEFORE END-PERFORM loop repeat subroutine call paragraph section inline nested loops
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: run a paragraph or section once
+PERFORM procedure-1 [ { THRU | THROUGH } procedure-2 ]
+
+Format 2: a fixed number of times
+PERFORM procedure-1 [ THRU procedure-2 ] { identifier-1 | integer-1 } TIMES
+
+Format 3: until a condition is true
+PERFORM procedure-1 [ THRU procedure-2 ]
+    [ WITH TEST { BEFORE | AFTER } ] UNTIL condition-1
+
+Format 4: counting loops
+PERFORM procedure-1 [ THRU procedure-2 ]
+    [ WITH TEST { BEFORE | AFTER } ]
+    VARYING identifier-2 FROM { identifier-3 | literal-1 }
+                         BY { identifier-4 | literal-2 } UNTIL condition-1
+  [ AFTER identifier-5 FROM { identifier-6 | literal-3 }
+                       BY { identifier-7 | literal-4 } UNTIL condition-2 ] ...
+
+Inline: the same, with statements instead of a procedure name
+PERFORM [ times-or-until-or-varying-phrase ]
+    statement ...
+END-PERFORM</pre>
+
+<h2>What it does</h2>
+<p>PERFORM is how COBOL runs a piece of code from somewhere else and comes back, and it is also
+COBOL's loop statement.</p>
+
+<h3>Out-of-line PERFORM</h3>
+<p><code>PERFORM SAY-HELLO</code> jumps to the paragraph named SAY-HELLO, runs it to its end
+(the next paragraph name), and then comes back to the statement after the PERFORM. A paragraph
+used this way works like a subroutine in other languages, but it has no parameters: it works
+on the program's data directly.</p>
+<p><code>PERFORM STEP-1 THRU STEP-3</code> runs every paragraph from STEP-1 up to and including
+STEP-3, in the order they are written in the program, then comes back.</p>
+<p>A <em>section</em> name can be performed too. <code>PERFORM HELPERS</code>, where HELPERS
+is a section, runs all the paragraphs of that section, from the section header to the next
+section header.</p>
+
+<h3>TIMES</h3>
+<p><code>PERFORM ADD-ONE 3 TIMES</code> runs the paragraph three times. The count can be a
+numeric field; it is read once, before the first run.</p>
+
+<h3>UNTIL, and WITH TEST</h3>
+<p><code>PERFORM ADD-ONE UNTIL N &gt;= 10</code> runs the paragraph again and again until the
+condition is true. By default the condition is checked <em>before</em> each run
+(<code>WITH TEST BEFORE</code>), so if it is already true, the paragraph doesn't run at all.
+<code>WITH TEST AFTER</code> checks it after each run instead, so the paragraph always runs at
+least once. Make sure something in the loop changes the condition, or the loop never ends.</p>
+
+<h3>VARYING</h3>
+<p><code>VARYING I FROM 1 BY 1 UNTIL I &gt; 10</code> sets I to 1, then repeats: check the
+condition, run the code, add 1 to I. <code>BY</code> can be negative to count down. When the
+loop ends, the counter holds the value that made the condition true (11 here), not the last
+value used.</p>
+<p>Each <code>AFTER</code> phrase adds an inner loop. For every value of the first counter, the
+second counter runs through all its values; this is how you walk through the rows and columns
+of a two-dimensional table.</p>
+<p>The counter can be a numeric item or an <a href="set.html">index</a>. If you count down to
+zero, give the counter an <code>S</code> in its picture or stop at zero, because an unsigned
+field can't go below zero and the loop would never end.</p>
+
+<h3>Inline PERFORM</h3>
+<p>Leave out the procedure name and put the statements to run between <code>PERFORM</code> and
+<code>END-PERFORM</code>. All the loop phrases (<code>TIMES</code>, <code>UNTIL</code>,
+<code>VARYING</code>, <code>WITH TEST</code>) work the same way. An inline PERFORM with no loop
+phrase just runs the statements once. Inline loops keep short loop bodies next to the code that
+uses them; out-of-line paragraphs suit longer or reused code.</p>
+
+<h3>Where control goes</h3>
+<p>After an out-of-line PERFORM finishes, control returns to the statement after it, even if
+the performed paragraph itself performed others. If the main code simply runs on into the
+paragraphs below it (you forgot a <code>STOP RUN</code>), they run again as ordinary code, so
+end the main paragraph with <a href="stop.html">STOP RUN</a> or
+<a href="goback.html">GOBACK</a>. To leave a paragraph or loop early, see
+<a href="exit.html">EXIT PARAGRAPH and EXIT PERFORM</a>.</p>
+
+<h2>Examples</h2>
+<!-- example PERFORM1 -->
+<p>The first PERFORM runs one paragraph; THRU runs STEP-1, STEP-2 and STEP-3 in order. After
+three runs of ADD-ONE, N is 3, and UNTIL takes it to 10. The next PERFORM tests before
+running: N is already 10, which is &gt;= 5, so ADD-ONE doesn't run. With TEST AFTER the same
+condition runs ADD-ONE once before checking, so N becomes 11.</p>
+
+<!-- example PERFORM2 -->
+<p>VARYING with AFTER makes two nested loops: COL-NO goes from 1 to 3 for each value of ROW-NO,
+giving a small multiplication table. The inline loop counts down by 3 and stops when K reaches
+0, which is the value left in K afterwards. <code>PERFORM 2 TIMES ... END-PERFORM</code> needs
+no paragraph at all. Performing the section HELPERS runs both of its paragraphs.</p>
+
+<h2>See also</h2>
+<p><a href="exit.html">EXIT</a> (EXIT PARAGRAPH, EXIT PERFORM), <a href="go-to.html">GO TO</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a> for paragraphs and sections,
+<a href="conditions.html">conditions</a>, <a href="occurs.html">OCCURS</a> and
+<a href="search.html">SEARCH</a> for tables, <a href="call.html">CALL</a> to run another
+program.</p>

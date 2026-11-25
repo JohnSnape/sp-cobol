@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MERGE - SP COBOL Reference</title>
+<meta name="description" content="Combine files that are already in key order into one file in that order.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html" class="current" aria-current="page">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>MERGE </h1>
+<p class="lede">Combine files that are already in key order into one file in that order.</p>
+<h2>Syntax</h2>
+<pre class="syntax">MERGE <var>sort-file-name</var>
+    { ON { ASCENDING | DESCENDING } KEY <var>data-name-1</var> ... } ...
+    [ COLLATING SEQUENCE IS <var>alphabet-name</var> ]
+    USING <var>file-name-1</var> <var>file-name-2</var> ...
+    { GIVING <var>file-name-3</var> ... | OUTPUT PROCEDURE IS <var>procedure-1</var> [ { THRU | THROUGH } <var>procedure-2</var> ] }</pre>
+
+<h2>What it does</h2>
+<p>MERGE takes two or more files whose records are each already in order by the same keys,
+and combines them into one stream in that order. Think of two sorted piles of cards dealt into
+one sorted pile.</p>
+<p>It works like <a href="sort.html">SORT</a>: you need a sort file described with
+<code>SD</code>, whose record holds the key fields, and the KEY phrases name them. The
+<code>USING</code> files are opened, read and closed by MERGE, and must not be open. There is
+no INPUT PROCEDURE: the input always comes from the USING files.</p>
+<p>The result goes either to a file (<code>GIVING</code>), or to an
+<code>OUTPUT PROCEDURE</code> that fetches the records one at a time with
+<a href="return.html">RETURN</a>.</p>
+<p>When records in different files have equal keys, the one from the file named first in
+USING comes first.</p>
+<p>Each input file must already be in order by the merge keys; sort it first if it isn't.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/MERGE1.cbl" download>MERGE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. MERGE1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> MONDAY-F ASSIGN TO <span class="str">&quot;monday.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> TUESDAY-F ASSIGN TO <span class="str">&quot;tuesday.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000100</span>     <span class="kw">SELECT</span> WEEK-F ASSIGN TO <span class="str">&quot;week.txt&quot;</span>
+<span class="seq">000110</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000120</span>     <span class="kw">SELECT</span> WORK-F ASSIGN TO <span class="str">&quot;mergework&quot;</span>.
+<span class="seq">000130</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000140</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000150</span> <span class="kw">FD</span>  MONDAY-F.
+<span class="seq">000160</span> 01  MON-REC             PIC X(12).
+<span class="seq">000170</span> <span class="kw">FD</span>  TUESDAY-F.
+<span class="seq">000180</span> 01  TUE-REC             PIC X(12).
+<span class="seq">000190</span> <span class="kw">FD</span>  WEEK-F.
+<span class="seq">000200</span> 01  WEEK-REC            PIC X(12).
+<span class="seq">000210</span> <span class="kw">SD</span>  WORK-F.
+<span class="seq">000220</span> 01  WORK-REC.
+<span class="seq">000230</span>     05  W-ACCOUNT       PIC X(4).
+<span class="seq">000240</span>     05  W-DAY           PIC X(8).
+<span class="seq">000250</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000260</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000270</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000280</span>     <span class="kw">OPEN</span> OUTPUT MONDAY-F TUESDAY-F
+<span class="seq">000290</span>     <span class="kw">MOVE</span> <span class="str">&quot;A100MONDAY&quot;</span> TO MON-REC <span class="kw">WRITE</span> MON-REC
+<span class="seq">000300</span>     <span class="kw">MOVE</span> <span class="str">&quot;A300MONDAY&quot;</span> TO MON-REC <span class="kw">WRITE</span> MON-REC
+<span class="seq">000310</span>     <span class="kw">MOVE</span> <span class="str">&quot;A100TUESDAY&quot;</span> TO TUE-REC <span class="kw">WRITE</span> TUE-REC
+<span class="seq">000320</span>     <span class="kw">MOVE</span> <span class="str">&quot;A200TUESDAY&quot;</span> TO TUE-REC <span class="kw">WRITE</span> TUE-REC
+<span class="seq">000330</span>     <span class="kw">MOVE</span> <span class="str">&quot;A400TUESDAY&quot;</span> TO TUE-REC <span class="kw">WRITE</span> TUE-REC
+<span class="seq">000340</span>     <span class="kw">CLOSE</span> MONDAY-F TUESDAY-F
+<span class="seq">000350</span>     <span class="kw">MERGE</span> WORK-F ON ASCENDING KEY W-ACCOUNT
+<span class="seq">000360</span>         USING MONDAY-F TUESDAY-F
+<span class="seq">000370</span>         GIVING WEEK-F
+<span class="seq">000380</span>     <span class="kw">OPEN</span> INPUT WEEK-F
+<span class="seq">000390</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000400</span>         <span class="kw">READ</span> WEEK-F
+<span class="seq">000410</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000420</span>             NOT AT <span class="kw">END</span> <span class="kw">DISPLAY</span> WEEK-REC
+<span class="seq">000430</span>         <span class="kw">END-READ</span>
+<span class="seq">000440</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000450</span>     <span class="kw">CLOSE</span> WEEK-F
+<span class="seq">000460</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">A100MONDAY  
+A100TUESDAY 
+A200TUESDAY 
+A300MONDAY  
+A400TUESDAY</pre>
+</figure>
+<p>Monday's and Tuesday's files are each in account order. The merged file is too. Account
+A100 appears in both; Monday's record comes first because MONDAY-F is named first.</p>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/MERGE2.cbl" download>MERGE2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. MERGE2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> NORTH-F ASSIGN TO <span class="str">&quot;north.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> SOUTH-F ASSIGN TO <span class="str">&quot;south.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000100</span>     <span class="kw">SELECT</span> WORK-F ASSIGN TO <span class="str">&quot;mergework&quot;</span>.
+<span class="seq">000110</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000130</span> <span class="kw">FD</span>  NORTH-F.
+<span class="seq">000140</span> 01  NORTH-REC           PIC X(9).
+<span class="seq">000150</span> <span class="kw">FD</span>  SOUTH-F.
+<span class="seq">000160</span> 01  SOUTH-REC           PIC X(9).
+<span class="seq">000170</span> <span class="kw">SD</span>  WORK-F.
+<span class="seq">000180</span> 01  WORK-REC.
+<span class="seq">000190</span>     05  W-DATE          PIC 9(4).
+<span class="seq">000200</span>     05  W-SALE          PIC 9(5).
+<span class="seq">000210</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000220</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000230</span> 01  DAY-TOTAL           PIC 9(6) VALUE 0.
+<span class="seq">000240</span> 01  LAST-DATE           PIC 9(4) VALUE 0.
+<span class="seq">000250</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000260</span> MAIN-PARA.
+<span class="seq">000270</span>     <span class="kw">OPEN</span> OUTPUT NORTH-F SOUTH-F
+<span class="seq">000280</span>     <span class="kw">MOVE</span> <span class="str">&quot;010100250&quot;</span> TO NORTH-REC <span class="kw">WRITE</span> NORTH-REC
+<span class="seq">000290</span>     <span class="kw">MOVE</span> <span class="str">&quot;010200100&quot;</span> TO NORTH-REC <span class="kw">WRITE</span> NORTH-REC
+<span class="seq">000300</span>     <span class="kw">MOVE</span> <span class="str">&quot;010100075&quot;</span> TO SOUTH-REC <span class="kw">WRITE</span> SOUTH-REC
+<span class="seq">000310</span>     <span class="kw">MOVE</span> <span class="str">&quot;010300300&quot;</span> TO SOUTH-REC <span class="kw">WRITE</span> SOUTH-REC
+<span class="seq">000320</span>     <span class="kw">CLOSE</span> NORTH-F SOUTH-F
+<span class="seq">000330</span>     <span class="kw">MERGE</span> WORK-F ON ASCENDING KEY W-DATE
+<span class="seq">000340</span>         USING NORTH-F SOUTH-F
+<span class="seq">000350</span>         OUTPUT <span class="kw">PROCEDURE</span> IS DAILY-TOTALS
+<span class="seq">000360</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000370</span> DAILY-TOTALS.
+<span class="seq">000380</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000390</span>         <span class="kw">RETURN</span> WORK-F
+<span class="seq">000400</span>             AT <span class="kw">END</span>
+<span class="seq">000410</span>                 <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000420</span>             NOT AT <span class="kw">END</span>
+<span class="seq">000430</span>                 <span class="kw">IF</span> W-DATE NOT = LAST-DATE AND LAST-DATE &gt; 0
+<span class="seq">000440</span>                     <span class="kw">DISPLAY</span> <span class="str">&quot;DATE &quot;</span> LAST-DATE <span class="str">&quot; TOTAL &quot;</span> DAY-TOTAL
+<span class="seq">000450</span>                     <span class="kw">MOVE</span> 0 TO DAY-TOTAL
+<span class="seq">000460</span>                 <span class="kw">END-IF</span>
+<span class="seq">000470</span>                 <span class="kw">MOVE</span> W-DATE TO LAST-DATE
+<span class="seq">000480</span>                 <span class="kw">ADD</span> W-SALE TO DAY-TOTAL
+<span class="seq">000490</span>         <span class="kw">END-RETURN</span>
+<span class="seq">000500</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000510</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DATE &quot;</span> LAST-DATE <span class="str">&quot; TOTAL &quot;</span> DAY-TOTAL.</code></pre>
+<div class="out-label">Output</div><pre class="output">DATE 0101 TOTAL 000325
+DATE 0102 TOTAL 000100
+DATE 0103 TOTAL 000300</pre>
+</figure>
+<p>The output procedure RETURNs the merged sales in date order and prints a total each time
+the date changes, plus one for the last date.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">
+<p><code>COLLATING SEQUENCE</code> doesn't work in SP COBOL yet; see
+<a href="sort.html">SORT</a>.</p>
+</div>
+
+<h2>See also</h2>
+<p><a href="sort.html">SORT</a>, <a href="return.html">RETURN</a>,
+<a href="files.html">Files</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="json-generate.html">&larr; JSON GENERATE</a><a class="next" href="move.html">MOVE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

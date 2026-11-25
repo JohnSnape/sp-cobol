@@ -1,0 +1,94 @@
+title: READ
+summary: Get the next record of a file, or the record with a given key.
+keywords: READ NEXT PREVIOUS INTO AT END NOT AT END INVALID KEY NOT INVALID KEY KEY IS END-READ end of file 10 23 46 random read
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: the next (or previous) record
+READ file-name [ NEXT | PREVIOUS ] [ RECORD ] [ INTO identifier-1 ]
+    [ AT END imperative-statement-1 ]
+    [ NOT AT END imperative-statement-2 ]
+[ END-READ ]
+
+Format 2: the record with a given key (RELATIVE and INDEXED, random or dynamic access)
+READ file-name [ RECORD ] [ INTO identifier-1 ]
+    [ KEY IS data-name-1 ]
+    [ INVALID KEY imperative-statement-3 ]
+    [ NOT INVALID KEY imperative-statement-4 ]
+[ END-READ ]</pre>
+
+<h2>What it does</h2>
+<p>READ copies a record from the file into the file's record area (the 01 level under its
+FD). The file must be open INPUT or I-O.</p>
+
+<h3>Reading in order</h3>
+<p>For SEQUENTIAL and LINE SEQUENTIAL files, and for RELATIVE and INDEXED files with
+<code>ACCESS SEQUENTIAL</code>, a plain <code>READ file</code> gets the next record. With
+<code>ACCESS DYNAMIC</code> you must write <code>READ file NEXT</code> to read in order;
+plain READ there means a read by key.</p>
+<p>When there are no more records, the READ is "at end": the status is 10 and the
+statements after <code>AT END</code> run. Otherwise the <code>NOT AT END</code> statements
+run. The usual loop reads until a flag set by AT END says to stop. A READ after the end gives
+status 46, an error, so don't read again once you've hit the end.</p>
+<p>A RELATIVE file read in order skips empty slots, and puts the slot number it read in the
+RELATIVE KEY item. An INDEXED file is read in order of its key (the RECORD KEY, or the key
+the last START or keyed READ used).</p>
+
+<h3>INTO</h3>
+<p><code>READ file INTO WS-ITEM</code> reads the record and then moves it to
+<code>WS-ITEM</code>, as a <a href="move.html">MOVE</a> would. It's handy for keeping the
+record in WORKING-STORAGE, where it stays after the next READ or after CLOSE.</p>
+
+<h3>Reading by key</h3>
+<p>With random or dynamic access, put the key first and then READ:</p>
+<ul>
+<li>RELATIVE: move the slot number to the RELATIVE KEY item.</li>
+<li>INDEXED: move the value to the RECORD KEY field in the record. To read by an alternate
+key instead, move the value to that field and write <code>KEY IS</code> that field.</li>
+</ul>
+<p>If there is no such record, the status is 23 and the <code>INVALID KEY</code> statements
+run; otherwise <code>NOT INVALID KEY</code> runs. A keyed READ also sets the position, so a
+<code>READ NEXT</code> afterwards carries on from that record in key order.</p>
+
+<h3>READ PREVIOUS</h3>
+<p><code>READ file PREVIOUS</code> (INDEXED, dynamic access) goes one record backwards in
+key order.</p>
+
+<h2>Examples</h2>
+<h3>A read loop</h3>
+<!-- example READ1 -->
+<p>Each READ puts a line in the record area and copies it INTO SCORE-WS, where it is split
+into a name and points. After three records the fourth READ is at end, which sets NO-MORE and
+stops the loop.</p>
+
+<h3>Reading a relative file by slot</h3>
+<!-- example READ2 -->
+<p>Slot 3 is empty, so the first READ takes the INVALID KEY branch with status 23. The read
+of slot 4 works. <code>READ NEXT</code> then carries on from slot 4 to slot 5 and sets
+SEAT-NO to 05. The last READ NEXT finds nothing after slot 5: AT END, status 10.</p>
+
+<h3>Reading an indexed file by an alternate key</h3>
+<!-- example READ3 -->
+<p>The READ with <code>KEY IS AUTHOR</code> finds the first Austen book. Its status is 02:
+success, and the next record in AUTHOR order has the same author. READ NEXT then follows the
+AUTHOR key (PERSUASION, then HARD TIMES by Dickens), and READ PREVIOUS steps back to PERSUASION. The book 0009
+doesn't exist: status 23. This example isn't compared with stock GnuCOBOL, whose reference
+build has no indexed file support.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">
+<p>A READ after the end of the file is status 46 and counts as an error: if the file has a
+<a href="use.html">USE</a> procedure, it runs even when the READ has an AT END phrase, as in
+GnuCOBOL.</p>
+</div>
+<div class="warn">
+<p><code>READ PREVIOUS</code> on a RELATIVE file doesn't always give the same result as
+GnuCOBOL 3.2: after a START and READ NEXT, two READ PREVIOUS in a row step back two slots in
+SP COBOL, while GnuCOBOL reports end of file (10) on the second one. Use READ PREVIOUS with
+INDEXED files.</p>
+</div>
+
+<h2>See also</h2>
+<p><a href="start.html">START</a> to choose where reading begins,
+<a href="write.html">WRITE</a>, <a href="open.html">OPEN</a>, <a href="files.html">Files</a>,
+<a href="file-status.html">FILE STATUS codes</a>, <a href="return.html">RETURN</a> (the READ
+of a sort).</p>

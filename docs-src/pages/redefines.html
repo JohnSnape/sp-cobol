@@ -1,0 +1,49 @@
+title: REDEFINES
+summary: Describe the same bytes of storage a second way.
+keywords: REDEFINES overlay union two views same storage date year month day
+---
+<h2>Syntax</h2>
+<pre class="syntax">level-number data-name-1 REDEFINES data-name-2 [ other clauses ] .</pre>
+
+<h2>What it does</h2>
+<p><code>REDEFINES</code> doesn't create new storage. It gives the bytes of
+<code>data-name-2</code> a second description, <code>data-name-1</code>. Both names refer to the
+same memory, so a change through one name is seen through the other at once.</p>
+<p>The most common uses are:</p>
+<ul>
+<li>splitting a value into parts, such as a date <code>PIC 9(8)</code> seen as year, month and
+day;</li>
+<li>looking at the same bytes as text or as a number, for example to check input before using
+it in arithmetic;</li>
+<li>starting a table with different values: FILLER items with VALUEs, redefined as an
+<a href="occurs.html">OCCURS</a> table (see <a href="value.html">VALUE</a>);</li>
+<li>records that come in several layouts, where a type code says which layout applies.</li>
+</ul>
+
+<h3>Rules</h3>
+<ul>
+<li>The REDEFINES entry has the same level number as the item it redefines, and comes right
+after it (after that item's own subordinate items, if it is a group).</li>
+<li>You can redefine an item more than once: several entries can all name the same
+<code>data-name-2</code>.</li>
+<li>At level 01 the new description may be longer than the original, as in the example. At
+lower levels keep it the same size or shorter.</li>
+<li>Don't put a VALUE on the redefining item; give the starting value on the original.</li>
+</ul>
+<p>COBOL doesn't convert anything between the two views. If the bytes don't make sense for the
+new description, such as letters seen through a <code>PIC 9</code> item, you get nonsense
+rather than an error.</p>
+
+<h2>Example</h2>
+<!-- example REDEF1 -->
+<p>TODAY-PARTS covers the same 8 bytes as TODAY, so YYYY, MM and DD show the parts of the date.
+Moving 12 to MM changes the month inside TODAY. AMOUNT-9 sees the six characters
+<code>001250</code> as the number 12.50; adding 1 to it changes the text to
+<code>001350</code>. LONG-ONE is a 6-byte view of a 4-byte item, which is allowed at
+level 01.</p>
+
+<h2>See also</h2>
+<p><a href="renames.html">RENAMES</a>, <a href="level-numbers.html">Level numbers</a>,
+<a href="occurs.html">OCCURS</a>, <a href="value.html">VALUE</a>,
+<a href="referring-to-data.html">Referring to data</a> (reference modification, another way
+to look at part of an item).</p>

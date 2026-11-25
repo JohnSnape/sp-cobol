@@ -1,0 +1,70 @@
+title: Level numbers
+summary: How the numbers in front of data names build records out of groups and elementary items.
+keywords: 01 05 10 49 66 77 78 88 group item elementary item FILLER record structure hierarchy level number
+---
+<h2>Syntax</h2>
+<pre class="syntax">level-number { data-name | FILLER } [ clauses ] .
+
+level-number is one of:
+    01-49   an item in a record (01 starts a new record)
+    66      another name for a range of items (RENAMES)
+    77      a stand-alone elementary item
+    78      a named constant
+    88      a condition-name (a name for some values)</pre>
+
+<h2>What it does</h2>
+<p>Every line in the DATA DIVISION that describes data starts with a <em>level number</em>.
+The number tells COBOL how the item fits into the items around it.</p>
+
+<h3>Groups and elementary items</h3>
+<p>An <em>elementary item</em> is a single field: it has a <code>PICTURE</code> (or a
+<code>USAGE</code> such as <code>COMP-1</code> that implies its size) and nothing below it. A
+<em>group item</em> has no PICTURE; it is made up of the items with higher level numbers that
+follow it. The group ends at the next item whose level number is the same as the group's or
+lower.</p>
+<p><code>01</code> starts a record: the top of a structure, beginning in column 8. Items inside
+it use any numbers from <code>02</code> to <code>49</code>. The numbers don't have to go up by
+one; <code>05</code>, <code>10</code>, <code>15</code> is the usual style, because it leaves
+room to add a level later. What matters is that items at the same depth use the same number.</p>
+<pre>01  CUSTOMER.                  group (the whole record)
+    05  CUST-ID     PIC 9(4).  elementary
+    05  CUST-NAME.             group inside the group
+        10  FIRST-NAME PIC X(6).
+        10  LAST-NAME  PIC X(8).</pre>
+
+<h3>A group's size and type</h3>
+<p>A group takes up exactly the bytes of the items inside it, one after another, with no gaps.
+Its size is the sum of their sizes. A group is always treated as alphanumeric
+(<code>PIC X</code>), whatever is inside it: when you MOVE to a group or DISPLAY it, COBOL
+copies the bytes as they are, without any number conversion. That is why
+<code>MOVE "GRACE HOPPER" TO CUST-NAME</code> in the example splits the text across
+FIRST-NAME and LAST-NAME by position.</p>
+
+<h3>FILLER</h3>
+<p>Write <code>FILLER</code> (or leave the name out) for an item you never need to refer to,
+such as a separator or spacing in a print line. It still takes up room and can have a
+<code>VALUE</code>.</p>
+
+<h3>The special levels</h3>
+<ul>
+<li><b>77</b>: an elementary item that is not part of any record. It works like an
+<code>01</code> with a PICTURE; many programmers just use <code>01</code>.</li>
+<li><b>66</b>: gives another name to a run of items in the record just above it. See
+<a href="renames.html">RENAMES</a>.</li>
+<li><b>78</b>: a named constant. See <a href="constants.html">Constants</a>.</li>
+<li><b>88</b>: a condition-name attached to the item above it, such as
+<code>88 PASSED VALUE 60 THRU 100</code>. See <a href="condition-names.html">Condition-names</a>.</li>
+</ul>
+
+<h2>Example</h2>
+<!-- example LEVELS1 -->
+<p>CUSTOMER is 4 + 1 + 14 + 5 = 24 bytes, and displaying it shows all of its items side by
+side, including the FILLER dash and BALANCE's digits without a decimal point (the point is
+only implied). CUST-NAME is 6 + 8 = 14 bytes. Moving 12 characters into CUST-NAME fills
+FIRST-NAME with the first 6 and LAST-NAME with the rest, padded with spaces.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="usage.html">USAGE</a>,
+<a href="value.html">VALUE</a>, <a href="occurs.html">OCCURS</a>,
+<a href="redefines.html">REDEFINES</a>, <a href="data-division.html">DATA DIVISION</a>,
+<a href="referring-to-data.html">Referring to data</a>.</p>

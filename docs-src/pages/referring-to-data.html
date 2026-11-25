@@ -1,0 +1,80 @@
+title: Referring to data
+summary: Name the exact data you mean: qualification with OF/IN, subscripts, indexes and reference modification.
+keywords: qualification OF IN qualified name subscript index relative subscript reference modification substring (start:length) table element two-dimensional identifier
+---
+<h2>Syntax</h2>
+<pre class="syntax">Qualification:
+data-name-1 [ { OF | IN } data-name-2 ] ...
+
+Subscripts (items in a table):
+data-name ( subscript [ , subscript ] ... )
+    subscript:  integer | data-name-3 [ { + | - } integer ] | index-name [ { + | - } integer ]
+
+Reference modification (part of an item):
+identifier ( start : [ length ] )</pre>
+
+<h2>What it does</h2>
+<p>Most of the time a data item's name is all you need. This page covers the three ways to be
+more exact. Together they make up an <em>identifier</em>, the thing the syntax boxes on other
+pages ask for, and they can be combined: <code>SEAT OF SEATS (2, 3)</code>,
+<code>MONTH-NAME (3) (2:2)</code>.</p>
+
+<h3>Qualification: OF and IN</h3>
+<p>Two items may have the same name if they are in different groups, like the CITY of a home
+address and the CITY of a work address. To say which one you mean, add <code>OF</code> (or
+<code>IN</code>, which means the same) and the name of a group that contains it:
+<code>CITY OF HOME-ADDRESS</code>. You only need enough qualifiers to make the name unique;
+<code>A OF B OF C</code> is allowed when one level isn't enough.</p>
+
+<h3>Subscripts</h3>
+<p>An item with an <a href="occurs.html">OCCURS</a> clause is a table, and each use of it
+needs a subscript in parentheses saying which element: <code>MONTH-NAME (2)</code> is the
+second one. Elements are numbered from 1. A subscript can be:</p>
+<ul>
+<li>a literal: <code>MONTH-NAME (2)</code>;</li>
+<li>a numeric data item: <code>MONTH-NAME (N)</code>;</li>
+<li>a data item plus or minus a literal (a <em>relative subscript</em>):
+<code>MONTH-NAME (N + 1)</code>.</li>
+</ul>
+<p>A table inside a table needs one subscript for each level, outer first, separated by
+commas or spaces: <code>SEAT (ROW-NO, SEAT-NO)</code>.</p>
+
+<h3>Indexes</h3>
+<p><code>OCCURS ... INDEXED BY name</code> declares an <em>index</em> for the table. An index
+is used like a subscript, <code>MONTH-NAME (M-IDX)</code>, but you change it with
+<a href="set.html">SET</a> (<code>SET M-IDX TO 6</code>, <code>SET M-IDX UP BY 1</code>) or
+<a href="perform.html">PERFORM VARYING</a>, not with MOVE or ADD. Indexes are what
+<a href="search.html">SEARCH</a> uses. Relative indexing (<code>M-IDX + 1</code>) is allowed
+too.</p>
+
+<h3>Reference modification</h3>
+<p>To use part of an item, write the starting position and the length in parentheses with a
+colon between: <code>CITY (1:3)</code> is the first three characters of CITY. Leave out the
+length to mean "to the end": <code>CITY (5:)</code>. Positions count from 1, and either part
+can be a data item or an arithmetic expression. The result is always treated as alphanumeric
+text, even when the item is a number. On a table element, the subscript comes first:
+<code>MONTH-NAME (3) (2:2)</code>.</p>
+
+<div class="warn">Keep subscripts between 1 and the OCCURS count. COBOL doesn't check them for
+you. In stock GnuCOBOL, <code>MONTH-NAME (7)</code> in a six-element table quietly reads
+whatever bytes lie in memory after the table. SP COBOL keeps each 01 record in its own block of
+memory, so a subscript that runs off the end of the record stops the program with a .NET
+error (<code>ArgumentOutOfRangeException</code>) instead.</div>
+
+<h2>Example: one of each</h2>
+<!-- example REFDATA1 -->
+<p>The two CITY items are told apart by OF and IN. With N = 4, <code>MONTH-NAME (N)</code> is
+APR, <code>(N + 1)</code> is MAY and <code>(N - 3)</code> is JAN. The index M-IDX is SET to
+6, then down by one. <code>MONTH-TABLE (N:5)</code> takes five characters of the whole table
+starting at position 4, which crosses from FEB into MAR.</p>
+
+<h2>Example: a two-level table</h2>
+<!-- example REFDATA2 -->
+<p>SEATS holds two rows of three seats. <code>SEAT (1, 2)</code> is row 1, seat 2. The second
+MOVE adds a qualifier as well; it comes before the subscripts. <code>SEAT-ROW (R)</code> is a
+whole row, shown as three characters.</p>
+
+<h2>See also</h2>
+<p><a href="occurs.html">OCCURS</a>, <a href="set.html">SET</a>,
+<a href="search.html">SEARCH</a>, <a href="data-division.html">DATA DIVISION</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a> (FUNCTION LENGTH, for example).</p>

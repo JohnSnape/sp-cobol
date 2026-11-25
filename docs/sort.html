@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SORT - SP COBOL Reference</title>
+<meta name="description" content="Put the records of a file, or the entries of a table, in order by one or more keys.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html" class="current" aria-current="page">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>SORT <span class="badge warn">Differs from GnuCOBOL</span></h1>
+<p class="lede">Put the records of a file, or the entries of a table, in order by one or more keys.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: sort records</span>
+SORT <var>sort-file-name</var>
+    { ON { ASCENDING | DESCENDING } KEY <var>data-name-1</var> ... } ...
+    [ WITH DUPLICATES IN ORDER ]
+    [ COLLATING SEQUENCE IS <var>alphabet-name</var> ]
+    { USING <var>file-name-1</var> ... | INPUT PROCEDURE IS <var>procedure-1</var> [ { THRU | THROUGH } <var>procedure-2</var> ] }
+    { GIVING <var>file-name-2</var> ... | OUTPUT PROCEDURE IS <var>procedure-3</var> [ { THRU | THROUGH } <var>procedure-4</var> ] }
+
+<span class="fmt">Format 2: sort a table in memory</span>
+SORT <var>table-name</var>
+    { ON { ASCENDING | DESCENDING } KEY <var>data-name-2</var> ... } ...</pre>
+
+<h2>What it does</h2>
+<h3>Sorting records</h3>
+<p>Format 1 sorts records through a <em>sort file</em>. You declare it like an ordinary file,
+with a SELECT, but describe it with <code>SD</code> (sort description) instead of FD. Its
+record lists the fields the records are sorted by. You never OPEN, READ or WRITE the sort file
+yourself; SORT does that.</p>
+<p>The KEY phrases give the sort keys, most important first. <code>ON ASCENDING KEY W-TEAM ON
+DESCENDING KEY W-GOALS</code> means "by team A to Z, and within a team by goals, highest
+first". Numeric keys are compared by value (so -4 comes before 19); other keys character by
+character.</p>
+<p>The records come in one of two ways:</p>
+<ul>
+<li><code>USING file</code>: SORT opens the file, reads every record and closes it. The file
+must not be open.</li>
+<li><code>INPUT PROCEDURE IS para</code>: SORT performs your paragraph (or section), which
+hands each record over with <a href="release.html">RELEASE</a>. Use it to pick or change
+records on the way in, or to sort data that isn't in a file.</li>
+</ul>
+<p>And go out in one of two ways:</p>
+<ul>
+<li><code>GIVING file</code>: SORT writes the sorted records to a new file (it is opened
+OUTPUT, so an existing one is replaced).</li>
+<li><code>OUTPUT PROCEDURE IS para</code>: SORT performs your paragraph, which takes the
+records one at a time in order with <a href="return.html">RETURN</a>, for counting, totals,
+or a report.</li>
+</ul>
+<p>Records with equal keys come out in the order they went in. <code>WITH DUPLICATES IN
+ORDER</code> asks for exactly that.</p>
+<p>After the SORT, the special register <code>SORT-RETURN</code> is 0 if it worked and 16 if
+it failed.</p>
+
+<h3>Sorting a table</h3>
+<p>Format 2 sorts the entries of a table (an item with <a href="occurs.html">OCCURS</a>) in
+place. Name the OCCURS item, and give keys that are fields inside each entry. No SD or file is
+involved.</p>
+
+<h2>Examples</h2>
+<h3>USING and GIVING</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SORT1.cbl" download>SORT1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SORT1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> RAW-F ASSIGN TO <span class="str">&quot;raw.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> SORTED-F ASSIGN TO <span class="str">&quot;sorted.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000100</span>     <span class="kw">SELECT</span> WORK-F ASSIGN TO <span class="str">&quot;sortwork&quot;</span>.
+<span class="seq">000110</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000130</span> <span class="kw">FD</span>  RAW-F.
+<span class="seq">000140</span> 01  RAW-REC             PIC X(16).
+<span class="seq">000150</span> <span class="kw">FD</span>  SORTED-F.
+<span class="seq">000160</span> 01  SORTED-REC          PIC X(16).
+<span class="seq">000170</span> <span class="kw">SD</span>  WORK-F.
+<span class="seq">000180</span> 01  WORK-REC.
+<span class="seq">000190</span>     05  W-TEAM          PIC X(6).
+<span class="seq">000200</span>     05  W-PLAYER        PIC X(6).
+<span class="seq">000210</span>     05  W-GOALS         PIC 9(2).
+<span class="seq">000220</span>     05  FILLER          PIC X(2).
+<span class="seq">000230</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000240</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000250</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000260</span>     <span class="kw">OPEN</span> OUTPUT RAW-F
+<span class="seq">000270</span>     <span class="kw">MOVE</span> <span class="str">&quot;REDS  ALI   07&quot;</span> TO RAW-REC <span class="kw">WRITE</span> RAW-REC
+<span class="seq">000280</span>     <span class="kw">MOVE</span> <span class="str">&quot;BLUES BEA   12&quot;</span> TO RAW-REC <span class="kw">WRITE</span> RAW-REC
+<span class="seq">000290</span>     <span class="kw">MOVE</span> <span class="str">&quot;REDS  CAL   15&quot;</span> TO RAW-REC <span class="kw">WRITE</span> RAW-REC
+<span class="seq">000300</span>     <span class="kw">MOVE</span> <span class="str">&quot;BLUES DEV   03&quot;</span> TO RAW-REC <span class="kw">WRITE</span> RAW-REC
+<span class="seq">000310</span>     <span class="kw">MOVE</span> <span class="str">&quot;REDS  EVE   09&quot;</span> TO RAW-REC <span class="kw">WRITE</span> RAW-REC
+<span class="seq">000320</span>     <span class="kw">CLOSE</span> RAW-F
+<span class="seq">000330</span>     <span class="kw">SORT</span> WORK-F
+<span class="seq">000340</span>         ON ASCENDING KEY W-TEAM
+<span class="seq">000350</span>         ON DESCENDING KEY W-GOALS
+<span class="seq">000360</span>         USING RAW-F
+<span class="seq">000370</span>         GIVING SORTED-F
+<span class="seq">000380</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SORT-RETURN &quot;</span> SORT-RETURN
+<span class="seq">000390</span>     <span class="kw">OPEN</span> INPUT SORTED-F
+<span class="seq">000400</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000410</span>         <span class="kw">READ</span> SORTED-F
+<span class="seq">000420</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000430</span>             NOT AT <span class="kw">END</span> <span class="kw">DISPLAY</span> SORTED-REC
+<span class="seq">000440</span>         <span class="kw">END-READ</span>
+<span class="seq">000450</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000460</span>     <span class="kw">CLOSE</span> SORTED-F
+<span class="seq">000470</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SORT-RETURN +000000000
+BLUES BEA   12  
+BLUES DEV   03  
+REDS  CAL   15  
+REDS  EVE   09  
+REDS  ALI   07</pre>
+</figure>
+<p>The players are sorted by team, A to Z, and within a team by goals, highest first.
+SORT reads <code>raw.txt</code> and writes <code>sorted.txt</code>; the program only reads the
+result.</p>
+
+<h3>INPUT and OUTPUT PROCEDURE</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SORT2.cbl" download>SORT2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SORT2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> WORK-F ASSIGN TO <span class="str">&quot;sortwork&quot;</span>.
+<span class="seq">000070</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000090</span> <span class="kw">SD</span>  WORK-F.
+<span class="seq">000100</span> 01  WORK-REC.
+<span class="seq">000110</span>     05  W-CITY          PIC X(8).
+<span class="seq">000120</span>     05  W-TEMP          PIC S99 SIGN LEADING SEPARATE.
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  READINGS            PIC X(44) VALUE
+<span class="seq">000150</span>     <span class="str">&quot;OSLO    -04CAIRO   +31LIMA    +19PERTH   +24&quot;</span>.
+<span class="seq">000160</span> 01  READING-TABLE REDEFINES READINGS.
+<span class="seq">000170</span>     05  READING         PIC X(11) OCCURS 4.
+<span class="seq">000180</span> 01  I                   PIC 9.
+<span class="seq">000190</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000200</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000210</span> MAIN-PARA.
+<span class="seq">000220</span>     <span class="kw">SORT</span> WORK-F ON DESCENDING KEY W-TEMP
+<span class="seq">000230</span>         INPUT <span class="kw">PROCEDURE</span> IS LOAD-READINGS
+<span class="seq">000240</span>         OUTPUT <span class="kw">PROCEDURE</span> IS SHOW-READINGS
+<span class="seq">000250</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000260</span> LOAD-READINGS.
+<span class="seq">000270</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 4
+<span class="seq">000280</span>         <span class="kw">MOVE</span> READING (I) TO WORK-REC
+<span class="seq">000290</span>         <span class="kw">RELEASE</span> WORK-REC
+<span class="seq">000300</span>     <span class="kw">END-PERFORM</span>.
+<span class="seq">000310</span> SHOW-READINGS.
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WARMEST FIRST:&quot;</span>
+<span class="seq">000330</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000340</span>         <span class="kw">RETURN</span> WORK-F
+<span class="seq">000350</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000360</span>             NOT AT <span class="kw">END</span> <span class="kw">DISPLAY</span> <span class="str">&quot;  &quot;</span> W-CITY W-TEMP
+<span class="seq">000370</span>         <span class="kw">END-RETURN</span>
+<span class="seq">000380</span>     <span class="kw">END-PERFORM</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WARMEST FIRST:
+  CAIRO   +31
+  PERTH   +24
+  LIMA    +19
+  OSLO    -04</pre>
+</figure>
+<p>The input procedure releases four records taken from a table; the output procedure
+returns them warmest first. W-TEMP is a signed number, so -04 sorts below +19.</p>
+
+<h3>Equal keys</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SORT3.cbl" download>SORT3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SORT3.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> WORK-F ASSIGN TO <span class="str">&quot;sortwork&quot;</span>.
+<span class="seq">000070</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000090</span> <span class="kw">SD</span>  WORK-F.
+<span class="seq">000100</span> 01  WORK-REC.
+<span class="seq">000110</span>     05  W-CODE          PIC X(3).
+<span class="seq">000120</span>     05  W-ORDER         PIC 9.
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  CODES               PIC X(24)
+<span class="seq">000150</span>     VALUE <span class="str">&quot;B2 1A1 2C3 3A1 4B2 5A1 6&quot;</span>.
+<span class="seq">000160</span> 01  CODE-TABLE REDEFINES CODES.
+<span class="seq">000170</span>     05  CODE-ENTRY      PIC X(4) OCCURS 6.
+<span class="seq">000180</span> 01  I                   PIC 9.
+<span class="seq">000190</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000200</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000210</span> MAIN-PARA.
+<span class="seq">000220</span>     <span class="kw">SORT</span> WORK-F ON ASCENDING KEY W-CODE
+<span class="seq">000230</span>         WITH DUPLICATES IN ORDER
+<span class="seq">000240</span>         INPUT <span class="kw">PROCEDURE</span> IS LOAD-CODES
+<span class="seq">000250</span>         OUTPUT <span class="kw">PROCEDURE</span> IS SHOW-CODES
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SORT-RETURN &quot;</span> SORT-RETURN
+<span class="seq">000270</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000280</span> LOAD-CODES.
+<span class="seq">000290</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 6
+<span class="seq">000300</span>         <span class="kw">RELEASE</span> WORK-REC FROM CODE-ENTRY (I)
+<span class="seq">000310</span>     <span class="kw">END-PERFORM</span>.
+<span class="seq">000320</span> SHOW-CODES.
+<span class="seq">000330</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000340</span>         <span class="kw">RETURN</span> WORK-F
+<span class="seq">000350</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000360</span>             NOT AT <span class="kw">END</span> <span class="kw">DISPLAY</span> W-CODE <span class="str">&quot; ARRIVED &quot;</span> W-ORDER
+<span class="seq">000370</span>         <span class="kw">END-RETURN</span>
+<span class="seq">000380</span>     <span class="kw">END-PERFORM</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">A1  ARRIVED 2
+A1  ARRIVED 4
+A1  ARRIVED 6
+B2  ARRIVED 1
+B2  ARRIVED 5
+C3  ARRIVED 3
+SORT-RETURN +000000000</pre>
+</figure>
+<p>Three records have the key A1 and two have B2. Within each key they come out in the order
+they were released (2, 4, 6 and 1, 5).</p>
+
+<h3>Sorting a table</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SORT4.cbl" download>SORT4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SORT4.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  PLANETS.
+<span class="seq">000060</span>     05  PLANET OCCURS 5 TIMES.
+<span class="seq">000070</span>         10  P-NAME      PIC X(8).
+<span class="seq">000080</span>         10  P-MOONS     PIC 99.
+<span class="seq">000090</span> 01  I                   PIC 9.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">MOVE</span> <span class="str">&quot;MARS    02EARTH   01SATURN  83JUPITER 79URANUS  27&quot;</span>
+<span class="seq">000120</span>         TO PLANETS
+<span class="seq">000130</span>     <span class="kw">SORT</span> PLANET ON DESCENDING KEY P-MOONS
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MOST MOONS FIRST:&quot;</span>
+<span class="seq">000150</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 5
+<span class="seq">000160</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  &quot;</span> P-NAME (I) P-MOONS (I)
+<span class="seq">000170</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000180</span>     <span class="kw">SORT</span> PLANET ON ASCENDING KEY P-NAME
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BY NAME:&quot;</span>
+<span class="seq">000200</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 5
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  &quot;</span> P-NAME (I) P-MOONS (I)
+<span class="seq">000220</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000230</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">MOST MOONS FIRST:
+  SATURN  83
+  JUPITER 79
+  URANUS  27
+  MARS    02
+  EARTH   01
+BY NAME:
+  EARTH   01
+  JUPITER 79
+  MARS    02
+  SATURN  83
+  URANUS  27</pre>
+</figure>
+<p>The same table is sorted twice in place, by number of moons and then by name.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL sorts in memory, without work files, so the file named in the sort file's ASSIGN
+is never created. That suits the record counts of learning and business programs; a file too
+big for memory can't be sorted.</p>
+<div class="warn">
+<p><b>Table SORT keeps equal entries in order; GnuCOBOL's may not.</b> GnuCOBOL sorts tables
+with the C library's <code>qsort</code>, which may shuffle entries that have equal keys, and
+the result can vary between systems. SP COBOL's table sort is <em>stable</em>: entries with
+equal keys keep their order. The two agree whenever the keys are all different, as in the
+example above. If the order of equal entries matters to you, add a second key that tells them
+apart.</p>
+</div>
+<div class="bad">
+<p><code>COLLATING SEQUENCE IS alphabet-name</code> on SORT and MERGE doesn't work in SP COBOL
+yet: a program that uses it with an ALPHABET (EBCDIC or one you define) fails to build, because
+the alphabet's table isn't translated to C#. Sort with the default (ASCII) order.</p>
+</div>
+
+<h2>See also</h2>
+<p><a href="release.html">RELEASE</a>, <a href="return.html">RETURN</a>,
+<a href="merge.html">MERGE</a>, <a href="files.html">Files</a>,
+<a href="search.html">SEARCH</a> (SEARCH ALL needs a sorted table),
+<a href="special-registers.html">special registers</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="set.html">&larr; SET</a><a class="next" href="start.html">START &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

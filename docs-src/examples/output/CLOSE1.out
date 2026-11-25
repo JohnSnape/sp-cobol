@@ -1,0 +1,6 @@
+CLOSE BOTH: 00 00
+CLOSE AGAIN: 42
+CLOSE WITH LOCK: 00
+OPEN AFTER LOCK: 38
+LEAVING IN-F OPEN
+libcob: warning: implicit CLOSE of IN-F ('close-in.txt')

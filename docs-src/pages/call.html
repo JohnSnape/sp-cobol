@@ -1,0 +1,118 @@
+title: CALL
+summary: Run another COBOL program as a subprogram, passing it data, and come back.
+keywords: subprogram USING BY REFERENCE BY CONTENT BY VALUE RETURNING ON EXCEPTION ON OVERFLOW NOT ON EXCEPTION END-CALL LINKAGE SECTION nested program COMMON GLOBAL module not found COB_LIBRARY_PATH CobolMainProgram
+---
+<h2>Syntax</h2>
+<pre class="syntax">CALL { literal-1 | identifier-1 }
+    [ USING { [ BY REFERENCE ] identifier-2
+            | BY CONTENT { identifier-3 | literal-2 }
+            | BY VALUE { identifier-4 | literal-3 } } ... ]
+    [ RETURNING identifier-5 ]
+    [ ON EXCEPTION imperative-statement-1 ]
+    [ NOT ON EXCEPTION imperative-statement-2 ]
+[ END-CALL ]
+
+ON OVERFLOW may be written in place of ON EXCEPTION.
+
+In the called program:
+PROCEDURE DIVISION [ USING { [ BY REFERENCE ] data-name-1 | BY VALUE data-name-2 } ... ]</pre>
+
+<h2>What it does</h2>
+<p><code>CALL</code> runs another program, the <em>called program</em> or subprogram, and
+continues with the next statement when it finishes (with <a href="goback.html">GOBACK</a> or
+<a href="exit.html">EXIT PROGRAM</a>). The name is the called program's
+<code>PROGRAM-ID</code>, written as a literal (<code>CALL "PAYROLL"</code>) or held in an
+alphanumeric data item (<code>CALL PROG-NAME</code>), which lets the program decide at run time
+what to call.</p>
+
+<h3>Passing data: USING</h3>
+<p>The items after <code>USING</code> are the <em>arguments</em>. The called program describes
+them in its LINKAGE SECTION and lists them, in the same order, in its
+<code>PROCEDURE DIVISION USING</code> header. They are matched by position, not by name, and
+should have the same size and PICTURE on both sides.</p>
+<div class="table-wrap"><table>
+<tr><th>Phrase</th><th>What the called program gets</th><th>Can it change the caller's item?</th></tr>
+<tr><td><code>BY REFERENCE</code> (the default)</td><td>the caller's own item</td><td>yes</td></tr>
+<tr><td><code>BY CONTENT</code></td><td>a copy of the item or literal</td><td>no: changes go to the copy</td></tr>
+<tr><td><code>BY VALUE</code></td><td>the number itself, as a binary integer; the called program
+declares it <code>BY VALUE</code> too, usually as <code>PIC S9(9) COMP-5</code></td><td>no</td></tr>
+</table></div>
+<p>A <code>BY</code> phrase applies to the items after it until the next <code>BY</code>.</p>
+
+<h3>Getting a result back: RETURN-CODE and RETURNING</h3>
+<p>Every program has a special register, <code>RETURN-CODE</code>. Whatever the called program
+leaves in it is available to the caller in <code>RETURN-CODE</code> after the CALL.
+<code>CALL ... RETURNING identifier</code> also stores that value in <em>identifier</em>. To pass
+back anything else (text, several values), change a BY REFERENCE argument.</p>
+
+<h3>When the program can't be found: ON EXCEPTION</h3>
+<p>If no program with that name exists, <code>ON EXCEPTION</code> (or its older spelling
+<code>ON OVERFLOW</code>) runs instead. <code>NOT ON EXCEPTION</code> runs after a successful
+call. Without ON EXCEPTION, a missing program stops the run with an error message.</p>
+<div class="warn">Inside <code>ON EXCEPTION</code>, end a DISPLAY with <code>END-DISPLAY</code>:
+<code>ON EXCEPTION DISPLAY "missing" NOT ON EXCEPTION ...</code> attaches the NOT ON EXCEPTION
+to the DISPLAY, which has exception phrases of its own, not to the CALL. This is standard
+COBOL, and GnuCOBOL reads it the same way.</div>
+
+<h3>Nested programs and COMMON</h3>
+<p>A program can contain other programs, written before its <code>END PROGRAM</code> line. A
+nested program can be CALLed only by the program that directly contains it, unless it says
+<code>IS COMMON</code> in its PROGRAM-ID; a COMMON program can also be called by the other
+programs nested beside it. Items the outer program declares <code>GLOBAL</code> can be used by
+name in all the programs nested inside it.</p>
+
+<h3>How SP COBOL finds the program</h3>
+<ul>
+<li>It looks for a program with that PROGRAM-ID among everything already loaded: the main
+program, the other programs in its source file, and the other <code>.cbl</code> files of the
+project. An exact match comes first, then a match that ignores upper and lower case.</li>
+<li>Then it looks for <code>NAME.dll</code> beside the program, or in a folder listed in the
+<code>COB_LIBRARY_PATH</code> environment variable.</li>
+<li>In a Visual Studio project, every <code>.cbl</code> file is compiled. One becomes the main
+program: the one named by the <code>CobolMainProgram</code> property if you set it, else
+<code>Program.cbl</code>, else the only file, else the first file whose PROCEDURE DIVISION has
+no USING. The others become subprograms the main program can CALL.</li>
+</ul>
+
+<h2>Examples</h2>
+<h3>Passing arguments</h3>
+<p>The called program, CALLSUB1, is in a source file of its own, shown after the main
+program.</p>
+<!-- example CALL1 -->
+<p>The first CALL passes COUNTER by reference, COPY-ME by content and 5 by value. The
+subprogram adds 20 and 5 to COUNTER, so the caller sees 35. It also sets its copy of COPY-ME to
+9999, which the caller never sees. It puts 35 in RETURN-CODE, and <code>RETURNING RESULT</code>
+picks that up. The second CALL names the program through PROG-NAME and adds 20 + 1 to COUNTER.
+NOSUCHPROG doesn't exist, so the ON EXCEPTION branch runs. The program sets RETURN-CODE back to
+0 at the end, because a main program's RETURN-CODE becomes its exit code.</p>
+
+<h3>Nested programs, COMMON and GLOBAL</h3>
+<!-- example CALL2 -->
+<p>ADD-TEN and LOG-IT are nested inside CALL2. ADD-TEN can call LOG-IT only because LOG-IT
+is COMMON. LOG-IT reads and changes MESSAGE-TEXT without any USING, because CALL2 declared it
+GLOBAL.</p>
+
+<h3>A program that isn't there</h3>
+<!-- example CALL3 -->
+<p>Without ON EXCEPTION, the run stops at the CALL with exit code 1. The first message line is
+the same as GnuCOBOL's; the <code>hint:</code> line is SP COBOL's addition.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">After the "module not found" message, SP COBOL prints a
+<code>hint:</code> line saying what to check. GnuCOBOL doesn't. Set the environment variable
+<code>COB_NO_HINTS=1</code> to turn hints off.</div>
+<div class="bad">Not supported:
+<ul>
+<li><code>PROCEDURE DIVISION RETURNING</code> in the called program. GnuCOBOL 3.2 doesn't
+implement it either. Pass results back through RETURN-CODE or a BY REFERENCE argument.</li>
+<li><code>CALL ... RETURNING ADDRESS OF</code>, program pointers
+(<code>SET pointer TO ENTRY "NAME"</code> and calling through them), and
+<code>CALL STATIC</code>.</li>
+</ul></div>
+
+<h2>See also</h2>
+<p><a href="cancel.html">CANCEL</a>, <a href="goback.html">GOBACK</a>,
+<a href="exit.html">EXIT PROGRAM</a>, <a href="program-structure.html">program structure</a>,
+<a href="global-external.html">GLOBAL and EXTERNAL</a>,
+<a href="special-registers.html">special registers</a> (RETURN-CODE),
+<a href="data-division.html">DATA DIVISION</a> (LINKAGE SECTION).</p>

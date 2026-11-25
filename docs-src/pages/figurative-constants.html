@@ -1,0 +1,73 @@
+title: Figurative constants
+summary: Reserved words such as ZERO, SPACES and HIGH-VALUES that stand for a value and fill a whole field.
+keywords: ZERO ZEROS ZEROES SPACE SPACES HIGH-VALUE HIGH-VALUES LOW-VALUE LOW-VALUES QUOTE QUOTES ALL literal NULL NULLS fill blank clear
+---
+<h2>Syntax</h2>
+<pre class="syntax">{ ZERO | ZEROS | ZEROES }
+{ SPACE | SPACES }
+{ HIGH-VALUE | HIGH-VALUES }
+{ LOW-VALUE | LOW-VALUES }
+{ QUOTE | QUOTES }
+ALL literal
+{ NULL | NULLS }</pre>
+
+<h2>What it does</h2>
+<p>A figurative constant is a word that stands for a value. Unlike a literal it has no fixed
+length: it repeats as often as needed to fill whatever it is moved to or compared with. The
+singular and plural spellings mean exactly the same thing.</p>
+<div class="table-wrap">
+<table>
+<tr><th>Word</th><th>Value</th><th>Typical use</th></tr>
+<tr><td><code>ZERO</code>, <code>ZEROS</code>, <code>ZEROES</code></td><td>The number 0, or
+the character "0" repeated in a text field.</td><td>Clearing totals and counters.</td></tr>
+<tr><td><code>SPACE</code>, <code>SPACES</code></td><td>Blank characters.</td><td>Clearing
+text fields and records; testing for an empty field.</td></tr>
+<tr><td><code>HIGH-VALUE</code>, <code>HIGH-VALUES</code></td><td>The highest byte value,
+X"FF" (255).</td><td>A key that sorts after every real key, such as an end-of-file marker
+when matching two files.</td></tr>
+<tr><td><code>LOW-VALUE</code>, <code>LOW-VALUES</code></td><td>The lowest byte value,
+X"00".</td><td>A key that sorts before everything; filling a field with binary zeros.</td></tr>
+<tr><td><code>QUOTE</code>, <code>QUOTES</code></td><td>The quotation mark character
+<code>"</code>.</td><td>Building text that contains quotes.</td></tr>
+<tr><td><code>ALL literal</code></td><td>The literal repeated: <code>ALL "AB"</code> fills a
+field with ABABAB...</td><td>Lines of dashes or stars; filling with a pattern.</td></tr>
+<tr><td><code>NULL</code>, <code>NULLS</code></td><td>The null address.</td><td>Only with
+<code>USAGE POINTER</code> items. See SP COBOL notes.</td></tr>
+</table>
+</div>
+
+<h3>Where you can use them</h3>
+<ul>
+<li>As the source of a <a href="move.html">MOVE</a>: <code>MOVE SPACES TO CUST-NAME</code> fills
+every byte of CUST-NAME. Moved to a numeric field, <code>ZERO</code> sets it to 0.</li>
+<li>In a <a href="value.html">VALUE</a> clause: <code>01 TOTAL PIC 9(5) VALUE ZERO.</code></li>
+<li>In a comparison: <code>IF CUST-NAME = SPACES</code> is true when the field is all blanks,
+however long it is.</li>
+</ul>
+<p>Only ZERO makes sense for a numeric field. SPACE, QUOTE and ALL "x" are for alphanumeric
+fields; HIGH-VALUES and LOW-VALUES are bytes, not numbers.</p>
+
+<h2>Example</h2>
+<!-- example FIGCON1 -->
+<p>TEXT-6 starts as SPACES and NUM-4 as ZERO, from their VALUE clauses. Moving ZEROS to a text
+field fills it with the character 0. <code>ALL "AB"</code> repeats the pattern across all six
+bytes. HIGH-VALUES and LOW-VALUES are bytes you can't see on the screen, so the program shows
+the code of the first byte instead: 255 and 0. The last test compares part of the field with
+SPACES; the figurative constant takes the length of whatever it is compared with.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview two things don't work yet:
+<ul>
+<li>Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
+<code>LOW-VALUES</code> (or <code>ALL X"FF"</code>) gives "not equal" even when every byte
+matches. A one-byte comparison, such as <code>IF FLD (1:1) = LOW-VALUE</code>, works. Compare
+a field with SPACES or ZEROS, or test a byte at a time, until this is fixed.</li>
+<li>Programs with <code>USAGE POINTER</code> items that use <code>NULL</code>
+(<code>VALUE NULL</code>, <code>SET ptr TO NULL</code>, <code>IF ptr = NULL</code>) don't
+build.</li>
+</ul></div>
+
+<h2>See also</h2>
+<p><a href="literals.html">Literals</a>, <a href="move.html">MOVE</a>,
+<a href="initialize.html">INITIALIZE</a>, <a href="value.html">VALUE</a>,
+<a href="conditions.html">conditions</a>.</p>

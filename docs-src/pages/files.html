@@ -1,0 +1,247 @@
+title: Files
+summary: How a COBOL program names, describes, opens, reads, writes and closes data files.
+keywords: SELECT ASSIGN ORGANIZATION SEQUENTIAL LINE SEQUENTIAL RELATIVE INDEXED ACCESS MODE RANDOM DYNAMIC RECORD KEY ALTERNATE RECORD KEY DUPLICATES RELATIVE KEY FILE STATUS FD RECORD CONTAINS VARYING DEPENDING BLOCK CONTAINS LINAGE OPTIONAL FILE-CONTROL FILE SECTION COB_FILE_PATH DD_ COB_NO_HINTS hint data file ISAM SPCOBIX1
+badge: differs
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: name the file (ENVIRONMENT DIVISION, INPUT-OUTPUT SECTION, FILE-CONTROL)
+SELECT [ OPTIONAL ] file-name
+    ASSIGN TO { literal-1 | identifier-1 | DISPLAY | KEYBOARD }
+    [ ORGANIZATION IS ] { SEQUENTIAL | LINE SEQUENTIAL | RELATIVE | INDEXED }
+    [ ACCESS MODE IS { SEQUENTIAL | RANDOM | DYNAMIC } ]
+    [ RELATIVE KEY IS identifier-2 ]
+    [ RECORD KEY IS identifier-3 ]
+    [ ALTERNATE RECORD KEY IS identifier-4 [ WITH DUPLICATES ] ] ...
+    [ FILE STATUS IS identifier-5 ] .
+
+Format 2: describe its records (DATA DIVISION, FILE SECTION)
+FD file-name [ IS GLOBAL ]
+    [ BLOCK CONTAINS integer-1 [ TO integer-2 ] { RECORDS | CHARACTERS } ]
+    [ RECORD CONTAINS integer-3 CHARACTERS ]
+    [ RECORD IS VARYING IN SIZE FROM integer-4 TO integer-5 CHARACTERS
+          DEPENDING ON identifier-6 ]
+    [ LINAGE IS integer-7 LINES [ WITH FOOTING AT integer-8 ]
+          [ LINES AT TOP integer-9 ] [ LINES AT BOTTOM integer-10 ] ] .
+01 record-name ...
+[ 01 record-name-2 ... ] ...</pre>
+
+<h2>What it does</h2>
+<p>A COBOL program works with a file in three places. In the ENVIRONMENT DIVISION, a
+<code>SELECT</code> entry gives the file a name inside the program and says where it is on
+disk and how it is organized. In the DATA DIVISION, an <code>FD</code> (file description)
+describes the records. In the PROCEDURE DIVISION, statements open the file, move records in
+and out, and close it.</p>
+<p>A <em>record</em> is one unit of data in the file, such as one customer or one line of a
+report. The 01 level under the FD is the <em>record area</em>: <code>READ</code> puts the next
+record there, and <code>WRITE</code> takes the record from there. The program can only see
+one record of a file at a time.</p>
+
+<h3>ASSIGN: which file on disk</h3>
+<p><code>ASSIGN TO "pay.dat"</code> names the file on disk. A name with no folder in it
+means a file in the <em>current folder</em>, the folder the program is running in (in Visual
+Studio, normally the output folder beside the .exe). You can also give a full path such as
+<code>"C:\data\pay.dat"</code>.</p>
+<p><code>ASSIGN TO</code> a data item (<code>ASSIGN TO LOG-NAME</code>) uses whatever name is
+in that item when <code>OPEN</code> runs, so one SELECT can open different files at different
+times. The trailing spaces of the item are ignored.</p>
+<p>Before the name is used, the runtime looks for an environment variable that replaces it,
+the way GnuCOBOL does:</p>
+<ul>
+<li>For a name with no folder in it, such as <code>pay.dat</code>, it tries the variables
+<code>DD_pay_dat</code>, <code>dd_pay_dat</code> and <code>pay_dat</code> (dots become
+underscores). The first one that is set gives the real file name. So
+<code>set DD_pay_dat=C:\test\pay2.dat</code> redirects the file without changing the
+program.</li>
+<li>A part of a path that starts with <code>$</code>, as in <code>"$DATA\pay.dat"</code>,
+is replaced by that variable (here <code>DATA</code>, also tried as <code>DD_DATA</code> and
+<code>dd_DATA</code>).</li>
+<li>If <code>COB_FILE_PATH</code> is set, a name that isn't a full path is looked for in that
+folder instead of the current one.</li>
+</ul>
+<p><code>ASSIGN TO DISPLAY</code> makes a LINE SEQUENTIAL file that writes to the screen
+(standard output), and <code>ASSIGN TO KEYBOARD</code> one that reads from standard input.</p>
+<p><code>OPTIONAL</code> means the file may be missing: opening it for input then succeeds
+with status 05 and the first READ is at end (see <a href="open.html">OPEN</a>).</p>
+
+<h3>ORGANIZATION: how records are stored</h3>
+<div class="table-wrap"><table>
+<tr><th>Organization</th><th>On disk</th><th>Use it for</th></tr>
+<tr><td><code>SEQUENTIAL</code> (the default)</td><td>Records one after another, each
+exactly as long as the record area, with nothing between them. Variable-length records
+(<code>RECORD VARYING</code>) get a 4-byte length header each.</td><td>Data that is always
+read from start to end.</td></tr>
+<tr><td><code>LINE SEQUENTIAL</code></td><td>A text file: one record per line, trailing
+spaces removed, each line ended by CR LF. You can open it in Notepad.</td><td>Text files,
+reports, data shared with other programs.</td></tr>
+<tr><td><code>RELATIVE</code></td><td>Numbered slots 1, 2, 3, ... of equal size. A slot can
+be empty. The <code>RELATIVE KEY</code> item holds the slot number.</td><td>Data looked up by a
+small number, such as a room or seat number.</td></tr>
+<tr><td><code>INDEXED</code></td><td>Records found by a key field inside the record
+(<code>RECORD KEY</code>), and optionally by more keys (<code>ALTERNATE RECORD
+KEY</code>).</td><td>Data looked up by a code or name, read in key order.</td></tr>
+</table></div>
+
+<h3>ACCESS MODE: how the program gets at the records</h3>
+<ul>
+<li><code>SEQUENTIAL</code> (the default): records are read and written in order, one after
+the next.</li>
+<li><code>RANDOM</code>: each READ or WRITE goes straight to the record whose key you set
+first: the slot number in the RELATIVE KEY, or the value in the RECORD KEY field.</li>
+<li><code>DYNAMIC</code>: both. Use <code>READ ... KEY</code> or a plain READ for direct
+access, and <code>READ ... NEXT</code> (often after <a href="start.html">START</a>) to carry on
+in order from there.</li>
+</ul>
+<p>LINE SEQUENTIAL and SEQUENTIAL files are always accessed sequentially.</p>
+
+<h3>Keys</h3>
+<p><code>RELATIVE KEY</code> names an unsigned numeric item in WORKING-STORAGE (not in the
+record). With random or dynamic access you put the slot number there before READ, WRITE,
+REWRITE, DELETE or START; with sequential access the runtime puts the number of each slot it
+reads or writes there.</p>
+<p><code>RECORD KEY</code> names a field inside the record. Each record must have a different
+value in it; writing a second record with the same key fails with status 22. An
+<code>ALTERNATE RECORD KEY</code> is another field you can read by. Add
+<code>WITH DUPLICATES</code> if several records may share a value (several customers in one
+city, for example).</p>
+
+<h3>FILE STATUS</h3>
+<p><code>FILE STATUS IS FS</code> names a two-character item (<code>PIC XX</code>) that the
+runtime sets after every statement on the file: <code>"00"</code> for success,
+<code>"10"</code> for end of file, <code>"35"</code> for "file not found", and so on.
+Always give your files one, and check it. <a href="file-status.html">FILE STATUS codes</a>
+lists them all. Several files may share one status item.</p>
+
+<h3>The FD</h3>
+<p>Each SELECT needs a matching FD with at least one 01 record. Some useful clauses:</p>
+<ul>
+<li><code>RECORD CONTAINS 14 CHARACTERS</code> states the record size. It must agree with the
+01 level; it adds nothing else.</li>
+<li><code>RECORD IS VARYING ... DEPENDING ON LEN</code> makes the records variable in length:
+before a WRITE you put the length in LEN, and after a READ LEN holds the length of the record
+just read.</li>
+<li><code>BLOCK CONTAINS</code> comes from tape and old mainframe files. It is accepted and has
+no effect: the file is the same with or without it.</li>
+<li><code>LINAGE</code> divides a LINE SEQUENTIAL report file into pages, with margins at the
+top and bottom and a footing area. See <a href="write.html">WRITE</a> for an example.</li>
+</ul>
+<p>Several 01 levels under one FD are different views of the same record area, like an
+automatic <a href="redefines.html">REDEFINES</a>. A file of heading lines and detail lines can
+describe both shapes and use whichever fits the record in hand. A READ fills the area; you
+decide which view to look at.</p>
+
+<h3>The life cycle of a file</h3>
+<p>Every file goes through the same steps:</p>
+<ol>
+<li><a href="open.html">OPEN</a> it, saying what you will do: <code>INPUT</code> (read),
+<code>OUTPUT</code> (write a new file), <code>I-O</code> (read and change) or
+<code>EXTEND</code> (add to the end).</li>
+<li><a href="read.html">READ</a>, <a href="write.html">WRITE</a>,
+<a href="rewrite.html">REWRITE</a>, <a href="delete.html">DELETE</a> and
+<a href="start.html">START</a> as needed.</li>
+<li><a href="close.html">CLOSE</a> it. A file left open when the program ends is closed for you,
+with a warning.</li>
+</ol>
+
+<h3>Which statements work where</h3>
+<div class="table-wrap"><table>
+<tr><th>Statement</th><th>SEQUENTIAL</th><th>LINE SEQUENTIAL</th><th>RELATIVE</th><th>INDEXED</th></tr>
+<tr><td>OPEN INPUT, OUTPUT, I-O</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>OPEN EXTEND</td><td>yes</td><td>yes</td><td>sequential access</td><td>sequential access</td></tr>
+<tr><td>READ (next record)</td><td>yes</td><td>yes</td><td>sequential or dynamic access</td><td>sequential or dynamic access</td></tr>
+<tr><td>READ by key</td><td>no</td><td>no</td><td>random or dynamic access</td><td>random or dynamic access</td></tr>
+<tr><td>READ PREVIOUS</td><td>no</td><td>no</td><td>see <a href="read.html">READ</a></td><td>dynamic access</td></tr>
+<tr><td>WRITE</td><td>OUTPUT, EXTEND</td><td>OUTPUT, EXTEND</td><td>OUTPUT, I-O (EXTEND)</td><td>OUTPUT, I-O (EXTEND)</td></tr>
+<tr><td>REWRITE</td><td>I-O, after a READ</td><td>I-O, after a READ</td><td>I-O</td><td>I-O</td></tr>
+<tr><td>DELETE</td><td>no</td><td>no</td><td>I-O</td><td>I-O</td></tr>
+<tr><td>START</td><td>no</td><td>no</td><td>sequential or dynamic access</td><td>sequential or dynamic access</td></tr>
+</table></div>
+<p>With sequential access, REWRITE and DELETE work on the record the last READ returned, so a
+READ must come first (status 43 otherwise). With random or dynamic access they work on the
+record whose key you set.</p>
+
+<h2>Examples</h2>
+<h3>A sequential file: write, then read back</h3>
+<!-- example FILES1 -->
+<p>The program writes three 14-character records, closes the file, opens it again for input,
+and reads until <code>AT END</code>. The status after the last READ is 10, end of file. The
+BLOCK and RECORD CONTAINS clauses change nothing: <code>pay.dat</code> is 42 bytes, three
+records end to end.</p>
+
+<h3>A line sequential file with two record layouts</h3>
+<!-- example FILES2 -->
+<p><code>notes.txt</code> is an ordinary text file. TITLE-LINE and ITEM-LINE share one record
+area; the program writes a title through one and items through the other, and reads them back
+the same way. This loop tests the FILE STATUS instead of using <code>AT END</code>.</p>
+
+<h3>A relative file</h3>
+<!-- example FILES3 -->
+<p>Only slots 2 and 7 are written. Reading slot by slot shows the others as empty: the READ
+takes its <code>INVALID KEY</code> branch with status 23, record not found.</p>
+
+<h3>An indexed file</h3>
+<!-- example FILES4 -->
+<p>Records are written in any order and come back in key order. The third WRITE gets status
+02: it worked, but another record already has bin A01 (allowed, because of
+<code>WITH DUPLICATES</code>). This example isn't compared with stock GnuCOBOL, whose
+reference build has no indexed file support.</p>
+
+<h3>Choosing the file at run time</h3>
+<!-- example FILES5 -->
+<p>LOG-NAME holds the file name, so the same SELECT writes <code>day1.log</code> and
+<code>day2.log</code>, then reads the second one back.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SEQUENTIAL, LINE SEQUENTIAL and RELATIVE files are written byte for byte the way
+GnuCOBOL 3.2 writes them (CR LF line ends, the 4-byte header of variable-length records, the
+8-byte header of each relative slot), so programs built with either can share data files. The
+FILE STATUS values and the AT END / INVALID KEY / END-OF-PAGE conditions are the same too.</p>
+<div class="warn">
+<p>Where GnuCOBOL 3.2 has a plain bug in its file handling, SP COBOL does what the code was
+clearly meant to do:</p>
+<div class="table-wrap"><table>
+<tr><th>Situation</th><th>GnuCOBOL 3.2</th><th>SP COBOL</th></tr>
+<tr><td>A TAB, form feed or ESC character inside a LINE SEQUENTIAL record</td><td>WRITE
+refuses it with status 71</td><td>written and read back as is</td></tr>
+<tr><td>A file name in quotes inside the literal, such as <code>"'a.dat'"</code></td><td>the
+first quote stays in the name; OPEN fails with 30</td><td>the quotes are removed</td></tr>
+<tr><td><code>$VAR</code> in the middle of a path</td><td>the <code>\</code> after it is
+lost</td><td>the separators are kept</td></tr>
+<tr><td>Reading a LINE SEQUENTIAL file</td><td>read in Windows text mode: a Ctrl-Z byte ends
+the file, and a file with LF-only line ends can lose text when a long line is split</td>
+<td>CR LF and LF both end a line; Ctrl-Z is ordinary data (status 09, like other control
+characters)</td></tr>
+<tr><td>REWRITE of a shorter line in a LINE SEQUENTIAL file</td><td>overwrites the CR of the
+line end</td><td>the line end is kept</td></tr>
+<tr><td>REWRITE or DELETE of an empty RELATIVE slot</td><td>status 00 (REWRITE even fills the
+slot)</td><td>status 23, record not found</td></tr>
+<tr><td>The error message for a missing file</td><td>names the last environment variable it
+tried</td><td>names the ASSIGN value</td></tr>
+</table></div>
+</div>
+<div class="warn">
+<p><b>INDEXED files use SP COBOL's own format.</b> GnuCOBOL keeps indexed files through an
+outside library (Berkeley DB or VBISAM); SP COBOL uses a simple one-file format of its own,
+pure .NET, with no extra DLLs. The file starts with the header <code>SPCOBIX1</code> and the
+key layout, followed by the records in the order they were written. OPEN reads the whole file
+and builds the key indexes in memory, which is fine for files of thousands of records but not
+millions. Deleted records leave unused space that isn't reused. The FILE STATUS values are
+the ones GnuCOBOL reports (02, 21, 22, 23, 39, ...). Indexed files written by SP COBOL and by
+GnuCOBOL can't be read by each other.</p>
+</div>
+<p>When a file error stops the program (no FILE STATUS and no
+<a href="use.html">USE</a> procedure), SP COBOL prints GnuCOBOL's message and then one
+<code>hint:</code> line for learners, for example:</p>
+<pre>libcob: error: file does not exist (status = 35) for file NOFILE ('no-such-file.dat')
+  hint: Check the name in ASSIGN. The program looked in C:\work\bin. Use OPEN OUTPUT (or SELECT OPTIONAL) to create the file.</pre>
+<p>Set the environment variable <code>COB_NO_HINTS=1</code> to leave the hint out. The program
+ends with exit code 1, as in GnuCOBOL.</p>
+
+<h2>See also</h2>
+<p><a href="open.html">OPEN</a>, <a href="close.html">CLOSE</a>, <a href="read.html">READ</a>,
+<a href="write.html">WRITE</a>, <a href="rewrite.html">REWRITE</a>,
+<a href="delete.html">DELETE</a>, <a href="start.html">START</a>,
+<a href="file-status.html">FILE STATUS codes</a>, <a href="use.html">USE</a> for error
+procedures, <a href="sort.html">SORT</a> and <a href="merge.html">MERGE</a>,
+<a href="report-writer.html">Report Writer</a>,
+<a href="environment-division.html">ENVIRONMENT DIVISION</a>,
+<a href="data-division.html">DATA DIVISION</a>.</p>

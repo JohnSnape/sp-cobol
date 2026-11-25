@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ALTER - SP COBOL Reference</title>
+<meta name="description" content="Change where a GO TO jumps, while the program runs. Obsolete; SP COBOL can&#39;t build it at present.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html" class="current" aria-current="page">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>ALTER <span class="badge warn">Obsolete</span></h1>
+<p class="lede">Change where a GO TO jumps, while the program runs. Obsolete; SP COBOL can&#39;t build it at present.</p>
+<h2>Syntax</h2>
+<pre class="syntax">ALTER <var>procedure-name-1</var> TO [ PROCEED TO ] <var>procedure-name-2</var>
+    [ <var>procedure-name-3</var> TO [ PROCEED TO ] <var>procedure-name-4</var> ] ...</pre>
+
+<h2>What it does</h2>
+<p><code>ALTER</code> changes the target of a <a href="go-to.html">GO TO</a> while the program
+is running. <em>procedure-name-1</em> must be a paragraph that holds nothing but one
+<code>GO TO</code> sentence. After the ALTER, that GO TO jumps to <em>procedure-name-2</em>
+instead of where its source code says.</p>
+<p>It was used in early COBOL as a switch: "the first time through, go here; after that, go
+there". Here is the classic pattern:</p>
+<pre>       GREET.
+           GO TO FIRST-TIME.
+       FIRST-TIME.
+           DISPLAY "WELCOME (FIRST TIME ONLY)"
+           ALTER GREET TO PROCEED TO LATER-TIMES
+           GO TO GREET-EXIT.
+       LATER-TIMES.
+           DISPLAY "WELCOME BACK".
+       GREET-EXIT.
+           EXIT.</pre>
+
+<h3>Why not to use it</h3>
+<p>ALTER was declared obsolete in the 1985 standard and removed from the 2002 standard. The
+problem is that the source code no longer tells the truth: <code>GO TO FIRST-TIME</code> may
+really go somewhere else, and the only way to know is to find every ALTER that names the
+paragraph and work out which ones have run. Programs that use it are very hard to read, test
+and change. You will meet it only in old code.</p>
+<p>Use a flag (a data item, usually with an <a href="condition-names.html">88-level condition
+name</a>) and an <a href="if.html">IF</a> or <a href="evaluate.html">EVALUATE</a> instead. The
+decision is then written where it happens.</p>
+
+<div class="bad">SP COBOL can't build a program that uses ALTER yet: the translation to .NET
+fails with a C# error ("No such label") even for the simple pattern above. GnuCOBOL 3.2 runs
+it. Rewrite the code with a flag, as in the example below.</div>
+
+<h2>Example</h2>
+<p>The same "first time only" greeting, written with a flag instead of ALTER:</p>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/ALTER1.cbl" download>ALTER1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. ALTER1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  FIRST-VISIT-FLAG PIC X VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000060</span>     88  FIRST-VISIT       VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000070</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span> MAIN-PARA.
+<span class="seq">000090</span>     <span class="kw">PERFORM</span> GREET 3 TIMES
+<span class="seq">000100</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000110</span> GREET.
+<span class="seq">000120</span>     <span class="kw">IF</span> FIRST-VISIT
+<span class="seq">000130</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;WELCOME (FIRST TIME ONLY)&quot;</span>
+<span class="seq">000140</span>         <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO FIRST-VISIT-FLAG
+<span class="seq">000150</span>     <span class="kw">ELSE</span>
+<span class="seq">000160</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;WELCOME BACK&quot;</span>
+<span class="seq">000170</span>     <span class="kw">END-IF</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WELCOME (FIRST TIME ONLY)
+WELCOME BACK
+WELCOME BACK</pre>
+</figure>
+<p>GREET is performed three times. The first time the flag is still <code>"Y"</code>, so the
+welcome prints and the flag is turned off; after that the ELSE branch runs. This is the output
+the ALTER version above gives in GnuCOBOL.</p>
+
+<h2>See also</h2>
+<p><a href="go-to.html">GO TO</a>, <a href="if.html">IF</a>,
+<a href="condition-names.html">condition names</a>, <a href="perform.html">PERFORM</a>,
+<a href="not-supported.html">not supported</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="add.html">&larr; ADD</a><a class="next" href="call.html">CALL &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

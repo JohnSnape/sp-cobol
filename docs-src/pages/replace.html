@@ -1,0 +1,41 @@
+title: REPLACE
+summary: Replace pieces of text throughout the source, until REPLACE OFF.
+keywords: REPLACE OFF pseudo-text == compiler directive substitute macro constant text replacement
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: start replacing
+REPLACE { ==pseudo-text-1== BY ==pseudo-text-2== } ... .
+
+Format 2: stop replacing
+REPLACE OFF .</pre>
+
+<h2>What it does</h2>
+<p>Like <a href="copy.html">COPY</a>, REPLACE is an instruction to the compiler, not a
+statement that runs. From the REPLACE onward, every place where the source text matches
+<code>pseudo-text-1</code> is compiled as if you had written <code>pseudo-text-2</code>
+there instead. It stays in force until <code>REPLACE OFF</code>, until another REPLACE (which
+takes over from the first), or to the end of the program.</p>
+<p>Pseudo-text is the text between <code>==</code> marks. It is matched as COBOL words, so
+extra spaces or a line break between words don't matter. The replacement can be several words, or a whole statement. Quoted literals and comments are not
+searched: a word inside quotes is never replaced.</p>
+<p>REPLACE can go anywhere a word can, including before the DATA DIVISION. Its period belongs
+to it, so a REPLACE in the middle of a paragraph does not end a sentence.</p>
+<p>Uses: a size used in several places (one change updates every <code>OCCURS</code> and
+loop limit), or a short name for a statement you type often. For a value with a name, a
+<a href="constants.html">constant</a> (level 78 or <code>01 ... CONSTANT AS</code>) is
+usually clearer.</p>
+
+<h2>Example</h2>
+<!-- example REPLACE1 -->
+<p>The first REPLACE turns every <code>TABLE-SIZE</code> into <code>3</code>, both in the
+OCCURS clause and in the PERFORM's UNTIL, and every <code>SHOW-RULE</code> into a DISPLAY of a
+dashed line. Inside the literal <code>"TABLE-SIZE IS "</code> nothing changes. The second REPLACE takes over: from there on, MESSAGE-TEXT means the literal
+<code>"REPLACED TEXT"</code>. After
+<code>REPLACE OFF</code>, MESSAGE-TEXT is the data item again.</p>
+
+<h2>SP COBOL notes</h2>
+<p>REPLACE is handled by GnuCOBOL's own front end, so it behaves exactly as in GnuCOBOL 3.2.</p>
+
+<h2>See also</h2>
+<p><a href="copy.html">COPY</a> (whose REPLACING phrase does the same for one copybook),
+<a href="constants.html">constants</a>.</p>

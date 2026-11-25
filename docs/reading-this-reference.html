@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading this reference - SP COBOL Reference</title>
+<meta name="description" content="How the syntax boxes, the examples and the common COBOL terms on these pages work.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details open><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html" class="current" aria-current="page">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Getting started</p>
+<h1>Reading this reference </h1>
+<p class="lede">How the syntax boxes, the examples and the common COBOL terms on these pages work.</p>
+<h2>The syntax boxes</h2>
+<p>Each statement and clause page starts with a box that shows every way you can write it.
+The box is a pattern, not a program you can copy as it is. Read it like this:</p>
+<div class="table-wrap">
+<table>
+<tr><th>In the box</th><th>Means</th></tr>
+<tr><td><code>ADD</code>, <code>TO</code>, <code>GIVING</code></td>
+<td>UPPERCASE words are COBOL words. Type them as shown (COBOL doesn't care about upper or
+lower case, but most programs use upper case).</td></tr>
+<tr><td><code><i>identifier-1</i></code>, <code><i>literal-2</i></code></td>
+<td>Lowercase words in italics are the parts you supply: the name of one of your data items,
+a number, a quoted string. The digit only tells several of them apart.</td></tr>
+<tr><td><code>[ ROUNDED ]</code></td><td>Square brackets: optional. You may leave it out.</td></tr>
+<tr><td><code>{ CORRESPONDING | CORR }</code></td>
+<td>Braces with bars: choose exactly one of the choices.</td></tr>
+<tr><td><code>...</code></td><td>The part just before it may be repeated, as many times as you
+need.</td></tr>
+<tr><td><code>Format 1: ...</code></td><td>A label. When a statement has several forms, each
+one gets its own pattern under its own label.</td></tr>
+</table>
+</div>
+<p>For example, the first form of ADD is shown as</p>
+<pre class="syntax">ADD { <var>identifier-1</var> | <var>literal-1</var> } ... TO { <var>identifier-2</var> [ ROUNDED ] } ...</pre>
+<p>which allows <code>ADD 1 TO COUNTER</code>, <code>ADD PRICE TAX TO TOTAL</code> and
+<code>ADD 5 TO A B ROUNDED</code>.</p>
+<p>Words that are optional "noise", such as <code>IS</code> in <code>IF A IS NUMERIC</code>
+or <code>ON</code> in <code>ON SIZE ERROR</code>, are shown in brackets too. They don't change
+what the program does; put them in when they make it read better.</p>
+
+<h2>Words you will meet</h2>
+<div class="table-wrap">
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>data item</td><td>A named piece of storage that your program describes in the
+DATA DIVISION, such as <code>01 TOTAL PIC 9(5)</code>. Other languages call it a variable.</td></tr>
+<tr><td>elementary item</td><td>A data item that is not divided any further. It has a
+<a href="picture.html">PICTURE</a> clause (or a USAGE that implies a size).</td></tr>
+<tr><td>group item</td><td>A data item made of smaller items under it, with higher level
+numbers. A group has no PICTURE of its own; it is simply all of its parts side by side, and
+COBOL treats it as one alphanumeric field. See <a href="data-division.html">DATA DIVISION</a>
+and <a href="level-numbers.html">level numbers</a>.</td></tr>
+<tr><td>identifier</td><td>A way of naming data in a statement: a data name, possibly with
+qualification, subscripts or reference modification, such as <code>CITY OF HOME-ADDRESS</code>
+or <code>MONTH-NAME (3)</code>. See <a href="referring-to-data.html">referring to data</a>.</td></tr>
+<tr><td>literal</td><td>A value written straight into the program: <code>42</code>,
+<code>-3.5</code>, <code>"HELLO"</code>. See <a href="literals.html">literals</a>.</td></tr>
+<tr><td>figurative constant</td><td>A reserved word that stands for a value, like
+<code>ZERO</code> or <code>SPACES</code>. See <a href="figurative-constants.html">figurative
+constants</a>.</td></tr>
+<tr><td>imperative statement</td><td>A statement that just does something, with no condition
+of its own: <code>MOVE</code>, <code>DISPLAY</code>, <code>ADD</code> without SIZE ERROR, and
+so on, or a statement closed by its scope terminator (<code>END-IF</code>, <code>END-ADD</code>,
+...). Phrases like <code>ON SIZE ERROR</code> and <code>AT END</code> take imperative
+statements.</td></tr>
+<tr><td>condition</td><td>Something that is true or false, such as <code>A &gt; B</code> or
+<code>CUST-NAME = SPACES</code>. See <a href="conditions.html">conditions</a>.</td></tr>
+<tr><td>arithmetic expression</td><td>A formula such as <code>PRICE * 1.08 + 2</code>. See
+<a href="arithmetic-expressions.html">arithmetic expressions</a>.</td></tr>
+<tr><td>paragraph, section</td><td>Named blocks of code in the PROCEDURE DIVISION. See
+<a href="program-structure.html">program structure</a>.</td></tr>
+</table>
+</div>
+
+<h2>The examples</h2>
+<p>Every example is a complete program that you can type in and run. Under each one is
+exactly what it printed when SP COBOL ran it, and stock GnuCOBOL 3.2 prints the same thing
+(where it doesn't, the page says so). Examples are written in fixed format, with sequence
+numbers in columns 1-6, as described in <a href="source-format.html">source format</a>.</p>
+<p>Here is a small one. It describes a group item made of three elementary items, shows the
+whole group, then adds to a counter.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/READREF1.cbl" download>READREF1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. READREF1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  GREETING.
+<span class="seq">000060</span>     05  FIRST-WORD      PIC X(5)  VALUE <span class="str">&quot;HELLO&quot;</span>.
+<span class="seq">000070</span>     05  FILLER          PIC X     VALUE SPACE.
+<span class="seq">000080</span>     05  SECOND-WORD     PIC X(5)  VALUE <span class="str">&quot;WORLD&quot;</span>.
+<span class="seq">000090</span> 01  TIMES-SHOWN         PIC 9     VALUE 0.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">DISPLAY</span> GREETING
+<span class="seq">000120</span>     <span class="kw">ADD</span> 1 TO TIMES-SHOWN
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SHOWN &quot;</span> TIMES-SHOWN <span class="str">&quot; TIME&quot;</span>
+<span class="seq">000140</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">HELLO WORLD
+SHOWN 1 TIME</pre>
+</figure>
+<p><code>GREETING</code> is a group item, so DISPLAY shows its three parts side by side:
+"HELLO", the one space in the FILLER, and "WORLD". <code>TIMES-SHOWN</code> is a one-digit
+number that starts at 0; after the ADD it holds 1.</p>
+
+<h2>Callouts</h2>
+<div class="note">A note adds something useful to know.</div>
+<div class="warn">A warning marks a trap for learners, or a place where SP COBOL behaves
+differently from GnuCOBOL 3.2.</div>
+<div class="bad">This box marks something SP COBOL does not support (yet), and says what to do
+instead.</div>
+
+<h2>See also</h2>
+<p><a href="source-format.html">Source format</a> for where things go on a line,
+<a href="program-structure.html">program structure</a> for how a program is put together,
+<a href="differences.html">differences from GnuCOBOL</a>,
+<a href="not-supported.html">not supported</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="index.html">&larr; SP COBOL Language Reference</a><a class="next" href="source-format.html">Source format &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

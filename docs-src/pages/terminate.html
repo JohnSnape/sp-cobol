@@ -1,0 +1,26 @@
+title: TERMINATE
+summary: Finish a Report Writer report, printing its last footings and final totals.
+keywords: report writer end report finish FINAL grand total REPORT FOOTING
+---
+<h2>Syntax</h2>
+<pre class="syntax">TERMINATE report-name-1 ...</pre>
+
+<h2>What it does</h2>
+<p><code>TERMINATE</code> ends a <a href="report-writer.html">Report Writer</a> report. It
+prints everything that is still owed: the control footings for the last values of the
+control fields, the <code>CONTROL FOOTING FINAL</code> group (grand totals), the page
+footing of the last page, and the report footing. Then LINE-COUNTER goes back to 0.</p>
+<p>TERMINATE does not close the file. <a href="close.html">CLOSE</a> it afterwards, as
+usual. If you forget TERMINATE, the last subtotals and the grand total are never printed.
+After a TERMINATE you can <a href="initiate.html">INITIATE</a> the report again.</p>
+
+<h2>Example</h2>
+<!-- example TERMIN1 -->
+<p>The two GENERATEs print MON and TUE. TERMINATE prints the WEEK total (the FINAL footing)
+and the report footing, and LINE-COUNTER is 0 afterwards. In SP COBOL, as in GnuCOBOL, the
+report footing goes on a page of its own: page 1 is padded to its 9 lines first, and
+LINE PLUS 2 puts "END OF REPORT" on line 2 of the new page.</p>
+
+<h2>See also</h2>
+<p><a href="report-writer.html">Report Writer</a>, <a href="initiate.html">INITIATE</a>,
+<a href="generate.html">GENERATE</a>, <a href="close.html">CLOSE</a>.</p>

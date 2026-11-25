@@ -1,0 +1,133 @@
+title: FILE STATUS codes
+summary: The two-character code set after every file operation, what each value means, and how to test it.
+keywords: FILE STATUS status code 00 02 04 05 06 07 09 10 14 21 22 23 24 30 31 35 37 38 39 41 42 43 44 46 47 48 49 57 61 71 91 error end of file not found duplicate key 88 condition
+---
+<h2>Syntax</h2>
+<pre class="syntax">SELECT file-name ASSIGN TO ...
+    FILE STATUS IS identifier-1 .
+
+WORKING-STORAGE SECTION.
+01 identifier-1 PIC XX.
+   [ 88 condition-name VALUE "nn" [ "nn" ] ... . ] ...</pre>
+
+<h2>What it does</h2>
+<p>After every OPEN, CLOSE, READ, WRITE, REWRITE, DELETE and START on a file, the runtime
+stores a two-character code in the file's FILE STATUS item. <code>"00"</code> means the
+statement worked. Anything else tells you what happened, so you can react instead of letting
+the program stop.</p>
+<p>The first character is the <em>class</em> of the result:</p>
+<ul>
+<li><b>0</b>: success. The second digit may add a remark (a duplicate alternate key, a
+missing OPTIONAL file, a shortened record).</li>
+<li><b>1</b>: AT END. There is no next record.</li>
+<li><b>2</b>: INVALID KEY. A key was wrong for this operation: not found, already there,
+or out of order.</li>
+<li><b>3</b>: a permanent error, usually with the file itself: missing, not allowed, or not
+the shape the program expects.</li>
+<li><b>4</b>: a logic error: the statement didn't make sense at that moment, such as reading
+a file that isn't open.</li>
+<li><b>9</b>: other errors from the runtime.</li>
+</ul>
+<p>When a statement fails (class 3, 4 or 9, or 1 and 2 with no AT END / INVALID KEY phrase)
+and the file has neither a FILE STATUS item nor a <a href="use.html">USE</a> procedure, the
+program stops with an error message. With a FILE STATUS item, the program carries on and it's
+up to you to look at the code.</p>
+
+<h3>Declaring and testing it</h3>
+<p>Declare the item as <code>PIC XX</code> in WORKING-STORAGE, and name it in the SELECT.
+Testing it with <a href="condition-names.html">88-level condition names</a> makes the code read
+well: <code>IF FS-NOT-FOUND</code> rather than <code>IF FS = "35"</code>. Check it right after
+the statement; the next file statement replaces it. To act on a whole class, test the first
+character: <code>IF FS(1:1) = "3"</code>.</p>
+
+<h3>The codes</h3>
+<div class="table-wrap"><table>
+<tr><th>Code</th><th>Meaning</th><th>What to check</th></tr>
+<tr><td>00</td><td>Success.</td><td></td></tr>
+<tr><td>02</td><td>Success, and another record has the same alternate key value (INDEXED,
+<code>WITH DUPLICATES</code>). On READ it means the next record has the same key.</td>
+<td>Nothing, unless the key was meant to be unique.</td></tr>
+<tr><td>04</td><td>Success, but the record read was not the length the FD allows (too short
+or too long for a variable-length record).</td><td>The RECORD VARYING sizes against the
+file.</td></tr>
+<tr><td>05</td><td>OPEN of an <code>OPTIONAL</code> file that doesn't exist. The open
+worked; reading gives end of file at once.</td><td>Nothing; this is how OPTIONAL files
+work.</td></tr>
+<tr><td>06</td><td>READ of a LINE SEQUENTIAL line longer than the record: you got the first
+part, the next READ returns the rest.</td><td>Make the record longer.</td></tr>
+<tr><td>07</td><td>CLOSE REEL / UNIT or NO REWIND on a disk file: done, but the phrase
+has no meaning on disk.</td><td>Use a plain CLOSE.</td></tr>
+<tr><td>09</td><td>READ of a LINE SEQUENTIAL line containing a control character such as
+Ctrl-Z.</td><td>The file may not be text.</td></tr>
+<tr><td>10</td><td>End of file: no next record (sequential READ, READ NEXT, RETURN).</td>
+<td>Normal at the end of a loop.</td></tr>
+<tr><td>14</td><td>Sequential READ of a RELATIVE file reached a slot number too big for the
+RELATIVE KEY item.</td><td>Give the RELATIVE KEY more digits.</td></tr>
+<tr><td>21</td><td>Key out of order: an INDEXED file with sequential access must be written in
+ascending key order (after OPEN EXTEND too: above the highest key already there).</td><td>Sort the
+data first, or use random access.</td></tr>
+<tr><td>22</td><td>Duplicate key: WRITE to a RELATIVE slot that is in use, or WRITE of an
+INDEXED record whose RECORD KEY is already in the file.</td><td>Read
+first, or REWRITE instead.</td></tr>
+<tr><td>23</td><td>Record not found: READ, START, REWRITE or DELETE of a key or slot that
+isn't there.</td><td>The key value; normal when looking things up.</td></tr>
+<tr><td>24</td><td>Key outside the file's limits, such as RELATIVE KEY 0.</td><td>Slot numbers
+start at 1.</td></tr>
+<tr><td>30</td><td>Permanent error reported by Windows while reading or writing.</td>
+<td>The disk, the path, the file.</td></tr>
+<tr><td>31</td><td>The file name is empty or badly quoted.</td><td>The ASSIGN data item has a
+name in it when OPEN runs.</td></tr>
+<tr><td>35</td><td>OPEN INPUT, I-O or EXTEND of a file that doesn't exist.</td><td>The name,
+and the current folder. Use OPEN OUTPUT or <code>SELECT OPTIONAL</code> to create it.</td></tr>
+<tr><td>37</td><td>Permission denied: the file is read-only, or the name is a folder.</td>
+<td>The file's properties.</td></tr>
+<tr><td>38</td><td>OPEN of a file closed earlier <code>WITH LOCK</code>.</td><td>Don't lock it
+if you need it again.</td></tr>
+<tr><td>39</td><td>The file doesn't match the program: wrong record size, or (INDEXED) a
+different key layout.</td><td>The FD against the program that wrote the file.</td></tr>
+<tr><td>41</td><td>OPEN of a file that is already open.</td><td>CLOSE it first.</td></tr>
+<tr><td>42</td><td>CLOSE of a file that isn't open.</td><td></td></tr>
+<tr><td>43</td><td>REWRITE or DELETE with sequential access, with no successful READ just
+before.</td><td>READ the record first.</td></tr>
+<tr><td>44</td><td>Record size wrong: WRITE or REWRITE of a record shorter or longer than the
+FD allows.</td><td>The DEPENDING ON item before WRITE.</td></tr>
+<tr><td>46</td><td>READ after the previous READ already hit end of file or failed.</td>
+<td>Stop the loop at status 10.</td></tr>
+<tr><td>47</td><td>READ or START on a file that isn't open for INPUT or I-O (or is
+closed).</td><td>The OPEN mode.</td></tr>
+<tr><td>48</td><td>WRITE on a file that isn't open for OUTPUT, EXTEND (or I-O for RELATIVE and
+INDEXED).</td><td>The OPEN mode.</td></tr>
+<tr><td>49</td><td>REWRITE or DELETE on a file not open I-O.</td><td>Open it I-O.</td></tr>
+<tr><td>57</td><td>The LINAGE values make no sense (footing beyond the page, for
+example).</td><td>The LINAGE clause.</td></tr>
+<tr><td>61</td><td>The file is already open elsewhere, in this program or another one.</td>
+<td>Close the other user, such as Excel.</td></tr>
+<tr><td>91</td><td>The operation isn't available for this kind of file.</td><td></td></tr>
+</table></div>
+<p>GnuCOBOL also defines 34 (disk full or a boundary passed) and 51 (record locked);
+SP COBOL doesn't produce them.</p>
+
+<h2>Examples</h2>
+<!-- example FSTAT1 -->
+<p>Each line shows the status after one statement on a sequential file: 35 because the file
+doesn't exist yet, 41 for opening twice, 47 for reading a file opened for output, 42 for
+closing twice, 48 for writing a closed file, 10 at the end, 46 for reading past the end,
+49 for REWRITE when the file is open INPUT, and 43 for REWRITE with no READ before it.</p>
+<!-- example FSTAT2 -->
+<p>The key and record codes: 22 for a slot already in use, 24 for slot 0, 23 for an empty
+slot, 44 for a 1-character record when the FD says at least 2. Reading a 10-character line
+into a 6-character record gives 06 and the first six characters; the next READ returns the
+rest with 00. <code>CLOSE ... REEL</code> on a disk file gives 07 and leaves the file open,
+so a plain CLOSE follows.</p>
+
+<h2>SP COBOL notes</h2>
+<p>The codes are the ones GnuCOBOL 3.2 sets in each situation. The exceptions are the plain
+GnuCOBOL bugs listed on the <a href="files.html">Files</a> page, for example REWRITE or DELETE
+of an empty RELATIVE slot, which gives 23 here and 00 in GnuCOBOL.</p>
+<p>When a file error stops the program, SP COBOL adds a <code>hint:</code> line under
+GnuCOBOL's message saying what to check. <code>COB_NO_HINTS=1</code> turns it off.</p>
+
+<h2>See also</h2>
+<p><a href="files.html">Files</a>, <a href="use.html">USE</a> for error procedures,
+<a href="open.html">OPEN</a>, <a href="read.html">READ</a>, <a href="write.html">WRITE</a>,
+<a href="condition-names.html">condition names</a>.</p>

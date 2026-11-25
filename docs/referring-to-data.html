@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referring to data - SP COBOL Reference</title>
+<meta name="description" content="Name the exact data you mean: qualification with OF/IN, subscripts, indexes and reference modification.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details open><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html" class="current" aria-current="page">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Using data</p>
+<h1>Referring to data </h1>
+<p class="lede">Name the exact data you mean: qualification with OF/IN, subscripts, indexes and reference modification.</p>
+<h2>Syntax</h2>
+<pre class="syntax">Qualification:
+<var>data-name-1</var> [ { OF | IN } <var>data-name-2</var> ] ...
+
+Subscripts (<var>items</var> <var>in</var> <var>a</var> <var>table</var>):
+<var>data-name</var> ( <var>subscript</var> [ , <var>subscript</var> ] ... )
+    <var>subscript</var>:  <var>integer</var> | <var>data-name-3</var> [ { + | - } <var>integer</var> ] | <var>index-name</var> [ { + | - } <var>integer</var> ]
+
+Reference <var>modification</var> (<var>part</var> <var>of</var> <var>an</var> <var>item</var>):
+<var>identifier</var> ( <var>start</var> : [ <var>length</var> ] )</pre>
+
+<h2>What it does</h2>
+<p>Most of the time a data item's name is all you need. This page covers the three ways to be
+more exact. Together they make up an <em>identifier</em>, the thing the syntax boxes on other
+pages ask for, and they can be combined: <code>SEAT OF SEATS (2, 3)</code>,
+<code>MONTH-NAME (3) (2:2)</code>.</p>
+
+<h3>Qualification: OF and IN</h3>
+<p>Two items may have the same name if they are in different groups, like the CITY of a home
+address and the CITY of a work address. To say which one you mean, add <code>OF</code> (or
+<code>IN</code>, which means the same) and the name of a group that contains it:
+<code>CITY OF HOME-ADDRESS</code>. You only need enough qualifiers to make the name unique;
+<code>A OF B OF C</code> is allowed when one level isn't enough.</p>
+
+<h3>Subscripts</h3>
+<p>An item with an <a href="occurs.html">OCCURS</a> clause is a table, and each use of it
+needs a subscript in parentheses saying which element: <code>MONTH-NAME (2)</code> is the
+second one. Elements are numbered from 1. A subscript can be:</p>
+<ul>
+<li>a literal: <code>MONTH-NAME (2)</code>;</li>
+<li>a numeric data item: <code>MONTH-NAME (N)</code>;</li>
+<li>a data item plus or minus a literal (a <em>relative subscript</em>):
+<code>MONTH-NAME (N + 1)</code>.</li>
+</ul>
+<p>A table inside a table needs one subscript for each level, outer first, separated by
+commas or spaces: <code>SEAT (ROW-NO, SEAT-NO)</code>.</p>
+
+<h3>Indexes</h3>
+<p><code>OCCURS ... INDEXED BY name</code> declares an <em>index</em> for the table. An index
+is used like a subscript, <code>MONTH-NAME (M-IDX)</code>, but you change it with
+<a href="set.html">SET</a> (<code>SET M-IDX TO 6</code>, <code>SET M-IDX UP BY 1</code>) or
+<a href="perform.html">PERFORM VARYING</a>, not with MOVE or ADD. Indexes are what
+<a href="search.html">SEARCH</a> uses. Relative indexing (<code>M-IDX + 1</code>) is allowed
+too.</p>
+
+<h3>Reference modification</h3>
+<p>To use part of an item, write the starting position and the length in parentheses with a
+colon between: <code>CITY (1:3)</code> is the first three characters of CITY. Leave out the
+length to mean "to the end": <code>CITY (5:)</code>. Positions count from 1, and either part
+can be a data item or an arithmetic expression. The result is always treated as alphanumeric
+text, even when the item is a number. On a table element, the subscript comes first:
+<code>MONTH-NAME (3) (2:2)</code>.</p>
+
+<div class="warn">Keep subscripts between 1 and the OCCURS count. COBOL doesn't check them for
+you. In stock GnuCOBOL, <code>MONTH-NAME (7)</code> in a six-element table quietly reads
+whatever bytes lie in memory after the table. SP COBOL keeps each 01 record in its own block of
+memory, so a subscript that runs off the end of the record stops the program with a .NET
+error (<code>ArgumentOutOfRangeException</code>) instead.</div>
+
+<h2>Example: one of each</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/REFDATA1.cbl" download>REFDATA1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. REFDATA1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  HOME-ADDRESS.
+<span class="seq">000060</span>     05  CITY            PIC X(10) VALUE <span class="str">&quot;SAN DIEGO&quot;</span>.
+<span class="seq">000070</span> 01  WORK-ADDRESS.
+<span class="seq">000080</span>     05  CITY            PIC X(10) VALUE <span class="str">&quot;ESCONDIDO&quot;</span>.
+<span class="seq">000090</span> 01  MONTH-TABLE         VALUE <span class="str">&quot;JANFEBMARAPRMAYJUN&quot;</span>.
+<span class="seq">000100</span>     05  MONTH-NAME      PIC XXX OCCURS 6 TIMES
+<span class="seq">000110</span>                         INDEXED BY M-IDX.
+<span class="seq">000120</span> 01  N                   PIC 9     VALUE 4.
+<span class="seq">000130</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000140</span><span class="com">*    QUALIFICATION</span>
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;HOME: &quot;</span> CITY OF HOME-ADDRESS
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WORK: &quot;</span> CITY IN WORK-ADDRESS
+<span class="seq">000170</span><span class="com">*    SUBSCRIPTS</span>
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MONTH (2):      &quot;</span> MONTH-NAME (2)
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MONTH (N):      &quot;</span> MONTH-NAME (N)
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MONTH (N + 1):  &quot;</span> MONTH-NAME (N + 1)
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MONTH (N - 3):  &quot;</span> MONTH-NAME (N - 3)
+<span class="seq">000220</span><span class="com">*    AN INDEX</span>
+<span class="seq">000230</span>     <span class="kw">SET</span> M-IDX TO 6
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MONTH (M-IDX):  &quot;</span> MONTH-NAME (M-IDX)
+<span class="seq">000250</span>     <span class="kw">SET</span> M-IDX DOWN BY 1
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER SET DOWN: &quot;</span> MONTH-NAME (M-IDX)
+<span class="seq">000270</span><span class="com">*    REFERENCE MODIFICATION</span>
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CITY (1:3):     &quot;</span> CITY OF HOME-ADDRESS (1:3)
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CITY (5:):      &quot;</span> CITY OF HOME-ADDRESS (5:)
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TABLE (N:5):    &quot;</span> MONTH-TABLE (N:5)
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MONTH (3)(2:2): &quot;</span> MONTH-NAME (3) (2:2)
+<span class="seq">000320</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">HOME: SAN DIEGO 
+WORK: ESCONDIDO 
+MONTH (2):      FEB
+MONTH (N):      APR
+MONTH (N + 1):  MAY
+MONTH (N - 3):  JAN
+MONTH (M-IDX):  JUN
+AFTER SET DOWN: MAY
+CITY (1:3):     SAN
+CITY (5:):      DIEGO 
+TABLE (N:5):    FEBMA
+MONTH (3)(2:2): AR</pre>
+</figure>
+<p>The two CITY items are told apart by OF and IN. With N = 4, <code>MONTH-NAME (N)</code> is
+APR, <code>(N + 1)</code> is MAY and <code>(N - 3)</code> is JAN. The index M-IDX is SET to
+6, then down by one. <code>MONTH-TABLE (N:5)</code> takes five characters of the whole table
+starting at position 4, which crosses from FEB into MAR.</p>
+
+<h2>Example: a two-level table</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/REFDATA2.cbl" download>REFDATA2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. REFDATA2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  SEATS.
+<span class="seq">000060</span>     05  SEAT-ROW        OCCURS 2 TIMES.
+<span class="seq">000070</span>         10  SEAT        PIC X     OCCURS 3 TIMES.
+<span class="seq">000080</span> 01  R                   PIC 9.
+<span class="seq">000090</span> 01  C                   PIC 9.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">MOVE</span> ALL <span class="str">&quot;.&quot;</span> TO SEATS
+<span class="seq">000120</span>     <span class="kw">MOVE</span> <span class="str">&quot;X&quot;</span> TO SEAT (1, 2)
+<span class="seq">000130</span>     <span class="kw">MOVE</span> <span class="str">&quot;X&quot;</span> TO SEAT OF SEATS (2, 3)
+<span class="seq">000140</span>     <span class="kw">PERFORM</span> VARYING R FROM 1 BY 1 UNTIL R &gt; 2
+<span class="seq">000150</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;ROW &quot;</span> R <span class="str">&quot;: &quot;</span> SEAT-ROW (R)
+<span class="seq">000160</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000170</span>     <span class="kw">MOVE</span> 2 TO R
+<span class="seq">000180</span>     <span class="kw">MOVE</span> 3 TO C
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SEAT (R, C) IS &quot;</span> SEAT (R, C)
+<span class="seq">000200</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">ROW 1: .X.
+ROW 2: ..X
+SEAT (R, C) IS X</pre>
+</figure>
+<p>SEATS holds two rows of three seats. <code>SEAT (1, 2)</code> is row 1, seat 2. The second
+MOVE adds a qualifier as well; it comes before the subscripts. <code>SEAT-ROW (R)</code> is a
+whole row, shown as three characters.</p>
+
+<h2>See also</h2>
+<p><a href="occurs.html">OCCURS</a>, <a href="set.html">SET</a>,
+<a href="search.html">SEARCH</a>, <a href="data-division.html">DATA DIVISION</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a> (FUNCTION LENGTH, for example).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="figurative-constants.html">&larr; Figurative constants</a><a class="next" href="conditions.html">Conditions &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

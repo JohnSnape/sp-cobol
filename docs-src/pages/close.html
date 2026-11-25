@@ -1,0 +1,41 @@
+title: CLOSE
+summary: Finish with one or more files, writing out anything still waiting.
+keywords: CLOSE WITH LOCK REEL UNIT NO REWIND implicit CLOSE warning 42 38 07
+---
+<h2>Syntax</h2>
+<pre class="syntax">CLOSE { file-name-1 [ { REEL | UNIT } | WITH LOCK | WITH NO REWIND ] } ...</pre>
+
+<h2>What it does</h2>
+<p>CLOSE ends the program's use of a file. Anything still waiting to be written goes to disk,
+and the file is released so other programs (and a later OPEN in this one) can use it. One
+CLOSE can close several files: <code>CLOSE IN-FILE OUT-FILE</code>.</p>
+<p>After CLOSE the file can be opened again, in any mode. Closing a file that isn't open
+gives status 42.</p>
+
+<h3>WITH LOCK</h3>
+<p><code>CLOSE file WITH LOCK</code> closes the file and stops this program from opening it
+again: a later OPEN gives status 38.</p>
+
+<h3>REEL, UNIT and NO REWIND</h3>
+<p>These phrases come from magnetic tape. On a disk file they don't apply: CLOSE REEL and
+CLOSE UNIT give status 07 and leave the file <em>open</em>; CLOSE WITH NO REWIND closes it
+with status 07. Just use a plain CLOSE.</p>
+
+<h3>Files left open</h3>
+<p>Files still open when the program ends with <a href="stop.html">STOP RUN</a> are closed for
+you, but the runtime prints a warning for each one, to remind you to close them yourself.</p>
+
+<h2>Example</h2>
+<!-- example CLOSE1 -->
+<p>One OPEN opens IN-F for input and OUT-F for output, and one CLOSE closes both. Closing IN-F
+again gives 42. After <code>CLOSE WITH LOCK</code>, opening OUT-F gives 38. IN-F is opened
+again and never closed, so the program ends with the "implicit CLOSE" warning (it goes to the
+error output, standard error).</p>
+
+<h2>SP COBOL notes</h2>
+<p>The implicit CLOSE warning and the 07 status for REEL / UNIT are kept as GnuCOBOL 3.2 has
+them.</p>
+
+<h2>See also</h2>
+<p><a href="open.html">OPEN</a>, <a href="files.html">Files</a>,
+<a href="file-status.html">FILE STATUS codes</a>.</p>

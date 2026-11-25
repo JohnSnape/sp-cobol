@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>USAGE - SP COBOL Reference</title>
+<meta name="description" content="Choose how an item is stored in memory: as characters, binary, packed decimal or floating point.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html" class="current" aria-current="page">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Data description</p>
+<h1>USAGE </h1>
+<p class="lede">Choose how an item is stored in memory: as characters, binary, packed decimal or floating point.</p>
+<h2>Syntax</h2>
+<pre class="syntax">[ USAGE [ IS ] ] { DISPLAY
+                 | BINARY | COMP | COMPUTATIONAL | COMP-4
+                 | COMP-5
+                 | COMP-3 | PACKED-DECIMAL
+                 | COMP-1 | FLOAT-SHORT
+                 | COMP-2 | FLOAT-LONG
+                 | INDEX
+                 | POINTER
+                 | NATIONAL }</pre>
+
+<h2>What it does</h2>
+<p>The PICTURE says what values an item can hold; USAGE says how those values are kept in
+memory. The word <code>USAGE IS</code> is optional, so <code>PIC 9(4) COMP</code> is the
+usual way to write it. If you write USAGE on a group, every item in the group gets it.
+Without a USAGE clause, an item is <code>DISPLAY</code>.</p>
+<p>Usage doesn't change what your program computes: <code>ADD 1</code> gives the same answer
+in every form. It changes the size of the item, how fast arithmetic is, and what the bytes
+look like when you write a record to a file or pass it to another program.</p>
+
+<div class="table-wrap"><table>
+<tr><th>Usage</th><th>Stores</th><th>Size</th></tr>
+<tr><td><code>DISPLAY</code></td><td>One character per digit, like text. A sign is folded into the last digit (see <a href="sign.html">SIGN</a>).</td><td>1 byte per digit</td></tr>
+<tr><td><code>BINARY</code>, <code>COMP</code>, <code>COMPUTATIONAL</code>, <code>COMP-4</code></td><td>A binary integer, most significant byte first (big-endian). The PICTURE's digits still limit the value.</td><td>1-2 digits: 1 byte; 3-4: 2; 5-9: 4; 10-18: 8</td></tr>
+<tr><td><code>COMP-5</code></td><td>A binary integer in the computer's own byte order (least significant byte first on a PC). It can hold any value its bytes can: a <code>PIC 9(4) COMP-5</code> holds 65000, where a <code>PIC 9(4) COMP</code> keeps only the last 4 digits (5000).</td><td>as COMP</td></tr>
+<tr><td><code>COMP-3</code>, <code>PACKED-DECIMAL</code></td><td>Two digits per byte, with the sign in the last half-byte (C or F for plus, D for minus).</td><td>digits / 2 + 1, rounded down</td></tr>
+<tr><td><code>COMP-1</code>, <code>FLOAT-SHORT</code></td><td>A single-precision floating-point number. No PICTURE.</td><td>4 bytes</td></tr>
+<tr><td><code>COMP-2</code>, <code>FLOAT-LONG</code></td><td>A double-precision floating-point number. No PICTURE.</td><td>8 bytes</td></tr>
+<tr><td><code>INDEX</code></td><td>A table position, for <a href="set.html">SET</a> and <a href="search.html">SEARCH</a>. No PICTURE.</td><td>4 bytes</td></tr>
+<tr><td><code>POINTER</code></td><td>The address of some data, set with <a href="set.html">SET</a>. No PICTURE.</td><td>8 bytes</td></tr>
+<tr><td><code>NATIONAL</code></td><td>UTF-16 characters, used with <code>PIC N</code>. See <a href="national.html">National data</a>.</td><td>2 bytes per character</td></tr>
+</table></div>
+
+<h3>Which one to use</h3>
+<p>Use <code>DISPLAY</code> (the default) while you learn: you can see the digits in a data
+file. Use <code>COMP</code> or <code>COMP-5</code> for counters and subscripts.
+<code>COMP-3</code> is common in files that came from IBM mainframes. Floating point
+(<code>COMP-1</code>, <code>COMP-2</code>) is for science and engineering values; it can't
+hold most decimal fractions exactly, so don't use it for money.</p>
+
+<h3>How DISPLAY shows them</h3>
+<p>A DISPLAY of a <code>DISPLAY</code>, <code>COMP</code> or <code>COMP-3</code> item shows its
+digits as the PICTURE describes them. A <code>COMP-5</code> item is shown differently: as its
+raw value with no decimal point, padded with zeros to the most digits its bytes can hold
+(5 digits for 2 bytes, 10 for 4, 20 for 8). <code>COMP-1</code> and <code>COMP-2</code> are
+shown with up to 8 and 16 significant digits, with an exponent such as <code>E+20</code> for
+very large or small values. SP COBOL matches GnuCOBOL 3.2 in all of these.</p>
+
+<h2>Example: sizes and display</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/USAGE1.cbl" download>USAGE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. USAGE1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  D-NUM     PIC S9(7)V99            VALUE -1234.56.
+<span class="seq">000060</span> 01  B-NUM     PIC S9(7)V99  COMP      VALUE -1234.56.
+<span class="seq">000070</span> 01  B5-NUM    PIC S9(7)V99  COMP-5    VALUE -1234.56.
+<span class="seq">000080</span> 01  P-NUM     PIC S9(7)V99  COMP-3    VALUE -1234.56.
+<span class="seq">000090</span> 01  F1-NUM    COMP-1                  VALUE -1234.56.
+<span class="seq">000100</span> 01  F2-NUM    COMP-2                  VALUE -1234.56.
+<span class="seq">000110</span> 01  SMALL-B   PIC 9(4)      BINARY    VALUE 1234.
+<span class="seq">000120</span> 01  SMALL-5   PIC 9(4)      COMP-5    VALUE 1234.
+<span class="seq">000130</span> 01  IDX       USAGE INDEX.
+<span class="seq">000140</span> 01  PTR       USAGE POINTER.
+<span class="seq">000150</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DISPLAY  &quot;</span> D-NUM  <span class="str">&quot;  BYTES &quot;</span> LENGTH OF D-NUM
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP     &quot;</span> B-NUM  <span class="str">&quot;  BYTES &quot;</span> LENGTH OF B-NUM
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP-5   &quot;</span> B5-NUM <span class="str">&quot;  BYTES &quot;</span> LENGTH OF B5-NUM
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP-3   &quot;</span> P-NUM  <span class="str">&quot;  BYTES &quot;</span> LENGTH OF P-NUM
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP-1   &quot;</span> F1-NUM <span class="str">&quot;  BYTES &quot;</span> LENGTH OF F1-NUM
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP-2   &quot;</span> F2-NUM <span class="str">&quot;  BYTES &quot;</span> LENGTH OF F2-NUM
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;9(4) BINARY &quot;</span> SMALL-B <span class="str">&quot;  BYTES &quot;</span> LENGTH OF SMALL-B
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;9(4) COMP-5 &quot;</span> SMALL-5 <span class="str">&quot;  BYTES &quot;</span> LENGTH OF SMALL-5
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;INDEX    BYTES &quot;</span> LENGTH OF IDX
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;POINTER  BYTES &quot;</span> LENGTH OF PTR
+<span class="seq">000260</span>     <span class="kw">ADD</span> 1 TO D-NUM B-NUM B5-NUM P-NUM F1-NUM F2-NUM
+<span class="seq">000270</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PLUS 1: &quot;</span> D-NUM <span class="str">&quot; &quot;</span> B-NUM <span class="str">&quot; &quot;</span> P-NUM
+<span class="seq">000280</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">DISPLAY  -0001234.56  BYTES 9
+COMP     -0001234.56  BYTES 4
+COMP-5   -0000123456  BYTES 4
+COMP-3   -0001234.56  BYTES 5
+COMP-1   -1234.5601  BYTES 4
+COMP-2   -1234.56  BYTES 8
+9(4) BINARY 1234  BYTES 2
+9(4) COMP-5 01234  BYTES 2
+INDEX    BYTES 4
+POINTER  BYTES 8
+PLUS 1: -0001233.56 -0001233.56 -0001233.56</pre>
+</figure>
+<p>The same value, -1234.56, takes 9 bytes as DISPLAY, 4 as COMP or COMP-5, and 5 as COMP-3.
+The COMP-5 item displays as <code>-0000123456</code>: the stored integer, without the implied
+decimal point, padded to 10 digits. COMP-1 shows <code>-1234.5601</code> because a 4-byte
+float can't hold 1234.56 exactly. A <code>PIC 9(4) COMP-5</code> displays 5 digits
+(<code>01234</code>), while <code>PIC 9(4) BINARY</code> displays 4. After adding 1, all the
+forms agree.</p>
+
+<h2>Example: the bytes</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/USAGE2.cbl" download>USAGE2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. USAGE2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  BIN-NUM   PIC 9(4)   COMP   VALUE 258.
+<span class="seq">000060</span> 01  NAT-NUM   PIC 9(4)   COMP-5 VALUE 258.
+<span class="seq">000070</span> 01  BIN-NEG   PIC S9(4)  COMP   VALUE -2.
+<span class="seq">000080</span> 01  PK        PIC S9(5)  COMP-3 VALUE -12345.
+<span class="seq">000090</span> 01  PK-POS    PIC 9(5)   COMP-3 VALUE 12345.
+<span class="seq">000100</span> 01  DSP       PIC S9(3)         VALUE -123.
+<span class="seq">000110</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP   258    &quot;</span> FUNCTION HEX-OF(BIN-NUM)
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP-5 258    &quot;</span> FUNCTION HEX-OF(NAT-NUM)
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP   -2     &quot;</span> FUNCTION HEX-OF(BIN-NEG)
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP-3 -12345 &quot;</span> FUNCTION HEX-OF(PK)
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMP-3 12345  &quot;</span> FUNCTION HEX-OF(PK-POS)
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;S9(3)  -123   &quot;</span> FUNCTION HEX-OF(DSP)
+<span class="seq">000180</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">COMP   258    0102
+COMP-5 258    0201
+COMP   -2     FFFE
+COMP-3 -12345 12345D
+COMP-3 12345  12345F
+S9(3)  -123   313273</pre>
+</figure>
+<p><code>FUNCTION HEX-OF</code> shows the bytes of an item in hexadecimal. 258 is 1 * 256 + 2.
+As COMP it is stored <code>01 02</code>, high byte first; as COMP-5 it is <code>02 01</code>,
+the PC's own order. A negative COMP value is stored as its two's complement
+(<code>FFFE</code> for -2). The packed items hold the digits 1 2 3 4 5 two to a byte, ending
+with <code>D</code> for minus or <code>F</code> for an unsigned value. The last line shows a
+signed DISPLAY item: the bytes are the characters <code>1</code>, <code>2</code> and
+<code>s</code>, because the minus sign is folded into the last digit.</p>
+
+<h2>SP COBOL notes</h2>
+<p><code>COMP</code> is big-endian, as in GnuCOBOL's default configuration, so binary data files
+are the same bytes in both. The COMP-5 display width and the COMP-1/COMP-2 display format
+follow GnuCOBOL 3.2 exactly; DECISIONS.md has the details.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="sign.html">SIGN</a>,
+<a href="synchronized.html">SYNCHRONIZED</a>, <a href="national.html">National data</a>,
+<a href="intrinsic-functions.html">Intrinsic functions</a> (HEX-OF, BYTE-LENGTH).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="picture.html">&larr; PICTURE</a><a class="next" href="value.html">VALUE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

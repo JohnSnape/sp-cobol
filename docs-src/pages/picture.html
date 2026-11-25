@@ -1,0 +1,106 @@
+title: PICTURE
+summary: Describe what an elementary item holds and how big it is, symbol by symbol.
+keywords: PIC PICTURE 9 X A V S P Z * $ CR DB B 0 / edited numeric-edited floating insertion check protect currency sign digits size repetition 38 digits
+---
+<h2>Syntax</h2>
+<pre class="syntax">{ PICTURE | PIC } [ IS ] character-string</pre>
+
+<h2>What it does</h2>
+<p>The PICTURE clause describes an elementary item: what kind of characters it holds and how
+many. Each symbol in the character string stands for one position (one character of the
+field), except <code>V</code>, <code>S</code> and <code>P</code>, which take no room in a
+normal DISPLAY field. A number in parentheses repeats the symbol before it, so
+<code>9(5)</code> is the same as <code>99999</code> and <code>X(30)</code> is thirty
+<code>X</code>s.</p>
+<p>A PICTURE puts an item in one of these categories:</p>
+<ul>
+<li><b>numeric</b> (only <code>9 V S P</code>): a number you can calculate with;</li>
+<li><b>alphanumeric</b> (<code>X</code>, or a mix of <code>X 9 A</code>): any characters;</li>
+<li><b>alphabetic</b> (only <code>A</code>): letters and spaces;</li>
+<li><b>numeric-edited</b> (<code>9</code> plus editing symbols such as <code>Z , . $ - CR</code>):
+a number laid out for people to read, used as the receiving field of a MOVE or a
+<code>GIVING</code>;</li>
+<li><b>national</b> (<code>N</code>): Unicode characters, see <a href="national.html">National data</a>.</li>
+</ul>
+
+<h3>Data symbols</h3>
+<div class="table-wrap"><table>
+<tr><th>Symbol</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code>9</code></td><td>One decimal digit.</td><td><code>PIC 9(5)</code> holds 0 to 99999.</td></tr>
+<tr><td><code>X</code></td><td>Any character.</td><td><code>PIC X(20)</code> holds 20 characters.</td></tr>
+<tr><td><code>A</code></td><td>A letter or a space.</td><td><code>PIC A(10)</code></td></tr>
+<tr><td><code>V</code></td><td>Where the decimal point is. It is only <em>implied</em>: no "." is stored and it takes no room.</td><td><code>PIC 9(3)V99</code> holds 123.45 in 5 bytes.</td></tr>
+<tr><td><code>S</code></td><td>The number has a sign. Must come first. Without it, a negative result loses its minus sign.</td><td><code>PIC S9(4)</code></td></tr>
+<tr><td><code>P</code></td><td>A scaling position: an assumed zero that is not stored.</td><td><code>PIC 9(3)PPP</code> holds 45000 in 3 bytes (see the warning below).</td></tr>
+<tr><td><code>N</code></td><td>One national (UTF-16) character, 2 bytes.</td><td><code>PIC N(10)</code></td></tr>
+</table></div>
+
+<h3>How many digits</h3>
+<p>A numeric item can have up to 38 digits in SP COBOL, as in GnuCOBOL 3.2. The last lines of
+the first example show a <code>PIC S9(38)</code> item holding a 38-digit number and doing
+arithmetic on it.</p>
+
+<h3>Numeric-edited symbols</h3>
+<p>These make a number readable. You don't calculate with an edited field; you MOVE a number
+into it (or name it in <code>GIVING</code>) and then DISPLAY or WRITE it.</p>
+<div class="table-wrap"><table>
+<tr><th>Symbol</th><th>What it does</th></tr>
+<tr><td><code>Z</code></td><td>A digit, but a leading zero becomes a space.</td></tr>
+<tr><td><code>*</code></td><td>A digit, but a leading zero becomes <code>*</code>. This is <em>check protection</em>: nobody can write extra digits in front of the amount on a check.</td></tr>
+<tr><td><code>.</code></td><td>The actual decimal point, printed. Lines up with the number's decimal point.</td></tr>
+<tr><td><code>,</code></td><td>A comma, printed. It becomes a space when it falls among suppressed leading zeros.</td></tr>
+<tr><td><code>$</code></td><td>The currency sign. One <code>$</code> is printed in a fixed place; several (<code>$$$</code>) <em>float</em>: the sign is printed just left of the first digit shown.</td></tr>
+<tr><td><code>+</code> <code>-</code></td><td>A sign. <code>+</code> prints + or -; <code>-</code> prints - for negative numbers and a space otherwise. One at the start or end is fixed; several at the start (<code>----9</code>) float like <code>$$$</code>.</td></tr>
+<tr><td><code>CR</code> <code>DB</code></td><td>At the right end: printed when the number is negative, spaces when it isn't. Accountants' credit and debit.</td></tr>
+<tr><td><code>B</code></td><td>Inserts a space.</td></tr>
+<tr><td><code>0</code></td><td>Inserts a zero.</td></tr>
+<tr><td><code>/</code></td><td>Inserts a slash.</td></tr>
+</table></div>
+<p>A numeric-edited picture may also use <code>9</code> for a digit that is always shown. If
+every digit position is <code>Z</code> (or <code>*</code>) and the value is zero, the whole
+field is spaces (or stars), decimal point included.</p>
+
+<h3>Alphanumeric-edited</h3>
+<p>A picture of <code>X</code> or <code>A</code> mixed with <code>B</code>, <code>0</code> or
+<code>/</code> is <em>alphanumeric-edited</em>: a MOVE into it is meant to insert those
+characters between the moved characters, for example <code>PIC XXXX/XX/XX</code> to turn
+<code>20261125</code> into <code>2026/11/25</code>.</p>
+<div class="bad">Alphanumeric-edited MOVEs don't insert anything in SP COBOL yet: the
+characters are copied as in a plain <code>PIC X</code> field and padded with spaces
+(<code>20261125</code> comes out as <code>20261125</code> followed by two spaces), where
+GnuCOBOL prints <code>2026/11/25</code>. Until this is fixed, build such text with
+<a href="string.html">STRING</a> or reference modification.</div>
+
+<h2>Example: data symbols</h2>
+<!-- example PIC1 -->
+<p>A DISPLAY shows a numeric item's digits with its implied decimal point as a real
+<code>.</code>, and a signed item with a leading <code>-</code> or <code>+</code>. Moving -12
+into the unsigned <code>9(3)</code> drops the sign. <code>A(5)</code> and <code>X(5)</code>
+pad short values with spaces on the right. The 38-digit item keeps every digit through the
+subtraction.</p>
+
+<h2>Example: edited pictures</h2>
+<!-- example PIC2 -->
+<p>Each number is moved into ten different edited fields. Look at how the zeros in front are
+replaced: by spaces with <code>Z</code>, by stars with <code>*</code>. The floating
+<code>$$$,$$9.99</code> puts the dollar sign right next to the first digit, while
+<code>$ZZ,ZZ9.99CR</code> keeps it in the first column and adds <code>CR</code> only for the
+negative number. <code>----9.99</code> shows a minus sign only for -987.65, while
+<code>+++++9</code> always shows a sign and, having no decimal places, drops the cents.
+<code>99B999B99</code> and <code>9(5)00</code> show the inserted spaces and zeros, and the
+all-<code>Z</code> picture <code>ZZZZZ.ZZ</code> turns zero into a blank field.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn"><b>P (scaling) is not reliable yet.</b> Values stored in a <code>P</code>
+item and MOVEd out of it are right (<code>9(3)PPP</code> holding 45000 moves out as 45000),
+but a DISPLAY of the item itself shows only the stored digits (<code>000045</code>, where
+GnuCOBOL shows <code>045000</code>), and <code>ADD 1000 TO</code> such an item stops the
+program with an error. Avoid <code>P</code> for now; use a field with enough
+<code>9</code>s.</div>
+<p>Alphanumeric-edited pictures don't edit yet (see above).</p>
+
+<h2>See also</h2>
+<p><a href="usage.html">USAGE</a> for how a number is stored,
+<a href="blank-when-zero.html">BLANK WHEN ZERO</a>, <a href="sign.html">SIGN</a>,
+<a href="justified.html">JUSTIFIED</a>, <a href="move.html">MOVE</a>,
+<a href="level-numbers.html">Level numbers</a>, <a href="national.html">National data</a>.</p>

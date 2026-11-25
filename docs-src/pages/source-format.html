@@ -1,0 +1,94 @@
+title: Source format
+summary: Where things go on a line of fixed-format COBOL: sequence numbers, the indicator column, areas A and B.
+keywords: fixed format columns column 7 indicator comment asterisk slash page continuation hyphen debugging line D area A area B column 72 73-80 sequence number 000010 floating comment *> free format CobolSourceFormat
+---
+<h2>Syntax</h2>
+<pre class="syntax">Columns  1-6    7          8-11     12-72    73-80
+         000010 indicator  area A   area B   ignored
+
+Indicator (column 7):
+  space   an ordinary line
+  *       comment line
+  /       comment line that starts a new page in a printed listing
+  -       continuation of the line above
+  D       debugging line (compiled only WITH DEBUGGING MODE)
+
+Floating comment, anywhere from column 7 on:
+  *&gt; comment-text</pre>
+
+<h2>What it does</h2>
+<p>COBOL was written on 80-column punched cards, and fixed-format source still keeps their
+layout. Each column range of a line has a job:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Columns</th><th>Name</th><th>What goes there</th></tr>
+<tr><td>1-6</td><td>sequence number area</td><td>A line number: 000010, 000020, ...</td></tr>
+<tr><td>7</td><td>indicator area</td><td>Blank, or one of <code>* / - D</code> (below).</td></tr>
+<tr><td>8-11</td><td>area A</td><td>Things that begin a new part of the program: division,
+section and paragraph names, <code>FD</code>/<code>SD</code>, level numbers 01 and 77,
+<code>END PROGRAM</code>, <code>DECLARATIVES</code>.</td></tr>
+<tr><td>12-72</td><td>area B</td><td>Everything else: statements, the level numbers 02-49,
+66 and 88, clauses that continue a line.</td></tr>
+<tr><td>73-80</td><td>identification area</td><td>Ignored by the compiler. On cards it held
+the program's name.</td></tr>
+</table>
+</div>
+<p>In practice: start division, section and paragraph names and 01 levels in column 8, and
+start statements in column 12. Anything you type after column 72 is not part of your program,
+which can cause confusing errors when a long line gets cut off. Keep lines short and continue
+statements on the next line instead; a statement can be split between any two words.</p>
+
+<h3>Sequence numbers</h3>
+<p>Columns 1-6 hold a line number. SP COBOL's convention is to number from
+<code>000010</code> in steps of 10 (000010, 000020, 000030, ...), the way COBOL is usually
+written, and every example on this site follows it. The compiler ignores these columns
+completely: a gap, a duplicate or a line out of order is never an error.</p>
+<p>The COBOL editor for Visual Studio keeps the numbers for you: pressing Enter numbers the new
+line and moves every line below it up by 10, and <b>Edit &gt; Renumber COBOL Lines</b> fixes a
+whole file. Outside the editor, <code>tools\renumber.ps1 FILE.cbl</code> does the same.</p>
+
+<h3>Comments</h3>
+<p>A <code>*</code> in column 7 makes the whole line a comment. A <code>/</code> in column 7
+is also a comment, and asks for a new page when the compiler prints a listing. The pair
+<code>*&gt;</code> starts a <em>floating comment</em>: it can begin in any column from 7 on,
+including after code on the same line, and runs to the end of the line.</p>
+
+<h3>Continuing a long literal</h3>
+<p>A statement can be split between words anywhere, but a quoted literal that is too long for
+one line needs a <em>continuation line</em>. Let the literal run up to column 72 without a
+closing quote. On the next line put <code>-</code> in column 7, then in area B a quote
+followed by the rest of the literal. Every character up to column 72 of the first line is
+part of the literal, spaces included, so count carefully. (An easier way to build a long
+value is to join shorter literals with <code>&amp;</code>; see
+<a href="literals.html">literals</a>.)</p>
+
+<h3>Debugging lines</h3>
+<p>A <code>D</code> in column 7 marks a debugging line. It is treated as a comment unless the
+SOURCE-COMPUTER paragraph says <code>WITH DEBUGGING MODE</code>; then it is compiled like any
+other line. This lets you leave trace DISPLAYs in a program and switch them all on or off in
+one place.</p>
+
+<h2>Example</h2>
+<!-- example SRCFMT1 -->
+<p>The comment lines and the <code>*&gt;</code> comments are skipped. The MOVE's literal
+runs to column 72 ("...CARRIES ON"); the continuation line picks it up at the quote, so the
+whole sentence lands in MESSAGE-TEXT. The <code>D</code> line is not compiled, and the word
+<code>IGNORED!</code> in columns 73-80 of the ADD line is not seen at all, so TOTAL is 5.</p>
+
+<h2>Example: switching debugging lines on</h2>
+<!-- example SRCFMT2 -->
+<p>With <code>WITH DEBUGGING MODE</code> in SOURCE-COMPUTER, the <code>D</code> line is
+compiled and its DISPLAY runs.</p>
+
+<h2>SP COBOL notes</h2>
+<p>Fixed format is the default, and this reference uses it throughout. GnuCOBOL's free format
+(no column rules; comments start with <code>*&gt;</code>) is also available: set the project
+property <code>&lt;CobolSourceFormat&gt;free&lt;/CobolSourceFormat&gt;</code> in your
+<code>.csproj</code> (see BUILD.md). When the compiler complains about a wrong character in column 7
+or text past column 72, the Visual Studio build adds a plain-English hint about the column
+rules to the error.</p>
+
+<h2>See also</h2>
+<p><a href="program-structure.html">Program structure</a>,
+<a href="literals.html">literals</a>, <a href="debugging.html">debugging</a>,
+<a href="copy.html">COPY</a> (copybooks follow the same format).</p>

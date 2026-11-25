@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON GENERATE - SP COBOL Reference</title>
+<meta name="description" content="Turn a group item and its fields into JSON text.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html" class="current" aria-current="page">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>JSON GENERATE </h1>
+<p class="lede">Turn a group item and its fields into JSON text.</p>
+<h2>Syntax</h2>
+<pre class="syntax">JSON GENERATE <var>identifier-1</var> FROM <var>identifier-2</var>
+    [ COUNT IN <var>identifier-3</var> ]
+    [ NAME OF { <var>identifier-4</var> IS { <var>literal-1</var> | OMITTED } } ... ]
+    [ SUPPRESS <var>identifier-5</var> ... ]
+    [ ON EXCEPTION <var>imperative-statement-1</var> ]
+    [ NOT ON EXCEPTION <var>imperative-statement-2</var> ]
+[ END-JSON ]</pre>
+
+<h2>What it does</h2>
+<p>JSON (JavaScript Object Notation) is the text format most web services use to exchange
+data. It looks like <code>{"name":"value","count":42}</code>. JSON GENERATE takes the data item
+after <code>FROM</code>, usually a group, and writes it as JSON into the alphanumeric field
+<code>identifier-1</code>.</p>
+
+<h3>How the data becomes JSON</h3>
+<ul>
+<li>A group becomes an object, <code>{"GROUP-NAME":{...}}</code>, with one member per item
+inside it, in order. Groups inside it become objects inside the object.</li>
+<li>The member names are the COBOL data names, exactly as written (upper case, with hyphens).</li>
+<li>Numeric items become JSON numbers: leading zeros are dropped, the sign and decimal point are
+shown (<code>00042</code> becomes <code>42</code>, <code>-123.45</code> stays as it is).</li>
+<li>Alphanumeric items become JSON strings, with trailing spaces removed. A field of all spaces
+becomes a string of one space. Quotes and backslashes are escaped (<code>\"</code>).</li>
+<li>FILLER items are left out.</li>
+</ul>
+<p>The JSON text goes at the start of the output field, and is usually shorter than the field.
+Use <code>COUNT IN</code> to get that length, and refer to <code>JSON-OUT (1:LEN)</code> to
+use just the JSON.</p>
+
+<h3>NAME OF and SUPPRESS</h3>
+<p><code>NAME OF CUST-ID IS "id"</code> uses a name of your choosing instead of the COBOL name,
+which matters when the receiving program expects lower-case names. <code>NAME OF CUSTOMER IS
+OMITTED</code>, for the group after FROM, leaves out the outer wrapper so the result is just
+<code>{"id":42,...}</code>.</p>
+<p><code>SUPPRESS CITY ACTIVE</code> leaves those items out of the output.</p>
+
+<h3>JSON-CODE and ON EXCEPTION</h3>
+<p>After the statement, the special register <code>JSON-CODE</code> is zero if all went well.
+If the output field is too small, JSON-CODE is set to 1, the field holds as much of the text as
+fit, and the <code>ON EXCEPTION</code> statements run. <code>NOT ON EXCEPTION</code> runs when
+the statement succeeded.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/JSONGEN1.cbl" download>JSONGEN1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. JSONGEN1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  CUSTOMER.
+<span class="seq">000060</span>     05  CUST-ID    PIC 9(5)     VALUE 42.
+<span class="seq">000070</span>     05  CUST-NAME  PIC X(20)    VALUE <span class="str">&quot;ANN &quot;&quot;THE BOSS&quot;&quot; LEE&quot;</span>.
+<span class="seq">000080</span>     05  BALANCE    PIC S9(5)V99 VALUE -123.45.
+<span class="seq">000090</span>     05  CITY       PIC X(10)    VALUE SPACES.
+<span class="seq">000100</span>     05  FILLER     PIC X(5)     VALUE <span class="str">&quot;SKIP&quot;</span>.
+<span class="seq">000110</span>     05  ACTIVE     PIC X        VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000120</span> 01  JSON-OUT       PIC X(200).
+<span class="seq">000130</span> 01  SMALL-OUT      PIC X(20).
+<span class="seq">000140</span> 01  LEN            PIC 9(4).
+<span class="seq">000150</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000160</span>     <span class="kw">JSON</span> <span class="kw">GENERATE</span> JSON-OUT FROM CUSTOMER COUNT IN LEN
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;JSON-CODE &quot;</span> JSON-CODE <span class="str">&quot;  LENGTH &quot;</span> LEN
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> JSON-OUT (1:LEN)
+<span class="seq">000190</span>     <span class="kw">JSON</span> <span class="kw">GENERATE</span> JSON-OUT FROM CUSTOMER COUNT IN LEN
+<span class="seq">000200</span>         NAME OF CUST-ID IS <span class="str">&quot;id&quot;</span> CUST-NAME IS <span class="str">&quot;name&quot;</span>
+<span class="seq">000210</span>                 CUSTOMER IS OMITTED
+<span class="seq">000220</span>         <span class="kw">SUPPRESS</span> CITY ACTIVE
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> JSON-OUT (1:LEN)
+<span class="seq">000240</span>     <span class="kw">JSON</span> <span class="kw">GENERATE</span> SMALL-OUT FROM CUSTOMER COUNT IN LEN
+<span class="seq">000250</span>         ON EXCEPTION
+<span class="seq">000260</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;TOO SMALL, JSON-CODE &quot;</span> JSON-CODE
+<span class="seq">000270</span>             <span class="kw">END-DISPLAY</span>
+<span class="seq">000280</span>         NOT ON EXCEPTION
+<span class="seq">000290</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;IT FIT&quot;</span>
+<span class="seq">000300</span>     <span class="kw">END-JSON</span>
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> SMALL-OUT <span class="str">&quot;]&quot;</span>
+<span class="seq">000320</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">JSON-CODE +000000000  LENGTH 0104
+{&quot;CUSTOMER&quot;:{&quot;CUST-ID&quot;:42,&quot;CUST-NAME&quot;:&quot;ANN \&quot;THE BOSS\&quot; LEE&quot;,&quot;BALANCE&quot;:-123.45,&quot;CITY&quot;:&quot; &quot;,&quot;ACTIVE&quot;:&quot;Y&quot;}}
+{&quot;id&quot;:42,&quot;name&quot;:&quot;ANN \&quot;THE BOSS\&quot; LEE&quot;,&quot;BALANCE&quot;:-123.45}
+TOO SMALL, JSON-CODE +000000001
+[{&quot;CUSTOMER&quot;:{&quot;CUST-I]</pre>
+</figure>
+<p>The first JSON GENERATE writes the whole CUSTOMER group: CUST-ID loses its leading zeros,
+the quotes inside the name are escaped, CITY (all spaces) becomes <code>" "</code> and the
+FILLER is skipped. The second renames two members, omits the outer CUSTOMER wrapper and
+suppresses CITY and ACTIVE. The third writes into a 20-character field, which is too small, so
+JSON-CODE is 1 and the field holds the first 20 characters.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL writes JSON itself, so no extra library has to be installed (GnuCOBOL uses the
+cJSON library for this). The text is the same as GnuCOBOL 3.2 produces, character for
+character.</p>
+<div class="warn">A table (an item with <a href="occurs.html">OCCURS</a>) is not written as a
+JSON array: only its first entry is generated, as a single object. The compiler warns that this
+is "not implemented". This is GnuCOBOL 3.2's behavior, kept so that results match. If you need
+an array, build that part of the text yourself with <a href="string.html">STRING</a>.</div>
+
+<h2>See also</h2>
+<p><a href="xml-generate.html">XML GENERATE</a>, <a href="string.html">STRING</a>,
+<a href="special-registers.html">special registers</a> (JSON-CODE),
+<a href="referring-to-data.html">reference modification</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="inspect.html">&larr; INSPECT</a><a class="next" href="merge.html">MERGE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

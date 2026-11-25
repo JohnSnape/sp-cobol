@@ -1,0 +1,40 @@
+title: GOBACK
+summary: End the current program: return to the caller from a subprogram, or end the run from the main program.
+keywords: GOBACK STOP RUN EXIT PROGRAM return end program subprogram main program RETURN-CODE exit code
+---
+<h2>Syntax</h2>
+<pre class="syntax">GOBACK</pre>
+
+<h2>What it does</h2>
+<p><code>GOBACK</code> ends the program it is in. Where control goes depends on how that program was
+started:</p>
+<ul>
+<li>In a program that was <a href="call.html">CALL</a>ed, it returns to the caller, which carries
+on after its CALL.</li>
+<li>In the main program (the one the run started with), it ends the run, like STOP RUN.</li>
+</ul>
+<p>That makes GOBACK the safe choice for ending any program: it does the right thing whether the
+program is run on its own or called by another.</p>
+
+<h3>GOBACK, STOP RUN and EXIT PROGRAM compared</h3>
+<div class="table-wrap"><table>
+<tr><th>Statement</th><th>In the main program</th><th>In a called program</th></tr>
+<tr><td><code>GOBACK</code></td><td>ends the run</td><td>returns to the caller</td></tr>
+<tr><td><code>STOP RUN</code></td><td>ends the run</td><td>ends the whole run, caller and all</td></tr>
+<tr><td><code>EXIT PROGRAM</code></td><td>does nothing; the next statement runs</td><td>returns to the
+caller</td></tr>
+</table></div>
+<p>When the run ends, the main program's <code>RETURN-CODE</code> becomes the program's exit code,
+which a batch file or script can test.</p>
+
+<h2>Example</h2>
+<p>The three called programs are in one source file, shown after the main program.</p>
+<!-- example GOBACK1 -->
+<p>GOBACKSUB1 returns with GOBACK and GOBACKSUB2 with EXIT PROGRAM; both times GOBACK1 carries on.
+The EXIT PROGRAM in GOBACK1 itself is ignored, because GOBACK1 is the main program. GOBACKSUB3
+uses STOP RUN, which ends everything, so "NEVER SHOWN" never prints.</p>
+
+<h2>See also</h2>
+<p><a href="stop.html">STOP RUN</a>, <a href="exit.html">EXIT PROGRAM</a>,
+<a href="call.html">CALL</a>, <a href="cancel.html">CANCEL</a>,
+<a href="special-registers.html">special registers</a> (RETURN-CODE).</p>

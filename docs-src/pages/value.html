@@ -1,0 +1,60 @@
+title: VALUE
+summary: Give a data item the value it starts with when the program begins.
+keywords: VALUE VALUES initial value starting value figurative constant SPACES ZERO ALL HIGH-VALUES table OCCURS INITIALIZE
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: an item's starting value
+VALUE [ IS ] literal-1
+
+Format 2: on a level-88 condition-name
+{ VALUE [ IS ] | VALUES [ ARE ] } { literal-1 [ { THROUGH | THRU } literal-2 ] } ...</pre>
+
+<h2>What it does</h2>
+<p>A <code>VALUE</code> clause in WORKING-STORAGE puts a value in the item before the first
+statement of the program runs. An item without one starts out with spaces if it is
+alphanumeric and zero if it is numeric, but writing VALUE makes your intent clear.</p>
+<p>The literal must suit the item: a number for a numeric item (it must fit in the PICTURE,
+or the compiler warns), text in quotes for an alphanumeric one. You can also use a
+<a href="figurative-constants.html">figurative constant</a>: <code>SPACES</code>,
+<code>ZERO</code>, <code>HIGH-VALUES</code>, <code>LOW-VALUES</code>, <code>QUOTES</code>, or
+<code>ALL "x"</code> to fill the whole item with a character or pattern.</p>
+
+<h3>VALUE on a group</h3>
+<p>A group can have a VALUE too, as long as it is text (or a figurative constant). The text is
+put into the group's bytes from the left, as if the group were one <code>PIC X</code> field,
+and the items inside it then hold their part of it. Leave VALUE off the items inside it.</p>
+
+<h3>VALUE in tables</h3>
+<p>A VALUE on an item with <code>OCCURS</code> gives every occurrence the same starting
+value. To start a table with <em>different</em> values, the classic way is to write a group
+of FILLER items with the values one after another, then <a href="redefines.html">REDEFINES</a>
+that group as a table. The example does this for day names.</p>
+
+<h3>VALUE on condition-names</h3>
+<p>On a level-88 item, VALUE doesn't set anything. It lists the values for which the
+condition is true, and may have several values and ranges with <code>THRU</code>. See
+<a href="condition-names.html">Condition-names</a>.</p>
+
+<h3>VALUE versus INITIALIZE</h3>
+<p>VALUE is applied once, when the program starts. To reset items while the program runs, use
+<a href="initialize.html">INITIALIZE</a> or <a href="move.html">MOVE</a>. Note that
+<code>INITIALIZE</code> doesn't go back to the VALUE: by default it sets numeric items to zero
+and alphanumeric items to spaces. (<code>INITIALIZE item ALL TO VALUE</code> is the way to put the VALUE
+clauses back.)</p>
+<p>Give starting values in WORKING-STORAGE. In the LINKAGE SECTION and FILE SECTION, use
+VALUE only on 88 levels: that storage belongs to the calling program or to the file's
+records, not to your program.</p>
+
+<h2>Example</h2>
+<!-- example VALUE1 -->
+<p>Each item starts with its VALUE: the short literal <code>"HELLO"</code> is padded with
+spaces, <code>ALL "*"</code> fills STARS, and <code>HIGH-VALUES</code> are bytes of
+<code>FF</code>. The group HEADER's value is split between H-NAME and H-CITY by position. The
+day names come from the FILLER values, seen through the redefining table, and every
+occurrence of CNT starts at 07. After the MOVEs, <code>INITIALIZE</code> sets GREETING to
+spaces and the CNT items to zero, not back to their VALUE of 7.</p>
+
+<h2>See also</h2>
+<p><a href="initialize.html">INITIALIZE</a>, <a href="figurative-constants.html">Figurative
+constants</a>, <a href="literals.html">Literals</a>, <a href="occurs.html">OCCURS</a>,
+<a href="condition-names.html">Condition-names</a>, <a href="constants.html">Constants</a>.</p>

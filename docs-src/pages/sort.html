@@ -1,0 +1,98 @@
+title: SORT
+summary: Put the records of a file, or the entries of a table, in order by one or more keys.
+keywords: SORT SD ASCENDING DESCENDING KEY USING GIVING INPUT PROCEDURE OUTPUT PROCEDURE WITH DUPLICATES IN ORDER COLLATING SEQUENCE SORT-RETURN table sort stable order sort file
+badge: differs
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: sort records
+SORT sort-file-name
+    { ON { ASCENDING | DESCENDING } KEY data-name-1 ... } ...
+    [ WITH DUPLICATES IN ORDER ]
+    [ COLLATING SEQUENCE IS alphabet-name ]
+    { USING file-name-1 ... | INPUT PROCEDURE IS procedure-1 [ { THRU | THROUGH } procedure-2 ] }
+    { GIVING file-name-2 ... | OUTPUT PROCEDURE IS procedure-3 [ { THRU | THROUGH } procedure-4 ] }
+
+Format 2: sort a table in memory
+SORT table-name
+    { ON { ASCENDING | DESCENDING } KEY data-name-2 ... } ...</pre>
+
+<h2>What it does</h2>
+<h3>Sorting records</h3>
+<p>Format 1 sorts records through a <em>sort file</em>. You declare it like an ordinary file,
+with a SELECT, but describe it with <code>SD</code> (sort description) instead of FD. Its
+record lists the fields the records are sorted by. You never OPEN, READ or WRITE the sort file
+yourself; SORT does that.</p>
+<p>The KEY phrases give the sort keys, most important first. <code>ON ASCENDING KEY W-TEAM ON
+DESCENDING KEY W-GOALS</code> means "by team A to Z, and within a team by goals, highest
+first". Numeric keys are compared by value (so -4 comes before 19); other keys character by
+character.</p>
+<p>The records come in one of two ways:</p>
+<ul>
+<li><code>USING file</code>: SORT opens the file, reads every record and closes it. The file
+must not be open.</li>
+<li><code>INPUT PROCEDURE IS para</code>: SORT performs your paragraph (or section), which
+hands each record over with <a href="release.html">RELEASE</a>. Use it to pick or change
+records on the way in, or to sort data that isn't in a file.</li>
+</ul>
+<p>And go out in one of two ways:</p>
+<ul>
+<li><code>GIVING file</code>: SORT writes the sorted records to a new file (it is opened
+OUTPUT, so an existing one is replaced).</li>
+<li><code>OUTPUT PROCEDURE IS para</code>: SORT performs your paragraph, which takes the
+records one at a time in order with <a href="return.html">RETURN</a>, for counting, totals,
+or a report.</li>
+</ul>
+<p>Records with equal keys come out in the order they went in. <code>WITH DUPLICATES IN
+ORDER</code> asks for exactly that.</p>
+<p>After the SORT, the special register <code>SORT-RETURN</code> is 0 if it worked and 16 if
+it failed.</p>
+
+<h3>Sorting a table</h3>
+<p>Format 2 sorts the entries of a table (an item with <a href="occurs.html">OCCURS</a>) in
+place. Name the OCCURS item, and give keys that are fields inside each entry. No SD or file is
+involved.</p>
+
+<h2>Examples</h2>
+<h3>USING and GIVING</h3>
+<!-- example SORT1 -->
+<p>The players are sorted by team, A to Z, and within a team by goals, highest first.
+SORT reads <code>raw.txt</code> and writes <code>sorted.txt</code>; the program only reads the
+result.</p>
+
+<h3>INPUT and OUTPUT PROCEDURE</h3>
+<!-- example SORT2 -->
+<p>The input procedure releases four records taken from a table; the output procedure
+returns them warmest first. W-TEMP is a signed number, so -04 sorts below +19.</p>
+
+<h3>Equal keys</h3>
+<!-- example SORT3 -->
+<p>Three records have the key A1 and two have B2. Within each key they come out in the order
+they were released (2, 4, 6 and 1, 5).</p>
+
+<h3>Sorting a table</h3>
+<!-- example SORT4 -->
+<p>The same table is sorted twice in place, by number of moons and then by name.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL sorts in memory, without work files, so the file named in the sort file's ASSIGN
+is never created. That suits the record counts of learning and business programs; a file too
+big for memory can't be sorted.</p>
+<div class="warn">
+<p><b>Table SORT keeps equal entries in order; GnuCOBOL's may not.</b> GnuCOBOL sorts tables
+with the C library's <code>qsort</code>, which may shuffle entries that have equal keys, and
+the result can vary between systems. SP COBOL's table sort is <em>stable</em>: entries with
+equal keys keep their order. The two agree whenever the keys are all different, as in the
+example above. If the order of equal entries matters to you, add a second key that tells them
+apart.</p>
+</div>
+<div class="bad">
+<p><code>COLLATING SEQUENCE IS alphabet-name</code> on SORT and MERGE doesn't work in SP COBOL
+yet: a program that uses it with an ALPHABET (EBCDIC or one you define) fails to build, because
+the alphabet's table isn't translated to C#. Sort with the default (ASCII) order.</p>
+</div>
+
+<h2>See also</h2>
+<p><a href="release.html">RELEASE</a>, <a href="return.html">RETURN</a>,
+<a href="merge.html">MERGE</a>, <a href="files.html">Files</a>,
+<a href="search.html">SEARCH</a> (SEARCH ALL needs a sorted table),
+<a href="special-registers.html">special registers</a>.</p>

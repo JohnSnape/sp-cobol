@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCREEN SECTION - SP COBOL Reference</title>
+<meta name="description" content="Lay out a full-screen form with labels, input fields and colors, then DISPLAY and ACCEPT it.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html" class="current" aria-current="page">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Topics</p>
+<h1>SCREEN SECTION <span class="badge warn">Differs from GnuCOBOL</span></h1>
+<p class="lede">Lay out a full-screen form with labels, input fields and colors, then DISPLAY and ACCEPT it.</p>
+<p>A SCREEN SECTION describes a whole screen at once: where each label goes, which fields
+the user can type into, and their colors. <code>DISPLAY screen-name</code> draws it and
+<code>ACCEPT screen-name</code> lets the user fill it in, moving between fields with Tab,
+until they press Enter or a function key. In SP COBOL the same program runs as a DOS-style
+text screen in a console window, or as a real Windows window.</p>
+
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: describe a screen (last section of the DATA DIVISION)</span>
+SCREEN SECTION.
+01 <var>screen-name</var> [ <var>attributes</var> ] .
+   <var>nn</var> [ <var>item-name</var> ]
+      [ LINE NUMBER IS [ PLUS ] <var>integer-1</var> ]
+      [ { COLUMN | COL } NUMBER IS [ PLUS ] <var>integer-2</var> ]
+      { VALUE IS <var>literal-1</var>
+      | { PICTURE | PIC } IS <var>picture-string</var>
+          { USING <var>identifier-1</var> | FROM { <var>identifier-2</var> | <var>literal-2</var> } | TO <var>identifier-3</var> } ... }
+      [ <var>attributes</var> ] .
+
+<var>attributes</var>:
+    BLANK SCREEN | BLANK LINE | ERASE { EOL | EOS }
+    FOREGROUND-COLOR <var>integer-3</var> | BACKGROUND-COLOR <var>integer-4</var>
+    HIGHLIGHT | LOWLIGHT | REVERSE-VIDEO | UNDERLINE | BLINK
+    SECURE | REQUIRED | AUTO | FULL | BELL
+
+<span class="fmt">Format 2: show and fill in a screen</span>
+DISPLAY <var>screen-name</var>
+ACCEPT <var>screen-name</var>
+
+<span class="fmt">Format 3: one field at a position</span>
+DISPLAY { <var>identifier-4</var> | <var>literal-3</var> } LINE <var>integer-5</var> { COLUMN | COL } <var>integer-6</var>
+    [ WITH { BLANK SCREEN | BLANK LINE | ERASE { EOL | EOS } | HIGHLIGHT
+           | REVERSE-VIDEO | UNDERLINE | FOREGROUND-COLOR <var>integer-3</var>
+           | BACKGROUND-COLOR <var>integer-4</var> } ... ]
+ACCEPT <var>identifier-5</var> LINE <var>integer-5</var> { COLUMN | COL } <var>integer-6</var>
+    [ WITH { AUTO | SECURE | REQUIRED | UPPER | LOWER | UPDATE | HIGHLIGHT ... } ... ]
+
+<span class="fmt">Format 4: which key ended the ACCEPT (ENVIRONMENT DIVISION)</span>
+SPECIAL-NAMES.
+    CRT STATUS IS <var>identifier-6</var>.</pre>
+
+<h2>What it does</h2>
+
+<h3>Screen items</h3>
+<p>Screen items are numbered like data items: an 01 for the whole screen, and 05 (or any
+higher level) for the parts. An item is one of three kinds:</p>
+<ul>
+<li>a <b>literal</b>, <code>VALUE "Name:"</code>: text that is shown and can't be
+changed;</li>
+<li>a <b>field</b>, <code>PIC X(20) USING CUST-NAME</code>: a place on the screen tied to a
+WORKING-STORAGE item;</li>
+<li>a <b>group</b> with no PIC or VALUE, which holds other items and passes its attributes
+(such as colors) down to them.</li>
+</ul>
+<p>A field's PIC sets how wide it is and how its value looks, so an edited picture such as
+<code>ZZ,ZZ9.99</code> works on screens as it does in <a href="move.html">MOVE</a>. Three
+words say which way the data goes:</p>
+<div class="table-wrap"><table>
+<tr><th>Clause</th><th>DISPLAY shows</th><th>ACCEPT stores what was typed into</th></tr>
+<tr><td><code>FROM item</code></td><td>the item's value</td><td>nothing: the field is output only</td></tr>
+<tr><td><code>TO item</code></td><td>an empty field</td><td>the item</td></tr>
+<tr><td><code>USING item</code></td><td>the item's value</td><td>the same item</td></tr>
+</table></div>
+
+<h3>Positions</h3>
+<p>Lines are numbered from 1 at the top and columns from 1 at the left, on an 80 by 25
+screen. <code>LINE 3 COL 10</code> is an absolute position. <code>LINE PLUS 2</code> is two
+lines below the previous item, and <code>COL PLUS 2</code> starts two columns after the end
+of the previous item (so one blank column between them). An item with no LINE stays on the
+previous item's line, and one with no COL follows straight on after the previous item.</p>
+
+<h3>Clearing</h3>
+<ul>
+<li><code>BLANK SCREEN</code> clears the whole screen before the screen is drawn, in the
+colors given with it.</li>
+<li><code>BLANK LINE</code> clears the item's line first; <code>ERASE EOL</code> clears from
+the item to the end of its line; <code>ERASE EOS</code> from the item to the end of the
+screen.</li>
+</ul>
+
+<h3>Colors and looks</h3>
+<p><code>FOREGROUND-COLOR</code> is the color of the characters and
+<code>BACKGROUND-COLOR</code> the color behind them. The numbers are the eight colors of
+the PC text screen:</p>
+<div class="table-wrap"><table>
+<tr><th>Number</th><th>Color</th><th>Number</th><th>Color</th></tr>
+<tr><td>0</td><td>black</td><td>4</td><td>red</td></tr>
+<tr><td>1</td><td>blue</td><td>5</td><td>magenta</td></tr>
+<tr><td>2</td><td>green</td><td>6</td><td>brown (yellow when HIGHLIGHT)</td></tr>
+<tr><td>3</td><td>cyan</td><td>7</td><td>white (light gray)</td></tr>
+</table></div>
+<p><code>HIGHLIGHT</code> uses the bright version of the foreground color,
+<code>REVERSE-VIDEO</code> swaps the foreground and background colors, and
+<code>UNDERLINE</code> underlines. <code>LOWLIGHT</code>, <code>BLINK</code> and
+<code>BELL</code> are accepted but have no visible effect in SP COBOL.</p>
+
+<h3>Input fields</h3>
+<ul>
+<li><code>SECURE</code>: what is typed shows as <code>*</code>, and the field is drawn empty
+afterwards. Use it for passwords.</li>
+<li><code>REQUIRED</code>: Enter is refused while this field is empty; the cursor goes to it
+with the message "Please fill in this field."</li>
+<li><code>AUTO</code>: when the field is full, the cursor moves on to the next field by
+itself (on the last field, the ACCEPT ends as if Enter was pressed).</li>
+<li><code>FULL</code> is accepted but not enforced by SP COBOL.</li>
+</ul>
+<p>While a screen is accepted the keys work like this: typing replaces or overwrites
+characters (Insert switches to inserting), Left/Right, Home/End, Backspace and Delete edit,
+Tab or Down goes to the next field, Shift+Tab or Up to the previous one. Fields are visited
+top to bottom, left to right. Enter, Esc, PgUp, PgDn and the function keys end the ACCEPT.
+Input fields show an underscore in each empty position.</p>
+
+<h3>CRT STATUS: which key was pressed</h3>
+<p>Name a 4-digit field in <code>CRT STATUS IS</code> (in SPECIAL-NAMES, see
+<a href="environment-division.html">ENVIRONMENT DIVISION</a>) and every ACCEPT puts there
+the key that ended it:</p>
+<div class="table-wrap"><table>
+<tr><th>Key</th><th>Code</th></tr>
+<tr><td>Enter</td><td>0000</td></tr>
+<tr><td>F1 to F24</td><td>1001 to 1024</td></tr>
+<tr><td>Page Up / Page Down</td><td>2001 / 2002</td></tr>
+<tr><td>Esc</td><td>2005</td></tr>
+<tr><td>ACCEPT of a screen that has no input fields</td><td>8000</td></tr>
+</table></div>
+<p>Without a CRT STATUS clause the code goes to the special register
+<code>COB-CRT-STATUS</code> (see <a href="special-registers.html">special registers</a>).
+Up and Down move between fields rather than ending the ACCEPT, so they don't return a code.</p>
+
+<h3>Single fields with LINE and COL</h3>
+<p>Without a SCREEN SECTION you can still place things: <code>DISPLAY "Age:" LINE 3 COL 1</code>
+shows a value at a position, and <code>ACCEPT WS-AGE LINE 3 COL 8</code> reads one field
+there. Such an ACCEPT starts with an empty field; add <code>WITH UPDATE</code> to start from
+the item's current value. <code>WITH UPPER</code> or <code>LOWER</code> changes the case of
+letters as they are typed. Once the screen is in use, a plain DISPLAY (without LINE/COL)
+writes on the next line of the screen. See also <a href="accept.html">ACCEPT</a> and
+<a href="display.html">DISPLAY</a>.</p>
+
+<h2>One program, two kinds of screen</h2>
+<p>SP COBOL draws the same SCREEN SECTION in two ways. The <b>console</b> version is a
+DOS-style text screen in a console window. The <b>Windows</b> version is a window with a
+grid of character cells, where the input fields are real text boxes. The program's logic
+is the same in both: ACCEPT waits until Enter or a function key, then returns with the
+fields filled in.</p>
+<p>A "COBOL Screen App" project has a <code>ScreenMode</code> property: <code>Both</code>
+(the default) builds <code>NAME.exe</code> (console) and <code>NAME-Win.exe</code>
+(window) from the one source; <code>Console</code> or <code>Forms</code> builds only one.
+When running, the environment variable <code>COB_SCREEN=console</code> or
+<code>COB_SCREEN=forms</code> picks the kind of screen.</p>
+
+<h2>Examples</h2>
+<p>These examples are run with keystrokes from a script; the boxes show the screen as it
+looked at each ACCEPT and when the program ended, and the lines under a box say which key
+ended that ACCEPT (<code>[key 0]</code> is Enter) and any message or beep. Colors are not
+shown.</p>
+
+<h3>A data-entry screen</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SCREEN1.cbl" download>SCREEN1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SCREEN1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  CUST-NAME           PIC X(15) VALUE <span class="str">&quot;ADA LOVELACE&quot;</span>.
+<span class="seq">000060</span> 01  CUST-CITY           PIC X(10).
+<span class="seq">000070</span> 01  CUST-PIN            PIC X(4).
+<span class="seq">000080</span> 01  CUST-COUNT          PIC 9(3) VALUE 7.
+<span class="seq">000090</span> <span class="kw">SCREEN</span> <span class="kw">SECTION</span>.
+<span class="seq">000100</span> 01  ENTRY-SCREEN BLANK <span class="kw">SCREEN</span>
+<span class="seq">000110</span>         FOREGROUND-COLOR 7 BACKGROUND-COLOR 1.
+<span class="seq">000120</span>     05  LINE 1 COL 10 VALUE <span class="str">&quot;NEW CUSTOMER&quot;</span> HIGHLIGHT.
+<span class="seq">000130</span>     05  LINE 3 COL 2  VALUE <span class="str">&quot;Name:&quot;</span>.
+<span class="seq">000140</span>     05  LINE 3 COL 10 PIC X(15) USING CUST-NAME.
+<span class="seq">000150</span>     05  LINE 4 COL 2  VALUE <span class="str">&quot;City:&quot;</span>.
+<span class="seq">000160</span>     05  LINE 4 COL 10 PIC X(10) TO CUST-CITY REQUIRED.
+<span class="seq">000170</span>     05  LINE 5 COL 2  VALUE <span class="str">&quot;PIN:&quot;</span>.
+<span class="seq">000180</span>     05  LINE 5 COL 10 PIC X(4) TO CUST-PIN SECURE.
+<span class="seq">000190</span>     05  LINE PLUS 2 COL 2 VALUE <span class="str">&quot;Customers so far:&quot;</span>.
+<span class="seq">000200</span>     05  COL PLUS 2    PIC ZZ9 FROM CUST-COUNT.
+<span class="seq">000210</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> ENTRY-SCREEN
+<span class="seq">000230</span>     <span class="kw">ACCEPT</span> ENTRY-SCREEN
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;You typed:&quot;</span> LINE 9 COL 2
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> CUST-NAME LINE 10 COL 2
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> CUST-CITY LINE 11 COL 2
+<span class="seq">000270</span>     <span class="kw">DISPLAY</span> CUST-PIN LINE 12 COL 2
+<span class="seq">000280</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Keys pressed (for the test run)</div><pre class="input">{TAB}{ENTER}LONDON{TAB}1234{ENTER}</pre>
+<div class="out-label">The screens, as the test renderer prints them</div><pre class="output">+--- ACCEPT 1 -------------------------------------------------------------------+
+|         NEW CUSTOMER
+|
+| Name:   ADA_LOVELACE___
+| City:   __________
+| PIN:    ____
+|
+| Customers so far:   7
++--------------------------------------------------------------------------------+
+  [key 0]
+  [bell]
++--- ACCEPT 2 -------------------------------------------------------------------+
+|         NEW CUSTOMER
+|
+| Name:   ADA_LOVELACE___
+| City:   __________
+| PIN:    ____
+|
+| Customers so far:   7
++--------------------------------------------------------------------------------+
+  [message] Please fill in this field.
+  [key 0]
++--- END ------------------------------------------------------------------------+
+|         NEW CUSTOMER
+|
+| Name:   ADA LOVELACE
+| City:   LONDON
+| PIN:
+|
+| Customers so far:   7
+|
+| You typed:
+| ADA LOVELACE
+| LONDON
+| 1234
++--------------------------------------------------------------------------------+</pre>
+</figure>
+<p>The keys were Tab, Enter, "LONDON", Tab, "1234", Enter. The name field starts with
+"ADA LOVELACE" because of USING; Tab leaves it unchanged. The first Enter is refused,
+since City is REQUIRED and empty, so there is a beep, a message, and a second round of
+ACCEPT. The PIN shows as stars while typed and is blanked afterwards, but the program
+received 1234. "Customers so far:" comes from FROM: shown, never typed into. The last
+lines are single-field DISPLAYs with LINE and COL.</p>
+
+<h3>Function keys and CRT STATUS</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SCREEN2.cbl" download>SCREEN2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SCREEN2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">SPECIAL-NAMES</span>.
+<span class="seq">000060</span>     CRT STATUS IS WS-KEY.
+<span class="seq">000070</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000090</span> 01  WS-KEY              PIC 9(4).
+<span class="seq">000100</span> 01  WS-QTY              PIC 9(3).
+<span class="seq">000110</span> 01  WS-MESSAGE          PIC X(30).
+<span class="seq">000120</span> <span class="kw">SCREEN</span> <span class="kw">SECTION</span>.
+<span class="seq">000130</span> 01  ORDER-SCREEN BLANK <span class="kw">SCREEN</span>.
+<span class="seq">000140</span>     05  LINE 1 COL 1  VALUE <span class="str">&quot;Quantity:&quot;</span>.
+<span class="seq">000150</span>     05  LINE 1 COL 11 PIC ZZ9 USING WS-QTY.
+<span class="seq">000160</span>     05  LINE 3 COL 1  VALUE <span class="str">&quot;F1 = help   F3 = quit&quot;</span>.
+<span class="seq">000170</span>     05  LINE 5 COL 1  PIC X(30) FROM WS-MESSAGE ERASE EOL.
+<span class="seq">000180</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000190</span> MAIN-PARA.
+<span class="seq">000200</span>     <span class="kw">PERFORM</span> UNTIL WS-KEY = 1003
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> ORDER-SCREEN
+<span class="seq">000220</span>         <span class="kw">ACCEPT</span> ORDER-SCREEN
+<span class="seq">000230</span>         <span class="kw">EVALUATE</span> WS-KEY
+<span class="seq">000240</span>             <span class="kw">WHEN</span> 0
+<span class="seq">000250</span>                 <span class="kw">MOVE</span> <span class="str">&quot;Order taken.&quot;</span> TO WS-MESSAGE
+<span class="seq">000260</span>             <span class="kw">WHEN</span> 1001
+<span class="seq">000270</span>                 <span class="kw">MOVE</span> <span class="str">&quot;Type how many you want.&quot;</span> TO WS-MESSAGE
+<span class="seq">000280</span>             <span class="kw">WHEN</span> 1003
+<span class="seq">000290</span>                 <span class="kw">MOVE</span> <span class="str">&quot;Goodbye.&quot;</span> TO WS-MESSAGE
+<span class="seq">000300</span>             <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000310</span>                 <span class="kw">MOVE</span> <span class="str">&quot;That key does nothing here.&quot;</span>
+<span class="seq">000320</span>                     TO WS-MESSAGE
+<span class="seq">000330</span>         <span class="kw">END-EVALUATE</span>
+<span class="seq">000340</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000350</span>     <span class="kw">DISPLAY</span> ORDER-SCREEN
+<span class="seq">000360</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Keys pressed (for the test run)</div><pre class="input">{F1}12{ENTER}{F5}{F3}</pre>
+<div class="out-label">The screens, as the test renderer prints them</div><pre class="output">+--- ACCEPT 1 -------------------------------------------------------------------+
+|Quantity: __0
+|
+|F1 = help   F3 = quit
++--------------------------------------------------------------------------------+
+  [key 1001]
++--- ACCEPT 2 -------------------------------------------------------------------+
+|Quantity: __0
+|
+|F1 = help   F3 = quit
+|
+|Type how many you want.
++--------------------------------------------------------------------------------+
+  [key 0]
++--- ACCEPT 3 -------------------------------------------------------------------+
+|Quantity: _12
+|
+|F1 = help   F3 = quit
+|
+|Order taken.
++--------------------------------------------------------------------------------+
+  [key 1005]
++--- ACCEPT 4 -------------------------------------------------------------------+
+|Quantity: _12
+|
+|F1 = help   F3 = quit
+|
+|That key does nothing here.
++--------------------------------------------------------------------------------+
+  [key 1003]
++--- END ------------------------------------------------------------------------+
+|Quantity:  12
+|
+|F1 = help   F3 = quit
+|
+|Goodbye.
++--------------------------------------------------------------------------------+</pre>
+</figure>
+<p>The keys were F1, "12" Enter, F5, F3. Each ACCEPT puts the key code in WS-KEY (1001 for
+F1, 0 for Enter, 1005, 1003 for F3) and the EVALUATE picks a message, which the next
+DISPLAY shows. ERASE EOL clears the rest of line 5 each time.</p>
+
+<h3>Single fields, and number checks</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SCREEN3.cbl" download>SCREEN3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SCREEN3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  WS-AGE              PIC 99.
+<span class="seq">000060</span> 01  WS-QTY              PIC 9(3).
+<span class="seq">000070</span> 01  WS-CODE             PIC X(3).
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SIGN-UP&quot;</span> LINE 1 COL 1 WITH BLANK <span class="kw">SCREEN</span>
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;Age:&quot;</span>   LINE 3 COL 1
+<span class="seq">000110</span>     <span class="kw">ACCEPT</span> WS-AGE    LINE 3 COL 8
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;Qty:&quot;</span>   LINE 4 COL 1
+<span class="seq">000130</span>     <span class="kw">ACCEPT</span> WS-QTY    LINE 4 COL 8
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;Code:&quot;</span>  LINE 5 COL 1
+<span class="seq">000150</span>     <span class="kw">ACCEPT</span> WS-CODE   LINE 5 COL 8 WITH AUTO UPPER
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> WS-AGE   LINE 7 COL 1
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> WS-QTY   LINE 8 COL 1
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> WS-CODE  LINE 9 COL 1
+<span class="seq">000190</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Keys pressed (for the test run)</div><pre class="input">a42{ENTER}1.5{ENTER}-5{ENTER}7{ENTER}abc</pre>
+<div class="out-label">The screens, as the test renderer prints them</div><pre class="output">+--- ACCEPT 1 -------------------------------------------------------------------+
+|SIGN-UP
+|
+|Age:   __
++--------------------------------------------------------------------------------+
+  [bell]
+  [message] Only numbers can be typed here.
+  [key 0]
++--- ACCEPT 2 -------------------------------------------------------------------+
+|SIGN-UP
+|
+|Age:   42
+|Qty:   ___
++--------------------------------------------------------------------------------+
+  [bell]
+  [message] This field holds whole numbers only.
+  [bell]
+  [message] This field can&#39;t hold a negative number.
+  [key 0]
++--- ACCEPT 3 -------------------------------------------------------------------+
+|SIGN-UP
+|
+|Age:   42
+|Qty:   007
+|Code:  ___
++--------------------------------------------------------------------------------+
+  [key 0]
++--- END ------------------------------------------------------------------------+
+|SIGN-UP
+|
+|Age:   42
+|Qty:   007
+|Code:  ABC
+|
+|42
+|007
+|ABC
++--------------------------------------------------------------------------------+</pre>
+</figure>
+<p>The keys were "a42" Enter, "1.5" Enter, "-5" Enter, "7" Enter, "abc". The letter "a" is
+refused in a numeric field. "1.5" is refused because WS-QTY is PIC 9(3), whole numbers
+only, and "-5" because it has no sign; each time the cursor stays in the field. The 7 is
+shown as 007, the way PIC 9(3) shows it. The Code field is AUTO and UPPER, so "abc"
+becomes ABC and the ACCEPT ends when the third letter fills it.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn"><b>Differs from GnuCOBOL 3.2</b>, on purpose, to suit beginners (plain
+DISPLAY and ACCEPT without screens are not affected):
+<ul>
+<li>An item with no color given takes the colors of the last BLANK SCREEN, not the
+terminal's default colors.</li>
+<li>The first key typed in a field replaces its old contents, like a Windows text box.
+GnuCOBOL overwrites in place. To edit the old value instead, press an arrow key, Home or
+End first.</li>
+<li>Numeric fields are checked when you leave them, with plain-English messages ("This
+field holds whole numbers only."), and are shown again through their PICTURE.</li>
+</ul></div>
+<div class="warn">A numeric input field whose PICTURE has an assumed decimal point but no
+printed one (<code>PIC 9(3)V99</code>) loses what is typed: the item keeps its old value.
+Give the screen field an edited picture with a real point, such as
+<code>PIC ZZ9.99 USING WS-PRICE</code>.</div>
+<p>On <code>ACCEPT ... LINE ... COL</code>, the phrases for TIMEOUT, SCROLL, SIZE, CONTROL and
+CURSOR are accepted but ignored. JUSTIFIED and BLANK WHEN ZERO on screen items are accepted;
+JUSTIFIED RIGHT had no visible effect in a test.</p>
+<p>Screen examples can't be compared with stock GnuCOBOL, because the reference build has no
+screen support, so the screens above were checked by eye.</p>
+
+<h2>See also</h2>
+<p><a href="accept.html">ACCEPT</a>, <a href="display.html">DISPLAY</a>,
+<a href="environment-division.html">ENVIRONMENT DIVISION</a> (CRT STATUS),
+<a href="picture.html">PICTURE</a>, <a href="differences.html">Differences from
+GnuCOBOL</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="replace.html">&larr; REPLACE</a><a class="next" href="files.html">Files &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+title: START
+summary: Position a relative or indexed file so the next READ NEXT begins at a chosen key.
+keywords: START KEY IS EQUAL GREATER LESS NOT LESS THAN OR EQUAL TO INVALID KEY END-START position browse alternate key 23
+---
+<h2>Syntax</h2>
+<pre class="syntax">START file-name
+    [ KEY IS { EQUAL TO | = | GREATER THAN | &gt; | NOT LESS THAN | NOT &lt;
+             | GREATER THAN OR EQUAL TO | &gt;= | LESS THAN | &lt;
+             | NOT GREATER THAN | NOT &gt; | LESS THAN OR EQUAL TO | &lt;= }
+          data-name-1 ]
+    [ INVALID KEY imperative-statement-1 ]
+    [ NOT INVALID KEY imperative-statement-2 ]
+[ END-START ]</pre>
+
+<h2>What it does</h2>
+<p>START doesn't read anything. It finds the first record that meets a condition on its key
+and makes it the <em>current position</em>, so the next <code>READ ... NEXT</code> returns that
+record and later ones follow in key order. Use it to browse a RELATIVE or INDEXED file from a
+point in the middle, such as "all customers from M on". The file must be open INPUT or I-O,
+with sequential or dynamic access.</p>
+<p>Set the key first, then START:</p>
+<ul>
+<li>RELATIVE: the slot number in the RELATIVE KEY item; <code>KEY IS</code> names that
+item.</li>
+<li>INDEXED: the value in the RECORD KEY field, or in an alternate key field. <code>KEY
+IS</code> names the field, and that key also becomes the order for the READ NEXTs that
+follow.</li>
+</ul>
+<p>Without a KEY phrase the condition is "equal to the RECORD KEY (or RELATIVE KEY)".
+<code>&gt;=</code> and <code>NOT &lt;</code> mean the same thing. With <code>&lt;</code> or
+<code>&lt;=</code> the position is the last record below (or at) the value.</p>
+<p>If no record meets the condition, the status is 23 and <code>INVALID KEY</code> runs.</p>
+
+<h2>Examples</h2>
+<h3>Relative file</h3>
+<!-- example START1 -->
+<p>There is no day 5, so <code>KEY IS GREATER THAN OR EQUAL TO</code> positions at day 8.
+<code>KEY &gt; DAY-NO</code> with 8 positions at day 9. Day 3 exists, so the
+<code>KEY =</code> START succeeds. Nothing comes after day 9: status 23 and INVALID KEY.
+After a successful START and READ NEXT the RELATIVE KEY holds the slot number actually
+read.</p>
+
+<h3>Indexed file, alternate key</h3>
+<!-- example START2 -->
+<p>The START uses the alternate key DEPT, so the READ NEXTs that follow go in department
+order, from SALES on. The 02 status on Ava's record means the next record has the same
+department. This example isn't compared with stock GnuCOBOL, whose reference build has no
+indexed file support.</p>
+
+<h2>See also</h2>
+<p><a href="read.html">READ</a>, <a href="files.html">Files</a> for RELATIVE KEY, RECORD KEY
+and ALTERNATE RECORD KEY, <a href="file-status.html">FILE STATUS codes</a>.</p>

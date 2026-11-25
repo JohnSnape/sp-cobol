@@ -1,0 +1,93 @@
+title: Special registers
+summary: Data items COBOL defines for you, such as RETURN-CODE, TALLY, LINAGE-COUNTER and LENGTH OF.
+keywords: RETURN-CODE SORT-RETURN TALLY LINAGE-COUNTER PAGE-COUNTER LINE-COUNTER XML-CODE JSON-CODE JSON-STATUS NUMBER-OF-CALL-PARAMETERS WHEN-COMPILED LENGTH OF ADDRESS OF DEBUG-ITEM COB-CRT-STATUS exit code
+---
+<h2>Syntax</h2>
+<pre class="syntax">register-name
+LENGTH OF identifier-1
+ADDRESS OF identifier-2
+{ PAGE-COUNTER | LINE-COUNTER } [ { OF | IN } report-name ]
+LINAGE-COUNTER [ { OF | IN } file-name ]</pre>
+
+<h2>What it does</h2>
+<p>A <em>special register</em> is a data item that exists in every program without you
+declaring it. The compiler or the runtime fills it in, and you read it (and sometimes set
+it) like any other item. Don't define an item with one of these names.</p>
+
+<div class="table-wrap"><table>
+<tr><th>Register</th><th>What it holds</th><th>Defined as</th></tr>
+<tr><td><code>RETURN-CODE</code></td><td>A number a program hands back. A called program sets it before
+GOBACK and the caller reads it after the CALL; when the main program ends, it becomes the
+program's exit code (what Windows sees as <code>%ERRORLEVEL%</code>).</td><td>binary, 9 digits, signed, starts at 0</td></tr>
+<tr><td><code>SORT-RETURN</code></td><td>0 after a successful SORT or MERGE, 16 after a failed one.</td><td>binary, signed</td></tr>
+<tr><td><code>TALLY</code></td><td>A general counter, handy as the TALLYING item of INSPECT.</td><td>PIC 9(5) binary, starts at 0</td></tr>
+<tr><td><code>LINAGE-COUNTER</code></td><td>For a file with a LINAGE clause: the line of the page the next WRITE goes to.</td><td>numeric, one per such file</td></tr>
+<tr><td><code>PAGE-COUNTER</code>, <code>LINE-COUNTER</code></td><td>For a Report Writer report: the page number, and the last line printed on the page.</td><td>numeric, one per report</td></tr>
+<tr><td><code>NUMBER-OF-CALL-PARAMETERS</code></td><td>In a called program: how many arguments the caller passed.</td><td>binary, signed</td></tr>
+<tr><td><code>XML-CODE</code></td><td>0 after a successful XML GENERATE, or an error number.</td><td>PIC S9(9) binary</td></tr>
+<tr><td><code>JSON-CODE</code></td><td>0 after a successful JSON GENERATE, or an error number (1: the receiving item was too small).</td><td>PIC S9(9) binary</td></tr>
+<tr><td><code>COB-CRT-STATUS</code></td><td>The key that ended the last screen ACCEPT, when the program has no CRT STATUS clause.</td><td>PIC 9(4)</td></tr>
+<tr><td><code>WHEN-COMPILED</code></td><td>The date and time the program was compiled, as text.</td><td>PIC X(16)</td></tr>
+<tr><td><code>LENGTH OF item</code></td><td>The number of bytes in the item, as a constant.</td><td>binary</td></tr>
+<tr><td><code>ADDRESS OF item</code></td><td>Where the item is in memory, as a pointer (see below).</td><td>USAGE POINTER</td></tr>
+</table></div>
+
+<h3>RETURN-CODE and the exit code</h3>
+<p>Because RETURN-CODE becomes the exit code, a program that used it for something else
+should <code>MOVE 0 TO RETURN-CODE</code> before <code>STOP RUN</code>, or a batch file or
+build tool will think the program failed. <code>STOP RUN RETURNING n</code> sets the exit code on the way out; see
+<a href="stop.html">STOP</a>.</p>
+
+<h3>ADDRESS OF</h3>
+<p><code>ADDRESS OF</code> is for passing data by its location: <code>SET ptr TO ADDRESS OF
+item</code> stores where an item is in a USAGE POINTER field, and <code>SET ADDRESS OF
+linkage-item TO ptr</code> makes a LINKAGE SECTION item refer to that place. Beginners rarely
+need it; <a href="call.html">CALL</a> ... BY REFERENCE does the same job more safely.</p>
+
+<h3>WHEN-COMPILED</h3>
+<p>Its value changes every time you compile, so it isn't shown in an example here.
+<code>DISPLAY WHEN-COMPILED</code> prints something like <code>25/11/2604.59.02</code>
+(day/month/year, then the time, with no space between).</p>
+
+<h2>Examples</h2>
+<h3>RETURN-CODE, TALLY, LENGTH OF, NUMBER-OF-CALL-PARAMETERS</h3>
+<!-- example SPREG1 -->
+<p>The called program SPREGS1 (in its own source file):</p>
+<pre>       PROCEDURE DIVISION USING LS-A LS-B.
+           DISPLAY "  called with " NUMBER-OF-CALL-PARAMETERS
+               " argument(s)"
+           IF NUMBER-OF-CALL-PARAMETERS = 2
+               COMPUTE RETURN-CODE = LS-A + LS-B
+           ELSE
+               MOVE LS-A TO RETURN-CODE
+           END-IF
+           GOBACK.</pre>
+<p>TALLY counts the three A's in "BANANA SPLIT". SPREGS1 is called first with one argument,
+then with two; NUMBER-OF-CALL-PARAMETERS tells it which, and it hands back 7 and then 12 in
+RETURN-CODE. The main program sets RETURN-CODE to 0 at the end so it exits with code 0.</p>
+
+<h3>LINAGE-COUNTER and JSON-CODE</h3>
+<!-- example SPREG2 -->
+<p>After each WRITE, LINAGE-COUNTER is the line the next WRITE will use. After the JSON
+GENERATE, JSON-CODE is 0: the text fitted in WS-JSON. With WS-JSON only 40 characters long,
+JSON-CODE would be 1.</p>
+
+<h3>COB-CRT-STATUS</h3>
+<!-- example SPREG3 -->
+<p>A screen example (see <a href="screen-section.html">SCREEN SECTION</a>): the keys were
+"y" and Esc. There is no CRT STATUS clause, so the Esc key's code, 2005, is in
+COB-CRT-STATUS.</p>
+
+<h2>SP COBOL notes</h2>
+<p>All of these behave as in GnuCOBOL 3.2. <code>DEBUG-ITEM</code> exists but is only
+filled in by <code>USE FOR DEBUGGING</code> declaratives, which SP COBOL can't build yet (see
+<a href="debugging.html">Debugging</a>). The registers used by XML PARSE (XML-EVENT,
+XML-TEXT, ...) are defined, but XML PARSE itself is not supported (see
+<a href="xml-parse.html">XML PARSE</a>). Special registers are not shown in the Visual
+Studio Watch window.</p>
+
+<h2>See also</h2>
+<p><a href="call.html">CALL</a>, <a href="stop.html">STOP</a>,
+<a href="inspect.html">INSPECT</a>, <a href="report-writer.html">Report Writer</a>,
+<a href="json-generate.html">JSON GENERATE</a>, <a href="xml-generate.html">XML GENERATE</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a>.</p>

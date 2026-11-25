@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XML GENERATE - SP COBOL Reference</title>
+<meta name="description" content="Turn a group item and its fields into XML text.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html" class="current" aria-current="page">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>XML GENERATE </h1>
+<p class="lede">Turn a group item and its fields into XML text.</p>
+<h2>Syntax</h2>
+<pre class="syntax">XML GENERATE <var>identifier-1</var> FROM <var>identifier-2</var>
+    [ COUNT IN <var>identifier-3</var> ]
+    [ WITH XML-DECLARATION ]
+    [ WITH ATTRIBUTES ]
+    [ NAMESPACE IS { <var>identifier-4</var> | <var>literal-1</var> }
+        [ NAMESPACE-PREFIX IS { <var>identifier-5</var> | <var>literal-2</var> } ] ]
+    [ NAME OF { <var>identifier-6</var> IS <var>literal-3</var> } ... ]
+    [ TYPE OF { <var>identifier-7</var> IS { ATTRIBUTE | ELEMENT | CONTENT } } ... ]
+    [ SUPPRESS { <var>identifier-8</var> ...
+               | WHEN { SPACES | ZEROS | LOW-VALUES | HIGH-VALUES } } ]
+    [ ON EXCEPTION <var>imperative-statement-1</var> ]
+    [ NOT ON EXCEPTION <var>imperative-statement-2</var> ]
+[ END-XML ]</pre>
+
+<h2>What it does</h2>
+<p>XML is a text format that marks data with named tags, like
+<code>&lt;PRICE&gt;4.50&lt;/PRICE&gt;</code>. XML GENERATE takes the data item after
+<code>FROM</code>, usually a group, and writes it as XML into the alphanumeric field
+<code>identifier-1</code>.</p>
+
+<h3>How the data becomes XML</h3>
+<ul>
+<li>Each item becomes an <em>element</em>: a start tag with the item's COBOL name, the value,
+and an end tag. A group's element contains the elements of its items.</li>
+<li>Numeric values are written as numbers: leading zeros are dropped, and the sign and the
+decimal point are shown (<code>0017</code> becomes <code>17</code>).</li>
+<li>Text values lose their trailing spaces; a field of all spaces becomes one space.</li>
+<li>The characters that have a meaning in XML are <em>escaped</em>: <code>&amp;</code> becomes
+<code>&amp;amp;</code>, <code>&lt;</code> becomes <code>&amp;lt;</code>, <code>&gt;</code>
+becomes <code>&amp;gt;</code> and a double quote becomes <code>&amp;quot;</code>.</li>
+<li>FILLER items are left out.</li>
+</ul>
+<p>The XML text goes at the start of the output field. <code>COUNT IN</code> gives its length,
+so <code>XML-OUT (1:LEN)</code> is exactly the XML.</p>
+
+<h3>The optional phrases</h3>
+<ul>
+<li><code>WITH XML-DECLARATION</code> starts the text with <code>&lt;?xml version="1.0"?&gt;</code>
+and a line break.</li>
+<li><code>WITH ATTRIBUTES</code> writes elementary items as <em>attributes</em> of their
+group's start tag (<code>&lt;ITEM ITEM-NO="0017"&gt;</code>) instead of as separate elements.
+Groups stay elements.</li>
+<li><code>TYPE OF item IS ATTRIBUTE</code> or <code>IS ELEMENT</code> chooses for one item,
+overriding WITH ATTRIBUTES. <code>IS CONTENT</code> writes the value as the bare text of the
+group's element, without a tag of its own.</li>
+<li><code>NAME OF item IS "name"</code> uses your own tag name instead of the COBOL name.</li>
+<li><code>SUPPRESS item ...</code> leaves the named items out. <code>SUPPRESS WHEN SPACES</code>
+(or ZEROS, LOW-VALUES, HIGH-VALUES) leaves out every element whose value is all spaces (or zero,
+and so on).</li>
+<li><code>NAMESPACE IS</code> adds an XML namespace (a URI that identifies the vocabulary) to
+the outer element. With <code>NAMESPACE-PREFIX IS "m"</code> every tag gets the prefix
+<code>m:</code>.</li>
+</ul>
+
+<h3>XML-CODE and ON EXCEPTION</h3>
+<p>The special register <code>XML-CODE</code> is zero after a successful XML GENERATE. If the
+output field is too small, XML-CODE is 400, the field holds what fit, and the
+<code>ON EXCEPTION</code> statements run. Other nonzero codes report bad data: for example, a
+text field containing control characters is written as hexadecimal in an element called
+<code>hex.NAME</code> and XML-CODE is 417, and a namespace that isn't a valid URI gives 416.
+<code>NOT ON EXCEPTION</code> runs when there was no exception.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/XMLGEN1.cbl" download>XMLGEN1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. XMLGEN1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  ITEM.
+<span class="seq">000060</span>     05  ITEM-NO    PIC 9(4)     VALUE 17.
+<span class="seq">000070</span>     05  DESCR      PIC X(16)    VALUE <span class="str">&quot;NUTS &amp; BOLTS&quot;</span>.
+<span class="seq">000080</span>     05  PRICE      PIC 9(3)V99  VALUE 4.5.
+<span class="seq">000090</span>     05  NOTE-TEXT  PIC X(10)    VALUE SPACES.
+<span class="seq">000100</span>     05  SIZES.
+<span class="seq">000110</span>         10  SIZE-A PIC X(3)     VALUE <span class="str">&quot;M6&quot;</span>.
+<span class="seq">000120</span>         10  SIZE-B PIC X(3)     VALUE <span class="str">&quot;M8&quot;</span>.
+<span class="seq">000130</span> 01  XML-OUT        PIC X(300).
+<span class="seq">000140</span> 01  SMALL-OUT      PIC X(20).
+<span class="seq">000150</span> 01  LEN            PIC 9(4).
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">XML</span> <span class="kw">GENERATE</span> XML-OUT FROM ITEM COUNT IN LEN
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;XML-CODE &quot;</span> XML-CODE <span class="str">&quot;  LENGTH &quot;</span> LEN
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> XML-OUT (1:LEN)
+<span class="seq">000200</span>     <span class="kw">XML</span> <span class="kw">GENERATE</span> XML-OUT FROM ITEM COUNT IN LEN
+<span class="seq">000210</span>         WITH XML-DECLARATION
+<span class="seq">000220</span>         NAME OF ITEM IS <span class="str">&quot;item&quot;</span> ITEM-NO IS <span class="str">&quot;id&quot;</span>
+<span class="seq">000230</span>         TYPE OF ITEM-NO IS ATTRIBUTE
+<span class="seq">000240</span>         <span class="kw">SUPPRESS</span> <span class="kw">WHEN</span> SPACES
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> XML-OUT (1:LEN)
+<span class="seq">000260</span>     <span class="kw">XML</span> <span class="kw">GENERATE</span> XML-OUT FROM ITEM COUNT IN LEN
+<span class="seq">000270</span>         WITH ATTRIBUTES
+<span class="seq">000280</span>         <span class="kw">SUPPRESS</span> NOTE-TEXT
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> XML-OUT (1:LEN)
+<span class="seq">000300</span>     <span class="kw">XML</span> <span class="kw">GENERATE</span> SMALL-OUT FROM ITEM
+<span class="seq">000310</span>         ON EXCEPTION
+<span class="seq">000320</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;TOO SMALL, XML-CODE &quot;</span> XML-CODE
+<span class="seq">000330</span>             <span class="kw">END-DISPLAY</span>
+<span class="seq">000340</span>         NOT ON EXCEPTION
+<span class="seq">000350</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;IT FIT&quot;</span>
+<span class="seq">000360</span>     <span class="kw">END-XML</span>
+<span class="seq">000370</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">XML-CODE +000000000  LENGTH 0161
+&lt;ITEM&gt;&lt;ITEM-NO&gt;17&lt;/ITEM-NO&gt;&lt;DESCR&gt;NUTS &amp;amp; BOLTS&lt;/DESCR&gt;&lt;PRICE&gt;4.50&lt;/PRICE&gt;&lt;NOTE-TEXT&gt; &lt;/NOTE-TEXT&gt;&lt;SIZES&gt;&lt;SIZE-A&gt;M6&lt;/SIZE-A&gt;&lt;SIZE-B&gt;M8&lt;/SIZE-B&gt;&lt;/SIZES&gt;&lt;/ITEM&gt;
+&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;item id=&quot;0017&quot;&gt;&lt;DESCR&gt;NUTS &amp;amp; BOLTS&lt;/DESCR&gt;&lt;PRICE&gt;4.50&lt;/PRICE&gt;&lt;SIZES&gt;&lt;SIZE-A&gt;M6&lt;/SIZE-A&gt;&lt;SIZE-B&gt;M8&lt;/SIZE-B&gt;&lt;/SIZES&gt;&lt;/item&gt;
+&lt;ITEM ITEM-NO=&quot;0017&quot; DESCR=&quot;NUTS &amp;amp; BOLTS&quot; PRICE=&quot;00450&quot;&gt;&lt;SIZES&gt;&lt;SIZE-A&gt;M6&lt;/SIZE-A&gt;&lt;SIZE-B&gt;M8&lt;/SIZE-B&gt;&lt;/SIZES&gt;&lt;/ITEM&gt;
+TOO SMALL, XML-CODE +000000400</pre>
+</figure>
+<p>The first XML GENERATE uses no options: every item is an element, ITEM-NO loses its leading
+zeros, and the ampersand in the description is escaped. The second adds the XML declaration,
+renames ITEM and ITEM-NO, makes ITEM-NO an attribute and drops NOTE-TEXT because it is all
+spaces. The third writes all the elementary items as attributes, except the SIZES group. Note
+that attribute values are the field's raw characters: <code>0017</code> and
+<code>00450</code>, with no decimal point. The last one doesn't fit in 20 characters, so
+XML-CODE is 400.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/XMLGEN2.cbl" download>XMLGEN2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. XMLGEN2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  POINT.
+<span class="seq">000060</span>     05  X-POS      PIC 999      VALUE 10.
+<span class="seq">000070</span>     05  Y-POS      PIC 999      VALUE 20.
+<span class="seq">000080</span>     05  LABEL-TEXT PIC X(8)     VALUE <span class="str">&quot;HOME&quot;</span>.
+<span class="seq">000090</span>     05  QTY        PIC 99       VALUE 0.
+<span class="seq">000100</span> 01  NS             PIC X(30)    VALUE <span class="str">&quot;http://example.com/map&quot;</span>.
+<span class="seq">000110</span> 01  PFX            PIC X(3)     VALUE <span class="str">&quot;m&quot;</span>.
+<span class="seq">000120</span> 01  XML-OUT        PIC X(300).
+<span class="seq">000130</span> 01  LEN            PIC 9(4).
+<span class="seq">000140</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000150</span>     <span class="kw">XML</span> <span class="kw">GENERATE</span> XML-OUT FROM POINT COUNT IN LEN
+<span class="seq">000160</span>         WITH ATTRIBUTES
+<span class="seq">000170</span>         TYPE OF LABEL-TEXT IS ELEMENT
+<span class="seq">000180</span>         <span class="kw">SUPPRESS</span> <span class="kw">WHEN</span> ZERO
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> XML-OUT (1:LEN)
+<span class="seq">000200</span>     <span class="kw">XML</span> <span class="kw">GENERATE</span> XML-OUT FROM POINT COUNT IN LEN
+<span class="seq">000210</span>         NAMESPACE IS NS NAMESPACE-PREFIX IS PFX
+<span class="seq">000220</span>         <span class="kw">SUPPRESS</span> <span class="kw">WHEN</span> ZERO
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> XML-OUT (1:LEN)
+<span class="seq">000240</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">&lt;POINT X-POS=&quot;010&quot; Y-POS=&quot;020&quot; QTY=&quot;00&quot;&gt;&lt;LABEL-TEXT&gt;HOME&lt;/LABEL-TEXT&gt;&lt;/POINT&gt;
+&lt;m:POINT xmlns:m=&quot;http://example.com/map&quot;&gt;&lt;m:X-POS&gt;10&lt;/m:X-POS&gt;&lt;m:Y-POS&gt;20&lt;/m:Y-POS&gt;&lt;m:LABEL-TEXT&gt;HOME&lt;/m:LABEL-TEXT&gt;&lt;/m:POINT&gt;</pre>
+</figure>
+<p>In the first statement WITH ATTRIBUTES makes X-POS, Y-POS and QTY attributes, while TYPE OF
+keeps LABEL-TEXT an element. QTY is zero but still appears: SUPPRESS WHEN only removes items
+written as elements. The second statement writes elements with a namespace and the prefix
+<code>m:</code>, and this time the zero QTY element is suppressed.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL writes the XML itself, so no extra library has to be installed (GnuCOBOL uses
+libxml2). The text, the XML-CODE values and the COUNT IN results are the same as in
+GnuCOBOL 3.2, quirks included:</p>
+<div class="warn">
+<ul>
+<li>A table (<a href="occurs.html">OCCURS</a>) is not repeated: only its first entry is
+generated, and the compiler warns that this is "not implemented".</li>
+<li>Attribute values are the raw characters of the field, so a negative number shows its sign
+as an overpunched last character (<code>-123.45</code> in <code>PIC S9(5)V99</code> appears
+as <code>001234u</code>).</li>
+<li>When the output field is too small, COUNT IN is one more than the length of the complete XML text (it counts a final line break).</li>
+<li>A <code>COMP-1</code> or <code>COMP-2</code> item in the data stops the program with a
+runtime error, as GnuCOBOL's runtime does. Move such values to a display field first.</li>
+</ul>
+</div>
+
+<h2>See also</h2>
+<p><a href="json-generate.html">JSON GENERATE</a>, <a href="xml-parse.html">XML PARSE</a>
+(not supported), <a href="special-registers.html">special registers</a> (XML-CODE),
+<a href="string.html">STRING</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="write.html">&larr; WRITE</a><a class="next" href="xml-parse.html">XML PARSE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

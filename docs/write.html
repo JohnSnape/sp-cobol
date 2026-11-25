@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WRITE - SP COBOL Reference</title>
+<meta name="description" content="Add a record to a file, with line spacing for printed reports.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html" class="current" aria-current="page">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>WRITE </h1>
+<p class="lede">Add a record to a file, with line spacing for printed reports.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: sequential and line sequential files</span>
+WRITE <var>record-name</var> [ FROM { <var>identifier-1</var> | <var>literal-1</var> } ]
+    [ { BEFORE | AFTER } ADVANCING { { <var>integer-1</var> | <var>identifier-2</var> } [ LINE | LINES ] | PAGE } ]
+    [ AT { END-OF-PAGE | EOP } <var>imperative-statement-1</var> ]
+    [ NOT AT { END-OF-PAGE | EOP } <var>imperative-statement-2</var> ]
+[ END-WRITE ]
+
+<span class="fmt">Format 2: relative and indexed files</span>
+WRITE <var>record-name</var> [ FROM { <var>identifier-1</var> | <var>literal-1</var> } ]
+    [ INVALID KEY <var>imperative-statement-3</var> ]
+    [ NOT INVALID KEY <var>imperative-statement-4</var> ]
+[ END-WRITE ]</pre>
+
+<h2>What it does</h2>
+<p>WRITE adds the record in the record area to the file. Notice that you write a
+<em>record</em> name (the 01 under the FD), while READ takes a <em>file</em> name.</p>
+<p><code>WRITE record FROM item</code> first moves <code>item</code> into the record, then
+writes it. It saves a separate <a href="move.html">MOVE</a>, and lets you build lines in
+WORKING-STORAGE.</p>
+<p>The file must be open OUTPUT or EXTEND (sequential access), or OUTPUT or I-O (RELATIVE
+and INDEXED files with random or dynamic access). Otherwise the status is 48.</p>
+
+<h3>Where the record goes</h3>
+<ul>
+<li>SEQUENTIAL and LINE SEQUENTIAL: after the last record written.</li>
+<li>RELATIVE: with sequential access, in the next slot (1, 2, 3, ...), and the slot number is
+put in the RELATIVE KEY item. With random or dynamic access, in the slot whose number you put
+in the RELATIVE KEY first. If that slot is in use, the status is 22 and
+<code>INVALID KEY</code> runs.</li>
+<li>INDEXED: by the value of its RECORD KEY. A key that already exists gives 22 and
+<code>INVALID KEY</code>. With sequential access, keys must come in ascending order (21
+otherwise).</li>
+</ul>
+
+<h3>Line spacing: ADVANCING</h3>
+<p>ADVANCING is for report files (LINE SEQUENTIAL). <code>AFTER ADVANCING 2 LINES</code> moves
+the paper up two lines and then prints the record, leaving one blank line before it.
+<code>BEFORE ADVANCING 1 LINE</code> prints first, then moves up. <code>PAGE</code> starts a
+new page: a form feed character in the file, or blank lines to the end of the page when the
+file has LINAGE.</p>
+<div class="warn">
+<p>A plain WRITE (no ADVANCING) prints the record and then ends the line. A WRITE ... AFTER
+ADVANCING moves first and does <em>not</em> end its own line. So a plain WRITE straight after
+an AFTER ADVANCING one lands on the same line, right after the previous record. In a report,
+use AFTER ADVANCING on every WRITE (or BEFORE on every WRITE); don't mix them with plain
+WRITEs.</p>
+</div>
+
+<h3>Pages: LINAGE and END-OF-PAGE</h3>
+<p>An FD with <code>LINAGE IS 4 LINES WITH FOOTING AT 3 LINES AT TOP 1 LINES AT BOTTOM
+1</code> describes a page with a 1-line top margin, a body of 4 lines, and a 1-line bottom
+margin. The <em>footing area</em> is lines 3 and 4 of the body. The special register
+<code>LINAGE-COUNTER</code> holds the line of the body the next WRITE will use. When a WRITE
+reaches the footing area, or the page is full and the runtime moves to the next page, the
+<code>AT END-OF-PAGE</code> statements run; that is where a program prints page totals or a
+new heading.</p>
+
+<h2>Examples</h2>
+<h3>WRITE FROM and ADVANCING</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/WRITE1.cbl" download>WRITE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. WRITE1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> LIST-F ASSIGN TO <span class="str">&quot;list.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000100</span> <span class="kw">FD</span>  LIST-F.
+<span class="seq">000110</span> 01  LIST-LINE           PIC X(16).
+<span class="seq">000120</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000130</span> 01  HEAD-TEXT           PIC X(16) VALUE <span class="str">&quot;PRICE LIST&quot;</span>.
+<span class="seq">000140</span> 01  DETAIL-LINE.
+<span class="seq">000150</span>     05  ITEM            PIC X(8).
+<span class="seq">000160</span>     05  PRICE           PIC ZZ9.99.
+<span class="seq">000170</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000180</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000190</span>     <span class="kw">OPEN</span> OUTPUT LIST-F
+<span class="seq">000200</span>     <span class="kw">WRITE</span> LIST-LINE FROM HEAD-TEXT AFTER ADVANCING 1 LINE
+<span class="seq">000210</span>     <span class="kw">MOVE</span> <span class="str">&quot;TEA&quot;</span> TO ITEM <span class="kw">MOVE</span> 3.5 TO PRICE
+<span class="seq">000220</span>     <span class="kw">WRITE</span> LIST-LINE FROM DETAIL-LINE AFTER ADVANCING 2 LINES
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;COFFEE&quot;</span> TO ITEM <span class="kw">MOVE</span> 4.25 TO PRICE
+<span class="seq">000240</span>     <span class="kw">WRITE</span> LIST-LINE FROM DETAIL-LINE AFTER 1
+<span class="seq">000250</span>     <span class="kw">MOVE</span> <span class="str">&quot;END&quot;</span> TO LIST-LINE
+<span class="seq">000260</span>     <span class="kw">WRITE</span> LIST-LINE AFTER ADVANCING 2 LINES
+<span class="seq">000270</span>     <span class="kw">CLOSE</span> LIST-F
+<span class="seq">000280</span>     <span class="kw">OPEN</span> INPUT LIST-F
+<span class="seq">000290</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000300</span>         <span class="kw">READ</span> LIST-F
+<span class="seq">000310</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000320</span>             NOT AT <span class="kw">END</span> <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> LIST-LINE <span class="str">&quot;]&quot;</span>
+<span class="seq">000330</span>         <span class="kw">END-READ</span>
+<span class="seq">000340</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000350</span>     <span class="kw">CLOSE</span> LIST-F
+<span class="seq">000360</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">[                ]
+[PRICE LIST      ]
+[                ]
+[TEA       3.50  ]
+[COFFEE    4.25  ]
+[                ]
+[END             ]</pre>
+</figure>
+<p>Every WRITE uses AFTER ADVANCING, so each record moves down first: the file starts with an
+empty line, and the 2-line advances leave a blank line before TEA and before END. The program
+reads the file back to show the lines.</p>
+
+<h3>LINAGE and AT END-OF-PAGE</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/WRITE2.cbl" download>WRITE2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. WRITE2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> PRINT-F ASSIGN TO <span class="str">&quot;pages.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000100</span> <span class="kw">FD</span>  PRINT-F
+<span class="seq">000110</span>     LINAGE IS 4 LINES WITH FOOTING AT 3
+<span class="seq">000120</span>     LINES AT TOP 1 LINES AT BOTTOM 1.
+<span class="seq">000130</span> 01  PRINT-LINE          PIC X(20).
+<span class="seq">000140</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000150</span> 01  N                   PIC 99.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">OPEN</span> OUTPUT PRINT-F
+<span class="seq">000180</span>     <span class="kw">PERFORM</span> VARYING N FROM 1 BY 1 UNTIL N &gt; 6
+<span class="seq">000190</span>         <span class="kw">MOVE</span> SPACES TO PRINT-LINE
+<span class="seq">000200</span>         <span class="kw">STRING</span> <span class="str">&quot;LINE &quot;</span> N DELIMITED BY SIZE INTO PRINT-LINE
+<span class="seq">000210</span>         <span class="kw">WRITE</span> PRINT-LINE
+<span class="seq">000220</span>             AT END-OF-PAGE
+<span class="seq">000230</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;END OF PAGE AFTER LINE &quot;</span> N
+<span class="seq">000240</span>                     <span class="str">&quot;, LINAGE-COUNTER &quot;</span> LINAGE-COUNTER
+<span class="seq">000250</span>         <span class="kw">END-WRITE</span>
+<span class="seq">000260</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000270</span>     <span class="kw">MOVE</span> <span class="str">&quot;TOP OF A NEW PAGE&quot;</span> TO PRINT-LINE
+<span class="seq">000280</span>     <span class="kw">WRITE</span> PRINT-LINE AFTER ADVANCING PAGE
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LINAGE-COUNTER NOW &quot;</span> LINAGE-COUNTER
+<span class="seq">000300</span>     <span class="kw">CLOSE</span> PRINT-F
+<span class="seq">000310</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">END OF PAGE AFTER LINE 02, LINAGE-COUNTER 0000000003
+END OF PAGE AFTER LINE 03, LINAGE-COUNTER 0000000004
+END OF PAGE AFTER LINE 04, LINAGE-COUNTER 0000000001
+END OF PAGE AFTER LINE 06, LINAGE-COUNTER 0000000003
+LINAGE-COUNTER NOW 0000000001</pre>
+</figure>
+<p>After line 2, LINAGE-COUNTER is 3, the start of the footing, so AT END-OF-PAGE runs; again
+after line 3. Line 4 fills the page, the runtime moves to the next page and LINAGE-COUNTER
+starts again at 1. On the second page line 6 reaches the footing. <code>AFTER ADVANCING
+PAGE</code> pads the rest of the page with blank lines and prints at the top of a new
+one.</p>
+
+<h3>INVALID KEY on a relative file</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/WRITE3.cbl" download>WRITE3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. WRITE3.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> LOCKERS ASSIGN TO <span class="str">&quot;lockers.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS RANDOM
+<span class="seq">000080</span>         RELATIVE KEY IS LOCKER-NO <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  LOCKERS.
+<span class="seq">000120</span> 01  LOCKER-REC          PIC X(6).
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  LOCKER-NO           PIC 99.
+<span class="seq">000150</span> 01  FS                  PIC XX.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">OPEN</span> OUTPUT LOCKERS
+<span class="seq">000180</span>     <span class="kw">MOVE</span> 12 TO LOCKER-NO <span class="kw">MOVE</span> <span class="str">&quot;SAM&quot;</span> TO LOCKER-REC
+<span class="seq">000190</span>     <span class="kw">WRITE</span> LOCKER-REC
+<span class="seq">000200</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;LOCKER 12 TAKEN&quot;</span>
+<span class="seq">000210</span>         NOT INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;SAM HAS LOCKER 12&quot;</span>
+<span class="seq">000220</span>     <span class="kw">END-WRITE</span>
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;RITA&quot;</span> TO LOCKER-REC
+<span class="seq">000240</span>     <span class="kw">WRITE</span> LOCKER-REC
+<span class="seq">000250</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;LOCKER 12 TAKEN, STATUS &quot;</span> FS
+<span class="seq">000260</span>         NOT INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;RITA HAS LOCKER 12&quot;</span>
+<span class="seq">000270</span>     <span class="kw">END-WRITE</span>
+<span class="seq">000280</span>     <span class="kw">CLOSE</span> LOCKERS
+<span class="seq">000290</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SAM HAS LOCKER 12
+LOCKER 12 TAKEN, STATUS 22</pre>
+</figure>
+<p>Locker 12 is free the first time, so the NOT INVALID KEY branch runs. The second WRITE to
+slot 12 finds it in use: status 22, INVALID KEY.</p>
+
+<h2>SP COBOL notes</h2>
+<p>As in GnuCOBOL 3.2, LINAGE files get blank lines rather than form feeds between pages, and
+lines end with CR LF.</p>
+
+<h2>See also</h2>
+<p><a href="read.html">READ</a>, <a href="rewrite.html">REWRITE</a>,
+<a href="open.html">OPEN</a>, <a href="files.html">Files</a>,
+<a href="file-status.html">FILE STATUS codes</a>, <a href="report-writer.html">Report
+Writer</a> for reports with headings and totals, <a href="release.html">RELEASE</a> (the WRITE
+of a sort).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="use.html">&larr; USE</a><a class="next" href="xml-generate.html">XML GENERATE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

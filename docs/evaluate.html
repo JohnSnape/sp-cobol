@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVALUATE - SP COBOL Reference</title>
+<meta name="description" content="Choose one of several actions by comparing values or testing conditions; COBOL&#39;s case statement.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html" class="current" aria-current="page">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>EVALUATE </h1>
+<p class="lede">Choose one of several actions by comparing values or testing conditions; COBOL&#39;s case statement.</p>
+<h2>Syntax</h2>
+<pre class="syntax">EVALUATE <var>subject-1</var> [ ALSO <var>subject-2</var> ] ...
+    { { WHEN <var>object-1</var> [ ALSO <var>object-2</var> ] ... } ...
+          <var>imperative-statement-1</var> } ...
+    [ WHEN OTHER <var>imperative-statement-2</var> ]
+[ END-EVALUATE ]
+
+<var>subject</var>:  { <var>identifier</var> | <var>literal</var> | <var>arithmetic-expression</var> | <var>condition</var> | TRUE | FALSE }
+
+<var>object</var>:   { ANY
+          | <var>condition</var>
+          | TRUE | FALSE
+          | [ NOT ] { <var>identifier-1</var> | <var>literal-1</var> | <var>arithmetic-expression-1</var> }
+                [ { THRU | THROUGH } { <var>identifier-2</var> | <var>literal-2</var> | <var>arithmetic-expression-2</var> } ] }</pre>
+
+<h2>What it does</h2>
+<p><code>EVALUATE</code> looks at a value (the <em>subject</em>) and runs the statements under the
+first <code>WHEN</code> that matches it. Only one WHEN runs; then the program goes on after
+<code>END-EVALUATE</code>. If no WHEN matches, the statements under <code>WHEN OTHER</code> run, or
+nothing at all if there is no WHEN OTHER. It does the job of a long chain of
+<code>IF ... ELSE IF ...</code>, and is much easier to read.</p>
+
+<h3>What a WHEN can say</h3>
+<ul>
+<li>A value: <code>WHEN "A"</code>, <code>WHEN 100</code>, <code>WHEN LIMIT-AMT</code>. Matches when
+the subject equals it.</li>
+<li>A range: <code>WHEN 90 THRU 100</code> matches anything from 90 to 100, both ends included.</li>
+<li><code>NOT</code> before a value or range: matches when the subject is anything else.</li>
+<li>With <code>EVALUATE TRUE</code>, each WHEN is a condition (<code>WHEN AGE &lt; 18</code>,
+<code>WHEN IS-MEMBER</code>), and the first one that is true is chosen. With
+<code>EVALUATE FALSE</code>, the first condition that is false is chosen.</li>
+</ul>
+
+<h3>Several WHENs sharing one action</h3>
+<p>Write the WHENs one after another with no statement between them. The statements after the
+last one run when any of them matches.</p>
+
+<h3>ALSO: more than one subject</h3>
+<p><code>EVALUATE AGE ALSO MEMBER-FLAG</code> tests two things at once. Each WHEN then has one
+object per subject, separated by <code>ALSO</code>, and matches only when every pair matches. This
+is a <em>decision table</em> written as code. Subjects may be of different kinds:
+<code>EVALUATE TRUE ALSO QTY</code> takes a condition and then a value in each WHEN.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/EVAL1.cbl" download>EVAL1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. EVAL1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  SCORES          VALUE <span class="str">&quot;095085072061040&quot;</span>.
+<span class="seq">000060</span>     05  SCORE       PIC 999 OCCURS 5.
+<span class="seq">000070</span> 01  I               PIC 9.
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 5
+<span class="seq">000100</span>         <span class="kw">DISPLAY</span> SCORE (I) <span class="str">&quot;: &quot;</span> WITH NO ADVANCING
+<span class="seq">000110</span>         <span class="kw">EVALUATE</span> SCORE (I)
+<span class="seq">000120</span>             <span class="kw">WHEN</span> 90 THRU 100
+<span class="seq">000130</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;A&quot;</span>
+<span class="seq">000140</span>             <span class="kw">WHEN</span> 80 THRU 89
+<span class="seq">000150</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;B&quot;</span>
+<span class="seq">000160</span>             <span class="kw">WHEN</span> 70 THRU 79
+<span class="seq">000170</span>             <span class="kw">WHEN</span> 60 THRU 69
+<span class="seq">000180</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;C OR D, PASS&quot;</span>
+<span class="seq">000190</span>             <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000200</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;FAIL&quot;</span>
+<span class="seq">000210</span>         <span class="kw">END-EVALUATE</span>
+<span class="seq">000220</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000230</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">095: A
+085: B
+072: C OR D, PASS
+061: C OR D, PASS
+040: FAIL</pre>
+</figure>
+<p>Each score is checked against the ranges in order. 72 and 61 both reach the shared action of
+the two WHENs for 70-79 and 60-69. 40 matches no range, so WHEN OTHER runs.</p>
+
+<h3>Two subjects, and EVALUATE TRUE</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/EVAL2.cbl" download>EVAL2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. EVAL2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  AGE             PIC 999.
+<span class="seq">000060</span> 01  MEMBER-FLAG     PIC X.
+<span class="seq">000070</span>     88  IS-MEMBER   VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">MOVE</span> 10 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO MEMBER-FLAG
+<span class="seq">000100</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000110</span>     <span class="kw">MOVE</span> 30 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO MEMBER-FLAG
+<span class="seq">000120</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000130</span>     <span class="kw">MOVE</span> 70 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO MEMBER-FLAG
+<span class="seq">000140</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000150</span>     <span class="kw">MOVE</span> 40 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO MEMBER-FLAG
+<span class="seq">000160</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000170</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000180</span> PRICE-TICKET.
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AGE &quot;</span> AGE <span class="str">&quot; MEMBER &quot;</span> MEMBER-FLAG <span class="str">&quot;: &quot;</span>
+<span class="seq">000200</span>         WITH NO ADVANCING
+<span class="seq">000210</span>     <span class="kw">EVALUATE</span> AGE          ALSO MEMBER-FLAG
+<span class="seq">000220</span>         <span class="kw">WHEN</span> 0 THRU 12    ALSO <span class="str">&quot;Y&quot;</span>
+<span class="seq">000230</span>         <span class="kw">WHEN</span> 0 THRU 12    ALSO <span class="str">&quot;N&quot;</span>
+<span class="seq">000240</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;CHILD TICKET&quot;</span> WITH NO ADVANCING
+<span class="seq">000250</span>         <span class="kw">WHEN</span> 13 THRU 999  ALSO <span class="str">&quot;Y&quot;</span>
+<span class="seq">000260</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;MEMBER TICKET&quot;</span> WITH NO ADVANCING
+<span class="seq">000270</span>         <span class="kw">WHEN</span> 65 THRU 999  ALSO <span class="str">&quot;N&quot;</span>
+<span class="seq">000280</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;SENIOR TICKET&quot;</span> WITH NO ADVANCING
+<span class="seq">000290</span>         <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000300</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;FULL PRICE&quot;</span> WITH NO ADVANCING
+<span class="seq">000310</span>     <span class="kw">END-EVALUATE</span>
+<span class="seq">000320</span>     <span class="kw">EVALUATE</span> TRUE
+<span class="seq">000330</span>         <span class="kw">WHEN</span> AGE &lt; 18
+<span class="seq">000340</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;, NEEDS AN ADULT&quot;</span>
+<span class="seq">000350</span>         <span class="kw">WHEN</span> IS-MEMBER
+<span class="seq">000360</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;, USE THE MEMBER GATE&quot;</span>
+<span class="seq">000370</span>         <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000380</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;, MAIN GATE&quot;</span>
+<span class="seq">000390</span>     <span class="kw">END-EVALUATE</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">AGE 010 MEMBER N: CHILD TICKET, NEEDS AN ADULT
+AGE 030 MEMBER Y: MEMBER TICKET, USE THE MEMBER GATE
+AGE 070 MEMBER N: SENIOR TICKET, MAIN GATE
+AGE 040 MEMBER N: FULL PRICE, MAIN GATE</pre>
+</figure>
+<p>The first EVALUATE is a small decision table on age and membership. A 70-year-old non-member
+matches <code>65 THRU 999 ALSO "N"</code>. A 40-year-old non-member matches nothing and gets the
+OTHER branch. The second EVALUATE tests conditions in order: the 10-year-old is caught by the first
+WHEN, so the member test is never reached for that row.</p>
+
+<h3>EVALUATE FALSE, and NOT in a WHEN</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/EVAL3.cbl" download>EVAL3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. EVAL3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  QTY             PIC 99 VALUE 5.
+<span class="seq">000060</span> 01  IN-STOCK        PIC X  VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000070</span>     88  STOCKED     VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">EVALUATE</span> FALSE
+<span class="seq">000100</span>         <span class="kw">WHEN</span> STOCKED
+<span class="seq">000110</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;OUT OF STOCK&quot;</span>
+<span class="seq">000120</span>         <span class="kw">WHEN</span> QTY &gt; 0
+<span class="seq">000130</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;NOTHING ORDERED&quot;</span>
+<span class="seq">000140</span>         <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000150</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;READY TO SHIP&quot;</span>
+<span class="seq">000160</span>     <span class="kw">END-EVALUATE</span>
+<span class="seq">000170</span>     <span class="kw">EVALUATE</span> TRUE ALSO QTY
+<span class="seq">000180</span>         <span class="kw">WHEN</span> STOCKED ALSO 1 THRU 9
+<span class="seq">000190</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;SMALL ORDER, IN STOCK&quot;</span>
+<span class="seq">000200</span>         <span class="kw">WHEN</span> STOCKED ALSO NOT 1 THRU 9
+<span class="seq">000210</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;LARGE ORDER, IN STOCK&quot;</span>
+<span class="seq">000220</span>         <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000230</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;CHECK THE WAREHOUSE&quot;</span>
+<span class="seq">000240</span>     <span class="kw">END-EVALUATE</span>
+<span class="seq">000250</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">READY TO SHIP
+SMALL ORDER, IN STOCK</pre>
+</figure>
+<p>In the first EVALUATE each WHEN fires when its condition is <em>false</em>. Both conditions are
+true here, so WHEN OTHER runs. In the second, QTY 5 is in the range 1 THRU 9, so the first WHEN
+matches; a QTY of 0 or 10 or more would have matched <code>NOT 1 THRU 9</code>.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad"><code>WHEN ANY</code> (in any position, such as <code>WHEN 0 THRU 12 ALSO
+ANY</code>) can't be built by SP COBOL yet: the translation stops with a C# error. GnuCOBOL 3.2
+accepts it. Until it is fixed, list the cases instead (<code>WHEN 0 THRU 12 ALSO "Y"</code>
+followed by <code>WHEN 0 THRU 12 ALSO "N"</code>, as in the second example), or test only the
+subjects that matter in a nested EVALUATE or IF.</div>
+
+<h2>See also</h2>
+<p><a href="if.html">IF</a>, <a href="conditions.html">conditions</a>,
+<a href="condition-names.html">condition names (88 levels)</a>,
+<a href="continue.html">CONTINUE</a> (a WHEN that does nothing),
+<a href="perform.html">PERFORM</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="divide.html">&larr; DIVIDE</a><a class="next" href="exit.html">EXIT &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

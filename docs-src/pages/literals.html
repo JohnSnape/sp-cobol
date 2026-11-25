@@ -1,0 +1,84 @@
+title: Literals
+summary: Values written directly in the program: numbers, quoted text, hexadecimal and other forms.
+keywords: numeric literal alphanumeric literal string quotes apostrophe doubled quote hexadecimal X"" national N"" null-terminated Z"" boolean B"" floating-point E exponent continuation concatenation ampersand &
+---
+<h2>Syntax</h2>
+<pre class="syntax">Numeric literal:
+[ + | - ] digits [ . digits ]
+[ + | - ] digits [ . digits ] E [ + | - ] digits      (floating-point)
+
+Alphanumeric literal:
+"characters"   or   'characters'
+
+Other forms:
+X"hex-digits"       alphanumeric, given as hexadecimal bytes
+Z"characters"       alphanumeric, with a null byte added at the end
+N"characters"       national (Unicode)
+B"bits"             boolean
+
+Joining literals:
+literal-1 &amp; literal-2 ...</pre>
+
+<h2>What it does</h2>
+<p>A <em>literal</em> is a value written straight into the source, such as <code>100</code>
+or <code>"TOTAL:"</code>, as opposed to a data item whose value can change.</p>
+
+<h3>Numeric literals</h3>
+<p>Digits, with an optional sign in front and an optional decimal point:
+<code>42</code>, <code>-0.5</code>, <code>+7</code>, <code>12345.67</code>. A numeric literal
+may have up to 38 digits. Don't put a comma or a space inside one, and don't end it with a
+decimal point (<code>5.</code> reads as 5 followed by the end of the sentence). A literal
+with <code>E</code> and an exponent, such as <code>1.5E3</code> (1500), is a floating-point
+literal.</p>
+
+<h3>Alphanumeric literals</h3>
+<p>Characters between quotation marks: <code>"HELLO"</code>. Apostrophes work too:
+<code>'HELLO'</code>. To put the quote character itself inside a literal, write it twice:
+<code>"SHE SAID ""HI"""</code> holds <code>SHE SAID "HI"</code>. Inside apostrophes a
+quotation mark is ordinary, and the other way round.</p>
+<p>When a literal is moved to a longer field, it is padded with spaces on the right; when it
+is compared with a longer field, it is treated as if padded with spaces. A literal that won't
+fit on one line can be continued (see <a href="source-format.html">source format</a>), but
+joining shorter literals with <code>&amp;</code> is easier to read and to edit:
+<code>"FIRST PART " &amp; "SECOND PART"</code> is one literal.</p>
+
+<h3>Hexadecimal literals</h3>
+<p><code>X"..."</code> gives the bytes in hexadecimal, two digits per byte.
+<code>X"41"</code> is the letter A; <code>X"0D0A"</code> is a carriage return and line feed.
+Use it for bytes you can't type.</p>
+
+<h3>Null-terminated literals</h3>
+<p><code>Z"ABC"</code> is the three letters followed by a byte of zero (LOW-VALUE), so it is
+four bytes long. This is the form C functions expect for a string.</p>
+
+<h3>National literals</h3>
+<p><code>N"..."</code> is a national literal, for <code>PIC N</code> items: each character
+takes two bytes (UTF-16). <code>MOVE N"ABC" TO NAT-NAME</code> fills a <code>PIC N(3)</code>
+item, which is 3 characters and 6 bytes long. See <a href="national.html">national data</a>.</p>
+
+<h3>Boolean literals</h3>
+<p><code>B"1"</code> and <code>B"0"</code> are boolean literals, for items with
+<code>PIC 1</code>.</p>
+
+<h2>Example: numbers and text</h2>
+<!-- example LITERAL1 -->
+<p>Each numeric literal is moved to AMOUNT and shown through an edited picture. The doubled
+quotes in the first DISPLAY print as single ones. <code>X"434F424F4C"</code> is the five bytes
+C, O, B, O, L. The last DISPLAY shows one literal built from three with <code>&amp;</code>.</p>
+
+<h2>Example: the special forms</h2>
+<!-- example LITERAL2 -->
+<p><code>Z"ABC"</code> is 4 bytes, and moving it to C-TEXT leaves a LOW-VALUE byte in the
+fourth position. FLAG starts as <code>B"1"</code>. <code>1.5E3</code> is 1500.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">The compiler marks national literals and <code>PIC N</code> as "unfinished"
+in GnuCOBOL 3.2 (warning <code>-Wunfinished</code>). SP COBOL implements them, and its build
+turns that warning off. DISPLAY of a <code>PIC N</code> item differs from stock GnuCOBOL:
+SP COBOL shows the characters. See <a href="national.html">national data</a>.</div>
+
+<h2>See also</h2>
+<p><a href="figurative-constants.html">Figurative constants</a> (ZERO, SPACES, ALL "x"),
+<a href="source-format.html">source format</a> (continuation lines),
+<a href="picture.html">PICTURE</a>, <a href="national.html">national data</a>,
+<a href="constants.html">constants</a>.</p>

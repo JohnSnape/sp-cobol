@@ -1,0 +1,3 @@
+000010 01  :TAG:-RECORD.
+000020     05  :TAG:-NAME      PIC X(8).
+000030     05  :TAG:-AMOUNT    PIC 9(4).

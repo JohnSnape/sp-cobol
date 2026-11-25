@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STOP - SP COBOL Reference</title>
+<meta name="description" content="End the program, optionally with an exit code for whatever started it.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html" class="current" aria-current="page">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>STOP </h1>
+<p class="lede">End the program, optionally with an exit code for whatever started it.</p>
+<h2>Syntax</h2>
+<pre class="syntax">STOP RUN [ { RETURNING | GIVING } { <var>identifier-1</var> | <var>integer-1</var> } ]
+
+STOP RUN WITH { ERROR | NORMAL } STATUS [ { <var>identifier-1</var> | <var>integer-1</var> } ]
+
+Obsolete:
+STOP <var>literal-1</var></pre>
+
+<h2>What it does</h2>
+<p><code>STOP RUN</code> ends the whole program at once. Files that are still open are closed,
+and control goes back to whatever started the program: the command prompt, a batch file, or
+Visual Studio. Statements after STOP RUN never run. It doesn't matter whether STOP RUN is in
+the main program or in a program reached by <a href="call.html">CALL</a>: the whole run ends.
+To end only a called program and return to its caller, use <a href="goback.html">GOBACK</a>.</p>
+
+<h3>The exit code</h3>
+<p>Every program hands a number back to the operating system when it ends, its <em>exit
+code</em>. Zero means "all went well"; other values usually mean some kind of problem. A batch
+file can test it with <code>IF ERRORLEVEL</code>, and PowerShell shows it in
+<code>$LASTEXITCODE</code>.</p>
+<p>In COBOL the exit code comes from the special register <code>RETURN-CODE</code>, which
+starts at zero. Move a number into it before STOP RUN and that number becomes the exit code.
+(<code>RETURN-CODE</code> is also how a called program passes a status back to its caller; see
+<a href="special-registers.html">special registers</a>.)</p>
+<p><code>STOP RUN RETURNING 4</code> (or <code>GIVING 4</code>) sets the exit code in the same
+statement. <code>STOP RUN WITH ERROR STATUS 2</code> does the same thing in the wording of the
+2014 standard, and <code>WITH NORMAL STATUS</code> ends with zero.</p>
+
+<h3>STOP literal</h3>
+<p>Old programs sometimes contain <code>STOP "MOUNT TAPE 2"</code>, which showed the message
+to the operator and waited before carrying on. It is obsolete; use
+<a href="display.html">DISPLAY</a> followed by <a href="accept.html">ACCEPT</a> to pause for the
+user instead.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/STOP1.cbl" download>STOP1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. STOP1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  ERRORS-FOUND   PIC 99 VALUE 3.
+<span class="seq">000060</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000070</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CHECKING THE INPUT...&quot;</span>
+<span class="seq">000080</span>     <span class="kw">IF</span> ERRORS-FOUND &gt; 0
+<span class="seq">000090</span>         <span class="kw">DISPLAY</span> ERRORS-FOUND <span class="str">&quot; ERRORS, EXIT CODE 8&quot;</span>
+<span class="seq">000100</span>         <span class="kw">MOVE</span> 8 TO RETURN-CODE
+<span class="seq">000110</span>     <span class="kw">END-IF</span>
+<span class="seq">000120</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;THIS LINE NEVER RUNS&quot;</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">CHECKING THE INPUT...
+03 ERRORS, EXIT CODE 8</pre>
+</figure>
+<p>The program finds three errors, puts 8 into RETURN-CODE and stops. Its exit code is 8; run
+from a command prompt, <code>echo %ERRORLEVEL%</code> afterwards would show 8. The last DISPLAY
+never runs.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/STOP2.cbl" download>STOP2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. STOP2.
+<span class="seq">000030</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ENDING WITH STATUS 4&quot;</span>
+<span class="seq">000050</span>     <span class="kw">STOP</span> <span class="kw">RUN</span> RETURNING 4.</code></pre>
+<div class="out-label">Output</div><pre class="output">ENDING WITH STATUS 4</pre>
+</figure>
+<p>RETURNING sets the exit code to 4 without touching RETURN-CODE yourself.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad"><code>STOP literal</code> compiles but fails when it runs in this preview:
+the program stops with an error (a NullReferenceException) where GnuCOBOL shows the message
+and waits for Enter. Use DISPLAY and ACCEPT.</div>
+
+<h2>See also</h2>
+<p><a href="goback.html">GOBACK</a>, <a href="exit.html">EXIT PROGRAM</a>,
+<a href="call.html">CALL</a>, <a href="special-registers.html">special registers</a>
+(RETURN-CODE), <a href="procedure-division.html">PROCEDURE DIVISION</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="start.html">&larr; START</a><a class="next" href="string.html">STRING &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

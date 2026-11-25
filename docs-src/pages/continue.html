@@ -1,0 +1,32 @@
+title: CONTINUE
+summary: A statement that does nothing, for places where COBOL needs a statement but you have nothing to do.
+keywords: CONTINUE no operation do nothing placeholder empty branch IF ELSE WHEN NEXT SENTENCE
+---
+<h2>Syntax</h2>
+<pre class="syntax">CONTINUE</pre>
+
+<h2>What it does</h2>
+<p><code>CONTINUE</code> does nothing, and the program carries on with whatever comes next. It
+exists because some places in COBOL must hold at least one statement: the branch of an
+<a href="if.html">IF</a>, a <code>WHEN</code> of an <a href="evaluate.html">EVALUATE</a>, or the
+<code>ON SIZE ERROR</code> of an arithmetic statement. Writing CONTINUE there says "nothing to do
+in this case" on purpose.</p>
+<p>A common use is an IF whose interesting case is the ELSE: <code>IF BALANCE &gt;= 0 CONTINUE
+ELSE ...</code>. You could reverse the condition instead (<code>IF BALANCE &lt; 0</code>), and
+often that reads better; CONTINUE is handy when the condition is easier to state the positive
+way.</p>
+<p>In an EVALUATE, a <code>WHEN</code> with CONTINUE catches a case that needs no action, so it
+doesn't fall into <code>WHEN OTHER</code>.</p>
+<div class="note">CONTINUE is not the same as <code>NEXT SENTENCE</code>. CONTINUE goes on with
+the statement after the END-IF; NEXT SENTENCE jumps past the next period, which can skip
+statements you meant to run. The <a href="if.html">IF</a> page shows the difference.</div>
+
+<h2>Example</h2>
+<!-- example CONT1 -->
+<p>BALANCE is negative, so the ELSE branch prints the message; had it been zero or more,
+CONTINUE would have done nothing. CODE-IN is <code>"B"</code>, whose WHEN does nothing, so neither
+"CODE A" nor "UNKNOWN CODE" appears and the program goes straight on to DONE.</p>
+
+<h2>See also</h2>
+<p><a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>, <a href="exit.html">EXIT</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a> (statements and sentences).</p>

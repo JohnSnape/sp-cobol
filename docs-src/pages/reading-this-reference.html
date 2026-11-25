@@ -1,0 +1,93 @@
+title: Reading this reference
+summary: How the syntax boxes, the examples and the common COBOL terms on these pages work.
+keywords: notation syntax brackets braces ellipsis identifier literal imperative statement data item group item elementary item how to read conventions
+---
+<h2>The syntax boxes</h2>
+<p>Each statement and clause page starts with a box that shows every way you can write it.
+The box is a pattern, not a program you can copy as it is. Read it like this:</p>
+<div class="table-wrap">
+<table>
+<tr><th>In the box</th><th>Means</th></tr>
+<tr><td><code>ADD</code>, <code>TO</code>, <code>GIVING</code></td>
+<td>UPPERCASE words are COBOL words. Type them as shown (COBOL doesn't care about upper or
+lower case, but most programs use upper case).</td></tr>
+<tr><td><code><i>identifier-1</i></code>, <code><i>literal-2</i></code></td>
+<td>Lowercase words in italics are the parts you supply: the name of one of your data items,
+a number, a quoted string. The digit only tells several of them apart.</td></tr>
+<tr><td><code>[ ROUNDED ]</code></td><td>Square brackets: optional. You may leave it out.</td></tr>
+<tr><td><code>{ CORRESPONDING | CORR }</code></td>
+<td>Braces with bars: choose exactly one of the choices.</td></tr>
+<tr><td><code>...</code></td><td>The part just before it may be repeated, as many times as you
+need.</td></tr>
+<tr><td><code>Format 1: ...</code></td><td>A label. When a statement has several forms, each
+one gets its own pattern under its own label.</td></tr>
+</table>
+</div>
+<p>For example, the first form of ADD is shown as</p>
+<pre class="syntax">ADD { identifier-1 | literal-1 } ... TO { identifier-2 [ ROUNDED ] } ...</pre>
+<p>which allows <code>ADD 1 TO COUNTER</code>, <code>ADD PRICE TAX TO TOTAL</code> and
+<code>ADD 5 TO A B ROUNDED</code>.</p>
+<p>Words that are optional "noise", such as <code>IS</code> in <code>IF A IS NUMERIC</code>
+or <code>ON</code> in <code>ON SIZE ERROR</code>, are shown in brackets too. They don't change
+what the program does; put them in when they make it read better.</p>
+
+<h2>Words you will meet</h2>
+<div class="table-wrap">
+<table>
+<tr><th>Term</th><th>Meaning</th></tr>
+<tr><td>data item</td><td>A named piece of storage that your program describes in the
+DATA DIVISION, such as <code>01 TOTAL PIC 9(5)</code>. Other languages call it a variable.</td></tr>
+<tr><td>elementary item</td><td>A data item that is not divided any further. It has a
+<a href="picture.html">PICTURE</a> clause (or a USAGE that implies a size).</td></tr>
+<tr><td>group item</td><td>A data item made of smaller items under it, with higher level
+numbers. A group has no PICTURE of its own; it is simply all of its parts side by side, and
+COBOL treats it as one alphanumeric field. See <a href="data-division.html">DATA DIVISION</a>
+and <a href="level-numbers.html">level numbers</a>.</td></tr>
+<tr><td>identifier</td><td>A way of naming data in a statement: a data name, possibly with
+qualification, subscripts or reference modification, such as <code>CITY OF HOME-ADDRESS</code>
+or <code>MONTH-NAME (3)</code>. See <a href="referring-to-data.html">referring to data</a>.</td></tr>
+<tr><td>literal</td><td>A value written straight into the program: <code>42</code>,
+<code>-3.5</code>, <code>"HELLO"</code>. See <a href="literals.html">literals</a>.</td></tr>
+<tr><td>figurative constant</td><td>A reserved word that stands for a value, like
+<code>ZERO</code> or <code>SPACES</code>. See <a href="figurative-constants.html">figurative
+constants</a>.</td></tr>
+<tr><td>imperative statement</td><td>A statement that just does something, with no condition
+of its own: <code>MOVE</code>, <code>DISPLAY</code>, <code>ADD</code> without SIZE ERROR, and
+so on, or a statement closed by its scope terminator (<code>END-IF</code>, <code>END-ADD</code>,
+...). Phrases like <code>ON SIZE ERROR</code> and <code>AT END</code> take imperative
+statements.</td></tr>
+<tr><td>condition</td><td>Something that is true or false, such as <code>A &gt; B</code> or
+<code>CUST-NAME = SPACES</code>. See <a href="conditions.html">conditions</a>.</td></tr>
+<tr><td>arithmetic expression</td><td>A formula such as <code>PRICE * 1.08 + 2</code>. See
+<a href="arithmetic-expressions.html">arithmetic expressions</a>.</td></tr>
+<tr><td>paragraph, section</td><td>Named blocks of code in the PROCEDURE DIVISION. See
+<a href="program-structure.html">program structure</a>.</td></tr>
+</table>
+</div>
+
+<h2>The examples</h2>
+<p>Every example is a complete program that you can type in and run. Under each one is
+exactly what it printed when SP COBOL ran it, and stock GnuCOBOL 3.2 prints the same thing
+(where it doesn't, the page says so). Examples are written in fixed format, with sequence
+numbers in columns 1-6, as described in <a href="source-format.html">source format</a>.</p>
+<p>Here is a small one. It describes a group item made of three elementary items, shows the
+whole group, then adds to a counter.</p>
+
+<h2>Example</h2>
+<!-- example READREF1 -->
+<p><code>GREETING</code> is a group item, so DISPLAY shows its three parts side by side:
+"HELLO", the one space in the FILLER, and "WORLD". <code>TIMES-SHOWN</code> is a one-digit
+number that starts at 0; after the ADD it holds 1.</p>
+
+<h2>Callouts</h2>
+<div class="note">A note adds something useful to know.</div>
+<div class="warn">A warning marks a trap for learners, or a place where SP COBOL behaves
+differently from GnuCOBOL 3.2.</div>
+<div class="bad">This box marks something SP COBOL does not support (yet), and says what to do
+instead.</div>
+
+<h2>See also</h2>
+<p><a href="source-format.html">Source format</a> for where things go on a line,
+<a href="program-structure.html">program structure</a> for how a program is put together,
+<a href="differences.html">differences from GnuCOBOL</a>,
+<a href="not-supported.html">not supported</a>.</p>

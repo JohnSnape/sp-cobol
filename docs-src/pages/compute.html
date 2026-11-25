@@ -1,0 +1,63 @@
+title: COMPUTE
+summary: Work out an arithmetic expression and store the result.
+keywords: COMPUTE = EQUAL ROUNDED SIZE ERROR END-COMPUTE formula expression ** power divide by zero ROUNDED MODE
+---
+<h2>Syntax</h2>
+<pre class="syntax">COMPUTE { identifier-1 [ ROUNDED ] } ... { = | EQUAL } arithmetic-expression
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-COMPUTE ]</pre>
+
+<h2>What it does</h2>
+<p><code>COMPUTE</code> works out the formula on the right of <code>=</code> and stores the answer
+in the field (or fields) on the left. The formula can use <code>+ - * /</code>, <code>**</code>
+for "to the power of", parentheses, numeric fields, literals and numeric
+<a href="intrinsic-functions.html">functions</a>; the rules are on the
+<a href="arithmetic-expressions.html">arithmetic expressions</a> page. <code>EQUAL</code> is
+another way to write <code>=</code>.</p>
+<p>Use COMPUTE whenever a calculation has more than one step. <code>COMPUTE TOTAL = PRICE * QTY
+* (1 + TAX-RATE)</code> is one line, where ADD and MULTIPLY would need several statements and a
+work field.</p>
+
+<h3>Several receiving fields</h3>
+<p>You can list more than one field before the <code>=</code>. The formula is worked out once and
+the answer is stored in each field, following each field's own PICTURE and ROUNDED phrase.</p>
+
+<h3>ROUNDED</h3>
+<p>While working out the formula, COBOL keeps enough decimal places for an exact (or nearly
+exact) answer. When that answer is stored, extra decimal places that don't fit the field are
+dropped, unless you write <code>ROUNDED</code> after the field. ROUNDED rounds a final digit of 5
+or more away from zero: 64.46 stored in one decimal place becomes 64.5, and -2.5 stored in a whole
+number becomes -3.</p>
+
+<h3>SIZE ERROR</h3>
+<p>A <em>size error</em> happens when the answer has more digits before the decimal point than
+the field can hold, or when the formula divides by zero. With <code>ON SIZE ERROR</code>, the
+field keeps its old value and your statements run. <code>NOT ON SIZE ERROR</code> runs when the
+answer was stored. Without the phrase, a too-big answer loses its high-order digits silently,
+and a division by zero leaves the field unchanged.</p>
+<p>Write <code>END-COMPUTE</code> when the COMPUTE has a SIZE ERROR phrase and sits inside another
+statement such as IF.</p>
+
+<h2>Example</h2>
+<!-- example COMPUTE1 -->
+<p>19.99 &times; 3 &times; 1.075 is 64.46775. TOTAL has two decimal places, so it gets 64.46
+(the rest is dropped). The second COMPUTE stores the same answer in two fields: CUT drops the
+extra digits, NEAR is ROUNDED to 64.5. 3 ** 4 is 81, which fits in PIC 99, so NOT ON SIZE ERROR
+runs. 3 ** 5 is 243, which doesn't fit, so SMALL keeps 81. Dividing by ZERO-QTY is a size error
+too, and AVERAGE keeps its value of 5.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad"><code>ROUNDED MODE</code> (<code>ROUNDED MODE NEAREST-EVEN</code>,
+<code>TRUNCATION</code>, <code>AWAY-FROM-ZERO</code> and the rest) compiles, but SP COBOL
+ignores the mode and always rounds the plain ROUNDED way (half away from zero). GnuCOBOL 3.2
+honors the mode. Until this is fixed, don't rely on ROUNDED MODE; use plain ROUNDED, or no
+ROUNDED for truncation.</div>
+<p>Division by zero leaves the receiving field unchanged and raises SIZE ERROR, as in GnuCOBOL.</p>
+
+<h2>See also</h2>
+<p><a href="arithmetic-expressions.html">arithmetic expressions</a>,
+<a href="add.html">ADD</a>, <a href="subtract.html">SUBTRACT</a>,
+<a href="multiply.html">MULTIPLY</a>, <a href="divide.html">DIVIDE</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a>,
+<a href="picture.html">PICTURE</a>.</p>

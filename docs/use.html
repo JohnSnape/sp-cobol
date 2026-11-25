@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>USE - SP COBOL Reference</title>
+<meta name="description" content="Name a section in DECLARATIVES that runs automatically when a file operation fails.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html" class="current" aria-current="page">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>USE </h1>
+<p class="lede">Name a section in DECLARATIVES that runs automatically when a file operation fails.</p>
+<h2>Syntax</h2>
+<pre class="syntax">PROCEDURE DIVISION.
+DECLARATIVES.
+<var>section-name</var> SECTION.
+    USE [ GLOBAL ] AFTER STANDARD { EXCEPTION | ERROR } PROCEDURE
+        ON { <var>file-name-1</var> ... | INPUT | OUTPUT | I-O | EXTEND } .
+<var>paragraph-name</var>.
+    <var>statements</var> ...
+[ <var>another</var> <var>section</var> <var>with</var> <var>its</var> <var>own</var> USE ] ...
+END DECLARATIVES.
+<var>section-name-2</var> SECTION.
+    <var>the</var> <var>rest</var> <var>of</var> <var>the</var> <var>program</var> ...</pre>
+
+<h2>What it does</h2>
+<p>A USE statement turns a section into an <em>error procedure</em> for files. You don't
+PERFORM it yourself: the runtime runs it right after a file statement fails, and then the
+program carries on with the statement after the one that failed. Inside the procedure the
+file's <a href="file-status.html">FILE STATUS</a> item already holds the code, so the
+procedure can report it, count it or set a flag.</p>
+<p>All USE sections go at the very start of the PROCEDURE DIVISION, between
+<code>DECLARATIVES.</code> and <code>END DECLARATIVES.</code> Each one is a section whose first
+sentence is the USE statement. After <code>END DECLARATIVES</code> the program proper must
+start with a section header.</p>
+<p><code>ERROR</code> and <code>EXCEPTION</code> mean the same; <code>STANDARD</code> is
+optional.</p>
+
+<h3>Which files it covers</h3>
+<ul>
+<li><code>ON file-name</code>: errors on those files.</li>
+<li><code>ON INPUT</code>, <code>ON OUTPUT</code>, <code>ON I-O</code>, <code>ON EXTEND</code>:
+errors on any file open in that mode (that has no procedure of its own).</li>
+</ul>
+<p>A procedure for a particular file is used for that file in place of an open-mode
+procedure.</p>
+
+<h3>When it runs</h3>
+<ul>
+<li>For errors (status 30 and up, and 46 / 47 / 48 / 49 and the like).</li>
+<li>For end of file (10) and key problems (2x), but only when the statement has no
+<code>AT END</code> or <code>INVALID KEY</code> phrase. With the phrase, the phrase runs
+instead.</li>
+<li>A READ after end of file (46) is an error, so the procedure runs even when that READ has
+an AT END phrase, and the AT END statements don't.</li>
+</ul>
+<p>A file with a USE procedure doesn't stop the program on errors, even with no FILE STATUS
+clause. Use that with care: if the procedure only prints a message, the program goes on as if
+nothing happened.</p>
+
+<h3>USE GLOBAL</h3>
+<p>In a program that contains <a href="call.html">nested programs</a>, <code>USE GLOBAL</code>
+makes the procedure cover errors in the nested programs too: on a GLOBAL file they use, or on
+their own files by open mode. The procedure runs in the outer program and control then goes
+back to the nested program.</p>
+<p>Two other kinds of USE exist: <code>USE BEFORE REPORTING</code>, part of the
+<a href="report-writer.html">Report Writer</a>, and <code>USE FOR DEBUGGING</code>, described
+with <a href="debugging.html">debugging</a>.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/USE1.cbl" download>USE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. USE1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> CONFIG ASSIGN TO <span class="str">&quot;config.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS SEQUENTIAL <span class="kw">FILE</span> STATUS IS CFG-STATUS.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> ORDERS ASSIGN TO <span class="str">&quot;orders.dat&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS SEQUENTIAL <span class="kw">FILE</span> STATUS IS ORD-STATUS.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">FD</span>  CONFIG.
+<span class="seq">000130</span> 01  CFG-REC             PIC X(10).
+<span class="seq">000140</span> <span class="kw">FD</span>  ORDERS.
+<span class="seq">000150</span> 01  ORD-REC             PIC X(10).
+<span class="seq">000160</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000170</span> 01  CFG-STATUS          PIC XX.
+<span class="seq">000180</span> 01  ORD-STATUS          PIC XX.
+<span class="seq">000190</span> 01  PROBLEMS            PIC 9 VALUE 0.
+<span class="seq">000200</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000210</span> <span class="kw">DECLARATIVES</span>.
+<span class="seq">000220</span> CONFIG-PROBLEM <span class="kw">SECTION</span>.
+<span class="seq">000230</span>     <span class="kw">USE</span> AFTER STANDARD ERROR <span class="kw">PROCEDURE</span> ON CONFIG.
+<span class="seq">000240</span> CONFIG-PROBLEM-PARA.
+<span class="seq">000250</span>     <span class="kw">ADD</span> 1 TO PROBLEMS
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;  CONFIG HANDLER: STATUS &quot;</span> CFG-STATUS.
+<span class="seq">000270</span> INPUT-PROBLEM <span class="kw">SECTION</span>.
+<span class="seq">000280</span>     <span class="kw">USE</span> AFTER EXCEPTION <span class="kw">PROCEDURE</span> ON INPUT.
+<span class="seq">000290</span> INPUT-PROBLEM-PARA.
+<span class="seq">000300</span>     <span class="kw">ADD</span> 1 TO PROBLEMS
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;  INPUT HANDLER: STATUS &quot;</span> ORD-STATUS.
+<span class="seq">000320</span> <span class="kw">END</span> <span class="kw">DECLARATIVES</span>.
+<span class="seq">000330</span> MAIN-LOGIC <span class="kw">SECTION</span>.
+<span class="seq">000340</span> BEGIN.
+<span class="seq">000350</span>     <span class="kw">OPEN</span> INPUT CONFIG
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER OPEN CONFIG, STATUS &quot;</span> CFG-STATUS
+<span class="seq">000370</span>     <span class="kw">OPEN</span> OUTPUT ORDERS
+<span class="seq">000380</span>     <span class="kw">MOVE</span> <span class="str">&quot;ORDER 1&quot;</span> TO ORD-REC <span class="kw">WRITE</span> ORD-REC
+<span class="seq">000390</span>     <span class="kw">CLOSE</span> ORDERS
+<span class="seq">000400</span>     <span class="kw">OPEN</span> INPUT ORDERS
+<span class="seq">000410</span>     <span class="kw">READ</span> ORDERS
+<span class="seq">000420</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;READ: &quot;</span> ORD-REC
+<span class="seq">000430</span>     <span class="kw">READ</span> ORDERS
+<span class="seq">000440</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SECOND READ, STATUS &quot;</span> ORD-STATUS
+<span class="seq">000450</span>     <span class="kw">READ</span> ORDERS
+<span class="seq">000460</span>         AT <span class="kw">END</span> <span class="kw">DISPLAY</span> <span class="str">&quot;AT END PHRASE, STATUS &quot;</span> ORD-STATUS
+<span class="seq">000470</span>     <span class="kw">END-READ</span>
+<span class="seq">000480</span>     <span class="kw">CLOSE</span> ORDERS
+<span class="seq">000490</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PROBLEMS HANDLED: &quot;</span> PROBLEMS
+<span class="seq">000500</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">  CONFIG HANDLER: STATUS 35
+AFTER OPEN CONFIG, STATUS 35
+READ: ORDER 1   
+  INPUT HANDLER: STATUS 10
+SECOND READ, STATUS 10
+  INPUT HANDLER: STATUS 46
+PROBLEMS HANDLED: 3</pre>
+</figure>
+<p>OPEN INPUT of the missing <code>config.dat</code> runs CONFIG-PROBLEM, which has the status
+35, and the program goes on. CONFIG was open for input too, but only its own procedure runs.
+The second READ of ORDERS hits the end and has no AT END phrase, so INPUT-PROBLEM runs with
+status 10. The third READ is past the end: status 46, an error, so INPUT-PROBLEM runs again
+and the AT END phrase doesn't.</p>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/USE2.cbl" download>USE2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. USE2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> HISTORY ASSIGN TO <span class="str">&quot;history.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS SEQUENTIAL <span class="kw">FILE</span> STATUS IS HIST-STATUS.
+<span class="seq">000080</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000100</span> <span class="kw">FD</span>  HISTORY IS GLOBAL.
+<span class="seq">000110</span> 01  HIST-REC            PIC X(10).
+<span class="seq">000120</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000130</span> 01  HIST-STATUS         PIC XX GLOBAL.
+<span class="seq">000140</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000150</span> <span class="kw">DECLARATIVES</span>.
+<span class="seq">000160</span> HISTORY-PROBLEM <span class="kw">SECTION</span>.
+<span class="seq">000170</span>     <span class="kw">USE</span> GLOBAL AFTER STANDARD ERROR <span class="kw">PROCEDURE</span> ON HISTORY.
+<span class="seq">000180</span> HISTORY-PROBLEM-PARA.
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;  OUTER HANDLER: STATUS &quot;</span> HIST-STATUS.
+<span class="seq">000200</span> <span class="kw">END</span> <span class="kw">DECLARATIVES</span>.
+<span class="seq">000210</span> MAIN-LOGIC <span class="kw">SECTION</span>.
+<span class="seq">000220</span> BEGIN.
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CALLING LOADER&quot;</span>
+<span class="seq">000240</span>     <span class="kw">CALL</span> <span class="str">&quot;USE2LOAD&quot;</span>
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BACK IN USE2&quot;</span>
+<span class="seq">000260</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000270</span>
+<span class="seq">000280</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000290</span> <span class="kw">PROGRAM-ID</span>. USE2LOAD.
+<span class="seq">000300</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000310</span>     <span class="kw">OPEN</span> INPUT HISTORY
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LOADER SEES STATUS &quot;</span> HIST-STATUS
+<span class="seq">000330</span>     <span class="kw">GOBACK</span>.
+<span class="seq">000340</span> <span class="kw">END</span> PROGRAM USE2LOAD.
+<span class="seq">000350</span> <span class="kw">END</span> PROGRAM USE2.</code></pre>
+<div class="out-label">Output</div><pre class="output">CALLING LOADER
+  OUTER HANDLER: STATUS 35
+LOADER SEES STATUS 35
+BACK IN USE2</pre>
+</figure>
+<p>The nested program USE2LOAD opens the GLOBAL file HISTORY, which doesn't exist. The outer
+program's USE GLOBAL procedure handles it, then USE2LOAD continues and sees the 35 itself.</p>
+
+<h2>See also</h2>
+<p><a href="file-status.html">FILE STATUS codes</a>, <a href="files.html">Files</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a>,
+<a href="global-external.html">GLOBAL</a>, <a href="report-writer.html">Report Writer</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="unstring.html">&larr; UNSTRING</a><a class="next" href="write.html">WRITE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

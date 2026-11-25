@@ -1,0 +1,78 @@
+title: DIVIDE
+summary: Divide one number by another, optionally keeping the remainder.
+keywords: INTO BY GIVING REMAINDER ROUNDED SIZE ERROR END-DIVIDE division quotient divide by zero
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: divide into a field, replacing it
+DIVIDE { identifier-1 | literal-1 } INTO { identifier-2 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-DIVIDE ]
+
+Format 2: store the quotient somewhere else
+DIVIDE { identifier-1 | literal-1 } { INTO | BY } { identifier-2 | literal-2 }
+    GIVING { identifier-3 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-DIVIDE ]
+
+Format 3: quotient and remainder
+DIVIDE { identifier-1 | literal-1 } { INTO | BY } { identifier-2 | literal-2 }
+    GIVING identifier-3 [ ROUNDED ] REMAINDER identifier-4
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-DIVIDE ]</pre>
+
+<h2>What it does</h2>
+<p>The word between the two values says which one is divided:</p>
+<ul>
+<li><code>DIVIDE A INTO B</code> means B / A ("A goes into B").</li>
+<li><code>DIVIDE A BY B</code> means A / B. BY needs GIVING.</li>
+</ul>
+<p><b>Format 1</b> divides each field after <code>INTO</code> by the first value and stores the
+answer back in that field. <b>Format 2</b> leaves both values alone and stores the answer, the
+<em>quotient</em>, in the field after <code>GIVING</code>, which may be a numeric-edited field.
+<b>Format 3</b> also stores the <em>remainder</em>: what is left over, dividend minus quotient
+times divisor. <code>DIVIDE 60 INTO 125 GIVING HOURS REMAINDER MINS</code> gives 2 hours and 5
+minutes.</p>
+
+<h3>Decimals and ROUNDED</h3>
+<p>The quotient is cut to the decimal places of its field, unless you write <code>ROUNDED</code>,
+which rounds a last digit of 5 or more away from zero. For the REMAINDER, COBOL uses the quotient
+cut to its field's decimal places, before any rounding.</p>
+<p>With a negative dividend the remainder is negative too: -17 / 5 gives a quotient of -3 and a
+remainder of -2.</p>
+
+<h3>SIZE ERROR and dividing by zero</h3>
+<p>A size error happens when the quotient (or remainder) has more digits before the decimal
+point than its field holds, and whenever the divisor is zero. With <code>ON SIZE ERROR</code> the
+receiving fields keep their old values and your statements run instead. Dividing by zero never
+stores anything, with or without the phrase, so test for it.</p>
+
+<h2>Examples</h2>
+<!-- example DIVIDE1 -->
+<p>100 / 4 is 25. 100 / 7 is 14 with 2 left over (14 &times; 7 = 98). The ROUNDED quotient
+14.2857... becomes 14.29. 125 minutes is 2 hours and 5 minutes. 100 / 8 is 12.5, too many digits
+for <code>PIC 9</code>, so TINY keeps 5. The division by zero is a size error and SHARE keeps the
+14 it had.</p>
+
+<h3>The remainder with a ROUNDED quotient</h3>
+<!-- example DIVIDE2 -->
+<p>20 / 3 is 6.67. The first DIVIDE stores 6 and a remainder of 20 - 6 &times; 3 = 2. The second
+rounds the quotient to 7, but the remainder is still 2: it is worked out from the quotient
+<em>before</em> rounding (6), cut to the quotient field's decimal places, not from the rounded
+7. The last line shows the signs with a negative dividend.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">Format 1 (<code>DIVIDE x INTO y</code> with no GIVING) can't be built by SP COBOL
+yet: the translation stops with a C# error (<code>cob_div</code> does not exist). Use Format 2 with
+another field after GIVING, or write <code>COMPUTE y = y / x</code> instead. Formats 2 and 3
+work and match GnuCOBOL.</div>
+<p>As in GnuCOBOL, the remainder uses the quotient truncated to the quotient field's decimal
+places, even when the quotient is ROUNDED.</p>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a> (division with <code>/</code>),
+<a href="multiply.html">MULTIPLY</a>, <a href="add.html">ADD</a>,
+<a href="subtract.html">SUBTRACT</a>, <a href="intrinsic-functions.html">FUNCTION MOD and
+REM</a>.</p>

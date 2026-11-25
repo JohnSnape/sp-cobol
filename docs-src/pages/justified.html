@@ -1,0 +1,44 @@
+title: JUSTIFIED
+summary: Line text up on the right of an alphanumeric item instead of the left.
+keywords: JUSTIFIED JUST RIGHT right-align alignment alphanumeric MOVE UNSTRING truncation
+---
+<h2>Syntax</h2>
+<pre class="syntax">{ JUSTIFIED | JUST } [ RIGHT ]</pre>
+
+<h2>What it does</h2>
+<p>Normally, when you MOVE text into an alphanumeric item, it goes in from the left: short
+text is padded with spaces on the right, and text that is too long loses characters on the
+right. <code>JUSTIFIED RIGHT</code> turns this around for the receiving item. Short text is
+padded with spaces on the <em>left</em>, so it ends at the right edge, and text that is too
+long loses characters on the left.</p>
+<p>It is allowed only on elementary alphabetic or alphanumeric items (<code>PIC A</code> or
+<code>PIC X</code>), not on numbers, which are always lined up by their decimal point.
+<code>RIGHT</code> is optional; <code>JUST</code> is short for <code>JUSTIFIED</code>.</p>
+<p>JUSTIFIED affects only data moved <em>into</em> the item. A VALUE clause is not moved, so
+<code>VALUE "AB"</code> still starts at the left.</p>
+
+<h3>UNSTRING into a justified item</h3>
+<p>An UNSTRING piece that is shorter than the item is lined up on the right, as with MOVE.
+Remember that the piece includes any spaces it contains: when the sending field is a
+<code>PIC X(12)</code> holding <code>DOG,EMU</code>, the piece after the comma is
+<code>EMU</code> followed by five spaces, which fills an 8-byte item from the left. A piece that
+is too long is cut on the <em>right</em>, unlike MOVE (see the notes).</p>
+
+<h2>Example</h2>
+<!-- example JUST1 -->
+<p>"CAT" goes to the left of the plain item and to the right of the JUSTIFIED one.
+"ELEPHANT" is too long for <code>PIC X(4) JUST</code>, so the MOVE keeps the rightmost four
+characters, <code>HANT</code>. RIGHT-START shows that a VALUE is not right-justified. The first
+UNSTRING puts "EMU" on the right. In the last one, the second piece is the twelve characters
+<code>IJKLMNOPQRST</code>, and the justified item keeps the first eight of them.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">When an UNSTRING piece is longer than a <code>JUSTIFIED RIGHT</code> item,
+GnuCOBOL 3.2 fills the item from the left and drops the extra characters on the right, where
+a MOVE would drop them on the left. SP COBOL keeps this behavior on purpose so that programs
+give the same results as under GnuCOBOL (DECISIONS.md, "Kept as stock"). If you need the MOVE
+behavior, UNSTRING into a plain item and then MOVE it to the justified one.</div>
+
+<h2>See also</h2>
+<p><a href="move.html">MOVE</a>, <a href="unstring.html">UNSTRING</a>,
+<a href="picture.html">PICTURE</a>.</p>

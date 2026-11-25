@@ -1,0 +1,43 @@
+title: MERGE
+summary: Combine files that are already in key order into one file in that order.
+keywords: MERGE SD ASCENDING DESCENDING KEY USING GIVING OUTPUT PROCEDURE RETURN combine files merge sorted files
+---
+<h2>Syntax</h2>
+<pre class="syntax">MERGE sort-file-name
+    { ON { ASCENDING | DESCENDING } KEY data-name-1 ... } ...
+    [ COLLATING SEQUENCE IS alphabet-name ]
+    USING file-name-1 file-name-2 ...
+    { GIVING file-name-3 ... | OUTPUT PROCEDURE IS procedure-1 [ { THRU | THROUGH } procedure-2 ] }</pre>
+
+<h2>What it does</h2>
+<p>MERGE takes two or more files whose records are each already in order by the same keys,
+and combines them into one stream in that order. Think of two sorted piles of cards dealt into
+one sorted pile.</p>
+<p>It works like <a href="sort.html">SORT</a>: you need a sort file described with
+<code>SD</code>, whose record holds the key fields, and the KEY phrases name them. The
+<code>USING</code> files are opened, read and closed by MERGE, and must not be open. There is
+no INPUT PROCEDURE: the input always comes from the USING files.</p>
+<p>The result goes either to a file (<code>GIVING</code>), or to an
+<code>OUTPUT PROCEDURE</code> that fetches the records one at a time with
+<a href="return.html">RETURN</a>.</p>
+<p>When records in different files have equal keys, the one from the file named first in
+USING comes first.</p>
+<p>Each input file must already be in order by the merge keys; sort it first if it isn't.</p>
+
+<h2>Examples</h2>
+<!-- example MERGE1 -->
+<p>Monday's and Tuesday's files are each in account order. The merged file is too. Account
+A100 appears in both; Monday's record comes first because MONDAY-F is named first.</p>
+<!-- example MERGE2 -->
+<p>The output procedure RETURNs the merged sales in date order and prints a total each time
+the date changes, plus one for the last date.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">
+<p><code>COLLATING SEQUENCE</code> doesn't work in SP COBOL yet; see
+<a href="sort.html">SORT</a>.</p>
+</div>
+
+<h2>See also</h2>
+<p><a href="sort.html">SORT</a>, <a href="return.html">RETURN</a>,
+<a href="files.html">Files</a>.</p>

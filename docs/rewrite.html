@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REWRITE - SP COBOL Reference</title>
+<meta name="description" content="Replace a record that is already in a file with a changed version.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html" class="current" aria-current="page">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>REWRITE <span class="badge warn">Differs from GnuCOBOL</span></h1>
+<p class="lede">Replace a record that is already in a file with a changed version.</p>
+<h2>Syntax</h2>
+<pre class="syntax">REWRITE <var>record-name</var> [ FROM { <var>identifier-1</var> | <var>literal-1</var> } ]
+    [ INVALID KEY <var>imperative-statement-1</var> ]
+    [ NOT INVALID KEY <var>imperative-statement-2</var> ]
+[ END-REWRITE ]</pre>
+
+<h2>What it does</h2>
+<p>REWRITE puts a changed record back in the place of an existing one. The file must be open
+<code>I-O</code> (status 49 otherwise). <code>FROM item</code> moves <code>item</code> to the
+record first, as with <a href="write.html">WRITE</a>.</p>
+<p>Which record is replaced depends on the access mode:</p>
+<ul>
+<li><b>Sequential access</b> (all SEQUENTIAL and LINE SEQUENTIAL files): the record the last
+READ returned. The pattern is READ, change fields, REWRITE. Without a successful READ just
+before, the status is 43. In a SEQUENTIAL file the record must keep its length.</li>
+<li><b>Random or dynamic access</b>: the record with the key you set, the slot number in the
+RELATIVE KEY or the value in the RECORD KEY. No READ is needed first. If there is no such
+record, the status is 23 and <code>INVALID KEY</code> runs.</li>
+</ul>
+<p>For an INDEXED file the RECORD KEY in the record says which record is replaced, so to
+change a record's key, DELETE it and WRITE a new one. Alternate key fields may be changed
+by REWRITE.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/REWRITE1.cbl" download>REWRITE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. REWRITE1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> PRICES ASSIGN TO <span class="str">&quot;prices.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS SEQUENTIAL <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000080</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000100</span> <span class="kw">FD</span>  PRICES.
+<span class="seq">000110</span> 01  PRICE-REC.
+<span class="seq">000120</span>     05  ITEM            PIC X(6).
+<span class="seq">000130</span>     05  PRICE           PIC 9(3)V99.
+<span class="seq">000140</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000150</span> 01  FS                  PIC XX.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">OPEN</span> OUTPUT PRICES
+<span class="seq">000180</span>     <span class="kw">MOVE</span> <span class="str">&quot;PEN&quot;</span> TO ITEM <span class="kw">MOVE</span> 1.20 TO PRICE <span class="kw">WRITE</span> PRICE-REC
+<span class="seq">000190</span>     <span class="kw">MOVE</span> <span class="str">&quot;BOOK&quot;</span> TO ITEM <span class="kw">MOVE</span> 9.99 TO PRICE <span class="kw">WRITE</span> PRICE-REC
+<span class="seq">000200</span>     <span class="kw">CLOSE</span> PRICES
+<span class="seq">000210</span><span class="com">*    raise every price by 10 percent, in place</span>
+<span class="seq">000220</span>     <span class="kw">OPEN</span> I-O PRICES
+<span class="seq">000230</span>     <span class="kw">PERFORM</span> UNTIL FS NOT = <span class="str">&quot;00&quot;</span>
+<span class="seq">000240</span>         <span class="kw">READ</span> PRICES
+<span class="seq">000250</span>         <span class="kw">IF</span> FS = <span class="str">&quot;00&quot;</span>
+<span class="seq">000260</span>             <span class="kw">COMPUTE</span> PRICE ROUNDED = PRICE * 1.10
+<span class="seq">000270</span>             <span class="kw">REWRITE</span> PRICE-REC
+<span class="seq">000280</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;REWROTE &quot;</span> ITEM <span class="str">&quot; &quot;</span> PRICE <span class="str">&quot; STATUS &quot;</span> FS
+<span class="seq">000290</span>         <span class="kw">END-IF</span>
+<span class="seq">000300</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000310</span>     <span class="kw">CLOSE</span> PRICES
+<span class="seq">000320</span>     <span class="kw">OPEN</span> INPUT PRICES
+<span class="seq">000330</span>     <span class="kw">READ</span> PRICES
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NOW &quot;</span> PRICE-REC
+<span class="seq">000350</span>     <span class="kw">READ</span> PRICES
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NOW &quot;</span> PRICE-REC
+<span class="seq">000370</span>     <span class="kw">CLOSE</span> PRICES
+<span class="seq">000380</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">REWROTE PEN    001.32 STATUS 00
+REWROTE BOOK   010.99 STATUS 00
+NOW PEN   00132
+NOW BOOK  01099</pre>
+</figure>
+<p>The file is opened I-O. Each READ is followed by a COMPUTE and a REWRITE, which puts the
+higher price back where the record was. Reading the file again shows the new prices.</p>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/REWRITE2.cbl" download>REWRITE2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. REWRITE2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> MEMBERS ASSIGN TO <span class="str">&quot;members.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS RANDOM
+<span class="seq">000080</span>         RELATIVE KEY IS MEM-NO <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  MEMBERS.
+<span class="seq">000120</span> 01  MEM-REC             PIC X(8).
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  MEM-NO              PIC 99.
+<span class="seq">000150</span> 01  FS                  PIC XX.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">OPEN</span> OUTPUT MEMBERS
+<span class="seq">000180</span>     <span class="kw">MOVE</span> 1 TO MEM-NO <span class="kw">MOVE</span> <span class="str">&quot;JOAN&quot;</span> TO MEM-REC <span class="kw">WRITE</span> MEM-REC
+<span class="seq">000190</span>     <span class="kw">MOVE</span> 3 TO MEM-NO <span class="kw">MOVE</span> <span class="str">&quot;PETE&quot;</span> TO MEM-REC <span class="kw">WRITE</span> MEM-REC
+<span class="seq">000200</span>     <span class="kw">CLOSE</span> MEMBERS
+<span class="seq">000210</span>     <span class="kw">OPEN</span> I-O MEMBERS
+<span class="seq">000220</span>     <span class="kw">MOVE</span> 1 TO MEM-NO <span class="kw">MOVE</span> <span class="str">&quot;JOANNE&quot;</span> TO MEM-REC
+<span class="seq">000230</span>     <span class="kw">REWRITE</span> MEM-REC
+<span class="seq">000240</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;NO MEMBER 1&quot;</span>
+<span class="seq">000250</span>         NOT INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;MEMBER 1 CHANGED, &quot;</span> FS
+<span class="seq">000260</span>     <span class="kw">END-REWRITE</span>
+<span class="seq">000270</span>     <span class="kw">MOVE</span> 2 TO MEM-NO <span class="kw">MOVE</span> <span class="str">&quot;NOBODY&quot;</span> TO MEM-REC
+<span class="seq">000280</span>     <span class="kw">REWRITE</span> MEM-REC
+<span class="seq">000290</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;NO MEMBER 2, STATUS &quot;</span> FS
+<span class="seq">000300</span>         NOT INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;MEMBER 2 CHANGED, &quot;</span> FS
+<span class="seq">000310</span>     <span class="kw">END-REWRITE</span>
+<span class="seq">000320</span>     <span class="kw">CLOSE</span> MEMBERS
+<span class="seq">000330</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">MEMBER 1 CHANGED, 00
+NO MEMBER 2, STATUS 23</pre>
+</figure>
+<p>Member 1 exists and is replaced. Slot 2 lies between two used slots but is empty, so the
+second REWRITE finds no record: status 23 and the INVALID KEY branch.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">
+<p>REWRITE of an empty RELATIVE slot gives 23 (record not found) in SP COBOL. GnuCOBOL 3.2
+reports 00 and even writes the record into the empty slot, which is a bug in its file
+handler. That's why the second example's output differs from GnuCOBOL's.</p>
+</div>
+<p>When a LINE SEQUENTIAL record is rewritten with a shorter one, SP COBOL keeps the line end
+intact; GnuCOBOL 3.2 overwrites the CR in that case.</p>
+
+<h2>See also</h2>
+<p><a href="read.html">READ</a>, <a href="write.html">WRITE</a>,
+<a href="delete.html">DELETE</a>, <a href="open.html">OPEN</a> (I-O),
+<a href="files.html">Files</a>, <a href="file-status.html">FILE STATUS codes</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="return.html">&larr; RETURN</a><a class="next" href="search.html">SEARCH &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+title: RELEASE
+summary: Hand a record to a SORT from inside its INPUT PROCEDURE.
+keywords: RELEASE FROM INPUT PROCEDURE sort record SD
+---
+<h2>Syntax</h2>
+<pre class="syntax">RELEASE record-name [ FROM { identifier-1 | literal-1 } ]</pre>
+
+<h2>What it does</h2>
+<p>RELEASE is the WRITE of a sort. It is used only in the INPUT PROCEDURE of a
+<a href="sort.html">SORT</a>, and gives the sort one record: the record of the sort file (the
+01 under the SD). The sort keeps every record it is given, and sorts them all when the input
+procedure ends.</p>
+<p><code>RELEASE record FROM item</code> moves <code>item</code> to the record first, the
+same as a MOVE followed by RELEASE.</p>
+<p>The input procedure decides what to release: it can read a file and skip records it
+doesn't want, change fields, or make records out of data that never was in a file.</p>
+
+<h2>Example</h2>
+<!-- example RELEASE1 -->
+<p>The input procedure splits a sentence into words with <a href="unstring.html">UNSTRING</a>
+and releases each word as a record. The sort then hands them to the output procedure in
+alphabetical order. "THE" appears twice, so it comes out twice.</p>
+
+<h2>See also</h2>
+<p><a href="sort.html">SORT</a>, <a href="return.html">RETURN</a>,
+<a href="write.html">WRITE</a>.</p>

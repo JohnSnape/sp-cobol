@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADD - SP COBOL Reference</title>
+<meta name="description" content="Add numbers together and store the sum.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html" class="current" aria-current="page">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>ADD </h1>
+<p class="lede">Add numbers together and store the sum.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: add to each receiving field</span>
+ADD { <var>identifier-1</var> | <var>literal-1</var> } ... TO { <var>identifier-2</var> [ ROUNDED ] } ...
+    [ ON SIZE ERROR <var>imperative-statement-1</var> ]
+    [ NOT ON SIZE ERROR <var>imperative-statement-2</var> ]
+[ END-ADD ]
+
+<span class="fmt">Format 2: store the sum somewhere else</span>
+ADD { <var>identifier-1</var> | <var>literal-1</var> } ... [ TO { <var>identifier-2</var> | <var>literal-2</var> } ]
+    GIVING { <var>identifier-3</var> [ ROUNDED ] } ...
+    [ ON SIZE ERROR <var>imperative-statement-1</var> ]
+    [ NOT ON SIZE ERROR <var>imperative-statement-2</var> ]
+[ END-ADD ]
+
+<span class="fmt">Format 3: add matching fields of two groups</span>
+ADD { CORRESPONDING | CORR } <var>group-1</var> TO <var>group-2</var> [ ROUNDED ]
+    [ ON SIZE ERROR <var>imperative-statement-1</var> ]
+    [ NOT ON SIZE ERROR <var>imperative-statement-2</var> ]
+[ END-ADD ]</pre>
+
+<h2>What it does</h2>
+<p><b>Format 1</b> adds every value before <code>TO</code> together, then adds that total
+to each field after <code>TO</code>. The fields after <code>TO</code> change; the ones before
+it don't. <code>ADD A B TO C</code> means "C = C + A + B".</p>
+<p><b>Format 2</b> adds up all the values (the ones after <code>TO</code> too) and puts the sum
+in the field after <code>GIVING</code>, replacing what was there. Nothing else changes.
+<code>ADD A TO B GIVING C</code> means "C = A + B". Because the <code>GIVING</code> field only
+receives the answer, it may be a numeric-edited field such as <code>PIC $$,$$9.99</code>.</p>
+<p><b>Format 3</b> adds each numeric item of the first group to the item with the same name
+in the second group. Items whose names have no match are skipped.</p>
+
+<h3>Decimals and rounding</h3>
+<p>COBOL lines up the decimal points for you. If the answer has more decimal places than the
+receiving field can hold, the extra digits are dropped (truncated), unless you write
+<code>ROUNDED</code> after that field.</p>
+
+<h3>SIZE ERROR</h3>
+<p>If the answer has more digits in front of the decimal point than the receiving field can
+hold, that's a <em>size error</em>. Without <code>ON SIZE ERROR</code>, the high-order digits
+are lost silently: adding 5 to a <code>PIC 9</code> holding 7 leaves 2. With
+<code>ON SIZE ERROR</code>, the field keeps its old value and your statements run instead.
+<code>NOT ON SIZE ERROR</code> runs when the answer fit.</p>
+<p>Write <code>END-ADD</code> when the ADD has a <code>SIZE ERROR</code> phrase and sits inside
+an <code>IF</code> or another statement, so it's clear where the phrase ends.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/ADD1.cbl" download>ADD1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. ADD1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  PRICE           PIC 9(3)V99 VALUE 19.95.
+<span class="seq">000060</span> 01  SHIPPING        PIC 9(3)V99 VALUE 4.50.
+<span class="seq">000070</span> 01  TOTAL           PIC 9(4)V99 VALUE 0.
+<span class="seq">000080</span> 01  ROUGH           PIC 9(4)V9.
+<span class="seq">000090</span> 01  TINY            PIC 9       VALUE 7.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">ADD</span> PRICE SHIPPING TO TOTAL
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TOTAL:   &quot;</span> TOTAL
+<span class="seq">000130</span>     <span class="kw">ADD</span> PRICE TO SHIPPING GIVING TOTAL
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;GIVING:  &quot;</span> TOTAL
+<span class="seq">000150</span>     <span class="kw">ADD</span> PRICE SHIPPING GIVING ROUGH ROUNDED
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ROUNDED: &quot;</span> ROUGH
+<span class="seq">000170</span>     <span class="kw">ADD</span> 5 TO TINY
+<span class="seq">000180</span>         ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;TOO BIG, TINY STAYS &quot;</span> TINY
+<span class="seq">000190</span>         NOT ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;TINY IS NOW &quot;</span> TINY
+<span class="seq">000200</span>     <span class="kw">END-ADD</span>
+<span class="seq">000210</span>     <span class="kw">ADD</span> 5 TO TINY
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NO SIZE ERROR PHRASE: &quot;</span> TINY
+<span class="seq">000230</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">TOTAL:   0024.45
+GIVING:  0024.45
+ROUNDED: 0024.5
+TOO BIG, TINY STAYS 7
+NO SIZE ERROR PHRASE: 2</pre>
+</figure>
+<p>The first ADD adds 19.95 and 4.50 to TOTAL, which started at zero. The second replaces
+TOTAL with 19.95 + 4.50. ROUGH has one decimal place, so 24.45 is rounded to 24.5.
+The fourth would make TINY 12, which doesn't fit in <code>PIC 9</code>, so TINY keeps its
+value and the SIZE ERROR message is shown. The last ADD has no SIZE ERROR phrase, so the
+leading 1 of 12 is simply lost and TINY becomes 2.</p>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a> for whole formulas,
+<a href="subtract.html">SUBTRACT</a>, <a href="multiply.html">MULTIPLY</a>,
+<a href="divide.html">DIVIDE</a>, <a href="picture.html">PICTURE</a> for how many digits a
+field holds.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="accept.html">&larr; ACCEPT</a><a class="next" href="alter.html">ALTER &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

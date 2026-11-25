@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIVIDE - SP COBOL Reference</title>
+<meta name="description" content="Divide one number by another, optionally keeping the remainder.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html" class="current" aria-current="page">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>DIVIDE </h1>
+<p class="lede">Divide one number by another, optionally keeping the remainder.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: divide into a field, replacing it</span>
+DIVIDE { <var>identifier-1</var> | <var>literal-1</var> } INTO { <var>identifier-2</var> [ ROUNDED ] } ...
+    [ ON SIZE ERROR <var>imperative-statement-1</var> ]
+    [ NOT ON SIZE ERROR <var>imperative-statement-2</var> ]
+[ END-DIVIDE ]
+
+<span class="fmt">Format 2: store the quotient somewhere else</span>
+DIVIDE { <var>identifier-1</var> | <var>literal-1</var> } { INTO | BY } { <var>identifier-2</var> | <var>literal-2</var> }
+    GIVING { <var>identifier-3</var> [ ROUNDED ] } ...
+    [ ON SIZE ERROR <var>imperative-statement-1</var> ]
+    [ NOT ON SIZE ERROR <var>imperative-statement-2</var> ]
+[ END-DIVIDE ]
+
+<span class="fmt">Format 3: quotient and remainder</span>
+DIVIDE { <var>identifier-1</var> | <var>literal-1</var> } { INTO | BY } { <var>identifier-2</var> | <var>literal-2</var> }
+    GIVING <var>identifier-3</var> [ ROUNDED ] REMAINDER <var>identifier-4</var>
+    [ ON SIZE ERROR <var>imperative-statement-1</var> ]
+    [ NOT ON SIZE ERROR <var>imperative-statement-2</var> ]
+[ END-DIVIDE ]</pre>
+
+<h2>What it does</h2>
+<p>The word between the two values says which one is divided:</p>
+<ul>
+<li><code>DIVIDE A INTO B</code> means B / A ("A goes into B").</li>
+<li><code>DIVIDE A BY B</code> means A / B. BY needs GIVING.</li>
+</ul>
+<p><b>Format 1</b> divides each field after <code>INTO</code> by the first value and stores the
+answer back in that field. <b>Format 2</b> leaves both values alone and stores the answer, the
+<em>quotient</em>, in the field after <code>GIVING</code>, which may be a numeric-edited field.
+<b>Format 3</b> also stores the <em>remainder</em>: what is left over, dividend minus quotient
+times divisor. <code>DIVIDE 60 INTO 125 GIVING HOURS REMAINDER MINS</code> gives 2 hours and 5
+minutes.</p>
+
+<h3>Decimals and ROUNDED</h3>
+<p>The quotient is cut to the decimal places of its field, unless you write <code>ROUNDED</code>,
+which rounds a last digit of 5 or more away from zero. For the REMAINDER, COBOL uses the quotient
+cut to its field's decimal places, before any rounding.</p>
+<p>With a negative dividend the remainder is negative too: -17 / 5 gives a quotient of -3 and a
+remainder of -2.</p>
+
+<h3>SIZE ERROR and dividing by zero</h3>
+<p>A size error happens when the quotient (or remainder) has more digits before the decimal
+point than its field holds, and whenever the divisor is zero. With <code>ON SIZE ERROR</code> the
+receiving fields keep their old values and your statements run instead. Dividing by zero never
+stores anything, with or without the phrase, so test for it.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/DIVIDE1.cbl" download>DIVIDE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. DIVIDE1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  TOTAL           PIC 9(3)   VALUE 100.
+<span class="seq">000060</span> 01  QUARTER         PIC 9(3).
+<span class="seq">000070</span> 01  PEOPLE          PIC 9(3)   VALUE 7.
+<span class="seq">000080</span> 01  SHARE           PIC 9(3).
+<span class="seq">000090</span> 01  SHARE-CENTS     PIC 9(3)V99.
+<span class="seq">000100</span> 01  LEFT-OVER       PIC 9(3).
+<span class="seq">000110</span> 01  MINUTES         PIC 9(3)   VALUE 125.
+<span class="seq">000120</span> 01  HOURS           PIC 9.
+<span class="seq">000130</span> 01  MINS            PIC 99.
+<span class="seq">000140</span> 01  TINY            PIC 9      VALUE 5.
+<span class="seq">000150</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000160</span>     <span class="kw">DIVIDE</span> 4 INTO TOTAL GIVING QUARTER
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;100 / 4         &quot;</span> QUARTER
+<span class="seq">000180</span>     <span class="kw">DIVIDE</span> TOTAL BY PEOPLE GIVING SHARE REMAINDER LEFT-OVER
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;100 / 7         &quot;</span> SHARE <span class="str">&quot; REMAINDER &quot;</span> LEFT-OVER
+<span class="seq">000200</span>     <span class="kw">DIVIDE</span> PEOPLE INTO TOTAL GIVING SHARE-CENTS ROUNDED
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ROUNDED         &quot;</span> SHARE-CENTS
+<span class="seq">000220</span>     <span class="kw">DIVIDE</span> 60 INTO MINUTES GIVING HOURS REMAINDER MINS
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;125 MINUTES     &quot;</span> HOURS <span class="str">&quot; H &quot;</span> MINS <span class="str">&quot; MIN&quot;</span>
+<span class="seq">000240</span>     <span class="kw">DIVIDE</span> TOTAL BY 8 GIVING TINY
+<span class="seq">000250</span>         ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;12.5 TOO BIG, TINY STAYS &quot;</span> TINY
+<span class="seq">000260</span>         NOT ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;TINY IS &quot;</span> TINY
+<span class="seq">000270</span>     <span class="kw">END-DIVIDE</span>
+<span class="seq">000280</span>     <span class="kw">DIVIDE</span> 0 INTO TOTAL GIVING SHARE
+<span class="seq">000290</span>         ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;BY ZERO, SHARE STAYS &quot;</span> SHARE
+<span class="seq">000300</span>     <span class="kw">END-DIVIDE</span>
+<span class="seq">000310</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">100 / 4         025
+100 / 7         014 REMAINDER 002
+ROUNDED         014.29
+125 MINUTES     2 H 05 MIN
+12.5 TOO BIG, TINY STAYS 5
+BY ZERO, SHARE STAYS 014</pre>
+</figure>
+<p>100 / 4 is 25. 100 / 7 is 14 with 2 left over (14 &times; 7 = 98). The ROUNDED quotient
+14.2857... becomes 14.29. 125 minutes is 2 hours and 5 minutes. 100 / 8 is 12.5, too many digits
+for <code>PIC 9</code>, so TINY keeps 5. The division by zero is a size error and SHARE keeps the
+14 it had.</p>
+
+<h3>The remainder with a ROUNDED quotient</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/DIVIDE2.cbl" download>DIVIDE2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. DIVIDE2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  A               PIC S9(3)  VALUE 20.
+<span class="seq">000060</span> 01  B               PIC S9(3)  VALUE 3.
+<span class="seq">000070</span> 01  Q               PIC S9(3).
+<span class="seq">000080</span> 01  R               PIC S9(3).
+<span class="seq">000090</span> 01  SHOW-Q          PIC ---9.
+<span class="seq">000100</span> 01  SHOW-R          PIC ---9.
+<span class="seq">000110</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span>     <span class="kw">DIVIDE</span> A BY B GIVING Q REMAINDER R
+<span class="seq">000130</span>     <span class="kw">PERFORM</span> SHOW-IT
+<span class="seq">000140</span>     <span class="kw">DIVIDE</span> A BY B GIVING Q ROUNDED REMAINDER R
+<span class="seq">000150</span>     <span class="kw">PERFORM</span> SHOW-IT
+<span class="seq">000160</span>     <span class="kw">MOVE</span> -17 TO A
+<span class="seq">000170</span>     <span class="kw">MOVE</span> 5 TO B
+<span class="seq">000180</span>     <span class="kw">DIVIDE</span> A BY B GIVING Q REMAINDER R
+<span class="seq">000190</span>     <span class="kw">PERFORM</span> SHOW-IT
+<span class="seq">000200</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000210</span> SHOW-IT.
+<span class="seq">000220</span>     <span class="kw">MOVE</span> Q TO SHOW-Q
+<span class="seq">000230</span>     <span class="kw">MOVE</span> R TO SHOW-R
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> A <span class="str">&quot; / &quot;</span> B <span class="str">&quot; = &quot;</span> SHOW-Q <span class="str">&quot;  REMAINDER &quot;</span> SHOW-R.</code></pre>
+<div class="out-label">Output</div><pre class="output">+020 / +003 =    6  REMAINDER    2
++020 / +003 =    7  REMAINDER    2
+-017 / +005 =   -3  REMAINDER   -2</pre>
+</figure>
+<p>20 / 3 is 6.67. The first DIVIDE stores 6 and a remainder of 20 - 6 &times; 3 = 2. The second
+rounds the quotient to 7, but the remainder is still 2: it is worked out from the quotient
+<em>before</em> rounding (6), cut to the quotient field's decimal places, not from the rounded
+7. The last line shows the signs with a negative dividend.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">Format 1 (<code>DIVIDE x INTO y</code> with no GIVING) can't be built by SP COBOL
+yet: the translation stops with a C# error (<code>cob_div</code> does not exist). Use Format 2 with
+another field after GIVING, or write <code>COMPUTE y = y / x</code> instead. Formats 2 and 3
+work and match GnuCOBOL.</div>
+<p>As in GnuCOBOL, the remainder uses the quotient truncated to the quotient field's decimal
+places, even when the quotient is ROUNDED.</p>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a> (division with <code>/</code>),
+<a href="multiply.html">MULTIPLY</a>, <a href="add.html">ADD</a>,
+<a href="subtract.html">SUBTRACT</a>, <a href="intrinsic-functions.html">FUNCTION MOD and
+REM</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="display.html">&larr; DISPLAY</a><a class="next" href="evaluate.html">EVALUATE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+title: DISPLAY
+summary: Print literals and data items on the screen (standard output), or send them elsewhere with UPON.
+keywords: print output show write screen console WITH NO ADVANCING UPON SYSOUT SYSERR CONSOLE stderr END-DISPLAY ENVIRONMENT-NAME ENVIRONMENT-VALUE ARGUMENT-NUMBER COMMAND-LINE
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: a line of output
+DISPLAY { identifier-1 | literal-1 } ...
+    [ UPON { SYSOUT | CONSOLE | SYSERR } ]
+    [ WITH NO ADVANCING ]
+[ END-DISPLAY ]
+
+Format 2: set the environment or the command line
+DISPLAY { identifier-1 | literal-1 }
+    UPON { ENVIRONMENT-NAME | ENVIRONMENT-VALUE | ARGUMENT-NUMBER | COMMAND-LINE }
+[ END-DISPLAY ]
+
+Format 3: on the screen (see SCREEN SECTION)
+DISPLAY { identifier-1 AT LINE line-number COL column-number | screen-name }
+[ END-DISPLAY ]</pre>
+
+<h2>What it does</h2>
+<p><code>DISPLAY</code> writes the items you list, one after another with nothing in between,
+and then ends the line. To put a space between two items, list a <code>" "</code> literal
+between them.</p>
+
+<h3>How items look</h3>
+<div class="table-wrap"><table>
+<tr><th>Item</th><th>Prints as</th><th>Example</th></tr>
+<tr><td>a literal</td><td>exactly as written (without the quotes)</td><td><code>3.14</code></td></tr>
+<tr><td><code>PIC X</code></td><td>its whole contents, trailing spaces included</td><td><code>ADA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code></td></tr>
+<tr><td>unsigned <code>PIC 9</code></td><td>every digit, leading zeros too, with a decimal point where the
+<code>V</code> is</td><td><code>0012.50</code></td></tr>
+<tr><td>signed <code>PIC S9</code></td><td>a <code>+</code> or <code>-</code> in front, then the digits</td><td><code>-0042</code></td></tr>
+<tr><td><code>COMP</code>, <code>COMP-3</code></td><td>as the number, the same way as a DISPLAY item of that PICTURE (<code>COMP-5</code> is
+the exception: it shows as many digits as its size can hold, 5 for 2 bytes, 10 for 4)</td><td><code>+012.3</code></td></tr>
+<tr><td>numeric-edited</td><td>its edited characters, as stored</td><td><code>&nbsp;1,234.50-</code></td></tr>
+<tr><td>a group</td><td>its raw bytes, all fields run together</td><td><code>ABC007</code></td></tr>
+</table></div>
+<p>To show a number the way people write it (no leading zeros, commas, a trailing minus), move it
+to a <a href="picture.html">numeric-edited</a> field first and DISPLAY that.</p>
+
+<h3>WITH NO ADVANCING</h3>
+<p>Leaves the cursor at the end of the output instead of starting a new line, so the next DISPLAY
+(or what the user types for an <a href="accept.html">ACCEPT</a>) continues on the same line. Use it
+for prompts.</p>
+
+<h3>UPON</h3>
+<p><code>UPON SYSOUT</code> and <code>UPON CONSOLE</code> mean the normal output, the same as no
+UPON phrase. <code>UPON SYSERR</code> writes to <em>standard error</em>, the stream meant for error
+messages. In a console window both appear on the screen; the difference shows when output is
+redirected to a file, since <code>&gt; file</code> catches only standard output.</p>
+<p>Format 2 doesn't print anything. <code>DISPLAY "NAME" UPON ENVIRONMENT-NAME</code> picks an
+environment variable and <code>DISPLAY value UPON ENVIRONMENT-VALUE</code> sets it (or use
+<a href="set.html">SET ENVIRONMENT</a>). <code>UPON ARGUMENT-NUMBER</code> chooses which
+command-line argument the next <code>ACCEPT ... FROM ARGUMENT-VALUE</code> reads.</p>
+
+<h3>Screens</h3>
+<p>With <code>AT LINE ... COL ...</code>, or the name of a screen from the SCREEN SECTION, DISPLAY
+draws on a full screen at a position, with colors. See
+<a href="screen-section.html">SCREEN SECTION</a>.</p>
+
+<h2>Examples</h2>
+<!-- example DISPLAY1 -->
+<p>Each line shows one kind of item. CUST-NAME is <code>PIC X(8)</code>, so "ADA" is followed by
+five spaces before the "!". UNSIGNED-NUM shows its decimal point and leading zeros; the signed and
+packed items show a sign; the edited item shows exactly the characters it holds. The group prints
+its two fields run together. The two DISPLAYs with and without NO ADVANCING make one line.</p>
+
+<h3>Standard error</h3>
+<!-- example DISPLAY2 -->
+<p>All three lines reach the screen. Had the program been run with <code>DISPLAY2 &gt; out.txt</code>,
+line 2 would still appear on the screen and only lines 1 and 3 would go into the file.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">DISPLAY of a national item (<code>PIC N</code>) prints its characters. GnuCOBOL
+3.2 prints the raw UTF-16 bytes instead (a zero byte before each letter). See
+<a href="national.html">national data</a>.</div>
+<p>A line feed inside the displayed data is written as CR LF on Windows, as GnuCOBOL does there.
+DISPLAY AT LINE/COL and screen DISPLAYs follow SP COBOL's screen rules (see
+<a href="screen-section.html">SCREEN SECTION</a>); plain DISPLAY output matches GnuCOBOL byte for
+byte.</p>
+
+<h2>See also</h2>
+<p><a href="accept.html">ACCEPT</a>, <a href="screen-section.html">SCREEN SECTION</a>,
+<a href="picture.html">PICTURE</a> (editing), <a href="usage.html">USAGE</a>,
+<a href="national.html">national data</a>, <a href="literals.html">literals</a>.</p>

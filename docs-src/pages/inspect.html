@@ -1,0 +1,109 @@
+title: INSPECT
+summary: Count, replace or convert characters inside a field.
+keywords: TALLYING REPLACING CONVERTING CHARACTERS ALL LEADING FIRST TRAILING BEFORE AFTER INITIAL count characters replace text upper case translate
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: count
+INSPECT identifier-1 TALLYING
+    { identifier-2 FOR { CHARACTERS [ phrase ] ...
+                       | { ALL | LEADING | TRAILING } { identifier-3 | literal-1 } [ phrase ] ... } ... } ...
+
+Format 2: replace
+INSPECT identifier-1 REPLACING
+    { CHARACTERS BY { identifier-4 | literal-2 } [ phrase ] ...
+    | { ALL | LEADING | FIRST | TRAILING }
+          { { identifier-3 | literal-1 } BY { identifier-4 | literal-2 } [ phrase ] ... } ... } ...
+
+Format 3: count, then replace
+INSPECT identifier-1 TALLYING ... REPLACING ...
+
+Format 4: convert character by character
+INSPECT identifier-1 CONVERTING { identifier-5 | literal-3 }
+    TO { identifier-6 | literal-4 } [ phrase ] ...
+
+where phrase is:
+    { BEFORE | AFTER } INITIAL { identifier-7 | literal-5 }</pre>
+
+<h2>What it does</h2>
+<p>INSPECT looks through the characters of <code>identifier-1</code> from left to right. It can
+count what it finds (<code>TALLYING</code>), change what it finds (<code>REPLACING</code>), or
+swap characters one for one (<code>CONVERTING</code>).</p>
+
+<h3>TALLYING</h3>
+<p>Each <code>FOR</code> phrase adds to a counter, <code>identifier-2</code>, which must be a
+numeric item. INSPECT adds to the counter; it doesn't clear it first, so set it to zero
+yourself before the INSPECT.</p>
+<ul>
+<li><code>CHARACTERS</code> counts every character (inside the BEFORE/AFTER region, if you give one).</li>
+<li><code>ALL "x"</code> counts every place the text appears.</li>
+<li><code>LEADING "x"</code> counts the text only where it repeats right at the start of the
+field (or the region).</li>
+<li><code>TRAILING "x"</code> counts it where it repeats at the very end. This is a GnuCOBOL
+extension, and handy for counting the trailing spaces of a field.</li>
+</ul>
+
+<h3>REPLACING</h3>
+<p>Each phrase says what to look for and what to put in its place. The replacement must be
+the same length as the text it replaces, because INSPECT never changes the length of the
+field. <code>CHARACTERS BY "x"</code> replaces every character, <code>ALL</code> every match,
+<code>LEADING</code> the matches at the start, <code>FIRST</code> only the first match, and
+<code>TRAILING</code> (an extension) the matches at the end.</p>
+<p>With both <code>TALLYING</code> and <code>REPLACING</code> in one statement, the counting is
+done first, on the original text, and then the replacing.</p>
+
+<h3>CONVERTING</h3>
+<p><code>CONVERTING "abc" TO "xyz"</code> changes every <code>a</code> to <code>x</code>, every
+<code>b</code> to <code>y</code> and every <code>c</code> to <code>z</code>, in one pass. The
+two strings must be the same length. It is the usual way to change letters to upper case
+(see also <a href="intrinsic-functions.html">FUNCTION UPPER-CASE</a>).</p>
+
+<h3>BEFORE and AFTER INITIAL</h3>
+<p>A phrase can be limited to part of the field. <code>BEFORE INITIAL ","</code> means "only
+look at the characters in front of the first comma"; <code>AFTER INITIAL ":"</code> means
+"only look at the characters after the first colon". If the comma or colon isn't there at
+all, BEFORE covers the whole field and AFTER covers nothing. You may give both, one BEFORE and
+one AFTER, on the same phrase.</p>
+
+<h3>When phrases compete</h3>
+<p>With several phrases in one INSPECT, it helps to know exactly how the scan works:</p>
+<ul>
+<li>INSPECT moves along the field one position at a time. At each position it tries the
+phrases in the order you wrote them. The first phrase that matches there wins: it counts or
+replaces, and the scan jumps past the characters it matched. Later phrases never see those
+characters.</li>
+<li>So the order matters. Counting <code>ALL "AB"</code> before <code>ALL "A"</code> gives
+different numbers from the other way round (the second example shows this).</li>
+<li>Replaced characters are not looked at again: replacing X by B and then B by Y doesn't turn
+an X into a Y.</li>
+<li>BEFORE and AFTER look for their delimiter in the text as it was before the INSPECT began,
+so replacing can't move the region's edge.</li>
+</ul>
+
+<h2>Examples</h2>
+<!-- example INSPECT1 -->
+<p>The field holds <code>"  BANANA, PAPAYA, MANGO"</code> followed by seven spaces (it is
+30 characters long). It has seven A's and two leading spaces, and eight characters come before
+the first comma. In AMOUNT, only the zeros at the front are replaced, so the zero in
+<code>.50</code> stays. The phone number shows a combined TALLYING and REPLACING, then
+<code>FIRST</code>, which changes only one 5, then <code>CHARACTERS</code> limited to the part
+after the first period. Finally CONVERTING turns the lower-case letters into capitals.</p>
+
+<!-- example INSPECT2 -->
+<p>The text is <code>ABAABA</code> plus four spaces. When <code>"AB"</code> is listed first,
+the A's that start an AB are counted as AB and skipped, so each counter gets 2. With
+<code>"A"</code> first, every A is taken by that phrase and AB never matches. In the third
+INSPECT both phrases add to the same counter: 4 A's plus 6 other characters is 10, every
+character counted exactly once. The X's become B's, but the B's made that way are not turned
+into Y's; only the original B is. In the last one the four A's in front of the colon become
+colons, and the region still ends at the original colon.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL's INSPECT follows GnuCOBOL's own algorithm step for step, so programs that depend
+on the finer points (competing phrases, regions, a signed number field, which is inspected
+without its sign) give the same results as GnuCOBOL 3.2.</p>
+
+<h2>See also</h2>
+<p><a href="string.html">STRING</a> and <a href="unstring.html">UNSTRING</a> for joining and
+splitting text, <a href="referring-to-data.html">reference modification</a> for working with
+part of a field, <a href="intrinsic-functions.html">intrinsic functions</a> such as
+UPPER-CASE, TRIM and REVERSE.</p>

@@ -46,7 +46,8 @@ or a report.</li>
 ORDER</code> asks for exactly that.</p>
 <p>Keys that aren't numeric are compared in the normal character (ASCII) order.
 <code>COLLATING SEQUENCE IS alphabet-name</code> sorts them in another order: one you list
-with an <code>ALPHABET</code> clause in SPECIAL-NAMES (see <a href="environment-division.html">ENVIRONMENT DIVISION</a>).</p>
+with an <code>ALPHABET</code> clause in SPECIAL-NAMES (see <a href="environment-division.html">ENVIRONMENT DIVISION</a>),
+or <code>ALPHABET name IS EBCDIC</code>, the character order of IBM mainframes.</p>
 <p>After the SORT, the special register <code>SORT-RETURN</code> is 0 if it worked and 16 if
 it failed.</p>
 
@@ -82,6 +83,12 @@ they were released (2, 4, 6 and 1, 5).</p>
 order, so L comes before M and S. The second names the alphabet SIZES, defined in
 SPECIAL-NAMES as S, M, L, X, and the shirts come out smallest first.</p>
 
+<h3>Mainframe order: EBCDIC</h3>
+<!-- example SORT6 -->
+<p>In EBCDIC, lower-case letters come before capitals, and letters before digits: the
+opposite of the ASCII order a plain SORT uses, which would put 300 first and the
+lower-case codes last.</p>
+
 <h2>SP COBOL notes</h2>
 <p>SP COBOL sorts in memory, without work files, so the file named in the sort file's ASSIGN
 is never created. That suits the record counts of learning and business programs; a file too
@@ -94,11 +101,6 @@ equal keys keep their order. The two agree whenever the keys are all different, 
 example above. If the order of equal entries matters to you, add a second key that tells them
 apart.</p>
 </div>
-<div class="bad">
-<p><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet. An ALPHABET that lists
-its characters, as in the example above, works.</p>
-</div>
-
 <h2>See also</h2>
 <p><a href="release.html">RELEASE</a>, <a href="return.html">RETURN</a>,
 <a href="merge.html">MERGE</a>, <a href="files.html">Files</a>,

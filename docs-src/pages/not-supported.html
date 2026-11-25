@@ -43,12 +43,6 @@ between PIC X and PIC N items in place of DISPLAY-OF and NATIONAL-OF. Among the 
 that do work, EXCEPTION-STATEMENT always returns spaces and CONTENT-OF treats every
 pointer as NULL. See <a href="intrinsic-functions.html">Intrinsic functions</a>.</div>
 
-<h2>Sorting and collating</h2>
-<div class="bad"><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet (it
-works in GnuCOBOL 3.2). An ALPHABET that lists its characters in order works, in PROGRAM
-COLLATING SEQUENCE and in the COLLATING SEQUENCE phrase of SORT and MERGE. See
-<a href="sort.html">SORT</a>.</div>
-
 <h2>Reports</h2>
 <div class="bad"><b>CODE IS</b> in a Report Writer RD compiles, but the report comes out
 empty, in GnuCOBOL 3.2 and in SP COBOL alike. Leave it out; to tell several reports apart,

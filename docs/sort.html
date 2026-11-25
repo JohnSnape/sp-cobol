@@ -167,7 +167,8 @@ or a report.</li>
 ORDER</code> asks for exactly that.</p>
 <p>Keys that aren't numeric are compared in the normal character (ASCII) order.
 <code>COLLATING SEQUENCE IS alphabet-name</code> sorts them in another order: one you list
-with an <code>ALPHABET</code> clause in SPECIAL-NAMES (see <a href="environment-division.html">ENVIRONMENT DIVISION</a>).</p>
+with an <code>ALPHABET</code> clause in SPECIAL-NAMES (see <a href="environment-division.html">ENVIRONMENT DIVISION</a>),
+or <code>ALPHABET name IS EBCDIC</code>, the character order of IBM mainframes.</p>
 <p>After the SORT, the special register <code>SORT-RETURN</code> is 0 if it worked and 16 if
 it failed.</p>
 
@@ -443,6 +444,57 @@ SIZES ORDER:
 order, so L comes before M and S. The second names the alphabet SIZES, defined in
 SPECIAL-NAMES as S, M, L, X, and the shirts come out smallest first.</p>
 
+<h3>Mainframe order: EBCDIC</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SORT6.cbl" download>SORT6.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SORT6.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">SPECIAL-NAMES</span>.
+<span class="seq">000060</span>     ALPHABET MAINFRAME IS EBCDIC.
+<span class="seq">000070</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000080</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000090</span>     <span class="kw">SELECT</span> WORK-FILE ASSIGN TO <span class="str">&quot;sort6.tmp&quot;</span>.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">SD</span>  WORK-FILE.
+<span class="seq">000130</span> 01  WORK-REC            PIC X(6).
+<span class="seq">000140</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000150</span> 01  CODES-LIST          PIC X(30)
+<span class="seq">000160</span>         VALUE <span class="str">&quot;A100  b200  300   Z9    abc   &quot;</span>.
+<span class="seq">000170</span> 01  CODES REDEFINES CODES-LIST.
+<span class="seq">000180</span>     05  CODE-ITEM       PIC X(6) OCCURS 5.
+<span class="seq">000190</span> 01  I                   PIC 9.
+<span class="seq">000200</span> 01  DONE-FLAG           PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000210</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;EBCDIC order:&quot;</span>
+<span class="seq">000230</span>     <span class="kw">SORT</span> WORK-FILE ON ASCENDING KEY WORK-REC
+<span class="seq">000240</span>         COLLATING SEQUENCE IS MAINFRAME
+<span class="seq">000250</span>         INPUT <span class="kw">PROCEDURE</span> IS LOAD-CODES
+<span class="seq">000260</span>         OUTPUT <span class="kw">PROCEDURE</span> IS SHOW-CODES
+<span class="seq">000270</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000280</span> LOAD-CODES.
+<span class="seq">000290</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 5
+<span class="seq">000300</span>         <span class="kw">RELEASE</span> WORK-REC FROM CODE-ITEM (I)
+<span class="seq">000310</span>     <span class="kw">END-PERFORM</span>.
+<span class="seq">000320</span> SHOW-CODES.
+<span class="seq">000330</span>     <span class="kw">PERFORM</span> UNTIL DONE-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000340</span>         <span class="kw">RETURN</span> WORK-FILE
+<span class="seq">000350</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO DONE-FLAG
+<span class="seq">000360</span>             NOT AT <span class="kw">END</span> <span class="kw">DISPLAY</span> <span class="str">&quot;  &quot;</span> WORK-REC
+<span class="seq">000370</span>         <span class="kw">END-RETURN</span>
+<span class="seq">000380</span>     <span class="kw">END-PERFORM</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">EBCDIC order:
+  abc   
+  b200  
+  A100  
+  Z9    
+  300</pre>
+</figure>
+<p>In EBCDIC, lower-case letters come before capitals, and letters before digits: the
+opposite of the ASCII order a plain SORT uses, which would put 300 first and the
+lower-case codes last.</p>
+
 <h2>SP COBOL notes</h2>
 <p>SP COBOL sorts in memory, without work files, so the file named in the sort file's ASSIGN
 is never created. That suits the record counts of learning and business programs; a file too
@@ -455,11 +507,6 @@ equal keys keep their order. The two agree whenever the keys are all different, 
 example above. If the order of equal entries matters to you, add a second key that tells them
 apart.</p>
 </div>
-<div class="bad">
-<p><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet. An ALPHABET that lists
-its characters, as in the example above, works.</p>
-</div>
-
 <h2>See also</h2>
 <p><a href="release.html">RELEASE</a>, <a href="return.html">RETURN</a>,
 <a href="merge.html">MERGE</a>, <a href="files.html">Files</a>,

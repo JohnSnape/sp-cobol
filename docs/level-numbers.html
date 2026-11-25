@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Level numbers - SP COBOL Reference</title>
+<meta name="description" content="How the numbers in front of data names build records out of groups and elementary items.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html" class="current" aria-current="page">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Data description</p>
+<h1>Level numbers </h1>
+<p class="lede">How the numbers in front of data names build records out of groups and elementary items.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><var>level-number</var> { <var>data-name</var> | FILLER } [ <var>clauses</var> ] .
+
+<var>level-number</var> <var>is</var> <var>one</var> <var>of</var>:
+    01-49   <var>an</var> <var>item</var> <var>in</var> <var>a</var> <var>record</var> (01 <var>starts</var> <var>a</var> <var>new</var> <var>record</var>)
+    66      <var>another</var> <var>name</var> <var>for</var> <var>a</var> <var>range</var> <var>of</var> <var>items</var> (RENAMES)
+    77      <var>a</var> <var>stand-alone</var> <var>elementary</var> <var>item</var>
+    78      <var>a</var> <var>named</var> <var>constant</var>
+    88      <var>a</var> <var>condition-name</var> (<var>a</var> <var>name</var> <var>for</var> <var>some</var> <var>values</var>)</pre>
+
+<h2>What it does</h2>
+<p>Every line in the DATA DIVISION that describes data starts with a <em>level number</em>.
+The number tells COBOL how the item fits into the items around it.</p>
+
+<h3>Groups and elementary items</h3>
+<p>An <em>elementary item</em> is a single field: it has a <code>PICTURE</code> (or a
+<code>USAGE</code> such as <code>COMP-1</code> that implies its size) and nothing below it. A
+<em>group item</em> has no PICTURE; it is made up of the items with higher level numbers that
+follow it. The group ends at the next item whose level number is the same as the group's or
+lower.</p>
+<p><code>01</code> starts a record: the top of a structure, beginning in column 8. Items inside
+it use any numbers from <code>02</code> to <code>49</code>. The numbers don't have to go up by
+one; <code>05</code>, <code>10</code>, <code>15</code> is the usual style, because it leaves
+room to add a level later. What matters is that items at the same depth use the same number.</p>
+<pre>01  CUSTOMER.                  group (the whole record)
+    05  CUST-ID     PIC 9(4).  elementary
+    05  CUST-NAME.             group inside the group
+        10  FIRST-NAME PIC X(6).
+        10  LAST-NAME  PIC X(8).</pre>
+
+<h3>A group's size and type</h3>
+<p>A group takes up exactly the bytes of the items inside it, one after another, with no gaps.
+Its size is the sum of their sizes. A group is always treated as alphanumeric
+(<code>PIC X</code>), whatever is inside it: when you MOVE to a group or DISPLAY it, COBOL
+copies the bytes as they are, without any number conversion. That is why
+<code>MOVE "GRACE HOPPER" TO CUST-NAME</code> in the example splits the text across
+FIRST-NAME and LAST-NAME by position.</p>
+
+<h3>FILLER</h3>
+<p>Write <code>FILLER</code> (or leave the name out) for an item you never need to refer to,
+such as a separator or spacing in a print line. It still takes up room and can have a
+<code>VALUE</code>.</p>
+
+<h3>The special levels</h3>
+<ul>
+<li><b>77</b>: an elementary item that is not part of any record. It works like an
+<code>01</code> with a PICTURE; many programmers just use <code>01</code>.</li>
+<li><b>66</b>: gives another name to a run of items in the record just above it. See
+<a href="renames.html">RENAMES</a>.</li>
+<li><b>78</b>: a named constant. See <a href="constants.html">Constants</a>.</li>
+<li><b>88</b>: a condition-name attached to the item above it, such as
+<code>88 PASSED VALUE 60 THRU 100</code>. See <a href="condition-names.html">Condition-names</a>.</li>
+</ul>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/LEVELS1.cbl" download>LEVELS1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. LEVELS1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  CUSTOMER.
+<span class="seq">000060</span>     05  CUST-ID         PIC 9(4)   VALUE 1042.
+<span class="seq">000070</span>     05  FILLER          PIC X      VALUE <span class="str">&quot;-&quot;</span>.
+<span class="seq">000080</span>     05  CUST-NAME.
+<span class="seq">000090</span>         10  FIRST-NAME  PIC X(6)   VALUE <span class="str">&quot;ADA&quot;</span>.
+<span class="seq">000100</span>         10  LAST-NAME   PIC X(8)   VALUE <span class="str">&quot;LOVELACE&quot;</span>.
+<span class="seq">000110</span>     05  BALANCE         PIC 9(3)V99 VALUE 12.50.
+<span class="seq">000120</span> 77  COUNTER             PIC 99     VALUE 3.
+<span class="seq">000130</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WHOLE GROUP: [&quot;</span> CUSTOMER <span class="str">&quot;]&quot;</span>
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NAME GROUP:  [&quot;</span> CUST-NAME <span class="str">&quot;]&quot;</span>
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LAST NAME:   [&quot;</span> LAST-NAME <span class="str">&quot;]&quot;</span>
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SIZES: &quot;</span> LENGTH OF CUSTOMER <span class="str">&quot; &quot;</span>
+<span class="seq">000180</span>             LENGTH OF CUST-NAME <span class="str">&quot; &quot;</span> LENGTH OF BALANCE
+<span class="seq">000190</span>     <span class="kw">MOVE</span> <span class="str">&quot;GRACE HOPPER&quot;</span> TO CUST-NAME
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST: [&quot;</span> FIRST-NAME <span class="str">&quot;] LAST: [&quot;</span> LAST-NAME <span class="str">&quot;]&quot;</span>
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COUNTER: &quot;</span> COUNTER
+<span class="seq">000220</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WHOLE GROUP: [1042-ADA   LOVELACE01250]
+NAME GROUP:  [ADA   LOVELACE]
+LAST NAME:   [LOVELACE]
+SIZES: 24 14 5
+FIRST: [GRACE ] LAST: [HOPPER  ]
+COUNTER: 03</pre>
+</figure>
+<p>CUSTOMER is 4 + 1 + 14 + 5 = 24 bytes, and displaying it shows all of its items side by
+side, including the FILLER dash and BALANCE's digits without a decimal point (the point is
+only implied). CUST-NAME is 6 + 8 = 14 bytes. Moving 12 characters into CUST-NAME fills
+FIRST-NAME with the first 6 and LAST-NAME with the rest, padded with spaces.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="usage.html">USAGE</a>,
+<a href="value.html">VALUE</a>, <a href="occurs.html">OCCURS</a>,
+<a href="redefines.html">REDEFINES</a>, <a href="data-division.html">DATA DIVISION</a>,
+<a href="referring-to-data.html">Referring to data</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="procedure-division.html">&larr; PROCEDURE DIVISION</a><a class="next" href="picture.html">PICTURE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

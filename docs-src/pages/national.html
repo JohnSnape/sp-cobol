@@ -1,0 +1,66 @@
+title: National data (PIC N)
+summary: Hold Unicode text as UTF-16 characters with PIC N, N"..." literals and USAGE NATIONAL.
+keywords: PIC N national NATIONAL USAGE NATIONAL N"" national literal Unicode UTF-16 BYTE-LENGTH
+badge: differs
+---
+<h2>Syntax</h2>
+<pre class="syntax">level-number data-name PIC N(n) [ USAGE [ IS ] NATIONAL ] [ VALUE N"text" ] .
+
+A national literal
+N"text"</pre>
+
+<h2>What it does</h2>
+<p><em>National</em> data holds Unicode characters, so it can store text in any language. Each
+<code>N</code> in the PICTURE is one character, kept as UTF-16: two bytes per character, high
+byte first. <code>PIC N(5)</code> holds five characters in 10 bytes.
+<code>FUNCTION LENGTH</code> counts characters; <code>FUNCTION BYTE-LENGTH</code> counts
+bytes.</p>
+<p>A literal written <code>N"..."</code> is a national literal. Use it in VALUE clauses, MOVEs
+and comparisons with national items. MOVE and comparison work as with <code>PIC X</code>:
+a longer value is cut on the right, and two national items compare character by
+character.</p>
+
+<h3>USAGE NATIONAL</h3>
+<p><code>PIC N</code> is national by itself, so you don't need to write
+<code>USAGE NATIONAL</code>.</p>
+<div class="warn">In GnuCOBOL 3.2, adding <code>USAGE NATIONAL</code> to a <code>PIC N</code>
+item doubles its size again: <code>PIC N(5) USAGE NATIONAL</code> is 20 bytes, not 10, and a
+5-character value moved into it is followed by 5 characters of padding. SP COBOL lays out
+storage exactly as GnuCOBOL does, so it does the same. Leave <code>USAGE NATIONAL</code>
+out.</div>
+
+<h3>Padding</h3>
+<p>When a shorter national value is moved into a national item, GnuCOBOL fills the rest with
+bytes of hexadecimal <code>20</code> (the single-byte space), two per character, rather than
+with the Unicode space. A DISPLAY in SP COBOL shows each such pair as <code>?</code>
+(see the next section). Keep national values the full length of the item, or pad them
+yourself, if you plan to DISPLAY them.</p>
+
+<h3>DISPLAY of national data</h3>
+<p>A DISPLAY of a PIC N item in SP COBOL prints its characters. Characters above U+00FF can't be
+shown on the console, which uses the Latin-1 character set, so each prints as
+<code>?</code>.</p>
+
+<h2>Example</h2>
+<!-- example NATNL1 -->
+<p>GREETING holds 5 characters in 10 bytes. MOVE copies N"WORLD" into NAME-N, and moving the
+5-character GREETING into the 3-character SHORT-N keeps <code>HEL</code>. The comparison with a
+national literal is true. N"HI" in the 4-character PADDED-N is followed by the
+<code>20 20</code> padding described above, which DISPLAY shows as <code>??</code>.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">SP COBOL deliberately differs here. GnuCOBOL 3.2's DISPLAY writes a national
+item's raw UTF-16 bytes, so N"HELLO" prints as NUL H NUL E NUL L NUL L NUL O, which is no use
+to a reader. SP COBOL decodes the field and prints the characters (above U+00FF as
+<code>?</code>), on the console and on SCREEN SECTION screens. The storage is unchanged, so
+MOVEs, comparisons and data files are the same as in GnuCOBOL. Only what DISPLAY prints is
+different; that is why this example's output is not compared with GnuCOBOL's.</div>
+<p>The compiler warns that national support is "unfinished" in GnuCOBOL. That warning is about
+GnuCOBOL's own runtime; SP COBOL's project builds turn it off.</p>
+<p>The intrinsic functions NATIONAL-OF and DISPLAY-OF are not implemented in GnuCOBOL 3.2's
+runtime, and stop the program in SP COBOL too.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="usage.html">USAGE</a>,
+<a href="literals.html">Literals</a>, <a href="display.html">DISPLAY</a>,
+<a href="differences.html">Differences from GnuCOBOL</a>.</p>

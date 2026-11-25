@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOVE - SP COBOL Reference</title>
+<meta name="description" content="Copy a value into one or more fields, converting it to fit each one.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html" class="current" aria-current="page">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>MOVE </h1>
+<p class="lede">Copy a value into one or more fields, converting it to fit each one.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: copy a value</span>
+MOVE { <var>identifier-1</var> | <var>literal-1</var> } TO <var>identifier-2</var> ...
+
+<span class="fmt">Format 2: copy matching fields of two groups</span>
+MOVE { CORRESPONDING | CORR } <var>group-1</var> TO <var>group-2</var> ...</pre>
+
+<h2>What it does</h2>
+<p>MOVE copies the value on the left into every field after <code>TO</code>. The field it
+copies from (the <em>sending</em> field) doesn't change. Each <em>receiving</em> field gets the
+value in its own format: COBOL pads, cuts or converts the value so that it fits the
+receiving field's PICTURE. Most of what there is to learn about MOVE is how that fitting works.</p>
+
+<h3>Moves into alphanumeric fields</h3>
+<p>When the receiving field is alphanumeric (<code>PIC X</code>) the characters are copied
+from the left. If the value is shorter than the field, the rest is filled with spaces. If it is
+longer, the characters that don't fit on the right are lost. A field described with
+<a href="justified.html">JUSTIFIED RIGHT</a> works the other way round: the value is placed at
+the right end, spaces fill the left, and extra characters are cut from the left.</p>
+
+<h3>Moves into numeric fields</h3>
+<p>When the receiving field is numeric (<code>PIC 9</code>) COBOL moves the <em>value</em>,
+not the characters. The decimal points are lined up first. Then:</p>
+<ul>
+<li>missing digits are filled with zeros, on both sides of the decimal point;</li>
+<li>digits that don't fit on the left (the high-order digits) are lost, with no warning:
+moving 1234 to <code>PIC 9(3)</code> leaves 234;</li>
+<li>extra decimal places are cut off, not rounded (use <a href="compute.html">COMPUTE ... ROUNDED</a>
+if you want rounding);</li>
+<li>if the receiving field has no <code>S</code> in its picture, the sign is dropped and the
+value is stored as positive.</li>
+</ul>
+
+<h3>Group moves</h3>
+<p>If either field is a group item, the move is a plain copy of bytes, treated like an
+alphanumeric move: no numbers are converted, no decimal points lined up. The bytes are copied
+from the left, and spaces fill a longer receiving field. This is quick and is often used to
+copy a whole record, but it puts the sending field's bytes into each item of the receiving
+group exactly as they are.</p>
+
+<h3>Moves into edited fields</h3>
+<p>A numeric-edited field (one whose PICTURE has editing symbols such as <code>Z</code>,
+<code>,</code>, <code>.</code>, <code>$</code>, <code>-</code> or <code>/</code>) is for
+showing a number to a person. Moving a number into it lines up the decimal point and then
+formats the digits: leading zeros become spaces or a floating <code>$</code>, commas and the
+sign are inserted. See <a href="picture.html">PICTURE</a> for the symbols.</p>
+<p>The reverse move also works: moving a numeric-edited field to a numeric field reads the
+number back out of the formatted text (this is called <em>de-editing</em>). The commas, the
+currency sign and the spaces are ignored, and the sign is kept.</p>
+
+<h3>Figurative constants</h3>
+<p><code>MOVE SPACES</code>, <code>MOVE ZEROS</code>, <code>MOVE HIGH-VALUES</code> and the
+others fill the whole receiving field. <code>MOVE ALL "*-" TO X</code> repeats the text until
+the field is full. See <a href="figurative-constants.html">figurative constants</a>.</p>
+
+<h3>MOVE CORRESPONDING</h3>
+<p><code>MOVE CORRESPONDING A TO B</code> looks for items in group A and group B that have the
+same name, and moves each one to its partner as a normal elementary move, with the usual
+conversion. The items don't need to be in the same order or the same format, which makes it
+a quick way to copy an input record into a print line. FILLER items and items whose names have
+no partner are left alone.</p>
+
+<h3>What can move to what</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Sending field</th><th>Receiving field</th><th>What happens</th></tr>
+<tr><td>alphanumeric</td><td>alphanumeric</td><td>Characters copied from the left; padded with spaces or cut on the right.</td></tr>
+<tr><td>numeric</td><td>numeric</td><td>Value moved, decimal points lined up; high digits and extra decimals lost.</td></tr>
+<tr><td>numeric</td><td>numeric-edited</td><td>Value lined up and formatted for display.</td></tr>
+<tr><td>numeric-edited</td><td>numeric</td><td>De-editing: the number is read back out of the formatted text.</td></tr>
+<tr><td>numeric (integer)</td><td>alphanumeric</td><td>All the digits, leading zeros included, are copied as characters; the sign is dropped.</td></tr>
+<tr><td>alphanumeric</td><td>numeric</td><td>Allowed: the characters are taken as digits of a whole number. Only do this when the field holds digits.</td></tr>
+<tr><td>group</td><td>anything</td><td>Byte copy, no conversion.</td></tr>
+<tr><td>anything</td><td>group</td><td>Byte copy, no conversion.</td></tr>
+<tr><td>figurative constant</td><td>anything</td><td>The whole field is filled (ZERO into a numeric field gives the value 0).</td></tr>
+</table>
+</div>
+<p>Moving a number with decimal places into an alphanumeric field is not allowed: the compiler
+stops with "invalid MOVE statement". Move it to a numeric-edited field first.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/MOVE1.cbl" download>MOVE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. MOVE1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  SHORT-TEXT     PIC X(4).
+<span class="seq">000060</span> 01  LONG-TEXT      PIC X(10).
+<span class="seq">000070</span> 01  RIGHT-TEXT     PIC X(10) JUSTIFIED RIGHT.
+<span class="seq">000080</span> 01  WHOLE          PIC 9(3).
+<span class="seq">000090</span> 01  MONEY          PIC 9(3)V99.
+<span class="seq">000100</span> 01  SIGNED-NUM     PIC S9(3)V9.
+<span class="seq">000110</span> 01  COPY-A         PIC X(6).
+<span class="seq">000120</span> 01  COPY-B         PIC X(6).
+<span class="seq">000130</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000140</span>     <span class="kw">MOVE</span> <span class="str">&quot;COBOL&quot;</span> TO LONG-TEXT
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PADDED:     [&quot;</span> LONG-TEXT <span class="str">&quot;]&quot;</span>
+<span class="seq">000160</span>     <span class="kw">MOVE</span> <span class="str">&quot;PROGRAMMING&quot;</span> TO SHORT-TEXT
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TRUNCATED:  [&quot;</span> SHORT-TEXT <span class="str">&quot;]&quot;</span>
+<span class="seq">000180</span>     <span class="kw">MOVE</span> <span class="str">&quot;COBOL&quot;</span> TO RIGHT-TEXT
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;JUSTIFIED:  [&quot;</span> RIGHT-TEXT <span class="str">&quot;]&quot;</span>
+<span class="seq">000200</span>     <span class="kw">MOVE</span> 42 TO WHOLE
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ZERO-FILL:  &quot;</span> WHOLE
+<span class="seq">000220</span>     <span class="kw">MOVE</span> 1234 TO WHOLE
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;HIGH LOST:  &quot;</span> WHOLE
+<span class="seq">000240</span>     <span class="kw">MOVE</span> 7.5 TO MONEY
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ALIGNED:    &quot;</span> MONEY
+<span class="seq">000260</span>     <span class="kw">MOVE</span> 12.3456 TO MONEY
+<span class="seq">000270</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LOW LOST:   &quot;</span> MONEY
+<span class="seq">000280</span>     <span class="kw">MOVE</span> -8.25 TO SIGNED-NUM
+<span class="seq">000290</span>     <span class="kw">MOVE</span> SIGNED-NUM TO WHOLE
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SIGN, DECIMALS LOST: &quot;</span> WHOLE
+<span class="seq">000310</span>     <span class="kw">MOVE</span> <span class="str">&quot;ABC&quot;</span> TO COPY-A
+<span class="seq">000320</span>     <span class="kw">MOVE</span> COPY-A TO COPY-B
+<span class="seq">000330</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COPY:       [&quot;</span> COPY-B <span class="str">&quot;]&quot;</span>
+<span class="seq">000340</span>     <span class="kw">MOVE</span> SPACES TO COPY-A
+<span class="seq">000350</span>     <span class="kw">MOVE</span> ZEROS TO MONEY
+<span class="seq">000360</span>     <span class="kw">MOVE</span> ALL <span class="str">&quot;*-&quot;</span> TO COPY-B
+<span class="seq">000370</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FIGURATIVE: [&quot;</span> COPY-A <span class="str">&quot;] &quot;</span> MONEY <span class="str">&quot; [&quot;</span> COPY-B <span class="str">&quot;]&quot;</span>
+<span class="seq">000380</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">PADDED:     [COBOL     ]
+TRUNCATED:  [PROG]
+JUSTIFIED:  [     COBOL]
+ZERO-FILL:  042
+HIGH LOST:  234
+ALIGNED:    007.50
+LOW LOST:   012.34
+SIGN, DECIMALS LOST: 008
+COPY:       [ABC   ]
+FIGURATIVE: [      ] 000.00 [*-*-*-]</pre>
+</figure>
+<p>"COBOL" is padded with five spaces in a 10-character field and cut to "PROG" in a
+4-character one; the JUSTIFIED RIGHT field puts the spaces in front. The numeric moves show
+zero filling (042), the lost high digit (1234 becomes 234), decimal alignment (7.5 becomes
+007.50) and lost low digits (12.3456 becomes 012.34, cut, not rounded). Moving -8.25 to an
+unsigned whole-number field drops both the sign and the decimals. The last line shows
+figurative constants, including <code>ALL "*-"</code> repeated to fill six characters.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/MOVE2.cbl" download>MOVE2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. MOVE2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  AMOUNT         PIC S9(5)V99 VALUE -1234.5.
+<span class="seq">000060</span> 01  SHOW-AMOUNT    PIC $$$,$$9.99-.
+<span class="seq">000070</span> 01  SHOW-DATE      PIC 99/99/9999.
+<span class="seq">000080</span> 01  BACK-AGAIN     PIC S9(5)V99.
+<span class="seq">000090</span> 01  ORDER-IN.
+<span class="seq">000100</span>     05  CUST-NO    PIC 9(4)  VALUE 17.
+<span class="seq">000110</span>     05  ITEM       PIC X(8)  VALUE <span class="str">&quot;WIDGET&quot;</span>.
+<span class="seq">000120</span>     05  QTY        PIC 9(3)  VALUE 5.
+<span class="seq">000130</span> 01  ORDER-OUT.
+<span class="seq">000140</span>     05  ITEM       PIC X(10).
+<span class="seq">000150</span>     05  FILLER     PIC X     VALUE <span class="str">&quot;/&quot;</span>.
+<span class="seq">000160</span>     05  QTY        PIC ZZ9.
+<span class="seq">000170</span>     05  FILLER     PIC X     VALUE <span class="str">&quot;/&quot;</span>.
+<span class="seq">000180</span>     05  CUST-NO    PIC Z(5).
+<span class="seq">000190</span> 01  RAW            PIC X(15).
+<span class="seq">000200</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000210</span>     <span class="kw">MOVE</span> AMOUNT TO SHOW-AMOUNT
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;EDITED:      [&quot;</span> SHOW-AMOUNT <span class="str">&quot;]&quot;</span>
+<span class="seq">000230</span>     <span class="kw">MOVE</span> SHOW-AMOUNT TO BACK-AGAIN
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DE-EDITED:   &quot;</span> BACK-AGAIN
+<span class="seq">000250</span>     <span class="kw">MOVE</span> 12252026 TO SHOW-DATE
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DATE:        &quot;</span> SHOW-DATE
+<span class="seq">000270</span>     <span class="kw">MOVE</span> CORRESPONDING ORDER-IN TO ORDER-OUT
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CORR:        [&quot;</span> ORDER-OUT <span class="str">&quot;]&quot;</span>
+<span class="seq">000290</span>     <span class="kw">MOVE</span> ORDER-IN TO RAW
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;GROUP MOVE:  [&quot;</span> RAW <span class="str">&quot;]&quot;</span>
+<span class="seq">000310</span>     <span class="kw">MOVE</span> <span class="str">&quot;XXXXXXXXXXXXXXX&quot;</span> TO RAW
+<span class="seq">000320</span>     <span class="kw">MOVE</span> RAW TO ORDER-IN
+<span class="seq">000330</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;INTO GROUP:  [&quot;</span> ORDER-IN <span class="str">&quot;]&quot;</span>
+<span class="seq">000340</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">EDITED:      [ $1,234.50-]
+DE-EDITED:   -01234.50
+DATE:        12/25/2026
+CORR:        [WIDGET    /  5/   17]
+GROUP MOVE:  [0017WIDGET  005]
+INTO GROUP:  [XXXXXXXXXXXXXXX]</pre>
+</figure>
+<p>-1234.5 is formatted with a floating dollar sign, a comma and a trailing minus, and the
+de-editing move reads the same value back. Moving a plain number into
+<code>PIC 99/99/9999</code> inserts the slashes. MOVE CORRESPONDING moves ITEM, QTY and CUST-NO
+by name, each converted to its new picture, while the FILLER slashes stay. The two group moves
+copy bytes only: QTY's digits appear as they are stored, and moving X's into ORDER-IN even fills
+its numeric items with X's, which is why group moves need care.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/MOVE3.cbl" download>MOVE3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. MOVE3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  COUNTER        PIC S9(4)    VALUE -42.
+<span class="seq">000060</span> 01  AS-TEXT        PIC X(6).
+<span class="seq">000070</span> 01  DIGITS-IN      PIC X(3)     VALUE <span class="str">&quot;123&quot;</span>.
+<span class="seq">000080</span> 01  AS-NUMBER      PIC 9(5).
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span>     <span class="kw">MOVE</span> COUNTER TO AS-TEXT
+<span class="seq">000110</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NUMBER TO TEXT: [&quot;</span> AS-TEXT <span class="str">&quot;]&quot;</span>
+<span class="seq">000120</span>     <span class="kw">MOVE</span> DIGITS-IN TO AS-NUMBER
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TEXT TO NUMBER: &quot;</span> AS-NUMBER
+<span class="seq">000140</span>     <span class="kw">ADD</span> 1 TO AS-NUMBER
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PLUS ONE:       &quot;</span> AS-NUMBER
+<span class="seq">000160</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">NUMBER TO TEXT: [0042  ]
+TEXT TO NUMBER: 00123
+PLUS ONE:       00124</pre>
+</figure>
+<p>The signed number -42 moved into a text field arrives as the characters <code>0042</code>:
+all four digits, no sign. Going the other way, the text "123" becomes the number 123, and
+you can then do arithmetic with it.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="justified.html">JUSTIFIED</a>,
+<a href="initialize.html">INITIALIZE</a> to clear a whole group by type,
+<a href="compute.html">COMPUTE</a> for rounding, <a href="set.html">SET</a> for indexes and
+condition names, <a href="referring-to-data.html">referring to data</a> for qualified names
+(<code>ITEM OF ORDER-OUT</code>).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="merge.html">&larr; MERGE</a><a class="next" href="multiply.html">MULTIPLY &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

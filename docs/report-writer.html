@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Report Writer - SP COBOL Reference</title>
+<meta name="description" content="Describe a printed report&#39;s layout once, then let COBOL handle headings, page breaks and totals.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html" class="current" aria-current="page">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Topics</p>
+<h1>Report Writer <span class="badge warn">Differs from GnuCOBOL</span></h1>
+<p class="lede">Describe a printed report&#39;s layout once, then let COBOL handle headings, page breaks and totals.</p>
+<p>Most business programs end by printing something: a list with a heading on every page,
+subtotals when a department or region changes, and a grand total at the end. Writing that
+by hand means counting lines, remembering the previous value of a field and adding up
+totals yourself. The <em>Report Writer</em> does all of that for you. You describe what each
+kind of line looks like in the REPORT SECTION, and the PROCEDURE DIVISION needs only four
+statements: <a href="initiate.html">INITIATE</a>, <a href="generate.html">GENERATE</a>,
+<a href="terminate.html">TERMINATE</a> and, in a declarative,
+<a href="suppress.html">SUPPRESS</a>.</p>
+
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: name the report in the file's FD</span>
+FD <var>file-name</var>
+    { REPORT IS | REPORTS ARE } <var>report-name</var> ...
+
+<span class="fmt">Format 2: describe the report (DATA DIVISION, after WORKING-STORAGE)</span>
+REPORT SECTION.
+RD <var>report-name</var>
+    [ { CONTROL IS | CONTROLS ARE } [ FINAL ] <var>identifier-1</var> ... ]
+    [ PAGE [ LIMIT IS ] <var>integer-1</var> [ LINES ]
+        [ HEADING <var>integer-2</var> ]
+        [ FIRST DETAIL <var>integer-3</var> ]
+        [ LAST DETAIL <var>integer-4</var> ]
+        [ FOOTING <var>integer-5</var> ] ] .
+
+<span class="fmt">Format 3: a report group (level 01) and its lines (02-49)</span>
+01 [ <var>group-name</var> ] TYPE IS
+        { REPORT HEADING | RH
+        | PAGE HEADING | PH
+        | CONTROL HEADING | CH  { <var>identifier-1</var> | FINAL }
+        | DETAIL | DE
+        | CONTROL FOOTING | CF  { <var>identifier-1</var> | FINAL }
+        | PAGE FOOTING | PF
+        | REPORT FOOTING | RF }
+    [ NEXT GROUP IS { <var>integer-6</var> | PLUS <var>integer-7</var> | NEXT PAGE } ] .
+   <var>nn</var> LINE NUMBER IS { <var>integer-8</var> | PLUS <var>integer-9</var> }
+      [ PRESENT WHEN <var>condition-1</var> ] .
+      <var>nn</var> [ <var>field-name</var> ] COLUMN NUMBER IS [ LEFT | CENTER | RIGHT ] <var>integer-10</var>
+         PICTURE IS <var>picture-string</var>
+         { SOURCE IS <var>identifier-2</var>
+         | VALUE IS <var>literal-1</var>
+         | SUM <var>identifier-3</var> ... [ RESET ON { <var>identifier-4</var> | FINAL } ] }
+         [ GROUP INDICATE ] .
+
+<span class="fmt">Format 4: a procedure that runs just before a group prints</span>
+DECLARATIVES.
+<var>section-name</var> SECTION.
+    USE BEFORE REPORTING <var>group-name</var>.
+<var>paragraph-name</var>.
+    <var>statements</var> ...
+END DECLARATIVES.</pre>
+
+<h2>What it does</h2>
+
+<h3>The pieces</h3>
+<p>A report is written to a file, so you need a <code>SELECT</code> and an <code>FD</code>
+as for any output file (see <a href="files.html">Files</a>). The FD has no record
+description. Instead it says <code>REPORT IS report-name</code>, and the layout goes in an
+<code>RD</code> (report description) entry in the REPORT SECTION. A LINE SEQUENTIAL file is
+the usual choice: each printed line becomes one line of a text file.</p>
+<p>In the PROCEDURE DIVISION you <code>OPEN OUTPUT</code> the file,
+<code>INITIATE</code> the report, <code>GENERATE</code> a detail line for each record,
+<code>TERMINATE</code> the report and <code>CLOSE</code> the file. Headings, footings, page
+breaks and totals happen automatically during GENERATE and TERMINATE.</p>
+
+<h3>The RD entry</h3>
+<ul>
+<li><code>CONTROLS ARE</code> lists the <em>control fields</em>, from the most important to
+the least. When the value of a control field changes between one GENERATE and the next,
+that's a <em>control break</em>: the footing for that field prints (with its subtotals),
+then the heading for the new value. A break in one field also counts as a break in every
+field listed after it. <code>FINAL</code> is a pretend control field that "breaks" only
+once, at TERMINATE, which is where grand totals go. Your data must already be in order by
+the control fields (see <a href="sort.html">SORT</a>).</li>
+<li><code>PAGE LIMIT</code> is the number of lines on a page. <code>HEADING</code> is the
+first line anything may print on, <code>FIRST DETAIL</code> the first line for detail and
+control groups, <code>LAST DETAIL</code> the last line for detail lines, and
+<code>FOOTING</code> the last line for control footings. When the next group won't fit,
+the page footing prints and a new page starts with the page heading.</li>
+</ul>
+<div class="warn">Always give a <code>PAGE</code> clause. Without one there are no pages,
+and line positions are not what you'd expect: in a test, <code>LINE PLUS 2</code> left
+no blank line, and an unwanted blank line appeared inside the heading.</div>
+
+<h3>Report groups</h3>
+<p>Each 01 level in the RD is a <em>report group</em>, one or more lines that print
+together. Its <code>TYPE</code> says when it prints:</p>
+<div class="table-wrap"><table>
+<tr><th>TYPE</th><th>Prints</th></tr>
+<tr><td><code>REPORT HEADING</code></td><td>once, at the start of the report</td></tr>
+<tr><td><code>PAGE HEADING</code></td><td>at the top of every page</td></tr>
+<tr><td><code>CONTROL HEADING field</code></td><td>before the first detail of each new value of the field</td></tr>
+<tr><td><code>DETAIL</code></td><td>each time you GENERATE it</td></tr>
+<tr><td><code>CONTROL FOOTING field</code></td><td>after the last detail of each value of the field (subtotals)</td></tr>
+<tr><td><code>CONTROL FOOTING FINAL</code></td><td>once, at TERMINATE (grand totals)</td></tr>
+<tr><td><code>PAGE FOOTING</code></td><td>at the bottom of every page</td></tr>
+<tr><td><code>REPORT FOOTING</code></td><td>once, at TERMINATE, after everything else. In SP COBOL and GnuCOBOL it starts a new page.</td></tr>
+</table></div>
+<p>A group needs a name only if the program refers to it: a DETAIL you GENERATE, or a
+group named in USE BEFORE REPORTING.</p>
+
+<h3>Lines and columns</h3>
+<ul>
+<li><code>LINE NUMBER IS 3</code> prints on line 3 of the page (absolute).
+<code>LINE NUMBER IS PLUS 1</code> prints one line below the previous line (relative);
+<code>PLUS 2</code> leaves one blank line.</li>
+<li><code>NEXT GROUP</code> on a group moves the position after the group prints:
+<code>PLUS n</code> skips n lines, <code>NEXT PAGE</code> forces a page break, and an
+integer moves to that line.</li>
+<li><code>COLUMN 9</code> starts the field in column 9. <code>COLUMN CENTER 20</code> centers
+it on column 20, and <code>COLUMN RIGHT 40</code> makes it end in column 40.
+<code>COLUMN LEFT</code> is the same as plain <code>COLUMN</code>.</li>
+<li>Every printed field has a <code>PICTURE</code>, usually an edited one such as
+<code>Z,ZZ9.99</code> (see <a href="picture.html">PICTURE</a>).</li>
+</ul>
+
+<h3>Where a field's value comes from</h3>
+<ul>
+<li><code>VALUE "text"</code>: fixed text, such as a column title.</li>
+<li><code>SOURCE identifier</code>: the field's current value, moved in when the group
+prints. <code>PAGE-COUNTER</code> and <code>LINE-COUNTER</code> are allowed here.</li>
+<li><code>SUM identifier</code>: a running total. Every GENERATE adds the identifier into the
+counter; when the footing prints, the counter is printed and reset to zero. Give the sum
+field a name and a higher footing can <code>SUM</code> that name: a <em>sum of sums</em>,
+as the grand total in the first example does. <code>RESET ON FINAL</code> (or
+<code>RESET ON</code> a higher control field) keeps the counter running across smaller
+breaks, which gives a cumulative total.</li>
+</ul>
+<div class="note"><code>SUM ... UPON detail-name</code> is accepted, but in GnuCOBOL 3.2 and
+SP COBOL the counter still grows on every GENERATE of every detail, so don't rely on it.</div>
+
+<h3>Printing only some of the time</h3>
+<ul>
+<li><code>GROUP INDICATE</code> on a detail field prints it only on the first detail after a
+control break or a new page, so a region name isn't repeated on every line.</li>
+<li><code>PRESENT WHEN condition</code> on a LINE prints that line only when the condition
+is true. The second example uses it for a warning line.</li>
+</ul>
+<div class="warn"><code>PRESENT WHEN</code> on a single field (rather than a LINE) compiles,
+but GnuCOBOL 3.2 never prints such a field, whether the condition is true or not.
+SP COBOL keeps that behavior. Put the field on a line of its own and use PRESENT WHEN on
+the LINE, or move the text into a SOURCE field yourself.</div>
+
+<h3>PAGE-COUNTER and LINE-COUNTER</h3>
+<p>Each report has two counters, which you can DISPLAY or use as a SOURCE.
+<code>PAGE-COUNTER</code> is the page number (1 after INITIATE). <code>LINE-COUNTER</code>
+is the line last printed on the current page. With two reports, say which one:
+<code>PAGE-COUNTER OF SALES-REPORT</code>. See <a href="special-registers.html">special
+registers</a>.</p>
+
+<h3>USE BEFORE REPORTING</h3>
+<p>A section in the <a href="use.html">DECLARATIVES</a> with
+<code>USE BEFORE REPORTING group-name</code> runs just before that group prints. It can
+change the fields the group's SOURCE clauses read, and it can stop the group from printing
+with <a href="suppress.html">SUPPRESS PRINTING</a>. During a control footing, the control
+field still holds the <em>old</em> value (the one being totaled), so the declarative sees the
+group that is ending.</p>
+
+<h2>Examples</h2>
+<h3>Subtotals and a grand total</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/RW1.cbl" download>RW1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. RW1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> REPORT-FILE ASSIGN TO <span class="str">&quot;rw1.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> READ-BACK ASSIGN TO <span class="str">&quot;rw1.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">FD</span>  REPORT-FILE <span class="kw">REPORT</span> IS SALES-REPORT.
+<span class="seq">000130</span> <span class="kw">FD</span>  READ-BACK.
+<span class="seq">000140</span> 01  PRINTED-LINE         PIC X(40).
+<span class="seq">000150</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000160</span> 01  SALES-VALUES.
+<span class="seq">000170</span>     05  FILLER PIC X(15) VALUE <span class="str">&quot;EASTADAMS 12550&quot;</span>.
+<span class="seq">000180</span>     05  FILLER PIC X(15) VALUE <span class="str">&quot;EASTBAKER 03000&quot;</span>.
+<span class="seq">000190</span>     05  FILLER PIC X(15) VALUE <span class="str">&quot;WESTCHEN  15025&quot;</span>.
+<span class="seq">000200</span>     05  FILLER PIC X(15) VALUE <span class="str">&quot;WESTDIAZ  00999&quot;</span>.
+<span class="seq">000210</span>     05  FILLER PIC X(15) VALUE <span class="str">&quot;WESTEVANS 21212&quot;</span>.
+<span class="seq">000220</span> 01  SALES-TABLE REDEFINES SALES-VALUES.
+<span class="seq">000230</span>     05  SALE OCCURS 5 TIMES.
+<span class="seq">000240</span>         10  T-REGION     PIC X(4).
+<span class="seq">000250</span>         10  T-NAME       PIC X(6).
+<span class="seq">000260</span>         10  T-AMOUNT     PIC 9(3)V99.
+<span class="seq">000270</span> 01  WS-REGION            PIC X(4).
+<span class="seq">000280</span> 01  WS-NAME              PIC X(6).
+<span class="seq">000290</span> 01  WS-AMOUNT            PIC 9(3)V99.
+<span class="seq">000300</span> 01  WS-IX                PIC 9.
+<span class="seq">000310</span> 01  END-OF-FILE          PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000320</span> <span class="kw">REPORT</span> <span class="kw">SECTION</span>.
+<span class="seq">000330</span> <span class="kw">RD</span>  SALES-REPORT
+<span class="seq">000340</span>     CONTROLS ARE FINAL WS-REGION
+<span class="seq">000350</span>     PAGE LIMIT IS 16 LINES
+<span class="seq">000360</span>     HEADING 1 FIRST DETAIL 4 LAST DETAIL 14.
+<span class="seq">000370</span> 01  TYPE IS PAGE HEADING.
+<span class="seq">000380</span>     05  LINE NUMBER IS 1.
+<span class="seq">000390</span>         10  COLUMN 1  PIC X(12) VALUE <span class="str">&quot;SALES REPORT&quot;</span>.
+<span class="seq">000400</span>     05  LINE NUMBER IS 2.
+<span class="seq">000410</span>         10  COLUMN 1  PIC X(6)  VALUE <span class="str">&quot;REGION&quot;</span>.
+<span class="seq">000420</span>         10  COLUMN 9  PIC X(4)  VALUE <span class="str">&quot;NAME&quot;</span>.
+<span class="seq">000430</span>         10  COLUMN 19 PIC X(6)  VALUE <span class="str">&quot;AMOUNT&quot;</span>.
+<span class="seq">000440</span> 01  SALE-LINE TYPE IS DETAIL.
+<span class="seq">000450</span>     05  LINE NUMBER IS PLUS 1.
+<span class="seq">000460</span>         10  COLUMN 1  PIC X(4)  SOURCE WS-REGION.
+<span class="seq">000470</span>         10  COLUMN 9  PIC X(6)  SOURCE WS-NAME.
+<span class="seq">000480</span>         10  COLUMN 18 PIC ZZ9.99 SOURCE WS-AMOUNT.
+<span class="seq">000490</span> 01  TYPE IS CONTROL FOOTING WS-REGION.
+<span class="seq">000500</span>     05  LINE NUMBER IS PLUS 1.
+<span class="seq">000510</span>         10  COLUMN 9  PIC X(5)  VALUE <span class="str">&quot;TOTAL&quot;</span>.
+<span class="seq">000520</span>         10  REGION-TOTAL COLUMN 16 PIC Z,ZZ9.99 SUM WS-AMOUNT.
+<span class="seq">000530</span> 01  TYPE IS CONTROL FOOTING FINAL.
+<span class="seq">000540</span>     05  LINE NUMBER IS PLUS 2.
+<span class="seq">000550</span>         10  COLUMN 1  PIC X(11) VALUE <span class="str">&quot;GRAND TOTAL&quot;</span>.
+<span class="seq">000560</span>         10  COLUMN 16 PIC Z,ZZ9.99 SUM REGION-TOTAL.
+<span class="seq">000570</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000580</span> MAIN-PARA.
+<span class="seq">000590</span>     <span class="kw">OPEN</span> OUTPUT REPORT-FILE
+<span class="seq">000600</span>     <span class="kw">INITIATE</span> SALES-REPORT
+<span class="seq">000610</span>     <span class="kw">PERFORM</span> VARYING WS-IX FROM 1 BY 1 UNTIL WS-IX &gt; 5
+<span class="seq">000620</span>         <span class="kw">MOVE</span> T-REGION (WS-IX) TO WS-REGION
+<span class="seq">000630</span>         <span class="kw">MOVE</span> T-NAME (WS-IX)   TO WS-NAME
+<span class="seq">000640</span>         <span class="kw">MOVE</span> T-AMOUNT (WS-IX) TO WS-AMOUNT
+<span class="seq">000650</span>         <span class="kw">GENERATE</span> SALE-LINE
+<span class="seq">000660</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000670</span>     <span class="kw">TERMINATE</span> SALES-REPORT
+<span class="seq">000680</span>     <span class="kw">CLOSE</span> REPORT-FILE
+<span class="seq">000690</span><span class="com">*    Read the report back and show it.</span>
+<span class="seq">000700</span>     <span class="kw">OPEN</span> INPUT READ-BACK
+<span class="seq">000710</span>     <span class="kw">PERFORM</span> UNTIL END-OF-FILE = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000720</span>         <span class="kw">READ</span> READ-BACK
+<span class="seq">000730</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-OF-FILE
+<span class="seq">000740</span>             NOT AT <span class="kw">END</span>
+<span class="seq">000750</span>                 <span class="kw">DISPLAY</span> FUNCTION TRIM(PRINTED-LINE TRAILING)
+<span class="seq">000760</span>         <span class="kw">END-READ</span>
+<span class="seq">000770</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000780</span>     <span class="kw">CLOSE</span> READ-BACK
+<span class="seq">000790</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SALES REPORT
+REGION  NAME      AMOUNT
+
+EAST    ADAMS    125.50
+EAST    BAKER     30.00
+        TOTAL    155.50
+WEST    CHEN     150.25
+WEST    DIAZ       9.99
+WEST    EVANS    212.12
+        TOTAL    372.36
+
+GRAND TOTAL      527.86</pre>
+</figure>
+<p>The report goes to <code>rw1.txt</code>; after closing it the program reads the file
+back and displays each line, so you can see it. The page heading takes lines 1 and 2, and
+details start on line 4 (FIRST DETAIL 4). When WS-REGION changes from EAST to WEST the
+EAST footing prints with its SUM. REGION-TOTAL is a named SUM field, so the FINAL footing
+can add up the region totals. The empty lines at the end pad the page out to its 16 lines.</p>
+
+<h3>Pages, GROUP INDICATE and PRESENT WHEN</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/RW2.cbl" download>RW2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. RW2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> REPORT-FILE ASSIGN TO <span class="str">&quot;rw2.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> READ-BACK ASSIGN TO <span class="str">&quot;rw2.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">FD</span>  REPORT-FILE <span class="kw">REPORT</span> IS HOURS-REPORT.
+<span class="seq">000130</span> <span class="kw">FD</span>  READ-BACK.
+<span class="seq">000140</span> 01  PRINTED-LINE         PIC X(40).
+<span class="seq">000150</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000160</span> 01  STAFF-VALUES.
+<span class="seq">000170</span>     05  FILLER PIC X(14) VALUE <span class="str">&quot;SALESALICE 038&quot;</span>.
+<span class="seq">000180</span>     05  FILLER PIC X(14) VALUE <span class="str">&quot;SALESBOB   055&quot;</span>.
+<span class="seq">000190</span>     05  FILLER PIC X(14) VALUE <span class="str">&quot;SALESCAROL 041&quot;</span>.
+<span class="seq">000200</span>     05  FILLER PIC X(14) VALUE <span class="str">&quot;STOREDAVE  040&quot;</span>.
+<span class="seq">000210</span>     05  FILLER PIC X(14) VALUE <span class="str">&quot;STOREERIN  062&quot;</span>.
+<span class="seq">000220</span>     05  FILLER PIC X(14) VALUE <span class="str">&quot;STOREFRANK 033&quot;</span>.
+<span class="seq">000230</span> 01  STAFF-TABLE REDEFINES STAFF-VALUES.
+<span class="seq">000240</span>     05  STAFF OCCURS 6 TIMES.
+<span class="seq">000250</span>         10  T-DEPT       PIC X(5).
+<span class="seq">000260</span>         10  T-NAME       PIC X(6).
+<span class="seq">000270</span>         10  T-HOURS      PIC 9(3).
+<span class="seq">000280</span> 01  WS-DEPT              PIC X(5).
+<span class="seq">000290</span> 01  WS-NAME              PIC X(6).
+<span class="seq">000300</span> 01  WS-HOURS             PIC 9(3).
+<span class="seq">000310</span> 01  WS-IX                PIC 9.
+<span class="seq">000320</span> 01  END-OF-FILE          PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000330</span> <span class="kw">REPORT</span> <span class="kw">SECTION</span>.
+<span class="seq">000340</span> <span class="kw">RD</span>  HOURS-REPORT
+<span class="seq">000350</span>     CONTROLS ARE WS-DEPT
+<span class="seq">000360</span>     PAGE LIMIT IS 12 LINES
+<span class="seq">000370</span>     HEADING 1 FIRST DETAIL 4 LAST DETAIL 10 FOOTING 11.
+<span class="seq">000380</span> 01  TYPE IS PAGE HEADING.
+<span class="seq">000390</span>     05  LINE NUMBER IS 1.
+<span class="seq">000400</span>         10  COLUMN CENTER 15 PIC X(11) VALUE <span class="str">&quot;STAFF HOURS&quot;</span>.
+<span class="seq">000410</span>         10  COLUMN 25 PIC X(4) VALUE <span class="str">&quot;PAGE&quot;</span>.
+<span class="seq">000420</span>         10  COLUMN 30 PIC Z9   SOURCE PAGE-COUNTER.
+<span class="seq">000430</span>     05  LINE NUMBER IS 2.
+<span class="seq">000440</span>         10  COLUMN 1  PIC X(4) VALUE <span class="str">&quot;DEPT&quot;</span>.
+<span class="seq">000450</span>         10  COLUMN 8  PIC X(4) VALUE <span class="str">&quot;NAME&quot;</span>.
+<span class="seq">000460</span>         10  COLUMN RIGHT 20 PIC X(5) VALUE <span class="str">&quot;HOURS&quot;</span>.
+<span class="seq">000470</span> 01  EMP-LINE TYPE IS DETAIL.
+<span class="seq">000480</span>     05  LINE NUMBER IS PLUS 1.
+<span class="seq">000490</span>         10  COLUMN 1  PIC X(5) SOURCE WS-DEPT GROUP INDICATE.
+<span class="seq">000500</span>         10  COLUMN 8  PIC X(6) SOURCE WS-NAME.
+<span class="seq">000510</span>         10  COLUMN 18 PIC ZZ9  SOURCE WS-HOURS.
+<span class="seq">000520</span>     05  LINE NUMBER IS PLUS 1 PRESENT <span class="kw">WHEN</span> WS-HOURS &gt; 50.
+<span class="seq">000530</span>         10  COLUMN 8  PIC X(16) VALUE <span class="str">&quot;** CHECK THIS **&quot;</span>.
+<span class="seq">000540</span> 01  TYPE IS CONTROL FOOTING WS-DEPT NEXT GROUP PLUS 1.
+<span class="seq">000550</span>     05  LINE NUMBER IS PLUS 1.
+<span class="seq">000560</span>         10  COLUMN 8  PIC X(5) VALUE <span class="str">&quot;TOTAL&quot;</span>.
+<span class="seq">000570</span>         10  COLUMN 17 PIC ZZZ9 SUM WS-HOURS.
+<span class="seq">000580</span> 01  TYPE IS PAGE FOOTING.
+<span class="seq">000590</span>     05  LINE NUMBER IS 12.
+<span class="seq">000600</span>         10  COLUMN 1  PIC X(12) VALUE <span class="str">&quot;END OF PAGE&quot;</span>.
+<span class="seq">000610</span>         10  COLUMN 13 PIC Z9   SOURCE PAGE-COUNTER.
+<span class="seq">000620</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000630</span> MAIN-PARA.
+<span class="seq">000640</span>     <span class="kw">OPEN</span> OUTPUT REPORT-FILE
+<span class="seq">000650</span>     <span class="kw">INITIATE</span> HOURS-REPORT
+<span class="seq">000660</span>     <span class="kw">PERFORM</span> VARYING WS-IX FROM 1 BY 1 UNTIL WS-IX &gt; 6
+<span class="seq">000670</span>         <span class="kw">MOVE</span> T-DEPT (WS-IX)  TO WS-DEPT
+<span class="seq">000680</span>         <span class="kw">MOVE</span> T-NAME (WS-IX)  TO WS-NAME
+<span class="seq">000690</span>         <span class="kw">MOVE</span> T-HOURS (WS-IX) TO WS-HOURS
+<span class="seq">000700</span>         <span class="kw">GENERATE</span> EMP-LINE
+<span class="seq">000710</span>         <span class="kw">DISPLAY</span> WS-NAME <span class="str">&quot; PAGE &quot;</span> PAGE-COUNTER
+<span class="seq">000720</span>             <span class="str">&quot; LINE &quot;</span> LINE-COUNTER
+<span class="seq">000730</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000740</span>     <span class="kw">TERMINATE</span> HOURS-REPORT
+<span class="seq">000750</span>     <span class="kw">CLOSE</span> REPORT-FILE
+<span class="seq">000760</span>     <span class="kw">OPEN</span> INPUT READ-BACK
+<span class="seq">000770</span>     <span class="kw">PERFORM</span> UNTIL END-OF-FILE = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000780</span>         <span class="kw">READ</span> READ-BACK
+<span class="seq">000790</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-OF-FILE
+<span class="seq">000800</span>             NOT AT <span class="kw">END</span>
+<span class="seq">000810</span>                 <span class="kw">DISPLAY</span> FUNCTION TRIM(PRINTED-LINE TRAILING)
+<span class="seq">000820</span>         <span class="kw">END-READ</span>
+<span class="seq">000830</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000840</span>     <span class="kw">CLOSE</span> READ-BACK
+<span class="seq">000850</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">ALICE  PAGE 0000000001 LINE 0000000004
+BOB    PAGE 0000000001 LINE 0000000006
+CAROL  PAGE 0000000001 LINE 0000000007
+DAVE   PAGE 0000000001 LINE 0000000010
+ERIN   PAGE 0000000002 LINE 0000000005
+FRANK  PAGE 0000000002 LINE 0000000006
+         STAFF HOURS    PAGE  1
+DEPT   NAME    HOURS
+
+SALES  ALICE      38
+       BOB        55
+       ** CHECK THIS **
+       CAROL      41
+       TOTAL     134
+
+STORE  DAVE       40
+
+END OF PAGE  1
+         STAFF HOURS    PAGE  2
+DEPT   NAME    HOURS
+
+STORE  ERIN       62
+       ** CHECK THIS **
+       FRANK      33
+       TOTAL     135
+
+
+
+
+
+END OF PAGE  2</pre>
+</figure>
+<p>The page is 12 lines long and details may go no lower than line 10, so DAVE's line is
+the last that fits on page 1; the page footing prints on line 12 and page 2 starts with
+the heading again. The department name is GROUP INDICATE, so it prints only on the first
+line of each department, and once more at the top of page 2. The extra line under BOB and
+ERIN is a LINE with PRESENT WHEN WS-HOURS &gt; 50. NEXT GROUP PLUS 1 on the footing leaves
+a blank line after each total. "STAFF HOURS" is centered on column 15 and "HOURS" ends in
+column 20. The DISPLAY lines show PAGE-COUNTER and LINE-COUNTER after each GENERATE.</p>
+
+<h3>A USE BEFORE REPORTING declarative on a detail line</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/RW3.cbl" download>RW3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. RW3.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> REPORT-FILE ASSIGN TO <span class="str">&quot;rw3.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> READ-BACK ASSIGN TO <span class="str">&quot;rw3.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">FD</span>  REPORT-FILE <span class="kw">REPORT</span> IS ORDER-REPORT.
+<span class="seq">000130</span> <span class="kw">FD</span>  READ-BACK.
+<span class="seq">000140</span> 01  PRINTED-LINE         PIC X(40).
+<span class="seq">000150</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000160</span> 01  WS-ITEM              PIC X(8).
+<span class="seq">000170</span> 01  WS-AMOUNT            PIC 9(3)V99.
+<span class="seq">000180</span> 01  WS-FLAG              PIC X(5).
+<span class="seq">000190</span> 01  END-OF-FILE          PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000200</span> <span class="kw">REPORT</span> <span class="kw">SECTION</span>.
+<span class="seq">000210</span> <span class="kw">RD</span>  ORDER-REPORT
+<span class="seq">000220</span>     CONTROLS ARE FINAL
+<span class="seq">000230</span>     PAGE LIMIT IS 10 LINES
+<span class="seq">000240</span>     HEADING 1 FIRST DETAIL 2 LAST DETAIL 9.
+<span class="seq">000250</span> 01  ORDER-LINE TYPE IS DETAIL.
+<span class="seq">000260</span>     05  LINE NUMBER IS PLUS 1.
+<span class="seq">000270</span>         10  COLUMN 1  PIC X(8)   SOURCE WS-ITEM.
+<span class="seq">000280</span>         10  COLUMN 10 PIC ZZ9.99 SOURCE WS-AMOUNT.
+<span class="seq">000290</span>         10  COLUMN 18 PIC X(5)   SOURCE WS-FLAG.
+<span class="seq">000300</span> 01  TYPE IS CONTROL FOOTING FINAL.
+<span class="seq">000310</span>     05  LINE NUMBER IS PLUS 2.
+<span class="seq">000320</span>         10  COLUMN 1  PIC X(5)   VALUE <span class="str">&quot;TOTAL&quot;</span>.
+<span class="seq">000330</span>         10  COLUMN 9  PIC Z,ZZ9.99 SUM WS-AMOUNT.
+<span class="seq">000340</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000350</span> <span class="kw">DECLARATIVES</span>.
+<span class="seq">000360</span> BEFORE-ORDER <span class="kw">SECTION</span>.
+<span class="seq">000370</span>     <span class="kw">USE</span> BEFORE REPORTING ORDER-LINE.
+<span class="seq">000380</span> BEFORE-ORDER-PARA.
+<span class="seq">000390</span>     <span class="kw">IF</span> WS-AMOUNT &gt; 100
+<span class="seq">000400</span>         <span class="kw">MOVE</span> <span class="str">&quot;LARGE&quot;</span> TO WS-FLAG
+<span class="seq">000410</span>     <span class="kw">ELSE</span>
+<span class="seq">000420</span>         <span class="kw">MOVE</span> SPACES TO WS-FLAG
+<span class="seq">000430</span>     <span class="kw">END-IF</span>.
+<span class="seq">000440</span> <span class="kw">END</span> <span class="kw">DECLARATIVES</span>.
+<span class="seq">000450</span> MAIN-LOGIC <span class="kw">SECTION</span>.
+<span class="seq">000460</span> MAIN-PARA.
+<span class="seq">000470</span>     <span class="kw">OPEN</span> OUTPUT REPORT-FILE
+<span class="seq">000480</span>     <span class="kw">INITIATE</span> ORDER-REPORT
+<span class="seq">000490</span>     <span class="kw">MOVE</span> <span class="str">&quot;PENCILS&quot;</span> TO WS-ITEM <span class="kw">MOVE</span> 12.50 TO WS-AMOUNT
+<span class="seq">000500</span>     <span class="kw">GENERATE</span> ORDER-LINE
+<span class="seq">000510</span>     <span class="kw">MOVE</span> <span class="str">&quot;DESK&quot;</span> TO WS-ITEM <span class="kw">MOVE</span> 240 TO WS-AMOUNT
+<span class="seq">000520</span>     <span class="kw">GENERATE</span> ORDER-LINE
+<span class="seq">000530</span>     <span class="kw">MOVE</span> <span class="str">&quot;LAMP&quot;</span> TO WS-ITEM <span class="kw">MOVE</span> 35.25 TO WS-AMOUNT
+<span class="seq">000540</span>     <span class="kw">GENERATE</span> ORDER-LINE
+<span class="seq">000550</span>     <span class="kw">TERMINATE</span> ORDER-REPORT
+<span class="seq">000560</span>     <span class="kw">CLOSE</span> REPORT-FILE
+<span class="seq">000570</span>     <span class="kw">OPEN</span> INPUT READ-BACK
+<span class="seq">000580</span>     <span class="kw">PERFORM</span> UNTIL END-OF-FILE = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000590</span>         <span class="kw">READ</span> READ-BACK
+<span class="seq">000600</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-OF-FILE
+<span class="seq">000610</span>             NOT AT <span class="kw">END</span>
+<span class="seq">000620</span>                 <span class="kw">DISPLAY</span> FUNCTION TRIM(PRINTED-LINE TRAILING)
+<span class="seq">000630</span>         <span class="kw">END-READ</span>
+<span class="seq">000640</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000650</span>     <span class="kw">CLOSE</span> READ-BACK
+<span class="seq">000660</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">
+PENCILS   12.50
+DESK     240.00  LARGE
+LAMP      35.25
+
+TOTAL     287.75</pre>
+</figure>
+<p>The declarative runs before each ORDER-LINE prints and fills in WS-FLAG, which the line
+prints through its SOURCE clause. The total is 12.50 + 240.00 + 35.25 = 287.75.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL's Report Writer is a step-by-step port of GnuCOBOL's own (libcob's
+<code>reportio.c</code>), so reports come out the same, line for line, as with GnuCOBOL
+3.2. One exception is a bug fix:</p>
+<div class="warn"><b>Differs from GnuCOBOL 3.2:</b> when a DETAIL group has a
+USE BEFORE REPORTING declarative, stock GnuCOBOL 3.2 adds each detail into the SUM
+counters twice, so every total is doubled (the third example prints 563.00 there); it can
+also run control-heading declaratives again and print a page heading twice. SP COBOL adds
+each detail once and prints 287.75. Declaratives on headings and footings behave the same
+in both.</div>
+<div class="bad"><code>CODE IS</code> in the RD is not usable: stock GnuCOBOL 3.2 writes an
+empty report file with it, and SP COBOL fails to build the program.</div>
+<div class="warn">Write reports to a disk file, as the examples do. A report file assigned
+with <code>ASSIGN TO DISPLAY</code> prints on the screen, but SP COBOL then leaves out the
+blank lines that pad the last page, which GnuCOBOL prints.</div>
+<p>Not checked against GnuCOBOL yet, so use with care: PAGE LIMIT and the other PAGE
+numbers given by data items instead of integers, OCCURS in report lines,
+PRESENT AFTER / ABSENT AFTER.</p>
+
+<h2>See also</h2>
+<p><a href="initiate.html">INITIATE</a>, <a href="generate.html">GENERATE</a>,
+<a href="terminate.html">TERMINATE</a>, <a href="suppress.html">SUPPRESS</a>,
+<a href="use.html">USE</a>, <a href="files.html">Files</a>,
+<a href="write.html">WRITE</a> for printing without the Report Writer,
+<a href="sort.html">SORT</a> to put records in control-field order.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="file-status.html">&larr; FILE STATUS codes</a><a class="next" href="intrinsic-functions.html">Intrinsic functions &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

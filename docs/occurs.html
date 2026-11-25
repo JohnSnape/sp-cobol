@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OCCURS - SP COBOL Reference</title>
+<meta name="description" content="Repeat an item to make a table (an array), with fixed or variable size.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html" class="current" aria-current="page">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Data description</p>
+<h1>OCCURS </h1>
+<p class="lede">Repeat an item to make a table (an array), with fixed or variable size.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: a fixed number of occurrences</span>
+OCCURS <var>integer-1</var> [ TIMES ]
+    [ { ASCENDING | DESCENDING } KEY IS <var>data-name-1</var> ... ] ...
+    [ INDEXED BY <var>index-name-1</var> ... ]
+
+<span class="fmt">Format 2: a variable number (OCCURS DEPENDING ON)</span>
+OCCURS <var>integer-1</var> TO <var>integer-2</var> [ TIMES ] DEPENDING ON <var>data-name-2</var>
+    [ { ASCENDING | DESCENDING } KEY IS <var>data-name-1</var> ... ] ...
+    [ INDEXED BY <var>index-name-1</var> ... ]
+
+Referring <var>to</var> <var>an</var> <var>occurrence</var>
+<var>data-name</var> ( <var>subscript</var> [ [ , ] <var>subscript</var> ] ... )</pre>
+
+<h2>What it does</h2>
+<p><code>OCCURS</code> makes an item repeat, side by side in memory. The result is a
+<em>table</em> (other languages call it an array). <code>05 PRICE PIC 9(3)V99 OCCURS 5</code>
+is five prices, one after another. Usually the table is put inside a group (an 01 with the OCCURS item under it), so that
+the whole table has a name too.</p>
+<p>OCCURS can be on an elementary item or on a group. On a group, each occurrence holds the
+whole group: <code>REGION OCCURS 2</code> in the example is two copies of a name followed by
+four sales figures.</p>
+
+<h3>Subscripts</h3>
+<p>You pick one occurrence with a <em>subscript</em> in parentheses after the name. Numbering
+starts at 1, not 0. A subscript can be a number, a numeric item, an index name, or an item
+plus or minus a number (<code>ITEM(IX + 1)</code>, <code>QTR-SALES(R - 1, Q)</code>). A space
+before the parenthesis is allowed; inside, a space or comma separates subscripts.</p>
+<p>COBOL doesn't check subscripts for you by default, so check your loop limits. See the
+SP COBOL notes for what happens when a subscript is out of range.</p>
+
+<h3>Tables of tables</h3>
+<p>When an item with OCCURS is inside a group that also has OCCURS, you need one subscript for
+each level, outermost first. <code>QTR-SALES(2, 4)</code> is the fourth quarter of the second
+region. This is a two-dimensional table; you can nest further in the same way.</p>
+
+<h3>INDEXED BY</h3>
+<p><code>INDEXED BY</code> names an <em>index</em> for the table: a special subscript that the
+compiler keeps in the form that's fastest for that table. You don't declare an index in
+WORKING-STORAGE. You set and change it with <a href="set.html">SET</a> (<code>SET IX TO 1</code>,
+<code>SET IX UP BY 1</code>) or <code>PERFORM VARYING</code>, and
+<a href="search.html">SEARCH</a> needs one.</p>
+
+<h3>OCCURS DEPENDING ON</h3>
+<p>Format 2 makes the table's <em>current</em> size come from another item (the
+<em>ODO object</em>). Room is kept for the maximum, but the group that contains the table is
+treated as only as long as the current count: a DISPLAY, a MOVE of the whole group, or a
+WRITE of the record uses just that many occurrences. A variable table must be the last thing
+in its record.</p>
+
+<h3>ASCENDING / DESCENDING KEY</h3>
+<p>These phrases tell COBOL that the table's entries are kept in order by the named items. They
+don't sort anything; they are what <code>SEARCH ALL</code> (a binary search) relies on. See
+<a href="search.html">SEARCH</a>.</p>
+
+<h3>VALUE in tables</h3>
+<p>A <code>VALUE</code> on an item with OCCURS gives every occurrence that value. See
+<a href="value.html">VALUE</a> for starting a table with different values.</p>
+
+<h2>Example: a two-dimensional table</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/OCCURS1.cbl" download>OCCURS1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. OCCURS1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  SALES-TABLE.
+<span class="seq">000060</span>     05  REGION        OCCURS 2.
+<span class="seq">000070</span>         10  REG-NAME  PIC X(5).
+<span class="seq">000080</span>         10  QTR-SALES PIC 9(4) OCCURS 4.
+<span class="seq">000090</span> 01  R                 PIC 9.
+<span class="seq">000100</span> 01  Q                 PIC 9.
+<span class="seq">000110</span> 01  REG-TOTAL         PIC 9(5).
+<span class="seq">000120</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000130</span>     <span class="kw">MOVE</span> <span class="str">&quot;NORTH&quot;</span> TO REG-NAME(1)
+<span class="seq">000140</span>     <span class="kw">MOVE</span> <span class="str">&quot;SOUTH&quot;</span> TO REG-NAME(2)
+<span class="seq">000150</span>     <span class="kw">PERFORM</span> VARYING R FROM 1 BY 1 UNTIL R &gt; 2
+<span class="seq">000160</span>         <span class="kw">PERFORM</span> VARYING Q FROM 1 BY 1 UNTIL Q &gt; 4
+<span class="seq">000170</span>             <span class="kw">COMPUTE</span> QTR-SALES(R, Q) = R * 100 + Q * 10
+<span class="seq">000180</span>         <span class="kw">END-PERFORM</span>
+<span class="seq">000190</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000200</span>     <span class="kw">PERFORM</span> VARYING R FROM 1 BY 1 UNTIL R &gt; 2
+<span class="seq">000210</span>         <span class="kw">MOVE</span> 0 TO REG-TOTAL
+<span class="seq">000220</span>         <span class="kw">PERFORM</span> VARYING Q FROM 1 BY 1 UNTIL Q &gt; 4
+<span class="seq">000230</span>             <span class="kw">ADD</span> QTR-SALES(R, Q) TO REG-TOTAL
+<span class="seq">000240</span>         <span class="kw">END-PERFORM</span>
+<span class="seq">000250</span>         <span class="kw">DISPLAY</span> REG-NAME(R) <span class="str">&quot; Q1 &quot;</span> QTR-SALES(R, 1) <span class="str">&quot; Q4 &quot;</span>
+<span class="seq">000260</span>                 QTR-SALES(R, 4) <span class="str">&quot; TOTAL &quot;</span> REG-TOTAL
+<span class="seq">000270</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SOUTH, LAST QUARTER: &quot;</span> QTR-SALES(2 4)
+<span class="seq">000290</span>     <span class="kw">MOVE</span> 1 TO R
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SUBSCRIPT R + 1, 2: &quot;</span> QTR-SALES(R + 1, 2)
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WHOLE REGION 1: [&quot;</span> REGION(1) <span class="str">&quot;]&quot;</span>
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TABLE IS &quot;</span> LENGTH OF SALES-TABLE <span class="str">&quot; BYTES&quot;</span>
+<span class="seq">000330</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">NORTH Q1 0110 Q4 0140 TOTAL 00500
+SOUTH Q1 0210 Q4 0240 TOTAL 00900
+SOUTH, LAST QUARTER: 0240
+SUBSCRIPT R + 1, 2: 0220
+WHOLE REGION 1: [NORTH0110012001300140]
+TABLE IS 42 BYTES</pre>
+</figure>
+<p>Each region holds a 5-byte name and four 4-digit amounts, so a region is 21 bytes and the
+table 42. The nested PERFORMs fill and total the table with two subscripts. A subscript can be
+an expression: with R at 1, <code>QTR-SALES(R + 1, 2)</code> is the second quarter of region 2.
+<code>REGION(1)</code> with one subscript is the whole first group.</p>
+
+<h2>Example: DEPENDING ON and INDEXED BY</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/OCCURS2.cbl" download>OCCURS2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. OCCURS2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  ITEM-COUNT        PIC 99      VALUE 3.
+<span class="seq">000060</span> 01  ORDER-REC.
+<span class="seq">000070</span>     05  CUSTOMER      PIC X(6)    VALUE <span class="str">&quot;BAKER&quot;</span>.
+<span class="seq">000080</span>     05  ITEM          PIC X(4)    OCCURS 1 TO 10 TIMES
+<span class="seq">000090</span>                       DEPENDING ON ITEM-COUNT
+<span class="seq">000100</span>                       INDEXED BY IX.
+<span class="seq">000110</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span>     <span class="kw">MOVE</span> <span class="str">&quot;PENS&quot;</span> TO ITEM(1)
+<span class="seq">000130</span>     <span class="kw">MOVE</span> <span class="str">&quot;INK &quot;</span> TO ITEM(2)
+<span class="seq">000140</span>     <span class="kw">MOVE</span> <span class="str">&quot;PADS&quot;</span> TO ITEM(3)
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;3 ITEMS: [&quot;</span> ORDER-REC <span class="str">&quot;] &quot;</span> LENGTH OF ORDER-REC
+<span class="seq">000160</span>     <span class="kw">MOVE</span> 5 TO ITEM-COUNT
+<span class="seq">000170</span>     <span class="kw">MOVE</span> <span class="str">&quot;TAPE&quot;</span> TO ITEM(4)
+<span class="seq">000180</span>     <span class="kw">MOVE</span> <span class="str">&quot;GLUE&quot;</span> TO ITEM(5)
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;5 ITEMS: [&quot;</span> ORDER-REC <span class="str">&quot;] &quot;</span> LENGTH OF ORDER-REC
+<span class="seq">000200</span>     <span class="kw">PERFORM</span> VARYING IX FROM 1 BY 1 UNTIL IX &gt; ITEM-COUNT
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  ITEM &quot;</span> ITEM(IX)
+<span class="seq">000220</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000230</span>     <span class="kw">SET</span> IX TO 2
+<span class="seq">000240</span>     <span class="kw">SET</span> IX UP BY 1
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ITEM(IX) WITH IX = 3: &quot;</span> ITEM(IX)
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ITEM(IX + 1): &quot;</span> ITEM(IX + 1)
+<span class="seq">000270</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">3 ITEMS: [BAKER PENSINK PADS] +000000018
+5 ITEMS: [BAKER PENSINK PADSTAPEGLUE] +000000026
+  ITEM PENS
+  ITEM INK 
+  ITEM PADS
+  ITEM TAPE
+  ITEM GLUE
+ITEM(IX) WITH IX = 3: PADS
+ITEM(IX + 1): TAPE</pre>
+</figure>
+<p>With ITEM-COUNT at 3, ORDER-REC is 6 + 3 * 4 = 18 bytes long, and a DISPLAY of it stops after
+the third item. Setting the count to 5 makes it 26 bytes. The loop runs the index IX up to the
+current count, and <code>SET IX UP BY 1</code> moves it from 2 to 3.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">A subscript that points past the end of a table is not checked. In GnuCOBOL
+it silently reads or overwrites whatever bytes follow the table. In SP COBOL each 01 record is
+its own block of memory, so a subscript that reaches past the end of the whole record stops
+the program with an <code>IndexOutOfRangeException</code> instead. One that stays inside the
+record (past the table but before the record ends) still touches the neighboring items, as in
+GnuCOBOL.</div>
+
+<h2>See also</h2>
+<p><a href="search.html">SEARCH</a>, <a href="set.html">SET</a>,
+<a href="perform.html">PERFORM</a>, <a href="value.html">VALUE</a>,
+<a href="redefines.html">REDEFINES</a>, <a href="referring-to-data.html">Referring to data</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="value.html">&larr; VALUE</a><a class="next" href="redefines.html">REDEFINES &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

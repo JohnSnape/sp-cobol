@@ -1,0 +1,32 @@
+title: RETURN
+summary: Take the next sorted or merged record inside an OUTPUT PROCEDURE.
+keywords: RETURN INTO AT END NOT AT END END-RETURN OUTPUT PROCEDURE sort merge record SD
+---
+<h2>Syntax</h2>
+<pre class="syntax">RETURN sort-file-name [ RECORD ] [ INTO identifier-1 ]
+    AT END imperative-statement-1
+    [ NOT AT END imperative-statement-2 ]
+[ END-RETURN ]</pre>
+
+<h2>What it does</h2>
+<p>RETURN is the READ of a sort. It is used only in the OUTPUT PROCEDURE of a
+<a href="sort.html">SORT</a> or <a href="merge.html">MERGE</a>. Each RETURN puts the next
+record, in sorted order, in the sort file's record (the 01 under the SD). Like READ, it takes
+the sort <em>file</em> name.</p>
+<p>When every record has been returned, the <code>AT END</code> statements run.
+Otherwise <code>NOT AT END</code> runs. A typical
+output procedure is a loop that RETURNs until AT END sets a flag.</p>
+<p><code>RETURN file INTO item</code> also moves the record to <code>item</code>, like READ
+INTO.</p>
+<p>Don't confuse it with RETURN-CODE or GOBACK: RETURN has nothing to do with leaving a
+program.</p>
+
+<h2>Example</h2>
+<!-- example RETURN1 -->
+<p>Four people are released in any order and sorted by age. The output procedure RETURNs
+them INTO a WORKING-STORAGE group and numbers them. After the fourth, RETURN reaches the end
+and the AT END statements stop the loop.</p>
+
+<h2>See also</h2>
+<p><a href="sort.html">SORT</a>, <a href="merge.html">MERGE</a>,
+<a href="release.html">RELEASE</a>, <a href="read.html">READ</a>.</p>

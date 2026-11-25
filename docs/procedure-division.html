@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROCEDURE DIVISION - SP COBOL Reference</title>
+<meta name="description" content="The division that holds the program&#39;s code, and how control moves through it.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details open><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html" class="current" aria-current="page">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Divisions</p>
+<h1>PROCEDURE DIVISION </h1>
+<p class="lede">The division that holds the program&#39;s code, and how control moves through it.</p>
+<h2>Syntax</h2>
+<pre class="syntax">PROCEDURE DIVISION [ USING { [ BY REFERENCE | BY VALUE ] <var>data-name-1</var> } ... ] .
+[ DECLARATIVES.
+  { <var>section-name</var> SECTION.
+        USE-statement .
+    [ <var>paragraph-name</var>. [ <var>sentence</var> ] ... ] ... } ...
+  END DECLARATIVES. ]
+{ [ <var>section-name</var> SECTION. ]
+  { <var>paragraph-name</var>.
+        [ <var>sentence</var> ] ... } ... } ...</pre>
+
+<h2>What it does</h2>
+<p>The PROCEDURE DIVISION is where the program does its work. It is made of paragraphs, which
+may be grouped into sections (see <a href="program-structure.html">program structure</a>).
+Statements before the first paragraph name are allowed too, as in many short examples on
+this site.</p>
+
+<h3>How control flows</h3>
+<p>The program starts at the first statement of the PROCEDURE DIVISION (after any
+DECLARATIVES) and runs downward. When it reaches the end of a paragraph it simply carries on
+into the next paragraph: a paragraph name is a label, not a wall. This is called <em>falling
+through</em>. The order changes only when a statement changes it:</p>
+<ul>
+<li><a href="perform.html">PERFORM</a> runs a paragraph or section (or a range with
+<code>THRU</code>) and comes back to the statement after the PERFORM.</li>
+<li><a href="go-to.html">GO TO</a> jumps to a paragraph and doesn't come back.</li>
+<li><a href="stop.html">STOP RUN</a> ends the run; <a href="goback.html">GOBACK</a> returns
+to the caller (or ends the run in the main program).</li>
+</ul>
+<p>Running off the end of the last paragraph ends the program as GOBACK would. The usual
+pattern is a main paragraph at the top that PERFORMs the others and ends with STOP RUN or
+GOBACK, so control never falls into the paragraphs below by accident.</p>
+
+<h3>USING: receiving parameters</h3>
+<p>A subprogram lists the items it receives from its caller after <code>USING</code>. Each
+one must be described in the LINKAGE SECTION. They are matched to the caller's
+<code>CALL ... USING</code> list by position, not by name. <code>BY REFERENCE</code> (the
+default) means the subprogram works directly on the caller's item, so changes are seen by the
+caller. The details, including BY CONTENT and BY VALUE, are on the <a href="call.html">CALL</a>
+page.</p>
+
+<h3>RETURNING</h3>
+<div class="bad"><code>PROCEDURE DIVISION RETURNING</code> is not supported, the same as in
+GnuCOBOL 3.2: the compiler warns "program RETURNING is not implemented". To pass a result
+back, set <code>RETURN-CODE</code> in the subprogram (the caller reads it after the CALL, or
+receives it with <code>CALL ... RETURNING</code>), or change an item the caller passed
+<code>BY REFERENCE</code>. The second example below does both.</div>
+
+<h3>DECLARATIVES</h3>
+<p>If present, DECLARATIVES come first, between <code>DECLARATIVES.</code> and
+<code>END DECLARATIVES.</code> Each section in them starts with a <a href="use.html">USE</a>
+statement saying when it runs, for example after an error on a file. These sections are not
+reached by falling through; the run time calls them when their event happens.</p>
+
+<h2>Example: falling through</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PROCDIV1.cbl" download>PROCDIV1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PROCDIV1.
+<span class="seq">000030</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> FIRST-PARA.
+<span class="seq">000050</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST-PARA&quot;</span>
+<span class="seq">000060</span>     <span class="kw">PERFORM</span> THIRD-PARA
+<span class="seq">000070</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BACK IN FIRST-PARA, NOW FALLING THROUGH&quot;</span>.
+<span class="seq">000080</span> SECOND-PARA.
+<span class="seq">000090</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SECOND-PARA&quot;</span>.
+<span class="seq">000100</span> THIRD-PARA.
+<span class="seq">000110</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;THIRD-PARA&quot;</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">FIRST-PARA
+THIRD-PARA
+BACK IN FIRST-PARA, NOW FALLING THROUGH
+SECOND-PARA
+THIRD-PARA</pre>
+</figure>
+<p>FIRST-PARA performs THIRD-PARA, which runs and comes back. Then FIRST-PARA ends and control
+falls into SECOND-PARA, then into THIRD-PARA again. After the last paragraph there is nothing
+more, so the program ends. There is no STOP RUN anywhere.</p>
+
+<h2>Example: USING and RETURN-CODE</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PROCDIV2.cbl" download>PROCDIV2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PROCDIV2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  NUM                 PIC 9(3).
+<span class="seq">000060</span> 01  SQUARE              PIC 9(4).
+<span class="seq">000070</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span>     <span class="kw">MOVE</span> 12 TO NUM
+<span class="seq">000090</span>     <span class="kw">CALL</span> <span class="str">&quot;PROCDIV2SQ&quot;</span> USING NUM SQUARE
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;12 SQUARED IS &quot;</span> SQUARE <span class="str">&quot;   RETURN-CODE &quot;</span> RETURN-CODE
+<span class="seq">000110</span>     <span class="kw">MOVE</span> 200 TO NUM
+<span class="seq">000120</span>     <span class="kw">CALL</span> <span class="str">&quot;PROCDIV2SQ&quot;</span> USING NUM SQUARE
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;200 SQUARED: RETURN-CODE &quot;</span> RETURN-CODE
+<span class="seq">000140</span>     <span class="kw">MOVE</span> 0 TO RETURN-CODE
+<span class="seq">000150</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">The called program, <a href="examples/PROCDIV2SQ.cbl" download>PROCDIV2SQ.cbl</a></div>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PROCDIV2SQ.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">LINKAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  L-NUM               PIC 9(3).
+<span class="seq">000060</span> 01  L-SQUARE            PIC 9(4).
+<span class="seq">000070</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span> USING L-NUM L-SQUARE.
+<span class="seq">000080</span>     <span class="kw">COMPUTE</span> L-SQUARE = L-NUM * L-NUM
+<span class="seq">000090</span>         ON SIZE ERROR
+<span class="seq">000100</span>             <span class="kw">MOVE</span> 8 TO RETURN-CODE
+<span class="seq">000110</span>         NOT ON SIZE ERROR
+<span class="seq">000120</span>             <span class="kw">MOVE</span> 0 TO RETURN-CODE
+<span class="seq">000130</span>     <span class="kw">END-COMPUTE</span>
+<span class="seq">000140</span>     <span class="kw">GOBACK</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">12 SQUARED IS 0144   RETURN-CODE +000000000
+200 SQUARED: RETURN-CODE +000000008</pre>
+</figure>
+<p>PROCDIV2SQ receives NUM and SQUARE by reference. It stores the square straight into the
+caller's SQUARE and reports success in RETURN-CODE. 200 squared (40000) doesn't fit in
+<code>PIC 9(4)</code>, so the SIZE ERROR phrase sets RETURN-CODE to 8. The main program
+clears RETURN-CODE before STOP RUN, since its value becomes the program's exit code.</p>
+
+<h2>See also</h2>
+<p><a href="program-structure.html">Program structure</a>, <a href="perform.html">PERFORM</a>,
+<a href="call.html">CALL</a>, <a href="use.html">USE</a>,
+<a href="special-registers.html">special registers</a> (RETURN-CODE),
+<a href="data-division.html">DATA DIVISION</a> (LINKAGE SECTION).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="data-division.html">&larr; DATA DIVISION</a><a class="next" href="level-numbers.html">Level numbers &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

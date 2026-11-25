@@ -1,0 +1,80 @@
+title: USAGE
+summary: Choose how an item is stored in memory: as characters, binary, packed decimal or floating point.
+keywords: USAGE DISPLAY BINARY COMP COMPUTATIONAL COMP-4 COMP-5 COMP-3 PACKED-DECIMAL COMP-1 COMP-2 FLOAT-SHORT FLOAT-LONG INDEX POINTER NATIONAL big-endian little-endian bytes storage
+---
+<h2>Syntax</h2>
+<pre class="syntax">[ USAGE [ IS ] ] { DISPLAY
+                 | BINARY | COMP | COMPUTATIONAL | COMP-4
+                 | COMP-5
+                 | COMP-3 | PACKED-DECIMAL
+                 | COMP-1 | FLOAT-SHORT
+                 | COMP-2 | FLOAT-LONG
+                 | INDEX
+                 | POINTER
+                 | NATIONAL }</pre>
+
+<h2>What it does</h2>
+<p>The PICTURE says what values an item can hold; USAGE says how those values are kept in
+memory. The word <code>USAGE IS</code> is optional, so <code>PIC 9(4) COMP</code> is the
+usual way to write it. If you write USAGE on a group, every item in the group gets it.
+Without a USAGE clause, an item is <code>DISPLAY</code>.</p>
+<p>Usage doesn't change what your program computes: <code>ADD 1</code> gives the same answer
+in every form. It changes the size of the item, how fast arithmetic is, and what the bytes
+look like when you write a record to a file or pass it to another program.</p>
+
+<div class="table-wrap"><table>
+<tr><th>Usage</th><th>Stores</th><th>Size</th></tr>
+<tr><td><code>DISPLAY</code></td><td>One character per digit, like text. A sign is folded into the last digit (see <a href="sign.html">SIGN</a>).</td><td>1 byte per digit</td></tr>
+<tr><td><code>BINARY</code>, <code>COMP</code>, <code>COMPUTATIONAL</code>, <code>COMP-4</code></td><td>A binary integer, most significant byte first (big-endian). The PICTURE's digits still limit the value.</td><td>1-2 digits: 1 byte; 3-4: 2; 5-9: 4; 10-18: 8</td></tr>
+<tr><td><code>COMP-5</code></td><td>A binary integer in the computer's own byte order (least significant byte first on a PC). It can hold any value its bytes can: a <code>PIC 9(4) COMP-5</code> holds 65000, where a <code>PIC 9(4) COMP</code> keeps only the last 4 digits (5000).</td><td>as COMP</td></tr>
+<tr><td><code>COMP-3</code>, <code>PACKED-DECIMAL</code></td><td>Two digits per byte, with the sign in the last half-byte (C or F for plus, D for minus).</td><td>digits / 2 + 1, rounded down</td></tr>
+<tr><td><code>COMP-1</code>, <code>FLOAT-SHORT</code></td><td>A single-precision floating-point number. No PICTURE.</td><td>4 bytes</td></tr>
+<tr><td><code>COMP-2</code>, <code>FLOAT-LONG</code></td><td>A double-precision floating-point number. No PICTURE.</td><td>8 bytes</td></tr>
+<tr><td><code>INDEX</code></td><td>A table position, for <a href="set.html">SET</a> and <a href="search.html">SEARCH</a>. No PICTURE.</td><td>4 bytes</td></tr>
+<tr><td><code>POINTER</code></td><td>The address of some data, set with <a href="set.html">SET</a>. No PICTURE.</td><td>8 bytes</td></tr>
+<tr><td><code>NATIONAL</code></td><td>UTF-16 characters, used with <code>PIC N</code>. See <a href="national.html">National data</a>.</td><td>2 bytes per character</td></tr>
+</table></div>
+
+<h3>Which one to use</h3>
+<p>Use <code>DISPLAY</code> (the default) while you learn: you can see the digits in a data
+file. Use <code>COMP</code> or <code>COMP-5</code> for counters and subscripts.
+<code>COMP-3</code> is common in files that came from IBM mainframes. Floating point
+(<code>COMP-1</code>, <code>COMP-2</code>) is for science and engineering values; it can't
+hold most decimal fractions exactly, so don't use it for money.</p>
+
+<h3>How DISPLAY shows them</h3>
+<p>A DISPLAY of a <code>DISPLAY</code>, <code>COMP</code> or <code>COMP-3</code> item shows its
+digits as the PICTURE describes them. A <code>COMP-5</code> item is shown differently: as its
+raw value with no decimal point, padded with zeros to the most digits its bytes can hold
+(5 digits for 2 bytes, 10 for 4, 20 for 8). <code>COMP-1</code> and <code>COMP-2</code> are
+shown with up to 8 and 16 significant digits, with an exponent such as <code>E+20</code> for
+very large or small values. SP COBOL matches GnuCOBOL 3.2 in all of these.</p>
+
+<h2>Example: sizes and display</h2>
+<!-- example USAGE1 -->
+<p>The same value, -1234.56, takes 9 bytes as DISPLAY, 4 as COMP or COMP-5, and 5 as COMP-3.
+The COMP-5 item displays as <code>-0000123456</code>: the stored integer, without the implied
+decimal point, padded to 10 digits. COMP-1 shows <code>-1234.5601</code> because a 4-byte
+float can't hold 1234.56 exactly. A <code>PIC 9(4) COMP-5</code> displays 5 digits
+(<code>01234</code>), while <code>PIC 9(4) BINARY</code> displays 4. After adding 1, all the
+forms agree.</p>
+
+<h2>Example: the bytes</h2>
+<!-- example USAGE2 -->
+<p><code>FUNCTION HEX-OF</code> shows the bytes of an item in hexadecimal. 258 is 1 * 256 + 2.
+As COMP it is stored <code>01 02</code>, high byte first; as COMP-5 it is <code>02 01</code>,
+the PC's own order. A negative COMP value is stored as its two's complement
+(<code>FFFE</code> for -2). The packed items hold the digits 1 2 3 4 5 two to a byte, ending
+with <code>D</code> for minus or <code>F</code> for an unsigned value. The last line shows a
+signed DISPLAY item: the bytes are the characters <code>1</code>, <code>2</code> and
+<code>s</code>, because the minus sign is folded into the last digit.</p>
+
+<h2>SP COBOL notes</h2>
+<p><code>COMP</code> is big-endian, as in GnuCOBOL's default configuration, so binary data files
+are the same bytes in both. The COMP-5 display width and the COMP-1/COMP-2 display format
+follow GnuCOBOL 3.2 exactly; DECISIONS.md has the details.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="sign.html">SIGN</a>,
+<a href="synchronized.html">SYNCHRONIZED</a>, <a href="national.html">National data</a>,
+<a href="intrinsic-functions.html">Intrinsic functions</a> (HEX-OF, BYTE-LENGTH).</p>

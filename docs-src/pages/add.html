@@ -1,0 +1,62 @@
+title: ADD
+summary: Add numbers together and store the sum.
+keywords: TO GIVING ROUNDED SIZE ERROR END-ADD CORRESPONDING CORR sum plus addition
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: add to each receiving field
+ADD { identifier-1 | literal-1 } ... TO { identifier-2 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-ADD ]
+
+Format 2: store the sum somewhere else
+ADD { identifier-1 | literal-1 } ... [ TO { identifier-2 | literal-2 } ]
+    GIVING { identifier-3 [ ROUNDED ] } ...
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-ADD ]
+
+Format 3: add matching fields of two groups
+ADD { CORRESPONDING | CORR } group-1 TO group-2 [ ROUNDED ]
+    [ ON SIZE ERROR imperative-statement-1 ]
+    [ NOT ON SIZE ERROR imperative-statement-2 ]
+[ END-ADD ]</pre>
+
+<h2>What it does</h2>
+<p><b>Format 1</b> adds every value before <code>TO</code> together, then adds that total
+to each field after <code>TO</code>. The fields after <code>TO</code> change; the ones before
+it don't. <code>ADD A B TO C</code> means "C = C + A + B".</p>
+<p><b>Format 2</b> adds up all the values (the ones after <code>TO</code> too) and puts the sum
+in the field after <code>GIVING</code>, replacing what was there. Nothing else changes.
+<code>ADD A TO B GIVING C</code> means "C = A + B". Because the <code>GIVING</code> field only
+receives the answer, it may be a numeric-edited field such as <code>PIC $$,$$9.99</code>.</p>
+<p><b>Format 3</b> adds each numeric item of the first group to the item with the same name
+in the second group. Items whose names have no match are skipped.</p>
+
+<h3>Decimals and rounding</h3>
+<p>COBOL lines up the decimal points for you. If the answer has more decimal places than the
+receiving field can hold, the extra digits are dropped (truncated), unless you write
+<code>ROUNDED</code> after that field.</p>
+
+<h3>SIZE ERROR</h3>
+<p>If the answer has more digits in front of the decimal point than the receiving field can
+hold, that's a <em>size error</em>. Without <code>ON SIZE ERROR</code>, the high-order digits
+are lost silently: adding 5 to a <code>PIC 9</code> holding 7 leaves 2. With
+<code>ON SIZE ERROR</code>, the field keeps its old value and your statements run instead.
+<code>NOT ON SIZE ERROR</code> runs when the answer fit.</p>
+<p>Write <code>END-ADD</code> when the ADD has a <code>SIZE ERROR</code> phrase and sits inside
+an <code>IF</code> or another statement, so it's clear where the phrase ends.</p>
+
+<h2>Example</h2>
+<!-- example ADD1 -->
+<p>The first ADD adds 19.95 and 4.50 to TOTAL, which started at zero. The second replaces
+TOTAL with 19.95 + 4.50. ROUGH has one decimal place, so 24.45 is rounded to 24.5.
+The fourth would make TINY 12, which doesn't fit in <code>PIC 9</code>, so TINY keeps its
+value and the SIZE ERROR message is shown. The last ADD has no SIZE ERROR phrase, so the
+leading 1 of 12 is simply lost and TINY becomes 2.</p>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a> for whole formulas,
+<a href="subtract.html">SUBTRACT</a>, <a href="multiply.html">MULTIPLY</a>,
+<a href="divide.html">DIVIDE</a>, <a href="picture.html">PICTURE</a> for how many digits a
+field holds.</p>

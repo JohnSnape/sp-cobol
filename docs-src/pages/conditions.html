@@ -1,0 +1,135 @@
+title: Conditions
+summary: The tests that IF, EVALUATE, PERFORM UNTIL and SEARCH WHEN use: relations, classes, signs, condition names, AND/OR/NOT.
+keywords: relation condition class condition sign condition NUMERIC ALPHABETIC ALPHABETIC-UPPER ALPHABETIC-LOWER POSITIVE NEGATIVE ZERO AND OR NOT abbreviated combined condition equal greater less GREATER THAN LESS THAN EQUAL TO comparison padding spaces 88 condition-name
+---
+<h2>Syntax</h2>
+<pre class="syntax">Relation condition:
+operand-1 [ IS ] [ NOT ] { =  | EQUAL TO
+                         | &gt;  | GREATER THAN
+                         | &lt;  | LESS THAN
+                         | &gt;= | GREATER THAN OR EQUAL TO
+                         | &lt;= | LESS THAN OR EQUAL TO
+                         | &lt;&gt; } operand-2
+
+Class condition:
+identifier [ IS ] [ NOT ] { NUMERIC | ALPHABETIC | ALPHABETIC-UPPER
+                          | ALPHABETIC-LOWER | class-name }
+
+Sign condition:
+identifier [ IS ] [ NOT ] { POSITIVE | NEGATIVE | ZERO }
+
+Condition name:
+condition-name
+
+Combined and negated:
+condition-1 { AND | OR } condition-2 ...
+NOT condition
+( condition )</pre>
+
+<h2>What it does</h2>
+<p>A condition is a test that is either true or false. Conditions appear in
+<a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,
+<a href="perform.html">PERFORM ... UNTIL</a> and <a href="search.html">SEARCH ... WHEN</a>.</p>
+
+<h3>Relation conditions</h3>
+<p>Compare two values. The symbols and the words mean the same: <code>A &lt; B</code> is
+<code>A IS LESS THAN B</code>. <code>NOT</code> reverses the test, so <code>A NOT = B</code>
+is true when they differ (<code>&lt;&gt;</code> says the same thing).</p>
+<ul>
+<li><b>Numbers</b> are compared by value, whatever their pictures: <code>PIC 9(3)</code>
+holding 005 equals <code>PIC 9V99</code> holding 5.00.</li>
+<li><b>Text</b> is compared character by character from the left, by the characters' codes.
+If the two sides are different lengths, the shorter one is treated as if padded with spaces on
+the right. So a <code>PIC X(8)</code> field holding "ADA" equals the literal
+<code>"ADA"</code>, and the same rule makes <code>IF NAME = SPACES</code> true for an
+all-blank field of any length.</li>
+</ul>
+
+<h3>Class conditions</h3>
+<p>Test what kind of characters an item holds:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Test</th><th>True when</th></tr>
+<tr><td><code>NUMERIC</code></td><td>Every character is a digit (a numeric item may also have
+a valid sign). Use it to check input before doing arithmetic with it.</td></tr>
+<tr><td><code>ALPHABETIC</code></td><td>Every character is a letter (upper or lower case) or a
+space.</td></tr>
+<tr><td><code>ALPHABETIC-UPPER</code></td><td>Every character is A-Z or a space.</td></tr>
+<tr><td><code>ALPHABETIC-LOWER</code></td><td>Every character is a-z or a space.</td></tr>
+<tr><td><code>class-name</code></td><td>Every character is in a CLASS you defined in
+SPECIAL-NAMES (see SP COBOL notes).</td></tr>
+</table>
+</div>
+<p>Spaces count as alphabetic, so a blank field passes ALPHABETIC.</p>
+
+<h3>Sign conditions</h3>
+<p><code>POSITIVE</code> is true for a value greater than zero, <code>NEGATIVE</code> for
+less than zero, and <code>ZERO</code> for exactly zero. Zero is neither positive nor
+negative.</p>
+
+<h3>Condition names</h3>
+<p>A level 88 entry gives a name to one or more values of an item; the name itself is a
+condition: <code>IF IS-MEMBER</code>. See <a href="condition-names.html">condition
+names</a>.</p>
+
+<h3>AND, OR, NOT and parentheses</h3>
+<p>Join conditions with <code>AND</code> (both must be true) and <code>OR</code> (at least one
+must be true). <code>NOT</code> in front of a condition reverses it. Without parentheses,
+<code>NOT</code> is applied first, then <code>AND</code>, then <code>OR</code>, so
+<code>A AND B OR C</code> means <code>(A AND B) OR C</code>. Use parentheses whenever you mix
+AND and OR; they cost nothing and say what you mean.</p>
+
+<h3>Abbreviated combined conditions</h3>
+<p>When several relations test the same item, you can leave the item out after the first:
+<code>IF CODE-X = 1 OR 3 OR 5</code> means <code>IF CODE-X = 1 OR CODE-X = 3 OR CODE-X =
+5</code>, and <code>IF AGE &gt; 12 AND &lt; 20</code> means
+<code>IF AGE &gt; 12 AND AGE &lt; 20</code>. The left side and the last operator written carry
+forward to each value that follows.</p>
+<div class="warn"><code>IF A NOT = 1 OR 2</code> means <code>A NOT = 1 OR A NOT = 2</code>,
+which is always true. To test "A is neither 1 nor 2" write
+<code>IF NOT (A = 1 OR A = 2)</code>, or use an 88-level name.</div>
+
+<h2>Example: relation, class and sign conditions</h2>
+<!-- example COND1 -->
+<p>FIRST-NAME is eight characters holding "ADA" and five spaces; compared with the
+three-character literal "ADA", the literal is padded with spaces, so they are equal. "ADA" is
+less than "BOB" because A comes before B, and greater than "AD" because the padded "AD " has a
+space where "ADA" has an A. "12A" is not NUMERIC, but its first two characters are. FIRST-NAME
+is ALPHABETIC and ALPHABETIC-UPPER because its trailing spaces count as alphabetic.</p>
+
+<h2>Example: combined conditions</h2>
+<!-- example COND2 -->
+<p><code>AGE &gt; 12 AND &lt; 20</code> and <code>CODE-X = 1 OR 3 OR 5</code> are the
+abbreviated forms. In the last two IFs, CODE-X is 3, so <code>CODE-X = 9</code> is false.
+Without parentheses the test is <code>(CODE-X = 9 AND AGE = 99) OR IS-MEMBER</code>, which is
+true because of IS-MEMBER. With the parentheses, the AND needs CODE-X = 9, so the whole test
+is false.</p>
+
+<h2>Example: numbers by value, and the NOT trap</h2>
+<!-- example COND3 -->
+<p>WHOLE and WITH-CENTS have different pictures but the same value, so they are equal.
+<code>A NOT = 1 OR 2</code> expands to <code>A NOT = 1 OR A NOT = 2</code>; A is 1, so the
+second half is true and the whole test passes. The version with parentheses says what was
+meant.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview these conditions don't build yet (the generated C# fails to
+compile):
+<ul>
+<li>a relation or sign condition with an arithmetic expression in it, such as
+<code>IF A + 1 &gt; 5</code>, <code>IF A &gt; B * 2</code>,
+<code>PERFORM UNTIL A * 2 &gt; 30</code> or <code>IF BAL + 12 IS ZERO</code>. Work it out
+with <a href="compute.html">COMPUTE</a> into a field first, then compare the field.</li>
+<li>a comparison of two literals, such as <code>IF 1 &lt; 2</code>.</li>
+<li>a test of a user-defined CLASS from SPECIAL-NAMES.</li>
+</ul></div>
+<div class="bad">Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
+<code>LOW-VALUES</code> gives the wrong answer (see
+<a href="figurative-constants.html">figurative constants</a>).</div>
+
+<h2>See also</h2>
+<p><a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,
+<a href="condition-names.html">condition names</a>,
+<a href="arithmetic-expressions.html">arithmetic expressions</a>,
+<a href="environment-division.html">ENVIRONMENT DIVISION</a> (CLASS),
+<a href="figurative-constants.html">figurative constants</a>.</p>

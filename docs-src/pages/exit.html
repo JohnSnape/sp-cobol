@@ -1,0 +1,51 @@
+title: EXIT
+summary: Leave a paragraph, a section, a PERFORM loop or a called program early; or mark the end of a PERFORM THRU range.
+keywords: EXIT PARAGRAPH EXIT SECTION EXIT PERFORM CYCLE EXIT PROGRAM exit paragraph break continue loop leave early return
+---
+<h2>Syntax</h2>
+<pre class="syntax">EXIT
+EXIT PARAGRAPH
+EXIT SECTION
+EXIT PERFORM [ CYCLE ]
+EXIT PROGRAM</pre>
+
+<h2>What it does</h2>
+<div class="table-wrap"><table>
+<tr><th>Statement</th><th>Effect</th></tr>
+<tr><td><code>EXIT</code></td><td>Nothing. It marks a paragraph that exists only to be the end of
+a <code>PERFORM ... THRU</code> range or the target of a GO TO.</td></tr>
+<tr><td><code>EXIT PARAGRAPH</code></td><td>Skip the rest of the current paragraph, as if its end
+had been reached.</td></tr>
+<tr><td><code>EXIT SECTION</code></td><td>Skip the rest of the current section, including any
+paragraphs after this one in it.</td></tr>
+<tr><td><code>EXIT PERFORM</code></td><td>Leave the inline <code>PERFORM ... END-PERFORM</code>
+loop it is in; the program goes on after END-PERFORM. Like <code>break</code> in other
+languages.</td></tr>
+<tr><td><code>EXIT PERFORM CYCLE</code></td><td>Skip the rest of this pass through the inline loop
+and start the next one (the VARYING item is stepped and the UNTIL test made as usual). Like
+<code>continue</code> in other languages.</td></tr>
+<tr><td><code>EXIT PROGRAM</code></td><td>In a called program, return to the caller. In a main
+program it does nothing. See <a href="goback.html">GOBACK</a>.</td></tr>
+</table></div>
+
+<h3>EXIT as an exit paragraph</h3>
+<p>Older code performs a range of paragraphs, <code>PERFORM CHECK-IT THRU CHECK-IT-EXIT</code>, and
+leaves early with <code>GO TO CHECK-IT-EXIT</code>. The last paragraph holds only
+<code>EXIT.</code> because a paragraph must contain a statement. EXIT PARAGRAPH and EXIT SECTION do
+the same job without the extra paragraph or the GO TO, and are the better choice in new code.</p>
+<p>EXIT PERFORM and EXIT PERFORM CYCLE belong inside an inline PERFORM (one with
+END-PERFORM). To leave an out-of-line PERFORM early, use EXIT PARAGRAPH or EXIT SECTION in the
+performed code.</p>
+
+<h2>Example</h2>
+<!-- example EXIT1 -->
+<p>In the loop, EXIT PERFORM CYCLE skips the DISPLAY when I is 2, and EXIT PERFORM ends the loop
+when I reaches 4, so only 1 and 3 print. AGE is 15, so CHECK-AGE leaves through EXIT PARAGRAPH,
+CHECK-SECT leaves the whole section (CHECK-SECT-2 never runs) through EXIT SECTION, and OLD-STYLE
+does the same thing the old way, with GO TO to a paragraph holding EXIT. None of the "NOT SHOWN"
+lines print.</p>
+
+<h2>See also</h2>
+<p><a href="perform.html">PERFORM</a>, <a href="go-to.html">GO TO</a>,
+<a href="goback.html">GOBACK</a>, <a href="stop.html">STOP RUN</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a> (paragraphs and sections).</p>

@@ -1,0 +1,88 @@
+title: OCCURS
+summary: Repeat an item to make a table (an array), with fixed or variable size.
+keywords: OCCURS TIMES table array subscript index INDEXED BY DEPENDING ON ODO variable length ASCENDING DESCENDING KEY two-dimensional nested
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: a fixed number of occurrences
+OCCURS integer-1 [ TIMES ]
+    [ { ASCENDING | DESCENDING } KEY IS data-name-1 ... ] ...
+    [ INDEXED BY index-name-1 ... ]
+
+Format 2: a variable number (OCCURS DEPENDING ON)
+OCCURS integer-1 TO integer-2 [ TIMES ] DEPENDING ON data-name-2
+    [ { ASCENDING | DESCENDING } KEY IS data-name-1 ... ] ...
+    [ INDEXED BY index-name-1 ... ]
+
+Referring to an occurrence
+data-name ( subscript [ [ , ] subscript ] ... )</pre>
+
+<h2>What it does</h2>
+<p><code>OCCURS</code> makes an item repeat, side by side in memory. The result is a
+<em>table</em> (other languages call it an array). <code>05 PRICE PIC 9(3)V99 OCCURS 5</code>
+is five prices, one after another. Usually the table is put inside a group (an 01 with the OCCURS item under it), so that
+the whole table has a name too.</p>
+<p>OCCURS can be on an elementary item or on a group. On a group, each occurrence holds the
+whole group: <code>REGION OCCURS 2</code> in the example is two copies of a name followed by
+four sales figures.</p>
+
+<h3>Subscripts</h3>
+<p>You pick one occurrence with a <em>subscript</em> in parentheses after the name. Numbering
+starts at 1, not 0. A subscript can be a number, a numeric item, an index name, or an item
+plus or minus a number (<code>ITEM(IX + 1)</code>, <code>QTR-SALES(R - 1, Q)</code>). A space
+before the parenthesis is allowed; inside, a space or comma separates subscripts.</p>
+<p>COBOL doesn't check subscripts for you by default, so check your loop limits. See the
+SP COBOL notes for what happens when a subscript is out of range.</p>
+
+<h3>Tables of tables</h3>
+<p>When an item with OCCURS is inside a group that also has OCCURS, you need one subscript for
+each level, outermost first. <code>QTR-SALES(2, 4)</code> is the fourth quarter of the second
+region. This is a two-dimensional table; you can nest further in the same way.</p>
+
+<h3>INDEXED BY</h3>
+<p><code>INDEXED BY</code> names an <em>index</em> for the table: a special subscript that the
+compiler keeps in the form that's fastest for that table. You don't declare an index in
+WORKING-STORAGE. You set and change it with <a href="set.html">SET</a> (<code>SET IX TO 1</code>,
+<code>SET IX UP BY 1</code>) or <code>PERFORM VARYING</code>, and
+<a href="search.html">SEARCH</a> needs one.</p>
+
+<h3>OCCURS DEPENDING ON</h3>
+<p>Format 2 makes the table's <em>current</em> size come from another item (the
+<em>ODO object</em>). Room is kept for the maximum, but the group that contains the table is
+treated as only as long as the current count: a DISPLAY, a MOVE of the whole group, or a
+WRITE of the record uses just that many occurrences. A variable table must be the last thing
+in its record.</p>
+
+<h3>ASCENDING / DESCENDING KEY</h3>
+<p>These phrases tell COBOL that the table's entries are kept in order by the named items. They
+don't sort anything; they are what <code>SEARCH ALL</code> (a binary search) relies on. See
+<a href="search.html">SEARCH</a>.</p>
+
+<h3>VALUE in tables</h3>
+<p>A <code>VALUE</code> on an item with OCCURS gives every occurrence that value. See
+<a href="value.html">VALUE</a> for starting a table with different values.</p>
+
+<h2>Example: a two-dimensional table</h2>
+<!-- example OCCURS1 -->
+<p>Each region holds a 5-byte name and four 4-digit amounts, so a region is 21 bytes and the
+table 42. The nested PERFORMs fill and total the table with two subscripts. A subscript can be
+an expression: with R at 1, <code>QTR-SALES(R + 1, 2)</code> is the second quarter of region 2.
+<code>REGION(1)</code> with one subscript is the whole first group.</p>
+
+<h2>Example: DEPENDING ON and INDEXED BY</h2>
+<!-- example OCCURS2 -->
+<p>With ITEM-COUNT at 3, ORDER-REC is 6 + 3 * 4 = 18 bytes long, and a DISPLAY of it stops after
+the third item. Setting the count to 5 makes it 26 bytes. The loop runs the index IX up to the
+current count, and <code>SET IX UP BY 1</code> moves it from 2 to 3.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">A subscript that points past the end of a table is not checked. In GnuCOBOL
+it silently reads or overwrites whatever bytes follow the table. In SP COBOL each 01 record is
+its own block of memory, so a subscript that reaches past the end of the whole record stops
+the program with an <code>IndexOutOfRangeException</code> instead. One that stays inside the
+record (past the table but before the record ends) still touches the neighboring items, as in
+GnuCOBOL.</div>
+
+<h2>See also</h2>
+<p><a href="search.html">SEARCH</a>, <a href="set.html">SET</a>,
+<a href="perform.html">PERFORM</a>, <a href="value.html">VALUE</a>,
+<a href="redefines.html">REDEFINES</a>, <a href="referring-to-data.html">Referring to data</a>.</p>

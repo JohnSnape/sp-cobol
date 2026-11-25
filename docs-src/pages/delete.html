@@ -1,0 +1,51 @@
+title: DELETE
+summary: Remove a record from a relative or indexed file, or delete a whole file.
+keywords: DELETE RECORD INVALID KEY NOT INVALID KEY END-DELETE DELETE FILE remove record erase file I-O 23 43 49
+badge: differs
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: delete a record
+DELETE file-name [ RECORD ]
+    [ INVALID KEY imperative-statement-1 ]
+    [ NOT INVALID KEY imperative-statement-2 ]
+[ END-DELETE ]
+
+Format 2: delete files from the disk
+DELETE FILE file-name-1 ...</pre>
+
+<h2>What it does</h2>
+<p><b>Format 1</b> removes one record from a RELATIVE or INDEXED file. (Records can't be
+removed from SEQUENTIAL or LINE SEQUENTIAL files; copy the file without them instead.) Like
+READ, it takes the <em>file</em> name. The file must be open <code>I-O</code> (status 49
+otherwise).</p>
+<ul>
+<li>With <b>sequential access</b>, it deletes the record the last READ returned; a READ must
+come just before (status 43 otherwise).</li>
+<li>With <b>random or dynamic access</b>, it deletes the record whose key you set: the slot
+number in the RELATIVE KEY, or the value in the RECORD KEY. If there is no such record, the
+status is 23 and <code>INVALID KEY</code> runs.</li>
+</ul>
+<p>A deleted RELATIVE slot becomes empty: reading in order skips it, and a later WRITE can
+fill it again.</p>
+<p><b>Format 2</b>, <code>DELETE FILE</code>, erases the file from the disk. The file must be
+closed. Deleting a file that doesn't exist gives status 35.</p>
+
+<h2>Example</h2>
+<!-- example DELETE1 -->
+<p>Task 2 is deleted. There is no task 7, so the second DELETE takes the INVALID KEY branch
+with status 23. Reading from slot 1 on shows only tasks 1 and 3. Finally
+<code>DELETE FILE</code> removes <code>tasks.dat</code>, and opening it for input gives 35.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">
+<p>DELETE of an empty RELATIVE slot that lies inside the file gives 23 in SP COBOL;
+GnuCOBOL 3.2 reports 00, a bug in its file handler. See <a href="rewrite.html">REWRITE</a>
+for the same difference shown in an example.</p>
+</div>
+<p>The format of SP COBOL's indexed files doesn't reuse the space of deleted records; it stays
+in the file until the file is copied (see <a href="files.html">Files</a>).</p>
+
+<h2>See also</h2>
+<p><a href="rewrite.html">REWRITE</a>, <a href="read.html">READ</a>,
+<a href="start.html">START</a>, <a href="files.html">Files</a>,
+<a href="file-status.html">FILE STATUS codes</a>.</p>

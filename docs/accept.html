@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACCEPT - SP COBOL Reference</title>
+<meta name="description" content="Read a line of input, or get the date, the time, a command-line argument or an environment variable.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html" class="current" aria-current="page">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>ACCEPT </h1>
+<p class="lede">Read a line of input, or get the date, the time, a command-line argument or an environment variable.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: read a line of input</span>
+ACCEPT <var>identifier-1</var>
+[ END-ACCEPT ]
+
+<span class="fmt">Format 2: the date and time</span>
+ACCEPT <var>identifier-1</var> FROM { DATE [ YYYYMMDD ] | DAY [ YYYYDDD ] | DAY-OF-WEEK | TIME }
+[ END-ACCEPT ]
+
+<span class="fmt">Format 3: the command line and the environment</span>
+ACCEPT <var>identifier-1</var> FROM { COMMAND-LINE | ARGUMENT-NUMBER | ARGUMENT-VALUE
+                         | ENVIRONMENT <var>literal-1</var> | ENVIRONMENT-VALUE }
+    [ ON EXCEPTION <var>imperative-statement-1</var> ]
+    [ NOT ON EXCEPTION <var>imperative-statement-2</var> ]
+[ END-ACCEPT ]
+
+<span class="fmt">Format 4: a field on the screen (see SCREEN SECTION)</span>
+ACCEPT { <var>identifier-1</var> AT LINE <var>line-number</var> COL <var>column-number</var> | <var>screen-name</var> }
+[ END-ACCEPT ]</pre>
+
+<h2>What it does</h2>
+<p><code>ACCEPT</code> puts a value into a data item from outside the program. Where the value
+comes from depends on the format.</p>
+
+<h3>Reading input (Format 1)</h3>
+<p>Plain <code>ACCEPT identifier</code> reads one line from <em>standard input</em>: what the
+user types at the keyboard, or a file fed to the program with <code>&lt;</code> on the command
+line. The line is then moved into the field the way <a href="move.html">MOVE</a> would:</p>
+<ul>
+<li>Into an alphanumeric field (<code>PIC X</code>), text is placed from the left. A short line
+is padded with spaces; a long one is cut off on the right.</li>
+<li>Into a numeric field, the text is read as a number, so you can type <code>12.5</code> or
+<code>-42</code> and the decimal point and sign go where the PICTURE says.</li>
+<li>When there is no more input (end of file), an alphanumeric field is filled with spaces.</li>
+</ul>
+<p>Nothing you type is shown by the program itself; the console echoes it as you type. To print
+a prompt on the same line as the answer, use <code>DISPLAY ... WITH NO ADVANCING</code> first.</p>
+
+<h3>Date and time (Format 2)</h3>
+<div class="table-wrap"><table>
+<tr><th>Phrase</th><th>Gives</th><th>Example</th></tr>
+<tr><td><code>DATE</code></td><td>YYMMDD, 6 digits</td><td>261125</td></tr>
+<tr><td><code>DATE YYYYMMDD</code></td><td>YYYYMMDD, 8 digits</td><td>20261125</td></tr>
+<tr><td><code>DAY</code></td><td>YYDDD: year and day of the year</td><td>26329</td></tr>
+<tr><td><code>DAY YYYYDDD</code></td><td>YYYYDDD, 7 digits</td><td>2026329</td></tr>
+<tr><td><code>DAY-OF-WEEK</code></td><td>1 digit, 1 = Monday ... 7 = Sunday</td><td>3</td></tr>
+<tr><td><code>TIME</code></td><td>HHMMSSCC: hours, minutes, seconds, hundredths</td><td>14302517</td></tr>
+</table></div>
+<p>Use the four-digit-year forms in new programs. For more control (time zone, formatting)
+use the <a href="intrinsic-functions.html">intrinsic functions</a> such as
+<code>FUNCTION CURRENT-DATE</code>.</p>
+
+<h3>Command line and environment (Format 3)</h3>
+<ul>
+<li><code>COMMAND-LINE</code>: everything typed after the program's name, as one string.</li>
+<li><code>ARGUMENT-NUMBER</code>: how many arguments there are.</li>
+<li><code>ARGUMENT-VALUE</code>: the next argument, one per ACCEPT. <code>ON EXCEPTION</code>
+runs when there are no more.</li>
+<li><code>ENVIRONMENT "NAME"</code>: the value of environment variable NAME.
+<code>ON EXCEPTION</code> runs when it isn't set, and the field is filled with spaces.</li>
+<li><code>ENVIRONMENT-VALUE</code>: the value of the variable named earlier by
+<code>DISPLAY "NAME" UPON ENVIRONMENT-NAME</code>.</li>
+</ul>
+<p>A program can set a variable for itself (and the programs it starts) with
+<code>SET ENVIRONMENT "NAME" TO value</code>; see <a href="set.html">SET</a>.</p>
+
+<h3>Screens (Format 4)</h3>
+<p>With <code>AT LINE ... COL ...</code>, or with the name of a screen from the SCREEN SECTION,
+ACCEPT lets the user type into fields on a full screen instead of reading a line. That is
+covered on the <a href="screen-section.html">SCREEN SECTION</a> page.</p>
+
+<h2>Examples</h2>
+<h3>Reading lines of input</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/ACCEPT1.cbl" download>ACCEPT1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. ACCEPT1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  CUST-NAME       PIC X(10).
+<span class="seq">000060</span> 01  QTY             PIC 9(3).
+<span class="seq">000070</span> 01  PRICE           PIC 9(3)V99.
+<span class="seq">000080</span> 01  AMOUNT          PIC S9(4).
+<span class="seq">000090</span> 01  SHORT-CODE      PIC X(5).
+<span class="seq">000100</span> 01  LEFT-OVER       PIC X(10) VALUE <span class="str">&quot;UNCHANGED&quot;</span>.
+<span class="seq">000110</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;Name? &quot;</span> WITH NO ADVANCING
+<span class="seq">000130</span>     <span class="kw">ACCEPT</span> CUST-NAME
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> CUST-NAME <span class="str">&quot;]&quot;</span>
+<span class="seq">000150</span>     <span class="kw">ACCEPT</span> QTY
+<span class="seq">000160</span>     <span class="kw">ACCEPT</span> PRICE
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;QTY &quot;</span> QTY <span class="str">&quot;  PRICE &quot;</span> PRICE
+<span class="seq">000180</span>     <span class="kw">ACCEPT</span> AMOUNT
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AMOUNT &quot;</span> AMOUNT
+<span class="seq">000200</span>     <span class="kw">ACCEPT</span> SHORT-CODE
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> SHORT-CODE <span class="str">&quot;]&quot;</span>
+<span class="seq">000220</span>     <span class="kw">ACCEPT</span> LEFT-OVER
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> LEFT-OVER <span class="str">&quot;]&quot;</span>
+<span class="seq">000240</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">What the user types</div><pre class="input">Ada
+7
+12.5
+-42
+TOOLONGTEXT</pre>
+<div class="out-label">Output</div><pre class="output">Name? [Ada       ]
+QTY 007  PRICE 012.50
+AMOUNT -0042
+[TOOLO]
+[          ]</pre>
+</figure>
+<p>The prompt and the name appear on one line because of <code>WITH NO ADVANCING</code> (the
+typed text isn't part of the output here, because it came from a file). <code>7</code> and
+<code>12.5</code> become numbers with leading zeros, <code>-42</code> keeps its sign, and
+<code>TOOLONGTEXT</code> is cut to the five characters SHORT-CODE holds. The last ACCEPT finds
+no more input, so LEFT-OVER becomes spaces.</p>
+
+<h3>Date and time</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/ACCEPT2.cbl" download>ACCEPT2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. ACCEPT2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  TODAY-8         PIC 9(8).
+<span class="seq">000060</span> 01  TODAY-6         PIC 9(6).
+<span class="seq">000070</span> 01  JULIAN-7        PIC 9(7).
+<span class="seq">000080</span> 01  WEEK-DAY        PIC 9.
+<span class="seq">000090</span> 01  NOW-TIME.
+<span class="seq">000100</span>     05  NOW-HH      PIC 99.
+<span class="seq">000110</span>     05  NOW-MM      PIC 99.
+<span class="seq">000120</span>     05  NOW-SS      PIC 99.
+<span class="seq">000130</span>     05  NOW-CC      PIC 99.
+<span class="seq">000140</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000150</span>     <span class="kw">ACCEPT</span> TODAY-8 FROM DATE YYYYMMDD
+<span class="seq">000160</span>     <span class="kw">IF</span> FUNCTION TEST-DATE-YYYYMMDD (TODAY-8) = 0
+<span class="seq">000170</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;DATE YYYYMMDD: a valid date&quot;</span>
+<span class="seq">000180</span>     <span class="kw">END-IF</span>
+<span class="seq">000190</span>     <span class="kw">ACCEPT</span> TODAY-6 FROM DATE
+<span class="seq">000200</span>     <span class="kw">IF</span> TODAY-6 = TODAY-8 (3:6)
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;DATE:          the same day as YYMMDD&quot;</span>
+<span class="seq">000220</span>     <span class="kw">END-IF</span>
+<span class="seq">000230</span>     <span class="kw">ACCEPT</span> JULIAN-7 FROM DAY YYYYDDD
+<span class="seq">000240</span>     <span class="kw">IF</span> FUNCTION TEST-DAY-YYYYDDD (JULIAN-7) = 0
+<span class="seq">000250</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;DAY YYYYDDD:   a valid year and day&quot;</span>
+<span class="seq">000260</span>     <span class="kw">END-IF</span>
+<span class="seq">000270</span>     <span class="kw">ACCEPT</span> WEEK-DAY FROM DAY-OF-WEEK
+<span class="seq">000280</span>     <span class="kw">IF</span> WEEK-DAY &gt;= 1 AND WEEK-DAY &lt;= 7
+<span class="seq">000290</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;DAY-OF-WEEK:   between 1 and 7&quot;</span>
+<span class="seq">000300</span>     <span class="kw">END-IF</span>
+<span class="seq">000310</span>     <span class="kw">ACCEPT</span> NOW-TIME FROM TIME
+<span class="seq">000320</span>     <span class="kw">IF</span> NOW-HH &lt; 24 AND NOW-MM &lt; 60 AND NOW-SS &lt; 60
+<span class="seq">000330</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;TIME:          hours, minutes, seconds&quot;</span>
+<span class="seq">000340</span>     <span class="kw">END-IF</span>
+<span class="seq">000350</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">DATE YYYYMMDD: a valid date
+DATE:          the same day as YYMMDD
+DAY YYYYDDD:   a valid year and day
+DAY-OF-WEEK:   between 1 and 7
+TIME:          hours, minutes, seconds</pre>
+</figure>
+<p>The program checks each value instead of printing it, so its output is the same every day.
+In your own programs you would simply <code>DISPLAY TODAY-8</code>. NOW-TIME is a group, so its
+parts can be used one by one after a single ACCEPT.</p>
+
+<h3>Arguments and environment variables</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/ACCEPT3.cbl" download>ACCEPT3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. ACCEPT3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  ARG-COUNT       PIC 99.
+<span class="seq">000060</span> 01  CMD-LINE        PIC X(40).
+<span class="seq">000070</span> 01  ENV-VALUE       PIC X(20).
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">ACCEPT</span> ARG-COUNT FROM ARGUMENT-NUMBER
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ARGUMENTS:    &quot;</span> ARG-COUNT
+<span class="seq">000110</span>     <span class="kw">ACCEPT</span> CMD-LINE FROM COMMAND-LINE
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;COMMAND LINE: [&quot;</span> CMD-LINE <span class="str">&quot;]&quot;</span>
+<span class="seq">000130</span>     <span class="kw">SET</span> <span class="kw">ENVIRONMENT</span> <span class="str">&quot;ACCEPT3_MODE&quot;</span> TO <span class="str">&quot;TEST&quot;</span>
+<span class="seq">000140</span>     <span class="kw">ACCEPT</span> ENV-VALUE FROM <span class="kw">ENVIRONMENT</span> <span class="str">&quot;ACCEPT3_MODE&quot;</span>
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ACCEPT3_MODE: [&quot;</span> ENV-VALUE <span class="str">&quot;]&quot;</span>
+<span class="seq">000160</span>     <span class="kw">MOVE</span> <span class="str">&quot;OLD VALUE&quot;</span> TO ENV-VALUE
+<span class="seq">000170</span>     <span class="kw">ACCEPT</span> ENV-VALUE FROM <span class="kw">ENVIRONMENT</span> <span class="str">&quot;ACCEPT3_NOT_SET&quot;</span>
+<span class="seq">000180</span>         ON EXCEPTION
+<span class="seq">000190</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;NOT SET:      [&quot;</span> ENV-VALUE <span class="str">&quot;]&quot;</span> <span class="kw">END-DISPLAY</span>
+<span class="seq">000200</span>         NOT ON EXCEPTION
+<span class="seq">000210</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;FOUND:        [&quot;</span> ENV-VALUE <span class="str">&quot;]&quot;</span>
+<span class="seq">000220</span>     <span class="kw">END-ACCEPT</span>
+<span class="seq">000230</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">ARGUMENTS:    00
+COMMAND LINE: [                                        ]
+ACCEPT3_MODE: [TEST                ]
+NOT SET:      [                    ]</pre>
+</figure>
+<p>The program was run with no arguments, so ARGUMENT-NUMBER is 0 and the command line is
+blank. ACCEPT3_MODE was set by the program itself just before it was read. ACCEPT3_NOT_SET
+doesn't exist, so the exception branch runs and the field is cleared to spaces.</p>
+<div class="warn">Look at the <code>END-DISPLAY</code> after the first DISPLAY. Without it, the
+<code>NOT ON EXCEPTION</code> line would belong to that DISPLAY, not to the ACCEPT, because
+DISPLAY has exception phrases of its own; both messages would print. Close any statement that
+could take the next phrase with its END- word.</div>
+
+<h2>SP COBOL notes</h2>
+<p>Plain ACCEPT, the date and time forms, and the command-line and environment forms behave as
+in GnuCOBOL 3.2. The screen form follows SP COBOL's screen rules, which differ from GnuCOBOL in a
+few ways meant for beginners (the first key typed replaces a field's contents, for example);
+see <a href="screen-section.html">SCREEN SECTION</a>.</p>
+
+<h2>See also</h2>
+<p><a href="display.html">DISPLAY</a>, <a href="screen-section.html">SCREEN SECTION</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a> (CURRENT-DATE and friends),
+<a href="set.html">SET ENVIRONMENT</a>, <a href="move.html">MOVE</a> for how values are placed
+in fields.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="arithmetic-expressions.html">&larr; Arithmetic expressions</a><a class="next" href="add.html">ADD &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

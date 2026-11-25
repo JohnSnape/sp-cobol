@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VALUE - SP COBOL Reference</title>
+<meta name="description" content="Give a data item the value it starts with when the program begins.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html" class="current" aria-current="page">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Data description</p>
+<h1>VALUE </h1>
+<p class="lede">Give a data item the value it starts with when the program begins.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: an item's starting value</span>
+VALUE [ IS ] <var>literal-1</var>
+
+<span class="fmt">Format 2: on a level-88 condition-name</span>
+{ VALUE [ IS ] | VALUES [ ARE ] } { <var>literal-1</var> [ { THROUGH | THRU } <var>literal-2</var> ] } ...</pre>
+
+<h2>What it does</h2>
+<p>A <code>VALUE</code> clause in WORKING-STORAGE puts a value in the item before the first
+statement of the program runs. An item without one starts out with spaces if it is
+alphanumeric and zero if it is numeric, but writing VALUE makes your intent clear.</p>
+<p>The literal must suit the item: a number for a numeric item (it must fit in the PICTURE,
+or the compiler warns), text in quotes for an alphanumeric one. You can also use a
+<a href="figurative-constants.html">figurative constant</a>: <code>SPACES</code>,
+<code>ZERO</code>, <code>HIGH-VALUES</code>, <code>LOW-VALUES</code>, <code>QUOTES</code>, or
+<code>ALL "x"</code> to fill the whole item with a character or pattern.</p>
+
+<h3>VALUE on a group</h3>
+<p>A group can have a VALUE too, as long as it is text (or a figurative constant). The text is
+put into the group's bytes from the left, as if the group were one <code>PIC X</code> field,
+and the items inside it then hold their part of it. Leave VALUE off the items inside it.</p>
+
+<h3>VALUE in tables</h3>
+<p>A VALUE on an item with <code>OCCURS</code> gives every occurrence the same starting
+value. To start a table with <em>different</em> values, the classic way is to write a group
+of FILLER items with the values one after another, then <a href="redefines.html">REDEFINES</a>
+that group as a table. The example does this for day names.</p>
+
+<h3>VALUE on condition-names</h3>
+<p>On a level-88 item, VALUE doesn't set anything. It lists the values for which the
+condition is true, and may have several values and ranges with <code>THRU</code>. See
+<a href="condition-names.html">Condition-names</a>.</p>
+
+<h3>VALUE versus INITIALIZE</h3>
+<p>VALUE is applied once, when the program starts. To reset items while the program runs, use
+<a href="initialize.html">INITIALIZE</a> or <a href="move.html">MOVE</a>. Note that
+<code>INITIALIZE</code> doesn't go back to the VALUE: by default it sets numeric items to zero
+and alphanumeric items to spaces. (<code>INITIALIZE item ALL TO VALUE</code> is the way to put the VALUE
+clauses back.)</p>
+<p>Give starting values in WORKING-STORAGE. In the LINKAGE SECTION and FILE SECTION, use
+VALUE only on 88 levels: that storage belongs to the calling program or to the file's
+records, not to your program.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/VALUE1.cbl" download>VALUE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. VALUE1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  GREETING      PIC X(12)     VALUE <span class="str">&quot;HELLO&quot;</span>.
+<span class="seq">000060</span> 01  RATE          PIC 9V999     VALUE 0.075.
+<span class="seq">000070</span> 01  DEBT          PIC S9(4)     VALUE -250.
+<span class="seq">000080</span> 01  STARS         PIC X(6)      VALUE ALL <span class="str">&quot;*&quot;</span>.
+<span class="seq">000090</span> 01  EMPTY-TXT     PIC X(4)      VALUE SPACES.
+<span class="seq">000100</span> 01  NONE          PIC 9(3)      VALUE ZERO.
+<span class="seq">000110</span> 01  TOP-VAL       PIC X(2)      VALUE HIGH-VALUES.
+<span class="seq">000120</span> 01  HEADER        VALUE <span class="str">&quot;NAME      CITY&quot;</span>.
+<span class="seq">000130</span>     05  H-NAME    PIC X(10).
+<span class="seq">000140</span>     05  H-CITY    PIC X(4).
+<span class="seq">000150</span> 01  DAY-NAMES.
+<span class="seq">000160</span>     05  FILLER    PIC X(3)      VALUE <span class="str">&quot;MON&quot;</span>.
+<span class="seq">000170</span>     05  FILLER    PIC X(3)      VALUE <span class="str">&quot;TUE&quot;</span>.
+<span class="seq">000180</span>     05  FILLER    PIC X(3)      VALUE <span class="str">&quot;WED&quot;</span>.
+<span class="seq">000190</span> 01  DAY-TABLE REDEFINES DAY-NAMES.
+<span class="seq">000200</span>     05  DAY-NAME  PIC X(3)      OCCURS 3.
+<span class="seq">000210</span> 01  COUNTS.
+<span class="seq">000220</span>     05  CNT       PIC 99        VALUE 7 OCCURS 3.
+<span class="seq">000230</span> 01  BLANK-NUM     PIC 9(3).
+<span class="seq">000240</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> GREETING <span class="str">&quot;] &quot;</span> RATE <span class="str">&quot; &quot;</span> DEBT
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> STARS <span class="str">&quot;] [&quot;</span> EMPTY-TXT <span class="str">&quot;] &quot;</span> NONE
+<span class="seq">000270</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;HIGH-VALUES: &quot;</span> FUNCTION HEX-OF(TOP-VAL)
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> H-NAME <span class="str">&quot;] [&quot;</span> H-CITY <span class="str">&quot;]&quot;</span>
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> DAY-NAME(1) <span class="str">&quot; &quot;</span> DAY-NAME(2) <span class="str">&quot; &quot;</span> DAY-NAME(3)
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> CNT(1) <span class="str">&quot; &quot;</span> CNT(2) <span class="str">&quot; &quot;</span> CNT(3)
+<span class="seq">000310</span>     <span class="kw">MOVE</span> <span class="str">&quot;BYE&quot;</span> TO GREETING
+<span class="seq">000320</span>     <span class="kw">MOVE</span> 5 TO CNT(2)
+<span class="seq">000330</span>     <span class="kw">INITIALIZE</span> GREETING COUNTS BLANK-NUM
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER INITIALIZE [&quot;</span> GREETING <span class="str">&quot;] &quot;</span> CNT(2)
+<span class="seq">000350</span>             <span class="str">&quot; &quot;</span> BLANK-NUM
+<span class="seq">000360</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">[HELLO       ] 0.075 -0250
+[******] [    ] 000
+HIGH-VALUES: FFFF
+[NAME      ] [CITY]
+MON TUE WED
+07 07 07
+AFTER INITIALIZE [            ] 00 000</pre>
+</figure>
+<p>Each item starts with its VALUE: the short literal <code>"HELLO"</code> is padded with
+spaces, <code>ALL "*"</code> fills STARS, and <code>HIGH-VALUES</code> are bytes of
+<code>FF</code>. The group HEADER's value is split between H-NAME and H-CITY by position. The
+day names come from the FILLER values, seen through the redefining table, and every
+occurrence of CNT starts at 07. After the MOVEs, <code>INITIALIZE</code> sets GREETING to
+spaces and the CNT items to zero, not back to their VALUE of 7.</p>
+
+<h2>See also</h2>
+<p><a href="initialize.html">INITIALIZE</a>, <a href="figurative-constants.html">Figurative
+constants</a>, <a href="literals.html">Literals</a>, <a href="occurs.html">OCCURS</a>,
+<a href="condition-names.html">Condition-names</a>, <a href="constants.html">Constants</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="usage.html">&larr; USAGE</a><a class="next" href="occurs.html">OCCURS &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

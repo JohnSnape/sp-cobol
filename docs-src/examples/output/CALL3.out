@@ -1,0 +1,3 @@
+CALLING A PROGRAM THAT ISN'T THERE
+libcob: error: module 'PAYROLL' not found
+  hint: No program has PROGRAM-ID PAYROLL. Check the spelling, and that PAYROLL.cbl is part of this project. Use CALL ... ON EXCEPTION to handle a missing program yourself.

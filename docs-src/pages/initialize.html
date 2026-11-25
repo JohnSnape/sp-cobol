@@ -1,0 +1,66 @@
+title: INITIALIZE
+summary: Reset the fields of a group, record or table: spaces in text fields, zeros in numeric ones.
+keywords: INITIALIZE REPLACING ALPHANUMERIC NUMERIC NUMERIC-EDITED ALPHANUMERIC-EDITED WITH FILLER ALL TO VALUE THEN TO DEFAULT clear reset blank zero record table
+---
+<h2>Syntax</h2>
+<pre class="syntax">INITIALIZE identifier-1 ...
+    [ WITH FILLER ]
+    [ { ALL | category } TO VALUE ]
+    [ REPLACING { category [ DATA ] BY { identifier-2 | literal-1 } } ... ]
+    [ THEN TO DEFAULT ]
+
+category:  { ALPHABETIC | ALPHANUMERIC | ALPHANUMERIC-EDITED | NUMERIC
+           | NUMERIC-EDITED | NATIONAL | NATIONAL-EDITED }</pre>
+
+<h2>What it does</h2>
+<p><code>INITIALIZE</code> sets every elementary item inside <em>identifier-1</em> to a starting
+value chosen by its category. On its own, with no phrases:</p>
+<div class="table-wrap"><table>
+<tr><th>Kind of field</th><th>Becomes</th></tr>
+<tr><td>alphabetic, alphanumeric, alphanumeric-edited (<code>PIC A</code>, <code>X</code>)</td><td>spaces</td></tr>
+<tr><td>numeric (<code>PIC 9</code>, any USAGE)</td><td>zero</td></tr>
+<tr><td>numeric-edited (<code>PIC ZZ9.99</code>, <code>$$$9.99</code>)</td><td>zero, edited through its
+PICTURE</td></tr>
+</table></div>
+<p><code>FILLER</code> items are left alone unless you write <code>WITH FILLER</code>. Every occurrence of a table
+(OCCURS) is initialized. You can also name a single elementary field.</p>
+<p>INITIALIZE is clearer than <code>MOVE SPACES TO record</code>, which also blanks the numeric
+fields, leaving them invalid for arithmetic.</p>
+
+<h3>The phrases</h3>
+<ul>
+<li><code>REPLACING category BY value</code>: fields of that category get <em>value</em>, moved as
+by <a href="move.html">MOVE</a>. Fields of the categories you don't name are <em>not changed</em>
+(add <code>THEN TO DEFAULT</code> to give them spaces and zeros). A numeric-edited field is not
+NUMERIC for this purpose; name <code>NUMERIC-EDITED</code> to replace it.</li>
+<li><code>WITH FILLER</code>: initialize FILLER items too.</li>
+<li><code>ALL TO VALUE</code>: fields that have a <a href="value.html">VALUE</a> clause get that value
+back. Fields without one are not changed.</li>
+<li><code>THEN TO DEFAULT</code>: after the other phrases, fields they didn't set get the usual
+space or zero.</li>
+</ul>
+<div class="note">The standard says <code>NUMERIC TO VALUE</code> (a category instead of ALL)
+restores only the VALUE clauses of that category. GnuCOBOL 3.2, and SP COBOL with it, restores
+the VALUE clauses of every category either way, so write <code>ALL TO VALUE</code> and avoid the
+surprise.</div>
+
+<h2>Examples</h2>
+<!-- example INIT1 -->
+<p>With REPLACING, the alphanumeric field gets <code>"?"</code> (padded with spaces, as a MOVE
+would) and the numeric ones 7. CUST-SHOW is numeric-edited, a category the REPLACING phrase
+doesn't name, so it keeps $12.00. The plain INITIALIZE then blanks CUST-NAME, zeros the numeric
+fields, and gives CUST-SHOW the edited form of zero. INITIALIZE works on a single field as well.
+In the table, all three occurrences get spaces and zeros.</p>
+
+<h3>FILLER, VALUE and DEFAULT</h3>
+<!-- example INIT2 -->
+<p>PART-REC has a FILLER holding <code>"-*-"</code>. A plain INITIALIZE leaves the FILLER alone;
+WITH FILLER blanks it too. ALL TO VALUE puts back the VALUE clauses of PART-CODE and PART-QTY, but
+not the FILLER's, since FILLER was not included this time; PART-NOTE has no VALUE and is not
+touched. The last statement, after the record was filled with X's, restores every VALUE (FILLER
+included) and then gives PART-NOTE, which has no VALUE, its default of spaces.</p>
+
+<h2>See also</h2>
+<p><a href="move.html">MOVE</a>, <a href="value.html">VALUE</a>,
+<a href="occurs.html">OCCURS</a> (tables), <a href="picture.html">PICTURE</a> (categories),
+<a href="redefines.html">REDEFINES</a>.</p>

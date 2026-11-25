@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditions - SP COBOL Reference</title>
+<meta name="description" content="The tests that IF, EVALUATE, PERFORM UNTIL and SEARCH WHEN use: relations, classes, signs, condition names, AND/OR/NOT.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details open><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html" class="current" aria-current="page">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Using data</p>
+<h1>Conditions </h1>
+<p class="lede">The tests that IF, EVALUATE, PERFORM UNTIL and SEARCH WHEN use: relations, classes, signs, condition names, AND/OR/NOT.</p>
+<h2>Syntax</h2>
+<pre class="syntax">Relation <var>condition</var>:
+<var>operand-1</var> [ IS ] [ NOT ] { =  | EQUAL TO
+                         | &gt;  | GREATER THAN
+                         | &lt;  | LESS THAN
+                         | &gt;= | GREATER THAN OR EQUAL TO
+                         | &lt;= | LESS THAN OR EQUAL TO
+                         | &lt;&gt; } <var>operand-2</var>
+
+Class <var>condition</var>:
+<var>identifier</var> [ IS ] [ NOT ] { NUMERIC | ALPHABETIC | ALPHABETIC-UPPER
+                          | ALPHABETIC-LOWER | <var>class-name</var> }
+
+Sign <var>condition</var>:
+<var>identifier</var> [ IS ] [ NOT ] { POSITIVE | NEGATIVE | ZERO }
+
+Condition <var>name</var>:
+<var>condition-name</var>
+
+Combined <var>and</var> <var>negated</var>:
+<var>condition-1</var> { AND | OR } <var>condition-2</var> ...
+NOT <var>condition</var>
+( <var>condition</var> )</pre>
+
+<h2>What it does</h2>
+<p>A condition is a test that is either true or false. Conditions appear in
+<a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,
+<a href="perform.html">PERFORM ... UNTIL</a> and <a href="search.html">SEARCH ... WHEN</a>.</p>
+
+<h3>Relation conditions</h3>
+<p>Compare two values. The symbols and the words mean the same: <code>A &lt; B</code> is
+<code>A IS LESS THAN B</code>. <code>NOT</code> reverses the test, so <code>A NOT = B</code>
+is true when they differ (<code>&lt;&gt;</code> says the same thing).</p>
+<ul>
+<li><b>Numbers</b> are compared by value, whatever their pictures: <code>PIC 9(3)</code>
+holding 005 equals <code>PIC 9V99</code> holding 5.00.</li>
+<li><b>Text</b> is compared character by character from the left, by the characters' codes.
+If the two sides are different lengths, the shorter one is treated as if padded with spaces on
+the right. So a <code>PIC X(8)</code> field holding "ADA" equals the literal
+<code>"ADA"</code>, and the same rule makes <code>IF NAME = SPACES</code> true for an
+all-blank field of any length.</li>
+</ul>
+
+<h3>Class conditions</h3>
+<p>Test what kind of characters an item holds:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Test</th><th>True when</th></tr>
+<tr><td><code>NUMERIC</code></td><td>Every character is a digit (a numeric item may also have
+a valid sign). Use it to check input before doing arithmetic with it.</td></tr>
+<tr><td><code>ALPHABETIC</code></td><td>Every character is a letter (upper or lower case) or a
+space.</td></tr>
+<tr><td><code>ALPHABETIC-UPPER</code></td><td>Every character is A-Z or a space.</td></tr>
+<tr><td><code>ALPHABETIC-LOWER</code></td><td>Every character is a-z or a space.</td></tr>
+<tr><td><code>class-name</code></td><td>Every character is in a CLASS you defined in
+SPECIAL-NAMES (see SP COBOL notes).</td></tr>
+</table>
+</div>
+<p>Spaces count as alphabetic, so a blank field passes ALPHABETIC.</p>
+
+<h3>Sign conditions</h3>
+<p><code>POSITIVE</code> is true for a value greater than zero, <code>NEGATIVE</code> for
+less than zero, and <code>ZERO</code> for exactly zero. Zero is neither positive nor
+negative.</p>
+
+<h3>Condition names</h3>
+<p>A level 88 entry gives a name to one or more values of an item; the name itself is a
+condition: <code>IF IS-MEMBER</code>. See <a href="condition-names.html">condition
+names</a>.</p>
+
+<h3>AND, OR, NOT and parentheses</h3>
+<p>Join conditions with <code>AND</code> (both must be true) and <code>OR</code> (at least one
+must be true). <code>NOT</code> in front of a condition reverses it. Without parentheses,
+<code>NOT</code> is applied first, then <code>AND</code>, then <code>OR</code>, so
+<code>A AND B OR C</code> means <code>(A AND B) OR C</code>. Use parentheses whenever you mix
+AND and OR; they cost nothing and say what you mean.</p>
+
+<h3>Abbreviated combined conditions</h3>
+<p>When several relations test the same item, you can leave the item out after the first:
+<code>IF CODE-X = 1 OR 3 OR 5</code> means <code>IF CODE-X = 1 OR CODE-X = 3 OR CODE-X =
+5</code>, and <code>IF AGE &gt; 12 AND &lt; 20</code> means
+<code>IF AGE &gt; 12 AND AGE &lt; 20</code>. The left side and the last operator written carry
+forward to each value that follows.</p>
+<div class="warn"><code>IF A NOT = 1 OR 2</code> means <code>A NOT = 1 OR A NOT = 2</code>,
+which is always true. To test "A is neither 1 nor 2" write
+<code>IF NOT (A = 1 OR A = 2)</code>, or use an 88-level name.</div>
+
+<h2>Example: relation, class and sign conditions</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/COND1.cbl" download>COND1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. COND1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  A                   PIC 99    VALUE 5.
+<span class="seq">000060</span> 01  B                   PIC 99    VALUE 7.
+<span class="seq">000070</span> 01  FIRST-NAME          PIC X(8)  VALUE <span class="str">&quot;ADA&quot;</span>.
+<span class="seq">000080</span> 01  PART-CODE           PIC X(3)  VALUE <span class="str">&quot;12A&quot;</span>.
+<span class="seq">000090</span> 01  BALANCE             PIC S9(3) VALUE -12.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span><span class="com">*    RELATION CONDITIONS</span>
+<span class="seq">000120</span>     <span class="kw">IF</span> A &lt; B <span class="kw">DISPLAY</span> <span class="str">&quot;A &lt; B&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000130</span>     <span class="kw">IF</span> A IS LESS THAN B <span class="kw">DISPLAY</span> <span class="str">&quot;A IS LESS THAN B&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000140</span>     <span class="kw">IF</span> B &gt;= 7 <span class="kw">DISPLAY</span> <span class="str">&quot;B &gt;= 7&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000150</span>     <span class="kw">IF</span> B IS GREATER THAN OR EQUAL TO 7
+<span class="seq">000160</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;B IS GREATER THAN OR EQUAL TO 7&quot;</span>
+<span class="seq">000170</span>     <span class="kw">END-IF</span>
+<span class="seq">000180</span>     <span class="kw">IF</span> A NOT = B <span class="kw">DISPLAY</span> <span class="str">&quot;A NOT = B&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000190</span>     <span class="kw">IF</span> FIRST-NAME = <span class="str">&quot;ADA&quot;</span> <span class="kw">DISPLAY</span> <span class="str">&quot;PADDED: EQUAL&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000200</span>     <span class="kw">IF</span> FIRST-NAME &lt; <span class="str">&quot;BOB&quot;</span> <span class="kw">DISPLAY</span> <span class="str">&quot;ADA COMES BEFORE BOB&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000210</span>     <span class="kw">IF</span> FIRST-NAME &gt; <span class="str">&quot;AD&quot;</span> <span class="kw">DISPLAY</span> <span class="str">&quot;ADA COMES AFTER AD&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000220</span><span class="com">*    CLASS CONDITIONS</span>
+<span class="seq">000230</span>     <span class="kw">IF</span> PART-CODE IS NOT NUMERIC <span class="kw">DISPLAY</span> <span class="str">&quot;12A NOT NUMERIC&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000240</span>     <span class="kw">IF</span> PART-CODE (1:2) IS NUMERIC
+<span class="seq">000250</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST TWO ARE NUMERIC&quot;</span>
+<span class="seq">000260</span>     <span class="kw">END-IF</span>
+<span class="seq">000270</span>     <span class="kw">IF</span> FIRST-NAME IS ALPHABETIC
+<span class="seq">000280</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST-NAME IS ALPHABETIC (SPACES COUNT)&quot;</span>
+<span class="seq">000290</span>     <span class="kw">END-IF</span>
+<span class="seq">000300</span>     <span class="kw">IF</span> FIRST-NAME IS ALPHABETIC-UPPER
+<span class="seq">000310</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST-NAME IS ALPHABETIC-UPPER&quot;</span>
+<span class="seq">000320</span>     <span class="kw">END-IF</span>
+<span class="seq">000330</span>     <span class="kw">IF</span> FIRST-NAME IS NOT ALPHABETIC-LOWER
+<span class="seq">000340</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST-NAME IS NOT ALPHABETIC-LOWER&quot;</span>
+<span class="seq">000350</span>     <span class="kw">END-IF</span>
+<span class="seq">000360</span><span class="com">*    SIGN CONDITIONS</span>
+<span class="seq">000370</span>     <span class="kw">IF</span> BALANCE IS NEGATIVE <span class="kw">DISPLAY</span> <span class="str">&quot;BALANCE IS NEGATIVE&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000380</span>     <span class="kw">IF</span> A IS POSITIVE <span class="kw">DISPLAY</span> <span class="str">&quot;A IS POSITIVE&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000390</span>     <span class="kw">IF</span> BALANCE IS NOT ZERO <span class="kw">DISPLAY</span> <span class="str">&quot;BALANCE IS NOT ZERO&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000400</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">A &lt; B
+A IS LESS THAN B
+B &gt;= 7
+B IS GREATER THAN OR EQUAL TO 7
+A NOT = B
+PADDED: EQUAL
+ADA COMES BEFORE BOB
+ADA COMES AFTER AD
+12A NOT NUMERIC
+FIRST TWO ARE NUMERIC
+FIRST-NAME IS ALPHABETIC (SPACES COUNT)
+FIRST-NAME IS ALPHABETIC-UPPER
+FIRST-NAME IS NOT ALPHABETIC-LOWER
+BALANCE IS NEGATIVE
+A IS POSITIVE
+BALANCE IS NOT ZERO</pre>
+</figure>
+<p>FIRST-NAME is eight characters holding "ADA" and five spaces; compared with the
+three-character literal "ADA", the literal is padded with spaces, so they are equal. "ADA" is
+less than "BOB" because A comes before B, and greater than "AD" because the padded "AD " has a
+space where "ADA" has an A. "12A" is not NUMERIC, but its first two characters are. FIRST-NAME
+is ALPHABETIC and ALPHABETIC-UPPER because its trailing spaces count as alphabetic.</p>
+
+<h2>Example: combined conditions</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/COND2.cbl" download>COND2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. COND2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  AGE                 PIC 99    VALUE 15.
+<span class="seq">000060</span> 01  CODE-X              PIC 9     VALUE 3.
+<span class="seq">000070</span> 01  MEMBER-FLAG         PIC X     VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000080</span>     88  IS-MEMBER                 VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span>     <span class="kw">IF</span> AGE &gt; 12 AND AGE &lt; 20
+<span class="seq">000110</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;A TEENAGER&quot;</span>
+<span class="seq">000120</span>     <span class="kw">END-IF</span>
+<span class="seq">000130</span>     <span class="kw">IF</span> AGE &gt; 12 AND &lt; 20
+<span class="seq">000140</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;STILL A TEENAGER (ABBREVIATED)&quot;</span>
+<span class="seq">000150</span>     <span class="kw">END-IF</span>
+<span class="seq">000160</span>     <span class="kw">IF</span> CODE-X = 1 OR 3 OR 5
+<span class="seq">000170</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;CODE-X IS 1, 3 OR 5&quot;</span>
+<span class="seq">000180</span>     <span class="kw">END-IF</span>
+<span class="seq">000190</span>     <span class="kw">IF</span> NOT CODE-X = 2
+<span class="seq">000200</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;NOT CODE-X = 2&quot;</span>
+<span class="seq">000210</span>     <span class="kw">END-IF</span>
+<span class="seq">000220</span>     <span class="kw">IF</span> IS-MEMBER AND AGE &lt; 18
+<span class="seq">000230</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;A YOUNG MEMBER&quot;</span>
+<span class="seq">000240</span>     <span class="kw">END-IF</span>
+<span class="seq">000250</span><span class="com">*    AND IS DONE BEFORE OR</span>
+<span class="seq">000260</span>     <span class="kw">IF</span> CODE-X = 9 AND AGE = 99 OR IS-MEMBER
+<span class="seq">000270</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;WITHOUT PARENTHESES: TRUE&quot;</span>
+<span class="seq">000280</span>     <span class="kw">END-IF</span>
+<span class="seq">000290</span>     <span class="kw">IF</span> CODE-X = 9 AND (AGE = 99 OR IS-MEMBER)
+<span class="seq">000300</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;WITH PARENTHESES: TRUE&quot;</span>
+<span class="seq">000310</span>     <span class="kw">ELSE</span>
+<span class="seq">000320</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;WITH PARENTHESES: FALSE&quot;</span>
+<span class="seq">000330</span>     <span class="kw">END-IF</span>
+<span class="seq">000340</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">A TEENAGER
+STILL A TEENAGER (ABBREVIATED)
+CODE-X IS 1, 3 OR 5
+NOT CODE-X = 2
+A YOUNG MEMBER
+WITHOUT PARENTHESES: TRUE
+WITH PARENTHESES: FALSE</pre>
+</figure>
+<p><code>AGE &gt; 12 AND &lt; 20</code> and <code>CODE-X = 1 OR 3 OR 5</code> are the
+abbreviated forms. In the last two IFs, CODE-X is 3, so <code>CODE-X = 9</code> is false.
+Without parentheses the test is <code>(CODE-X = 9 AND AGE = 99) OR IS-MEMBER</code>, which is
+true because of IS-MEMBER. With the parentheses, the AND needs CODE-X = 9, so the whole test
+is false.</p>
+
+<h2>Example: numbers by value, and the NOT trap</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/COND3.cbl" download>COND3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. COND3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  A                   PIC 9     VALUE 1.
+<span class="seq">000060</span> 01  WHOLE               PIC 9(3)  VALUE 5.
+<span class="seq">000070</span> 01  WITH-CENTS          PIC 9V99  VALUE 5.00.
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">IF</span> WHOLE = WITH-CENTS
+<span class="seq">000100</span>         <span class="kw">DISPLAY</span> WHOLE <span class="str">&quot; EQUALS &quot;</span> WITH-CENTS
+<span class="seq">000110</span>     <span class="kw">END-IF</span>
+<span class="seq">000120</span>     <span class="kw">IF</span> A &lt;&gt; 2
+<span class="seq">000130</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;A &lt;&gt; 2&quot;</span>
+<span class="seq">000140</span>     <span class="kw">END-IF</span>
+<span class="seq">000150</span>     <span class="kw">IF</span> A NOT = 1 OR 2
+<span class="seq">000160</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;A NOT = 1 OR 2: TRUE, EVEN THOUGH A IS 1&quot;</span>
+<span class="seq">000170</span>     <span class="kw">END-IF</span>
+<span class="seq">000180</span>     <span class="kw">IF</span> NOT (A = 1 OR A = 2)
+<span class="seq">000190</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;NOT SHOWN&quot;</span>
+<span class="seq">000200</span>     <span class="kw">ELSE</span>
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;NOT (A = 1 OR A = 2): FALSE&quot;</span>
+<span class="seq">000220</span>     <span class="kw">END-IF</span>
+<span class="seq">000230</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">005 EQUALS 5.00
+A &lt;&gt; 2
+A NOT = 1 OR 2: TRUE, EVEN THOUGH A IS 1
+NOT (A = 1 OR A = 2): FALSE</pre>
+</figure>
+<p>WHOLE and WITH-CENTS have different pictures but the same value, so they are equal.
+<code>A NOT = 1 OR 2</code> expands to <code>A NOT = 1 OR A NOT = 2</code>; A is 1, so the
+second half is true and the whole test passes. The version with parentheses says what was
+meant.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview these conditions don't build yet (the generated C# fails to
+compile):
+<ul>
+<li>a relation or sign condition with an arithmetic expression in it, such as
+<code>IF A + 1 &gt; 5</code>, <code>IF A &gt; B * 2</code>,
+<code>PERFORM UNTIL A * 2 &gt; 30</code> or <code>IF BAL + 12 IS ZERO</code>. Work it out
+with <a href="compute.html">COMPUTE</a> into a field first, then compare the field.</li>
+<li>a comparison of two literals, such as <code>IF 1 &lt; 2</code>.</li>
+<li>a test of a user-defined CLASS from SPECIAL-NAMES.</li>
+</ul></div>
+<div class="bad">Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
+<code>LOW-VALUES</code> gives the wrong answer (see
+<a href="figurative-constants.html">figurative constants</a>).</div>
+
+<h2>See also</h2>
+<p><a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,
+<a href="condition-names.html">condition names</a>,
+<a href="arithmetic-expressions.html">arithmetic expressions</a>,
+<a href="environment-division.html">ENVIRONMENT DIVISION</a> (CLASS),
+<a href="figurative-constants.html">figurative constants</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="referring-to-data.html">&larr; Referring to data</a><a class="next" href="arithmetic-expressions.html">Arithmetic expressions &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

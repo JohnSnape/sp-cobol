@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Source format - SP COBOL Reference</title>
+<meta name="description" content="Where things go on a line of fixed-format COBOL: sequence numbers, the indicator column, areas A and B.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details open><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html" class="current" aria-current="page">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Getting started</p>
+<h1>Source format </h1>
+<p class="lede">Where things go on a line of fixed-format COBOL: sequence numbers, the indicator column, areas A and B.</p>
+<h2>Syntax</h2>
+<pre class="syntax">Columns  1-6    7          8-11     12-72    73-80
+         000010 <var>indicator</var>  <var>area</var> A   <var>area</var> B   <var>ignored</var>
+
+Indicator (<var>column</var> 7):
+  <var>space</var>   <var>an</var> <var>ordinary</var> <var>line</var>
+  *       <var>comment</var> <var>line</var>
+  /       <var>comment</var> <var>line</var> <var>that</var> <var>starts</var> <var>a</var> <var>new</var> <var>page</var> <var>in</var> <var>a</var> <var>printed</var> <var>listing</var>
+  -       <var>continuation</var> <var>of</var> <var>the</var> <var>line</var> <var>above</var>
+  D       <var>debugging</var> <var>line</var> (<var>compiled</var> <var>only</var> WITH DEBUGGING MODE)
+
+Floating <var>comment</var>, <var>anywhere</var> <var>from</var> <var>column</var> 7 <var>on</var>:
+  *&gt; <var>comment-text</var></pre>
+
+<h2>What it does</h2>
+<p>COBOL was written on 80-column punched cards, and fixed-format source still keeps their
+layout. Each column range of a line has a job:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Columns</th><th>Name</th><th>What goes there</th></tr>
+<tr><td>1-6</td><td>sequence number area</td><td>A line number: 000010, 000020, ...</td></tr>
+<tr><td>7</td><td>indicator area</td><td>Blank, or one of <code>* / - D</code> (below).</td></tr>
+<tr><td>8-11</td><td>area A</td><td>Things that begin a new part of the program: division,
+section and paragraph names, <code>FD</code>/<code>SD</code>, level numbers 01 and 77,
+<code>END PROGRAM</code>, <code>DECLARATIVES</code>.</td></tr>
+<tr><td>12-72</td><td>area B</td><td>Everything else: statements, the level numbers 02-49,
+66 and 88, clauses that continue a line.</td></tr>
+<tr><td>73-80</td><td>identification area</td><td>Ignored by the compiler. On cards it held
+the program's name.</td></tr>
+</table>
+</div>
+<p>In practice: start division, section and paragraph names and 01 levels in column 8, and
+start statements in column 12. Anything you type after column 72 is not part of your program,
+which can cause confusing errors when a long line gets cut off. Keep lines short and continue
+statements on the next line instead; a statement can be split between any two words.</p>
+
+<h3>Sequence numbers</h3>
+<p>Columns 1-6 hold a line number. SP COBOL's convention is to number from
+<code>000010</code> in steps of 10 (000010, 000020, 000030, ...), the way COBOL is usually
+written, and every example on this site follows it. The compiler ignores these columns
+completely: a gap, a duplicate or a line out of order is never an error.</p>
+<p>The COBOL editor for Visual Studio keeps the numbers for you: pressing Enter numbers the new
+line and moves every line below it up by 10, and <b>Edit &gt; Renumber COBOL Lines</b> fixes a
+whole file. Outside the editor, <code>tools\renumber.ps1 FILE.cbl</code> does the same.</p>
+
+<h3>Comments</h3>
+<p>A <code>*</code> in column 7 makes the whole line a comment. A <code>/</code> in column 7
+is also a comment, and asks for a new page when the compiler prints a listing. The pair
+<code>*&gt;</code> starts a <em>floating comment</em>: it can begin in any column from 7 on,
+including after code on the same line, and runs to the end of the line.</p>
+
+<h3>Continuing a long literal</h3>
+<p>A statement can be split between words anywhere, but a quoted literal that is too long for
+one line needs a <em>continuation line</em>. Let the literal run up to column 72 without a
+closing quote. On the next line put <code>-</code> in column 7, then in area B a quote
+followed by the rest of the literal. Every character up to column 72 of the first line is
+part of the literal, spaces included, so count carefully. (An easier way to build a long
+value is to join shorter literals with <code>&amp;</code>; see
+<a href="literals.html">literals</a>.)</p>
+
+<h3>Debugging lines</h3>
+<p>A <code>D</code> in column 7 marks a debugging line. It is treated as a comment unless the
+SOURCE-COMPUTER paragraph says <code>WITH DEBUGGING MODE</code>; then it is compiled like any
+other line. This lets you leave trace DISPLAYs in a program and switch them all on or off in
+one place.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SRCFMT1.cbl" download>SRCFMT1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SRCFMT1.
+<span class="seq">000030</span><span class="com">*A star in column 7 makes the whole line a comment.</span>
+<span class="seq">000040</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000050</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000060</span> 01  MESSAGE-TEXT        PIC X(80).
+<span class="seq">000070</span> 01  TOTAL               PIC 9(3)  VALUE 0.  <span class="com">*&gt; AFTER THE CODE</span>
+<span class="seq">000080</span><span class="com">/A slash in column 7 is a comment that starts a new page</span>
+<span class="seq">000090</span><span class="com">*in a printed listing.</span>
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span><span class="com">*&gt; A floating comment can start in any column, even here.</span>
+<span class="seq">000120</span>     <span class="kw">MOVE</span> <span class="str">&quot;THIS LITERAL IS TOO LONG FOR ONE LINE, SO IT CARRIES ON</span>
+<span class="seq">000130</span>-    <span class="str">&quot; TO THE NEXT LINE.&quot;</span> TO MESSAGE-TEXT
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> MESSAGE-TEXT
+<span class="seq">000150</span>D    <span class="kw">DISPLAY</span> <span class="str">&quot;A DEBUGGING LINE, SKIPPED&quot;</span>
+<span class="seq">000160</span>     <span class="kw">ADD</span> 5 TO TOTAL                                               IGNORED!
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TOTAL IS &quot;</span> TOTAL
+<span class="seq">000180</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">THIS LITERAL IS TOO LONG FOR ONE LINE, SO IT CARRIES ON TO THE NEXT LINE.       
+TOTAL IS 005</pre>
+</figure>
+<p>The comment lines and the <code>*&gt;</code> comments are skipped. The MOVE's literal
+runs to column 72 ("...CARRIES ON"); the continuation line picks it up at the quote, so the
+whole sentence lands in MESSAGE-TEXT. The <code>D</code> line is not compiled, and the word
+<code>IGNORED!</code> in columns 73-80 of the ADD line is not seen at all, so TOTAL is 5.</p>
+
+<h2>Example: switching debugging lines on</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SRCFMT2.cbl" download>SRCFMT2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SRCFMT2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> SOURCE-COMPUTER. PC WITH DEBUGGING MODE.
+<span class="seq">000060</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000070</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AN ORDINARY LINE&quot;</span>
+<span class="seq">000080</span>D    <span class="kw">DISPLAY</span> <span class="str">&quot;A DEBUGGING LINE, COMPILED THIS TIME&quot;</span>
+<span class="seq">000090</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">AN ORDINARY LINE
+A DEBUGGING LINE, COMPILED THIS TIME</pre>
+</figure>
+<p>With <code>WITH DEBUGGING MODE</code> in SOURCE-COMPUTER, the <code>D</code> line is
+compiled and its DISPLAY runs.</p>
+
+<h2>SP COBOL notes</h2>
+<p>Fixed format is the default, and this reference uses it throughout. GnuCOBOL's free format
+(no column rules; comments start with <code>*&gt;</code>) is also available: set the project
+property <code>&lt;CobolSourceFormat&gt;free&lt;/CobolSourceFormat&gt;</code> in your
+<code>.csproj</code> (see BUILD.md). When the compiler complains about a wrong character in column 7
+or text past column 72, the Visual Studio build adds a plain-English hint about the column
+rules to the error.</p>
+
+<h2>See also</h2>
+<p><a href="program-structure.html">Program structure</a>,
+<a href="literals.html">literals</a>, <a href="debugging.html">debugging</a>,
+<a href="copy.html">COPY</a> (copybooks follow the same format).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="reading-this-reference.html">&larr; Reading this reference</a><a class="next" href="program-structure.html">Program structure &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

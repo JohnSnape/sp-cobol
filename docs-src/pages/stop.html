@@ -1,0 +1,56 @@
+title: STOP
+summary: End the program, optionally with an exit code for whatever started it.
+keywords: STOP RUN RETURNING GIVING WITH ERROR STATUS NORMAL STATUS RETURN-CODE exit code end program terminate
+---
+<h2>Syntax</h2>
+<pre class="syntax">STOP RUN [ { RETURNING | GIVING } { identifier-1 | integer-1 } ]
+
+STOP RUN WITH { ERROR | NORMAL } STATUS [ { identifier-1 | integer-1 } ]
+
+Obsolete:
+STOP literal-1</pre>
+
+<h2>What it does</h2>
+<p><code>STOP RUN</code> ends the whole program at once. Files that are still open are closed,
+and control goes back to whatever started the program: the command prompt, a batch file, or
+Visual Studio. Statements after STOP RUN never run. It doesn't matter whether STOP RUN is in
+the main program or in a program reached by <a href="call.html">CALL</a>: the whole run ends.
+To end only a called program and return to its caller, use <a href="goback.html">GOBACK</a>.</p>
+
+<h3>The exit code</h3>
+<p>Every program hands a number back to the operating system when it ends, its <em>exit
+code</em>. Zero means "all went well"; other values usually mean some kind of problem. A batch
+file can test it with <code>IF ERRORLEVEL</code>, and PowerShell shows it in
+<code>$LASTEXITCODE</code>.</p>
+<p>In COBOL the exit code comes from the special register <code>RETURN-CODE</code>, which
+starts at zero. Move a number into it before STOP RUN and that number becomes the exit code.
+(<code>RETURN-CODE</code> is also how a called program passes a status back to its caller; see
+<a href="special-registers.html">special registers</a>.)</p>
+<p><code>STOP RUN RETURNING 4</code> (or <code>GIVING 4</code>) sets the exit code in the same
+statement. <code>STOP RUN WITH ERROR STATUS 2</code> does the same thing in the wording of the
+2014 standard, and <code>WITH NORMAL STATUS</code> ends with zero.</p>
+
+<h3>STOP literal</h3>
+<p>Old programs sometimes contain <code>STOP "MOUNT TAPE 2"</code>, which showed the message
+to the operator and waited before carrying on. It is obsolete; use
+<a href="display.html">DISPLAY</a> followed by <a href="accept.html">ACCEPT</a> to pause for the
+user instead.</p>
+
+<h2>Examples</h2>
+<!-- example STOP1 -->
+<p>The program finds three errors, puts 8 into RETURN-CODE and stops. Its exit code is 8; run
+from a command prompt, <code>echo %ERRORLEVEL%</code> afterwards would show 8. The last DISPLAY
+never runs.</p>
+
+<!-- example STOP2 -->
+<p>RETURNING sets the exit code to 4 without touching RETURN-CODE yourself.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad"><code>STOP literal</code> compiles but fails when it runs in this preview:
+the program stops with an error (a NullReferenceException) where GnuCOBOL shows the message
+and waits for Enter. Use DISPLAY and ACCEPT.</div>
+
+<h2>See also</h2>
+<p><a href="goback.html">GOBACK</a>, <a href="exit.html">EXIT PROGRAM</a>,
+<a href="call.html">CALL</a>, <a href="special-registers.html">special registers</a>
+(RETURN-CODE), <a href="procedure-division.html">PROCEDURE DIVISION</a>.</p>

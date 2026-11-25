@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>National data (PIC N) - SP COBOL Reference</title>
+<meta name="description" content="Hold Unicode text as UTF-16 characters with PIC N, N&quot;...&quot; literals and USAGE NATIONAL.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html" class="current" aria-current="page">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Data description</p>
+<h1>National data (PIC N) <span class="badge warn">Differs from GnuCOBOL</span></h1>
+<p class="lede">Hold Unicode text as UTF-16 characters with PIC N, N&quot;...&quot; literals and USAGE NATIONAL.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><var>level-number</var> <var>data-name</var> PIC N(<var>n</var>) [ USAGE [ IS ] NATIONAL ] [ VALUE N"<var>text</var>" ] .
+
+A <var>national</var> <var>literal</var>
+N"<var>text</var>"</pre>
+
+<h2>What it does</h2>
+<p><em>National</em> data holds Unicode characters, so it can store text in any language. Each
+<code>N</code> in the PICTURE is one character, kept as UTF-16: two bytes per character, high
+byte first. <code>PIC N(5)</code> holds five characters in 10 bytes.
+<code>FUNCTION LENGTH</code> counts characters; <code>FUNCTION BYTE-LENGTH</code> counts
+bytes.</p>
+<p>A literal written <code>N"..."</code> is a national literal. Use it in VALUE clauses, MOVEs
+and comparisons with national items. MOVE and comparison work as with <code>PIC X</code>:
+a longer value is cut on the right, and two national items compare character by
+character.</p>
+
+<h3>USAGE NATIONAL</h3>
+<p><code>PIC N</code> is national by itself, so you don't need to write
+<code>USAGE NATIONAL</code>.</p>
+<div class="warn">In GnuCOBOL 3.2, adding <code>USAGE NATIONAL</code> to a <code>PIC N</code>
+item doubles its size again: <code>PIC N(5) USAGE NATIONAL</code> is 20 bytes, not 10, and a
+5-character value moved into it is followed by 5 characters of padding. SP COBOL lays out
+storage exactly as GnuCOBOL does, so it does the same. Leave <code>USAGE NATIONAL</code>
+out.</div>
+
+<h3>Padding</h3>
+<p>When a shorter national value is moved into a national item, GnuCOBOL fills the rest with
+bytes of hexadecimal <code>20</code> (the single-byte space), two per character, rather than
+with the Unicode space. A DISPLAY in SP COBOL shows each such pair as <code>?</code>
+(see the next section). Keep national values the full length of the item, or pad them
+yourself, if you plan to DISPLAY them.</p>
+
+<h3>DISPLAY of national data</h3>
+<p>A DISPLAY of a PIC N item in SP COBOL prints its characters. Characters above U+00FF can't be
+shown on the console, which uses the Latin-1 character set, so each prints as
+<code>?</code>.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/NATNL1.cbl" download>NATNL1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. NATNL1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  GREETING          PIC N(5)    VALUE N<span class="str">&quot;HELLO&quot;</span>.
+<span class="seq">000060</span> 01  NAME-N            PIC N(5).
+<span class="seq">000070</span> 01  SHORT-N           PIC N(3).
+<span class="seq">000080</span> 01  PADDED-N          PIC N(4).
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> GREETING <span class="str">&quot;]&quot;</span>
+<span class="seq">000110</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CHARACTERS &quot;</span> FUNCTION LENGTH(GREETING)
+<span class="seq">000120</span>             <span class="str">&quot;, BYTES &quot;</span> FUNCTION BYTE-LENGTH(GREETING)
+<span class="seq">000130</span>     <span class="kw">MOVE</span> N<span class="str">&quot;WORLD&quot;</span> TO NAME-N
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> NAME-N <span class="str">&quot;]&quot;</span>
+<span class="seq">000150</span>     <span class="kw">MOVE</span> GREETING TO SHORT-N
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> SHORT-N <span class="str">&quot;]&quot;</span>
+<span class="seq">000170</span>     <span class="kw">IF</span> GREETING = N<span class="str">&quot;HELLO&quot;</span>
+<span class="seq">000180</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;EQUAL&quot;</span>
+<span class="seq">000190</span>     <span class="kw">END-IF</span>
+<span class="seq">000200</span>     <span class="kw">MOVE</span> N<span class="str">&quot;HI&quot;</span> TO PADDED-N
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> PADDED-N <span class="str">&quot;]&quot;</span>
+<span class="seq">000220</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">[HELLO]
+CHARACTERS 5, BYTES 10
+[WORLD]
+[HEL]
+EQUAL
+[HI??]</pre>
+</figure>
+<p>GREETING holds 5 characters in 10 bytes. MOVE copies N"WORLD" into NAME-N, and moving the
+5-character GREETING into the 3-character SHORT-N keeps <code>HEL</code>. The comparison with a
+national literal is true. N"HI" in the 4-character PADDED-N is followed by the
+<code>20 20</code> padding described above, which DISPLAY shows as <code>??</code>.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn">SP COBOL deliberately differs here. GnuCOBOL 3.2's DISPLAY writes a national
+item's raw UTF-16 bytes, so N"HELLO" prints as NUL H NUL E NUL L NUL L NUL O, which is no use
+to a reader. SP COBOL decodes the field and prints the characters (above U+00FF as
+<code>?</code>), on the console and on SCREEN SECTION screens. The storage is unchanged, so
+MOVEs, comparisons and data files are the same as in GnuCOBOL. Only what DISPLAY prints is
+different; that is why this example's output is not compared with GnuCOBOL's.</div>
+<p>The compiler warns that national support is "unfinished" in GnuCOBOL. That warning is about
+GnuCOBOL's own runtime; SP COBOL's project builds turn it off.</p>
+<p>The intrinsic functions NATIONAL-OF and DISPLAY-OF are not implemented in GnuCOBOL 3.2's
+runtime, and stop the program in SP COBOL too.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="usage.html">USAGE</a>,
+<a href="literals.html">Literals</a>, <a href="display.html">DISPLAY</a>,
+<a href="differences.html">Differences from GnuCOBOL</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="global-external.html">&larr; GLOBAL and EXTERNAL</a><a class="next" href="literals.html">Literals &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

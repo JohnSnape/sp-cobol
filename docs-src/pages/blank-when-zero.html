@@ -1,0 +1,28 @@
+title: BLANK WHEN ZERO
+summary: Show a numeric display field as all spaces when its value is zero.
+keywords: BLANK WHEN ZERO BLANK ZERO blank zero suppress report edited
+---
+<h2>Syntax</h2>
+<pre class="syntax">BLANK [ WHEN ] { ZERO | ZEROS | ZEROES }</pre>
+
+<h2>What it does</h2>
+<p><code>BLANK WHEN ZERO</code> makes a field become all spaces whenever zero is moved into it.
+Any other value is stored as the PICTURE says. It is used on reports, where a column of
+<code>0.00</code> entries is harder to read than empty space.</p>
+<p>It goes on an elementary numeric or numeric-edited item whose usage is DISPLAY. A plain
+numeric item with BLANK WHEN ZERO is treated as numeric-edited, so you use it as the receiving
+field of a MOVE and for display, not for arithmetic.</p>
+<p>An edited picture made only of <code>Z</code>s already turns zero into spaces (see
+<a href="picture.html">PICTURE</a>). BLANK WHEN ZERO does the same for pictures that show
+digits with <code>9</code>, such as <code>Z,ZZ9.99</code>, which would otherwise print
+<code>0.00</code>.</p>
+
+<h2>Example</h2>
+<!-- example BWZ1 -->
+<p>With 12.50, all three fields show the number. With zero, the plain edited field shows
+<code>0.00</code>, while the two BLANK WHEN ZERO fields are spaces. <code>BLANK ZERO</code>
+without <code>WHEN</code> means the same thing.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="move.html">MOVE</a>,
+<a href="report-writer.html">Report Writer</a>.</p>

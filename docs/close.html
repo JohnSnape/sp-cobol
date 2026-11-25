@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLOSE - SP COBOL Reference</title>
+<meta name="description" content="Finish with one or more files, writing out anything still waiting.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html" class="current" aria-current="page">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>CLOSE </h1>
+<p class="lede">Finish with one or more files, writing out anything still waiting.</p>
+<h2>Syntax</h2>
+<pre class="syntax">CLOSE { <var>file-name-1</var> [ { REEL | UNIT } | WITH LOCK | WITH NO REWIND ] } ...</pre>
+
+<h2>What it does</h2>
+<p>CLOSE ends the program's use of a file. Anything still waiting to be written goes to disk,
+and the file is released so other programs (and a later OPEN in this one) can use it. One
+CLOSE can close several files: <code>CLOSE IN-FILE OUT-FILE</code>.</p>
+<p>After CLOSE the file can be opened again, in any mode. Closing a file that isn't open
+gives status 42.</p>
+
+<h3>WITH LOCK</h3>
+<p><code>CLOSE file WITH LOCK</code> closes the file and stops this program from opening it
+again: a later OPEN gives status 38.</p>
+
+<h3>REEL, UNIT and NO REWIND</h3>
+<p>These phrases come from magnetic tape. On a disk file they don't apply: CLOSE REEL and
+CLOSE UNIT give status 07 and leave the file <em>open</em>; CLOSE WITH NO REWIND closes it
+with status 07. Just use a plain CLOSE.</p>
+
+<h3>Files left open</h3>
+<p>Files still open when the program ends with <a href="stop.html">STOP RUN</a> are closed for
+you, but the runtime prints a warning for each one, to remind you to close them yourself.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/CLOSE1.cbl" download>CLOSE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. CLOSE1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> IN-F ASSIGN TO <span class="str">&quot;close-in.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL <span class="kw">FILE</span> STATUS IS IN-FS.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> OUT-F ASSIGN TO <span class="str">&quot;close-out.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL <span class="kw">FILE</span> STATUS IS OUT-FS.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">FD</span>  IN-F.
+<span class="seq">000130</span> 01  IN-LINE             PIC X(8).
+<span class="seq">000140</span> <span class="kw">FD</span>  OUT-F.
+<span class="seq">000150</span> 01  OUT-LINE            PIC X(8).
+<span class="seq">000160</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000170</span> 01  IN-FS               PIC XX.
+<span class="seq">000180</span> 01  OUT-FS              PIC XX.
+<span class="seq">000190</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000200</span>     <span class="kw">OPEN</span> OUTPUT IN-F
+<span class="seq">000210</span>     <span class="kw">MOVE</span> <span class="str">&quot;HELLO&quot;</span> TO IN-LINE <span class="kw">WRITE</span> IN-LINE
+<span class="seq">000220</span>     <span class="kw">CLOSE</span> IN-F
+<span class="seq">000230</span>     <span class="kw">OPEN</span> INPUT IN-F OUTPUT OUT-F
+<span class="seq">000240</span>     <span class="kw">READ</span> IN-F
+<span class="seq">000250</span>     <span class="kw">MOVE</span> IN-LINE TO OUT-LINE <span class="kw">WRITE</span> OUT-LINE
+<span class="seq">000260</span>     <span class="kw">CLOSE</span> IN-F OUT-F
+<span class="seq">000270</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CLOSE BOTH: &quot;</span> IN-FS <span class="str">&quot; &quot;</span> OUT-FS
+<span class="seq">000280</span>     <span class="kw">CLOSE</span> IN-F
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CLOSE AGAIN: &quot;</span> IN-FS
+<span class="seq">000300</span>     <span class="kw">OPEN</span> INPUT OUT-F
+<span class="seq">000310</span>     <span class="kw">CLOSE</span> OUT-F WITH LOCK
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CLOSE WITH LOCK: &quot;</span> OUT-FS
+<span class="seq">000330</span>     <span class="kw">OPEN</span> INPUT OUT-F
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;OPEN AFTER LOCK: &quot;</span> OUT-FS
+<span class="seq">000350</span>     <span class="kw">OPEN</span> INPUT IN-F
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LEAVING IN-F OPEN&quot;</span>
+<span class="seq">000370</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">CLOSE BOTH: 00 00
+CLOSE AGAIN: 42
+CLOSE WITH LOCK: 00
+OPEN AFTER LOCK: 38
+LEAVING IN-F OPEN
+libcob: warning: implicit CLOSE of IN-F (&#39;close-in.txt&#39;)</pre>
+</figure>
+<p>One OPEN opens IN-F for input and OUT-F for output, and one CLOSE closes both. Closing IN-F
+again gives 42. After <code>CLOSE WITH LOCK</code>, opening OUT-F gives 38. IN-F is opened
+again and never closed, so the program ends with the "implicit CLOSE" warning (it goes to the
+error output, standard error).</p>
+
+<h2>SP COBOL notes</h2>
+<p>The implicit CLOSE warning and the 07 status for REEL / UNIT are kept as GnuCOBOL 3.2 has
+them.</p>
+
+<h2>See also</h2>
+<p><a href="open.html">OPEN</a>, <a href="files.html">Files</a>,
+<a href="file-status.html">FILE STATUS codes</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="cancel.html">&larr; CANCEL</a><a class="next" href="compute.html">COMPUTE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

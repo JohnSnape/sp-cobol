@@ -1,0 +1,18 @@
+000010 IDENTIFICATION DIVISION.
+000020 PROGRAM-ID. SRCFMT1.
+000030*A star in column 7 makes the whole line a comment.
+000040 DATA DIVISION.
+000050 WORKING-STORAGE SECTION.
+000060 01  MESSAGE-TEXT        PIC X(80).
+000070 01  TOTAL               PIC 9(3)  VALUE 0.  *> AFTER THE CODE
+000080/A slash in column 7 is a comment that starts a new page
+000090*in a printed listing.
+000100 PROCEDURE DIVISION.
+000110*> A floating comment can start in any column, even here.
+000120     MOVE "THIS LITERAL IS TOO LONG FOR ONE LINE, SO IT CARRIES ON
+000130-    " TO THE NEXT LINE." TO MESSAGE-TEXT
+000140     DISPLAY MESSAGE-TEXT
+000150D    DISPLAY "A DEBUGGING LINE, SKIPPED"
+000160     ADD 5 TO TOTAL                                               IGNORED!
+000170     DISPLAY "TOTAL IS " TOTAL
+000180     STOP RUN.

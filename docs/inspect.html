@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INSPECT - SP COBOL Reference</title>
+<meta name="description" content="Count, replace or convert characters inside a field.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html" class="current" aria-current="page">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>INSPECT </h1>
+<p class="lede">Count, replace or convert characters inside a field.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: count</span>
+INSPECT <var>identifier-1</var> TALLYING
+    { <var>identifier-2</var> FOR { CHARACTERS [ <var>phrase</var> ] ...
+                       | { ALL | LEADING | TRAILING } { <var>identifier-3</var> | <var>literal-1</var> } [ <var>phrase</var> ] ... } ... } ...
+
+<span class="fmt">Format 2: replace</span>
+INSPECT <var>identifier-1</var> REPLACING
+    { CHARACTERS BY { <var>identifier-4</var> | <var>literal-2</var> } [ <var>phrase</var> ] ...
+    | { ALL | LEADING | FIRST | TRAILING }
+          { { <var>identifier-3</var> | <var>literal-1</var> } BY { <var>identifier-4</var> | <var>literal-2</var> } [ <var>phrase</var> ] ... } ... } ...
+
+<span class="fmt">Format 3: count, then replace</span>
+INSPECT <var>identifier-1</var> TALLYING ... REPLACING ...
+
+<span class="fmt">Format 4: convert character by character</span>
+INSPECT <var>identifier-1</var> CONVERTING { <var>identifier-5</var> | <var>literal-3</var> }
+    TO { <var>identifier-6</var> | <var>literal-4</var> } [ <var>phrase</var> ] ...
+
+<var>where</var> <var>phrase</var> <var>is</var>:
+    { BEFORE | AFTER } INITIAL { <var>identifier-7</var> | <var>literal-5</var> }</pre>
+
+<h2>What it does</h2>
+<p>INSPECT looks through the characters of <code>identifier-1</code> from left to right. It can
+count what it finds (<code>TALLYING</code>), change what it finds (<code>REPLACING</code>), or
+swap characters one for one (<code>CONVERTING</code>).</p>
+
+<h3>TALLYING</h3>
+<p>Each <code>FOR</code> phrase adds to a counter, <code>identifier-2</code>, which must be a
+numeric item. INSPECT adds to the counter; it doesn't clear it first, so set it to zero
+yourself before the INSPECT.</p>
+<ul>
+<li><code>CHARACTERS</code> counts every character (inside the BEFORE/AFTER region, if you give one).</li>
+<li><code>ALL "x"</code> counts every place the text appears.</li>
+<li><code>LEADING "x"</code> counts the text only where it repeats right at the start of the
+field (or the region).</li>
+<li><code>TRAILING "x"</code> counts it where it repeats at the very end. This is a GnuCOBOL
+extension, and handy for counting the trailing spaces of a field.</li>
+</ul>
+
+<h3>REPLACING</h3>
+<p>Each phrase says what to look for and what to put in its place. The replacement must be
+the same length as the text it replaces, because INSPECT never changes the length of the
+field. <code>CHARACTERS BY "x"</code> replaces every character, <code>ALL</code> every match,
+<code>LEADING</code> the matches at the start, <code>FIRST</code> only the first match, and
+<code>TRAILING</code> (an extension) the matches at the end.</p>
+<p>With both <code>TALLYING</code> and <code>REPLACING</code> in one statement, the counting is
+done first, on the original text, and then the replacing.</p>
+
+<h3>CONVERTING</h3>
+<p><code>CONVERTING "abc" TO "xyz"</code> changes every <code>a</code> to <code>x</code>, every
+<code>b</code> to <code>y</code> and every <code>c</code> to <code>z</code>, in one pass. The
+two strings must be the same length. It is the usual way to change letters to upper case
+(see also <a href="intrinsic-functions.html">FUNCTION UPPER-CASE</a>).</p>
+
+<h3>BEFORE and AFTER INITIAL</h3>
+<p>A phrase can be limited to part of the field. <code>BEFORE INITIAL ","</code> means "only
+look at the characters in front of the first comma"; <code>AFTER INITIAL ":"</code> means
+"only look at the characters after the first colon". If the comma or colon isn't there at
+all, BEFORE covers the whole field and AFTER covers nothing. You may give both, one BEFORE and
+one AFTER, on the same phrase.</p>
+
+<h3>When phrases compete</h3>
+<p>With several phrases in one INSPECT, it helps to know exactly how the scan works:</p>
+<ul>
+<li>INSPECT moves along the field one position at a time. At each position it tries the
+phrases in the order you wrote them. The first phrase that matches there wins: it counts or
+replaces, and the scan jumps past the characters it matched. Later phrases never see those
+characters.</li>
+<li>So the order matters. Counting <code>ALL "AB"</code> before <code>ALL "A"</code> gives
+different numbers from the other way round (the second example shows this).</li>
+<li>Replaced characters are not looked at again: replacing X by B and then B by Y doesn't turn
+an X into a Y.</li>
+<li>BEFORE and AFTER look for their delimiter in the text as it was before the INSPECT began,
+so replacing can't move the region's edge.</li>
+</ul>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/INSPECT1.cbl" download>INSPECT1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. INSPECT1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  FRUIT          PIC X(30) VALUE <span class="str">&quot;  BANANA, PAPAYA, MANGO&quot;</span>.
+<span class="seq">000060</span> 01  N-A            PIC 99 VALUE 0.
+<span class="seq">000070</span> 01  N-LEAD         PIC 99 VALUE 0.
+<span class="seq">000080</span> 01  N-BEFORE       PIC 99 VALUE 0.
+<span class="seq">000090</span> 01  N-TRAIL        PIC 99 VALUE 0.
+<span class="seq">000100</span> 01  N-DASH         PIC 99 VALUE 0.
+<span class="seq">000110</span> 01  PHONE          PIC X(12) VALUE <span class="str">&quot;619-555-0123&quot;</span>.
+<span class="seq">000120</span> 01  AMOUNT         PIC X(8)  VALUE <span class="str">&quot;00012.50&quot;</span>.
+<span class="seq">000130</span> 01  WORD           PIC X(12) VALUE <span class="str">&quot;hello world&quot;</span>.
+<span class="seq">000140</span> 01  LOWER          PIC X(26) VALUE <span class="str">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span>.
+<span class="seq">000150</span> 01  UPPER          PIC X(26) VALUE <span class="str">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;</span>.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">INSPECT</span> FRUIT TALLYING N-A FOR ALL <span class="str">&quot;A&quot;</span>
+<span class="seq">000180</span>                            N-LEAD FOR LEADING SPACES
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;A&#39;S: &quot;</span> N-A <span class="str">&quot;  LEADING SPACES: &quot;</span> N-LEAD
+<span class="seq">000200</span>     <span class="kw">INSPECT</span> FRUIT TALLYING N-BEFORE FOR CHARACTERS
+<span class="seq">000210</span>             BEFORE INITIAL <span class="str">&quot;,&quot;</span>
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CHARACTERS BEFORE THE FIRST COMMA: &quot;</span> N-BEFORE
+<span class="seq">000230</span>     <span class="kw">INSPECT</span> FRUIT TALLYING N-TRAIL FOR TRAILING SPACES
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TRAILING SPACES: &quot;</span> N-TRAIL
+<span class="seq">000250</span>     <span class="kw">INSPECT</span> AMOUNT REPLACING LEADING <span class="str">&quot;0&quot;</span> BY SPACE
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LEADING ZEROS GONE: [&quot;</span> AMOUNT <span class="str">&quot;]&quot;</span>
+<span class="seq">000270</span>     <span class="kw">INSPECT</span> PHONE TALLYING N-DASH FOR ALL <span class="str">&quot;-&quot;</span>
+<span class="seq">000280</span>                   REPLACING ALL <span class="str">&quot;-&quot;</span> BY <span class="str">&quot;.&quot;</span>
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> N-DASH <span class="str">&quot; DASHES REPLACED: &quot;</span> PHONE
+<span class="seq">000300</span>     <span class="kw">INSPECT</span> PHONE REPLACING FIRST <span class="str">&quot;5&quot;</span> BY <span class="str">&quot;X&quot;</span>
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FIRST 5 ONLY: &quot;</span> PHONE
+<span class="seq">000320</span>     <span class="kw">INSPECT</span> PHONE REPLACING CHARACTERS BY <span class="str">&quot;#&quot;</span>
+<span class="seq">000330</span>             AFTER INITIAL <span class="str">&quot;.&quot;</span>
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;HIDDEN: &quot;</span> PHONE
+<span class="seq">000350</span>     <span class="kw">INSPECT</span> WORD CONVERTING LOWER TO UPPER
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;CONVERTED: &quot;</span> WORD
+<span class="seq">000370</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">A&#39;S: 07  LEADING SPACES: 02
+CHARACTERS BEFORE THE FIRST COMMA: 08
+TRAILING SPACES: 07
+LEADING ZEROS GONE: [   12.50]
+02 DASHES REPLACED: 619.555.0123
+FIRST 5 ONLY: 619.X55.0123
+HIDDEN: 619.########
+CONVERTED: HELLO WORLD</pre>
+</figure>
+<p>The field holds <code>"  BANANA, PAPAYA, MANGO"</code> followed by seven spaces (it is
+30 characters long). It has seven A's and two leading spaces, and eight characters come before
+the first comma. In AMOUNT, only the zeros at the front are replaced, so the zero in
+<code>.50</code> stays. The phone number shows a combined TALLYING and REPLACING, then
+<code>FIRST</code>, which changes only one 5, then <code>CHARACTERS</code> limited to the part
+after the first period. Finally CONVERTING turns the lower-case letters into capitals.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/INSPECT2.cbl" download>INSPECT2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. INSPECT2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  TXT            PIC X(10).
+<span class="seq">000060</span> 01  N-AB           PIC 99.
+<span class="seq">000070</span> 01  N-A            PIC 99.
+<span class="seq">000080</span> 01  N-OTHER        PIC 99.
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span>     <span class="kw">MOVE</span> <span class="str">&quot;ABAABA&quot;</span> TO TXT
+<span class="seq">000110</span>     <span class="kw">MOVE</span> 0 TO N-AB N-A N-OTHER
+<span class="seq">000120</span>     <span class="kw">INSPECT</span> TXT TALLYING N-AB FOR ALL <span class="str">&quot;AB&quot;</span>
+<span class="seq">000130</span>                          N-A FOR ALL <span class="str">&quot;A&quot;</span>
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AB FIRST:  AB=&quot;</span> N-AB <span class="str">&quot; A=&quot;</span> N-A
+<span class="seq">000150</span>     <span class="kw">MOVE</span> 0 TO N-AB N-A
+<span class="seq">000160</span>     <span class="kw">INSPECT</span> TXT TALLYING N-A FOR ALL <span class="str">&quot;A&quot;</span>
+<span class="seq">000170</span>                          N-AB FOR ALL <span class="str">&quot;AB&quot;</span>
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;A FIRST:   AB=&quot;</span> N-AB <span class="str">&quot; A=&quot;</span> N-A
+<span class="seq">000190</span>     <span class="kw">INSPECT</span> TXT TALLYING N-OTHER FOR ALL <span class="str">&quot;A&quot;</span>
+<span class="seq">000200</span>                          N-OTHER FOR CHARACTERS
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ONE COUNT: &quot;</span> N-OTHER
+<span class="seq">000220</span>     <span class="kw">MOVE</span> <span class="str">&quot;XAXBX&quot;</span> TO TXT
+<span class="seq">000230</span>     <span class="kw">INSPECT</span> TXT REPLACING ALL <span class="str">&quot;X&quot;</span> BY <span class="str">&quot;B&quot;</span>
+<span class="seq">000240</span>                           ALL <span class="str">&quot;B&quot;</span> BY <span class="str">&quot;Y&quot;</span>
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;REPLACED:  &quot;</span> TXT
+<span class="seq">000260</span>     <span class="kw">MOVE</span> <span class="str">&quot;AAAA:AAAA&quot;</span> TO TXT
+<span class="seq">000270</span>     <span class="kw">INSPECT</span> TXT REPLACING ALL <span class="str">&quot;A&quot;</span> BY <span class="str">&quot;:&quot;</span> BEFORE INITIAL <span class="str">&quot;:&quot;</span>
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BEFORE:    &quot;</span> TXT
+<span class="seq">000290</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">AB FIRST:  AB=02 A=02
+A FIRST:   AB=00 A=04
+ONE COUNT: 10
+REPLACED:  BABYB     
+BEFORE:    :::::AAAA</pre>
+</figure>
+<p>The text is <code>ABAABA</code> plus four spaces. When <code>"AB"</code> is listed first,
+the A's that start an AB are counted as AB and skipped, so each counter gets 2. With
+<code>"A"</code> first, every A is taken by that phrase and AB never matches. In the third
+INSPECT both phrases add to the same counter: 4 A's plus 6 other characters is 10, every
+character counted exactly once. The X's become B's, but the B's made that way are not turned
+into Y's; only the original B is. In the last one the four A's in front of the colon become
+colons, and the region still ends at the original colon.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SP COBOL's INSPECT follows GnuCOBOL's own algorithm step for step, so programs that depend
+on the finer points (competing phrases, regions, a signed number field, which is inspected
+without its sign) give the same results as GnuCOBOL 3.2.</p>
+
+<h2>See also</h2>
+<p><a href="string.html">STRING</a> and <a href="unstring.html">UNSTRING</a> for joining and
+splitting text, <a href="referring-to-data.html">reference modification</a> for working with
+part of a field, <a href="intrinsic-functions.html">intrinsic functions</a> such as
+UPPER-CASE, TRIM and REVERSE.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="initiate.html">&larr; INITIATE</a><a class="next" href="json-generate.html">JSON GENERATE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

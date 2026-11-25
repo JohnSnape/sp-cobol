@@ -1,0 +1,5 @@
+START:              [AB12-*-007     ]
+INITIALIZE:         [    -*-000     ]
+WITH FILLER:        [       000     ]
+ALL TO VALUE:       [AB12   007     ]
+VALUE THEN DEFAULT: [AB12-*-007     ]

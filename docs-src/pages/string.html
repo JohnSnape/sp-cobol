@@ -1,0 +1,68 @@
+title: STRING
+summary: Join pieces of text together into one field.
+keywords: DELIMITED BY SIZE INTO WITH POINTER ON OVERFLOW NOT ON OVERFLOW END-STRING concatenate join text combine
+---
+<h2>Syntax</h2>
+<pre class="syntax">STRING { { identifier-1 | literal-1 } ...
+         DELIMITED BY { identifier-2 | literal-2 | SIZE } } ...
+    INTO identifier-3
+    [ WITH POINTER identifier-4 ]
+    [ ON OVERFLOW imperative-statement-1 ]
+    [ NOT ON OVERFLOW imperative-statement-2 ]
+[ END-STRING ]</pre>
+
+<h2>What it does</h2>
+<p>STRING copies several pieces of text, one after another, into the field after
+<code>INTO</code>. It is how you build a full name from a first and a last name, or a line of
+output from several fields, without the extra spaces that each fixed-length field carries.</p>
+
+<h3>DELIMITED BY</h3>
+<p>Each piece (or group of pieces) is followed by <code>DELIMITED BY</code>, which says how much
+of it to copy:</p>
+<ul>
+<li><code>DELIMITED BY SIZE</code> copies the whole piece, trailing spaces included.</li>
+<li><code>DELIMITED BY SPACE</code> copies up to, but not including, the first space. This is
+the usual way to drop the padding at the end of a name, though it also stops at a space in the
+middle ("SAN DIEGO" gives just "SAN").</li>
+<li><code>DELIMITED BY ","</code> or by a field copies up to the first appearance of that
+text. If the text isn't there, the whole piece is copied.</li>
+</ul>
+<p>One DELIMITED BY phrase applies to all the pieces written in front of it, back to the
+previous DELIMITED BY.</p>
+
+<h3>The receiving field</h3>
+<p>STRING only writes the characters it copies. It doesn't pad the rest of the receiving
+field with spaces, so whatever was there before stays there. That is why the examples
+<code>MOVE SPACES</code> to the field first.</p>
+
+<h3>WITH POINTER</h3>
+<p>The pointer is a numeric field holding the position in the receiving field where the next
+character will go. Set it before the STRING (to 1 to start at the beginning); STRING starts
+there and, when it finishes, leaves the pointer just past the last character written. That lets
+you add to a field in several steps. Without a pointer, STRING starts at position 1.</p>
+
+<h3>OVERFLOW</h3>
+<p>If the receiving field fills up before all the text is copied, the rest is dropped and the
+<code>ON OVERFLOW</code> statements run. The characters that did fit stay in the field. Overflow
+also happens if the pointer starts out less than 1 or past the end of the field; then nothing
+is copied. <code>NOT ON OVERFLOW</code> runs when everything fit.</p>
+
+<h2>Example</h2>
+<!-- example STRING1 -->
+<p>The full name is built from the first name up to its first space, one space, and the last
+name up to its first space. In the second STRING, the comma delimiter applies to both
+<code>"CITY="</code> and CITY, so the city is copied only up to its comma. With the pointer set
+to 4, ABCDEF goes into positions 4 to 9 of a field of periods and the pointer ends at 10.
+"ADA" plus seven spaces plus "LOVELACE" is too long for 8 characters, so only the first eight
+are kept and ON OVERFLOW runs; the last STRING fits.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview, a pointer that starts out of range (0, or past the end of the
+receiving field) does not raise ON OVERFLOW as it does in GnuCOBOL 3.2. Check the pointer
+yourself before the STRING if it might be out of range.</div>
+
+<h2>See also</h2>
+<p><a href="unstring.html">UNSTRING</a> to split text apart, <a href="inspect.html">INSPECT</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a> such as CONCATENATE and TRIM,
+<a href="referring-to-data.html">reference modification</a>,
+<a href="move.html">MOVE</a>.</p>

@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Files - SP COBOL Reference</title>
+<meta name="description" content="How a COBOL program names, describes, opens, reads, writes and closes data files.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html" class="current" aria-current="page">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Topics</p>
+<h1>Files <span class="badge warn">Differs from GnuCOBOL</span></h1>
+<p class="lede">How a COBOL program names, describes, opens, reads, writes and closes data files.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: name the file (ENVIRONMENT DIVISION, INPUT-OUTPUT SECTION, FILE-CONTROL)</span>
+SELECT [ OPTIONAL ] <var>file-name</var>
+    ASSIGN TO { <var>literal-1</var> | <var>identifier-1</var> | DISPLAY | KEYBOARD }
+    [ ORGANIZATION IS ] { SEQUENTIAL | LINE SEQUENTIAL | RELATIVE | INDEXED }
+    [ ACCESS MODE IS { SEQUENTIAL | RANDOM | DYNAMIC } ]
+    [ RELATIVE KEY IS <var>identifier-2</var> ]
+    [ RECORD KEY IS <var>identifier-3</var> ]
+    [ ALTERNATE RECORD KEY IS <var>identifier-4</var> [ WITH DUPLICATES ] ] ...
+    [ FILE STATUS IS <var>identifier-5</var> ] .
+
+<span class="fmt">Format 2: describe its records (DATA DIVISION, FILE SECTION)</span>
+FD <var>file-name</var> [ IS GLOBAL ]
+    [ BLOCK CONTAINS <var>integer-1</var> [ TO <var>integer-2</var> ] { RECORDS | CHARACTERS } ]
+    [ RECORD CONTAINS <var>integer-3</var> CHARACTERS ]
+    [ RECORD IS VARYING IN SIZE FROM <var>integer-4</var> TO <var>integer-5</var> CHARACTERS
+          DEPENDING ON <var>identifier-6</var> ]
+    [ LINAGE IS <var>integer-7</var> LINES [ WITH FOOTING AT <var>integer-8</var> ]
+          [ LINES AT TOP <var>integer-9</var> ] [ LINES AT BOTTOM <var>integer-10</var> ] ] .
+01 <var>record-name</var> ...
+[ 01 <var>record-name-2</var> ... ] ...</pre>
+
+<h2>What it does</h2>
+<p>A COBOL program works with a file in three places. In the ENVIRONMENT DIVISION, a
+<code>SELECT</code> entry gives the file a name inside the program and says where it is on
+disk and how it is organized. In the DATA DIVISION, an <code>FD</code> (file description)
+describes the records. In the PROCEDURE DIVISION, statements open the file, move records in
+and out, and close it.</p>
+<p>A <em>record</em> is one unit of data in the file, such as one customer or one line of a
+report. The 01 level under the FD is the <em>record area</em>: <code>READ</code> puts the next
+record there, and <code>WRITE</code> takes the record from there. The program can only see
+one record of a file at a time.</p>
+
+<h3>ASSIGN: which file on disk</h3>
+<p><code>ASSIGN TO "pay.dat"</code> names the file on disk. A name with no folder in it
+means a file in the <em>current folder</em>, the folder the program is running in (in Visual
+Studio, normally the output folder beside the .exe). You can also give a full path such as
+<code>"C:\data\pay.dat"</code>.</p>
+<p><code>ASSIGN TO</code> a data item (<code>ASSIGN TO LOG-NAME</code>) uses whatever name is
+in that item when <code>OPEN</code> runs, so one SELECT can open different files at different
+times. The trailing spaces of the item are ignored.</p>
+<p>Before the name is used, the runtime looks for an environment variable that replaces it,
+the way GnuCOBOL does:</p>
+<ul>
+<li>For a name with no folder in it, such as <code>pay.dat</code>, it tries the variables
+<code>DD_pay_dat</code>, <code>dd_pay_dat</code> and <code>pay_dat</code> (dots become
+underscores). The first one that is set gives the real file name. So
+<code>set DD_pay_dat=C:\test\pay2.dat</code> redirects the file without changing the
+program.</li>
+<li>A part of a path that starts with <code>$</code>, as in <code>"$DATA\pay.dat"</code>,
+is replaced by that variable (here <code>DATA</code>, also tried as <code>DD_DATA</code> and
+<code>dd_DATA</code>).</li>
+<li>If <code>COB_FILE_PATH</code> is set, a name that isn't a full path is looked for in that
+folder instead of the current one.</li>
+</ul>
+<p><code>ASSIGN TO DISPLAY</code> makes a LINE SEQUENTIAL file that writes to the screen
+(standard output), and <code>ASSIGN TO KEYBOARD</code> one that reads from standard input.</p>
+<p><code>OPTIONAL</code> means the file may be missing: opening it for input then succeeds
+with status 05 and the first READ is at end (see <a href="open.html">OPEN</a>).</p>
+
+<h3>ORGANIZATION: how records are stored</h3>
+<div class="table-wrap"><table>
+<tr><th>Organization</th><th>On disk</th><th>Use it for</th></tr>
+<tr><td><code>SEQUENTIAL</code> (the default)</td><td>Records one after another, each
+exactly as long as the record area, with nothing between them. Variable-length records
+(<code>RECORD VARYING</code>) get a 4-byte length header each.</td><td>Data that is always
+read from start to end.</td></tr>
+<tr><td><code>LINE SEQUENTIAL</code></td><td>A text file: one record per line, trailing
+spaces removed, each line ended by CR LF. You can open it in Notepad.</td><td>Text files,
+reports, data shared with other programs.</td></tr>
+<tr><td><code>RELATIVE</code></td><td>Numbered slots 1, 2, 3, ... of equal size. A slot can
+be empty. The <code>RELATIVE KEY</code> item holds the slot number.</td><td>Data looked up by a
+small number, such as a room or seat number.</td></tr>
+<tr><td><code>INDEXED</code></td><td>Records found by a key field inside the record
+(<code>RECORD KEY</code>), and optionally by more keys (<code>ALTERNATE RECORD
+KEY</code>).</td><td>Data looked up by a code or name, read in key order.</td></tr>
+</table></div>
+
+<h3>ACCESS MODE: how the program gets at the records</h3>
+<ul>
+<li><code>SEQUENTIAL</code> (the default): records are read and written in order, one after
+the next.</li>
+<li><code>RANDOM</code>: each READ or WRITE goes straight to the record whose key you set
+first: the slot number in the RELATIVE KEY, or the value in the RECORD KEY field.</li>
+<li><code>DYNAMIC</code>: both. Use <code>READ ... KEY</code> or a plain READ for direct
+access, and <code>READ ... NEXT</code> (often after <a href="start.html">START</a>) to carry on
+in order from there.</li>
+</ul>
+<p>LINE SEQUENTIAL and SEQUENTIAL files are always accessed sequentially.</p>
+
+<h3>Keys</h3>
+<p><code>RELATIVE KEY</code> names an unsigned numeric item in WORKING-STORAGE (not in the
+record). With random or dynamic access you put the slot number there before READ, WRITE,
+REWRITE, DELETE or START; with sequential access the runtime puts the number of each slot it
+reads or writes there.</p>
+<p><code>RECORD KEY</code> names a field inside the record. Each record must have a different
+value in it; writing a second record with the same key fails with status 22. An
+<code>ALTERNATE RECORD KEY</code> is another field you can read by. Add
+<code>WITH DUPLICATES</code> if several records may share a value (several customers in one
+city, for example).</p>
+
+<h3>FILE STATUS</h3>
+<p><code>FILE STATUS IS FS</code> names a two-character item (<code>PIC XX</code>) that the
+runtime sets after every statement on the file: <code>"00"</code> for success,
+<code>"10"</code> for end of file, <code>"35"</code> for "file not found", and so on.
+Always give your files one, and check it. <a href="file-status.html">FILE STATUS codes</a>
+lists them all. Several files may share one status item.</p>
+
+<h3>The FD</h3>
+<p>Each SELECT needs a matching FD with at least one 01 record. Some useful clauses:</p>
+<ul>
+<li><code>RECORD CONTAINS 14 CHARACTERS</code> states the record size. It must agree with the
+01 level; it adds nothing else.</li>
+<li><code>RECORD IS VARYING ... DEPENDING ON LEN</code> makes the records variable in length:
+before a WRITE you put the length in LEN, and after a READ LEN holds the length of the record
+just read.</li>
+<li><code>BLOCK CONTAINS</code> comes from tape and old mainframe files. It is accepted and has
+no effect: the file is the same with or without it.</li>
+<li><code>LINAGE</code> divides a LINE SEQUENTIAL report file into pages, with margins at the
+top and bottom and a footing area. See <a href="write.html">WRITE</a> for an example.</li>
+</ul>
+<p>Several 01 levels under one FD are different views of the same record area, like an
+automatic <a href="redefines.html">REDEFINES</a>. A file of heading lines and detail lines can
+describe both shapes and use whichever fits the record in hand. A READ fills the area; you
+decide which view to look at.</p>
+
+<h3>The life cycle of a file</h3>
+<p>Every file goes through the same steps:</p>
+<ol>
+<li><a href="open.html">OPEN</a> it, saying what you will do: <code>INPUT</code> (read),
+<code>OUTPUT</code> (write a new file), <code>I-O</code> (read and change) or
+<code>EXTEND</code> (add to the end).</li>
+<li><a href="read.html">READ</a>, <a href="write.html">WRITE</a>,
+<a href="rewrite.html">REWRITE</a>, <a href="delete.html">DELETE</a> and
+<a href="start.html">START</a> as needed.</li>
+<li><a href="close.html">CLOSE</a> it. A file left open when the program ends is closed for you,
+with a warning.</li>
+</ol>
+
+<h3>Which statements work where</h3>
+<div class="table-wrap"><table>
+<tr><th>Statement</th><th>SEQUENTIAL</th><th>LINE SEQUENTIAL</th><th>RELATIVE</th><th>INDEXED</th></tr>
+<tr><td>OPEN INPUT, OUTPUT, I-O</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>OPEN EXTEND</td><td>yes</td><td>yes</td><td>sequential access</td><td>sequential access</td></tr>
+<tr><td>READ (next record)</td><td>yes</td><td>yes</td><td>sequential or dynamic access</td><td>sequential or dynamic access</td></tr>
+<tr><td>READ by key</td><td>no</td><td>no</td><td>random or dynamic access</td><td>random or dynamic access</td></tr>
+<tr><td>READ PREVIOUS</td><td>no</td><td>no</td><td>see <a href="read.html">READ</a></td><td>dynamic access</td></tr>
+<tr><td>WRITE</td><td>OUTPUT, EXTEND</td><td>OUTPUT, EXTEND</td><td>OUTPUT, I-O (EXTEND)</td><td>OUTPUT, I-O (EXTEND)</td></tr>
+<tr><td>REWRITE</td><td>I-O, after a READ</td><td>I-O, after a READ</td><td>I-O</td><td>I-O</td></tr>
+<tr><td>DELETE</td><td>no</td><td>no</td><td>I-O</td><td>I-O</td></tr>
+<tr><td>START</td><td>no</td><td>no</td><td>sequential or dynamic access</td><td>sequential or dynamic access</td></tr>
+</table></div>
+<p>With sequential access, REWRITE and DELETE work on the record the last READ returned, so a
+READ must come first (status 43 otherwise). With random or dynamic access they work on the
+record whose key you set.</p>
+
+<h2>Examples</h2>
+<h3>A sequential file: write, then read back</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FILES1.cbl" download>FILES1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FILES1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> PAYFILE ASSIGN TO <span class="str">&quot;pay.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS SEQUENTIAL
+<span class="seq">000080</span>         <span class="kw">FILE</span> STATUS IS PAY-STATUS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  PAYFILE
+<span class="seq">000120</span>     BLOCK CONTAINS 10 RECORDS
+<span class="seq">000130</span>     RECORD CONTAINS 14 CHARACTERS.
+<span class="seq">000140</span> 01  PAY-REC.
+<span class="seq">000150</span>     05  PAY-NAME        PIC X(8).
+<span class="seq">000160</span>     05  PAY-AMOUNT      PIC 9(4)V99.
+<span class="seq">000170</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000180</span> 01  PAY-STATUS          PIC XX.
+<span class="seq">000190</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000200</span>     88  NO-MORE         VALUE <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000210</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000220</span><span class="com">*    write three records</span>
+<span class="seq">000230</span>     <span class="kw">OPEN</span> OUTPUT PAYFILE
+<span class="seq">000240</span>     <span class="kw">MOVE</span> <span class="str">&quot;ANNA&quot;</span> TO PAY-NAME  <span class="kw">MOVE</span> 1250.00 TO PAY-AMOUNT
+<span class="seq">000250</span>     <span class="kw">WRITE</span> PAY-REC
+<span class="seq">000260</span>     <span class="kw">MOVE</span> <span class="str">&quot;BEN&quot;</span> TO PAY-NAME   <span class="kw">MOVE</span> 980.50 TO PAY-AMOUNT
+<span class="seq">000270</span>     <span class="kw">WRITE</span> PAY-REC
+<span class="seq">000280</span>     <span class="kw">MOVE</span> <span class="str">&quot;CARLA&quot;</span> TO PAY-NAME <span class="kw">MOVE</span> 1100.25 TO PAY-AMOUNT
+<span class="seq">000290</span>     <span class="kw">WRITE</span> PAY-REC
+<span class="seq">000300</span>     <span class="kw">CLOSE</span> PAYFILE
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WROTE 3 RECORDS, STATUS &quot;</span> PAY-STATUS
+<span class="seq">000320</span><span class="com">*    read them back</span>
+<span class="seq">000330</span>     <span class="kw">OPEN</span> INPUT PAYFILE
+<span class="seq">000340</span>     <span class="kw">PERFORM</span> UNTIL NO-MORE
+<span class="seq">000350</span>         <span class="kw">READ</span> PAYFILE
+<span class="seq">000360</span>             AT <span class="kw">END</span> <span class="kw">SET</span> NO-MORE TO TRUE
+<span class="seq">000370</span>             NOT AT <span class="kw">END</span> <span class="kw">DISPLAY</span> PAY-NAME <span class="str">&quot; &quot;</span> PAY-AMOUNT
+<span class="seq">000380</span>         <span class="kw">END-READ</span>
+<span class="seq">000390</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000400</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AT END, STATUS &quot;</span> PAY-STATUS
+<span class="seq">000410</span>     <span class="kw">CLOSE</span> PAYFILE
+<span class="seq">000420</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WROTE 3 RECORDS, STATUS 00
+ANNA     1250.00
+BEN      0980.50
+CARLA    1100.25
+AT END, STATUS 10</pre>
+</figure>
+<p>The program writes three 14-character records, closes the file, opens it again for input,
+and reads until <code>AT END</code>. The status after the last READ is 10, end of file. The
+BLOCK and RECORD CONTAINS clauses change nothing: <code>pay.dat</code> is 42 bytes, three
+records end to end.</p>
+
+<h3>A line sequential file with two record layouts</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FILES2.cbl" download>FILES2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FILES2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> NOTES ASSIGN TO <span class="str">&quot;notes.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL
+<span class="seq">000080</span>         <span class="kw">FILE</span> STATUS IS NOTE-STATUS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  NOTES.
+<span class="seq">000120</span> 01  TITLE-LINE.
+<span class="seq">000130</span>     05  TITLE-TEXT      PIC X(20).
+<span class="seq">000140</span> 01  ITEM-LINE.
+<span class="seq">000150</span>     05  ITEM-NO         PIC 99.
+<span class="seq">000160</span>     05  FILLER          PIC X(2).
+<span class="seq">000170</span>     05  ITEM-TEXT       PIC X(16).
+<span class="seq">000180</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000190</span> 01  NOTE-STATUS         PIC XX.
+<span class="seq">000200</span> 01  N                   PIC 99 VALUE 0.
+<span class="seq">000210</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000220</span>     <span class="kw">OPEN</span> OUTPUT NOTES
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;SHOPPING&quot;</span> TO TITLE-TEXT
+<span class="seq">000240</span>     <span class="kw">WRITE</span> TITLE-LINE
+<span class="seq">000250</span>     <span class="kw">MOVE</span> SPACES TO ITEM-LINE
+<span class="seq">000260</span>     <span class="kw">MOVE</span> 1 TO ITEM-NO <span class="kw">MOVE</span> <span class="str">&quot;BREAD&quot;</span> TO ITEM-TEXT
+<span class="seq">000270</span>     <span class="kw">WRITE</span> ITEM-LINE
+<span class="seq">000280</span>     <span class="kw">MOVE</span> 2 TO ITEM-NO <span class="kw">MOVE</span> <span class="str">&quot;MILK&quot;</span> TO ITEM-TEXT
+<span class="seq">000290</span>     <span class="kw">WRITE</span> ITEM-LINE
+<span class="seq">000300</span>     <span class="kw">CLOSE</span> NOTES
+<span class="seq">000310</span>     <span class="kw">OPEN</span> INPUT NOTES
+<span class="seq">000320</span>     <span class="kw">READ</span> NOTES
+<span class="seq">000330</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TITLE: &quot;</span> TITLE-TEXT
+<span class="seq">000340</span>     <span class="kw">PERFORM</span> UNTIL NOTE-STATUS NOT = <span class="str">&quot;00&quot;</span>
+<span class="seq">000350</span>         <span class="kw">READ</span> NOTES
+<span class="seq">000360</span>         <span class="kw">IF</span> NOTE-STATUS = <span class="str">&quot;00&quot;</span>
+<span class="seq">000370</span>             <span class="kw">ADD</span> 1 TO N
+<span class="seq">000380</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;ITEM &quot;</span> ITEM-NO <span class="str">&quot;: [&quot;</span> ITEM-TEXT <span class="str">&quot;]&quot;</span>
+<span class="seq">000390</span>         <span class="kw">END-IF</span>
+<span class="seq">000400</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000410</span>     <span class="kw">DISPLAY</span> N <span class="str">&quot; ITEMS, LAST STATUS &quot;</span> NOTE-STATUS
+<span class="seq">000420</span>     <span class="kw">CLOSE</span> NOTES
+<span class="seq">000430</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">TITLE: SHOPPING            
+ITEM 01: [BREAD           ]
+ITEM 02: [MILK            ]
+02 ITEMS, LAST STATUS 10</pre>
+</figure>
+<p><code>notes.txt</code> is an ordinary text file. TITLE-LINE and ITEM-LINE share one record
+area; the program writes a title through one and items through the other, and reads them back
+the same way. This loop tests the FILE STATUS instead of using <code>AT END</code>.</p>
+
+<h3>A relative file</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FILES3.cbl" download>FILES3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FILES3.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> ROOMS ASSIGN TO <span class="str">&quot;rooms.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE
+<span class="seq">000080</span>         ACCESS MODE IS RANDOM
+<span class="seq">000090</span>         RELATIVE KEY IS ROOM-NO
+<span class="seq">000100</span>         <span class="kw">FILE</span> STATUS IS ROOM-STATUS.
+<span class="seq">000110</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000120</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000130</span> <span class="kw">FD</span>  ROOMS.
+<span class="seq">000140</span> 01  ROOM-REC.
+<span class="seq">000150</span>     05  GUEST           PIC X(10).
+<span class="seq">000160</span>     05  NIGHTS          PIC 99.
+<span class="seq">000170</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000180</span> 01  ROOM-NO             PIC 99.
+<span class="seq">000190</span> 01  ROOM-STATUS         PIC XX.
+<span class="seq">000200</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000210</span>     <span class="kw">OPEN</span> OUTPUT ROOMS
+<span class="seq">000220</span>     <span class="kw">MOVE</span> 7 TO ROOM-NO
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;PATEL&quot;</span> TO GUEST  <span class="kw">MOVE</span> 3 TO NIGHTS
+<span class="seq">000240</span>     <span class="kw">WRITE</span> ROOM-REC
+<span class="seq">000250</span>     <span class="kw">MOVE</span> 2 TO ROOM-NO
+<span class="seq">000260</span>     <span class="kw">MOVE</span> <span class="str">&quot;OKAFOR&quot;</span> TO GUEST <span class="kw">MOVE</span> 1 TO NIGHTS
+<span class="seq">000270</span>     <span class="kw">WRITE</span> ROOM-REC
+<span class="seq">000280</span>     <span class="kw">CLOSE</span> ROOMS
+<span class="seq">000290</span>     <span class="kw">OPEN</span> INPUT ROOMS
+<span class="seq">000300</span>     <span class="kw">PERFORM</span> VARYING ROOM-NO FROM 1 BY 1 UNTIL ROOM-NO &gt; 8
+<span class="seq">000310</span>         <span class="kw">READ</span> ROOMS
+<span class="seq">000320</span>             INVALID KEY
+<span class="seq">000330</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;ROOM &quot;</span> ROOM-NO <span class="str">&quot; EMPTY, &quot;</span> ROOM-STATUS
+<span class="seq">000340</span>             NOT INVALID KEY
+<span class="seq">000350</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;ROOM &quot;</span> ROOM-NO <span class="str">&quot; &quot;</span> GUEST <span class="str">&quot; &quot;</span> NIGHTS
+<span class="seq">000360</span>         <span class="kw">END-READ</span>
+<span class="seq">000370</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000380</span>     <span class="kw">CLOSE</span> ROOMS
+<span class="seq">000390</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">ROOM 01 EMPTY, 23
+ROOM 02 OKAFOR     01
+ROOM 03 EMPTY, 23
+ROOM 04 EMPTY, 23
+ROOM 05 EMPTY, 23
+ROOM 06 EMPTY, 23
+ROOM 07 PATEL      03
+ROOM 08 EMPTY, 23</pre>
+</figure>
+<p>Only slots 2 and 7 are written. Reading slot by slot shows the others as empty: the READ
+takes its <code>INVALID KEY</code> branch with status 23, record not found.</p>
+
+<h3>An indexed file</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FILES4.cbl" download>FILES4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FILES4.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> STOCK ASSIGN TO <span class="str">&quot;stock.idx&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS INDEXED
+<span class="seq">000080</span>         ACCESS MODE IS DYNAMIC
+<span class="seq">000090</span>         RECORD KEY IS PART-NO
+<span class="seq">000100</span>         ALTERNATE RECORD KEY IS BIN WITH DUPLICATES
+<span class="seq">000110</span>         <span class="kw">FILE</span> STATUS IS STOCK-STATUS.
+<span class="seq">000120</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000130</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> <span class="kw">FD</span>  STOCK.
+<span class="seq">000150</span> 01  STOCK-REC.
+<span class="seq">000160</span>     05  PART-NO         PIC X(4).
+<span class="seq">000170</span>     05  PART-NAME       PIC X(10).
+<span class="seq">000180</span>     05  BIN             PIC X(3).
+<span class="seq">000190</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000200</span> 01  STOCK-STATUS        PIC XX.
+<span class="seq">000210</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000220</span>     <span class="kw">OPEN</span> OUTPUT STOCK
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;P300HAMMER    A01&quot;</span> TO STOCK-REC <span class="kw">WRITE</span> STOCK-REC
+<span class="seq">000240</span>     <span class="kw">MOVE</span> <span class="str">&quot;P100SAW       B02&quot;</span> TO STOCK-REC <span class="kw">WRITE</span> STOCK-REC
+<span class="seq">000250</span>     <span class="kw">MOVE</span> <span class="str">&quot;P200PLIERS    A01&quot;</span> TO STOCK-REC <span class="kw">WRITE</span> STOCK-REC
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LAST WRITE &quot;</span> STOCK-STATUS <span class="str">&quot; (SAME BIN AS P300)&quot;</span>
+<span class="seq">000270</span>     <span class="kw">CLOSE</span> STOCK
+<span class="seq">000280</span>     <span class="kw">OPEN</span> INPUT STOCK
+<span class="seq">000290</span>     <span class="kw">MOVE</span> <span class="str">&quot;P200&quot;</span> TO PART-NO
+<span class="seq">000300</span>     <span class="kw">READ</span> STOCK
+<span class="seq">000310</span>         INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;NO P200&quot;</span>
+<span class="seq">000320</span>         NOT INVALID KEY <span class="kw">DISPLAY</span> <span class="str">&quot;FOUND &quot;</span> STOCK-REC
+<span class="seq">000330</span>     <span class="kw">END-READ</span>
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ALL PARTS IN KEY ORDER:&quot;</span>
+<span class="seq">000350</span>     <span class="kw">MOVE</span> LOW-VALUES TO PART-NO
+<span class="seq">000360</span>     <span class="kw">START</span> STOCK KEY &gt;= PART-NO
+<span class="seq">000370</span>     <span class="kw">PERFORM</span> UNTIL STOCK-STATUS NOT = <span class="str">&quot;00&quot;</span>
+<span class="seq">000380</span>         <span class="kw">READ</span> STOCK NEXT
+<span class="seq">000390</span>         <span class="kw">IF</span> STOCK-STATUS = <span class="str">&quot;00&quot;</span>
+<span class="seq">000400</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;  &quot;</span> STOCK-REC
+<span class="seq">000410</span>         <span class="kw">END-IF</span>
+<span class="seq">000420</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000430</span>     <span class="kw">CLOSE</span> STOCK
+<span class="seq">000440</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">LAST WRITE 02 (SAME BIN AS P300)
+FOUND P200PLIERS    A01
+ALL PARTS IN KEY ORDER:
+  P100SAW       B02
+  P200PLIERS    A01
+  P300HAMMER    A01</pre>
+</figure>
+<p>Records are written in any order and come back in key order. The third WRITE gets status
+02: it worked, but another record already has bin A01 (allowed, because of
+<code>WITH DUPLICATES</code>). This example isn't compared with stock GnuCOBOL, whose
+reference build has no indexed file support.</p>
+
+<h3>Choosing the file at run time</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FILES5.cbl" download>FILES5.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FILES5.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> LOGFILE ASSIGN TO LOG-NAME
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL
+<span class="seq">000080</span>         <span class="kw">FILE</span> STATUS IS LOG-STATUS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  LOGFILE.
+<span class="seq">000120</span> 01  LOG-LINE            PIC X(30).
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  LOG-NAME            PIC X(20).
+<span class="seq">000150</span> 01  LOG-STATUS          PIC XX.
+<span class="seq">000160</span> 01  DAY-NO              PIC 9.
+<span class="seq">000170</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000180</span>     <span class="kw">PERFORM</span> VARYING DAY-NO FROM 1 BY 1 UNTIL DAY-NO &gt; 2
+<span class="seq">000190</span>         <span class="kw">MOVE</span> SPACES TO LOG-NAME
+<span class="seq">000200</span>         <span class="kw">STRING</span> <span class="str">&quot;day&quot;</span> DAY-NO <span class="str">&quot;.log&quot;</span> DELIMITED BY SIZE
+<span class="seq">000210</span>             INTO LOG-NAME
+<span class="seq">000220</span>         <span class="kw">OPEN</span> OUTPUT LOGFILE
+<span class="seq">000230</span>         <span class="kw">MOVE</span> SPACES TO LOG-LINE
+<span class="seq">000240</span>         <span class="kw">STRING</span> <span class="str">&quot;LOG FOR DAY &quot;</span> DAY-NO DELIMITED BY SIZE
+<span class="seq">000250</span>             INTO LOG-LINE
+<span class="seq">000260</span>         <span class="kw">WRITE</span> LOG-LINE
+<span class="seq">000270</span>         <span class="kw">CLOSE</span> LOGFILE
+<span class="seq">000280</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;WROTE &quot;</span> LOG-NAME <span class="str">&quot; STATUS &quot;</span> LOG-STATUS
+<span class="seq">000290</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000300</span>     <span class="kw">MOVE</span> <span class="str">&quot;day2.log&quot;</span> TO LOG-NAME
+<span class="seq">000310</span>     <span class="kw">OPEN</span> INPUT LOGFILE
+<span class="seq">000320</span>     <span class="kw">READ</span> LOGFILE
+<span class="seq">000330</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;READ BACK: &quot;</span> LOG-LINE
+<span class="seq">000340</span>     <span class="kw">CLOSE</span> LOGFILE
+<span class="seq">000350</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WROTE day1.log             STATUS 00
+WROTE day2.log             STATUS 00
+READ BACK: LOG FOR DAY 2</pre>
+</figure>
+<p>LOG-NAME holds the file name, so the same SELECT writes <code>day1.log</code> and
+<code>day2.log</code>, then reads the second one back.</p>
+
+<h2>SP COBOL notes</h2>
+<p>SEQUENTIAL, LINE SEQUENTIAL and RELATIVE files are written byte for byte the way
+GnuCOBOL 3.2 writes them (CR LF line ends, the 4-byte header of variable-length records, the
+8-byte header of each relative slot), so programs built with either can share data files. The
+FILE STATUS values and the AT END / INVALID KEY / END-OF-PAGE conditions are the same too.</p>
+<div class="warn">
+<p>Where GnuCOBOL 3.2 has a plain bug in its file handling, SP COBOL does what the code was
+clearly meant to do:</p>
+<div class="table-wrap"><table>
+<tr><th>Situation</th><th>GnuCOBOL 3.2</th><th>SP COBOL</th></tr>
+<tr><td>A TAB, form feed or ESC character inside a LINE SEQUENTIAL record</td><td>WRITE
+refuses it with status 71</td><td>written and read back as is</td></tr>
+<tr><td>A file name in quotes inside the literal, such as <code>"'a.dat'"</code></td><td>the
+first quote stays in the name; OPEN fails with 30</td><td>the quotes are removed</td></tr>
+<tr><td><code>$VAR</code> in the middle of a path</td><td>the <code>\</code> after it is
+lost</td><td>the separators are kept</td></tr>
+<tr><td>Reading a LINE SEQUENTIAL file</td><td>read in Windows text mode: a Ctrl-Z byte ends
+the file, and a file with LF-only line ends can lose text when a long line is split</td>
+<td>CR LF and LF both end a line; Ctrl-Z is ordinary data (status 09, like other control
+characters)</td></tr>
+<tr><td>REWRITE of a shorter line in a LINE SEQUENTIAL file</td><td>overwrites the CR of the
+line end</td><td>the line end is kept</td></tr>
+<tr><td>REWRITE or DELETE of an empty RELATIVE slot</td><td>status 00 (REWRITE even fills the
+slot)</td><td>status 23, record not found</td></tr>
+<tr><td>The error message for a missing file</td><td>names the last environment variable it
+tried</td><td>names the ASSIGN value</td></tr>
+</table></div>
+</div>
+<div class="warn">
+<p><b>INDEXED files use SP COBOL's own format.</b> GnuCOBOL keeps indexed files through an
+outside library (Berkeley DB or VBISAM); SP COBOL uses a simple one-file format of its own,
+pure .NET, with no extra DLLs. The file starts with the header <code>SPCOBIX1</code> and the
+key layout, followed by the records in the order they were written. OPEN reads the whole file
+and builds the key indexes in memory, which is fine for files of thousands of records but not
+millions. Deleted records leave unused space that isn't reused. The FILE STATUS values are
+the ones GnuCOBOL reports (02, 21, 22, 23, 39, ...). Indexed files written by SP COBOL and by
+GnuCOBOL can't be read by each other.</p>
+</div>
+<p>When a file error stops the program (no FILE STATUS and no
+<a href="use.html">USE</a> procedure), SP COBOL prints GnuCOBOL's message and then one
+<code>hint:</code> line for learners, for example:</p>
+<pre>libcob: error: file does not exist (status = 35) for file NOFILE ('no-such-file.dat')
+  hint: Check the name in ASSIGN. The program looked in C:\work\bin. Use OPEN OUTPUT (or SELECT OPTIONAL) to create the file.</pre>
+<p>Set the environment variable <code>COB_NO_HINTS=1</code> to leave the hint out. The program
+ends with exit code 1, as in GnuCOBOL.</p>
+
+<h2>See also</h2>
+<p><a href="open.html">OPEN</a>, <a href="close.html">CLOSE</a>, <a href="read.html">READ</a>,
+<a href="write.html">WRITE</a>, <a href="rewrite.html">REWRITE</a>,
+<a href="delete.html">DELETE</a>, <a href="start.html">START</a>,
+<a href="file-status.html">FILE STATUS codes</a>, <a href="use.html">USE</a> for error
+procedures, <a href="sort.html">SORT</a> and <a href="merge.html">MERGE</a>,
+<a href="report-writer.html">Report Writer</a>,
+<a href="environment-division.html">ENVIRONMENT DIVISION</a>,
+<a href="data-division.html">DATA DIVISION</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="screen-section.html">&larr; SCREEN SECTION</a><a class="next" href="file-status.html">FILE STATUS codes &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GENERATE - SP COBOL Reference</title>
+<meta name="description" content="Print a Report Writer detail line, with any headings, footings and page breaks it triggers.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html" class="current" aria-current="page">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>GENERATE </h1>
+<p class="lede">Print a Report Writer detail line, with any headings, footings and page breaks it triggers.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: print a detail line</span>
+GENERATE <var>detail-group-name</var>
+
+<span class="fmt">Format 2: summary reporting (totals only)</span>
+GENERATE <var>report-name</var></pre>
+
+<h2>What it does</h2>
+<p><code>GENERATE</code> is the statement that makes a <a href="report-writer.html">Report
+Writer</a> report grow. Before it, move the values for the line into the fields the
+report's SOURCE, SUM and CONTROL clauses name. GENERATE then does, in order, whatever is
+due:</p>
+<ol>
+<li>On the first GENERATE after <a href="initiate.html">INITIATE</a>: the report heading
+and the first page heading.</li>
+<li>If a control field changed since the last GENERATE: the control footings (with their
+totals) for the old value, then the control headings for the new one.</li>
+<li>If the lines won't fit on this page: the page footing, a new page, and its page
+heading.</li>
+<li>The detail line itself (Format 1), and adding the values into the SUM counters.</li>
+</ol>
+
+<h3>Detail reporting and summary reporting</h3>
+<p><b>Format 1</b> names a <code>TYPE DETAIL</code> group and prints it. <b>Format 2</b>
+names the report itself. It does everything in the list above except print a detail line:
+the totals still add up and the headings and footings still print. That's called
+<em>summary reporting</em>: a report of totals only, from the same RD.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/GENERATE1.cbl" download>GENERATE1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. GENERATE1.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> REPORT-FILE ASSIGN TO <span class="str">&quot;generate1.txt&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span>     <span class="kw">SELECT</span> READ-BACK ASSIGN TO <span class="str">&quot;generate1.txt&quot;</span>
+<span class="seq">000090</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">FD</span>  REPORT-FILE <span class="kw">REPORT</span> IS FRUIT-REPORT.
+<span class="seq">000130</span> <span class="kw">FD</span>  READ-BACK.
+<span class="seq">000140</span> 01  PRINTED-LINE         PIC X(40).
+<span class="seq">000150</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000160</span> 01  WS-FRUIT             PIC X(6).
+<span class="seq">000170</span> 01  WS-BOXES             PIC 99.
+<span class="seq">000180</span> 01  WS-PASS              PIC 9.
+<span class="seq">000190</span> 01  END-OF-FILE          PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000200</span> <span class="kw">REPORT</span> <span class="kw">SECTION</span>.
+<span class="seq">000210</span> <span class="kw">RD</span>  FRUIT-REPORT
+<span class="seq">000220</span>     CONTROLS ARE WS-FRUIT
+<span class="seq">000230</span>     PAGE LIMIT IS 8 LINES
+<span class="seq">000240</span>     HEADING 1 FIRST DETAIL 2 LAST DETAIL 8.
+<span class="seq">000250</span> 01  TYPE IS PAGE HEADING.
+<span class="seq">000260</span>     05  LINE NUMBER IS 1.
+<span class="seq">000270</span>         10  COLUMN 1  PIC X(15) VALUE <span class="str">&quot;PASS   FRUIT&quot;</span>.
+<span class="seq">000280</span>         10  COLUMN 6  PIC 9     SOURCE WS-PASS.
+<span class="seq">000290</span> 01  BOX-LINE TYPE IS DETAIL.
+<span class="seq">000300</span>     05  LINE NUMBER IS PLUS 1.
+<span class="seq">000310</span>         10  COLUMN 8  PIC X(6)  SOURCE WS-FRUIT.
+<span class="seq">000320</span>         10  COLUMN 15 PIC Z9    SOURCE WS-BOXES.
+<span class="seq">000330</span> 01  TYPE IS CONTROL FOOTING WS-FRUIT.
+<span class="seq">000340</span>     05  LINE NUMBER IS PLUS 1.
+<span class="seq">000350</span>         10  COLUMN 1  PIC X(6)  VALUE <span class="str">&quot;TOTAL&quot;</span>.
+<span class="seq">000360</span>         10  COLUMN 8  PIC X(6)  SOURCE WS-FRUIT.
+<span class="seq">000370</span>         10  COLUMN 14 PIC ZZ9   SUM WS-BOXES.
+<span class="seq">000380</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000390</span> MAIN-PARA.
+<span class="seq">000400</span>     <span class="kw">OPEN</span> OUTPUT REPORT-FILE
+<span class="seq">000410</span>     <span class="kw">PERFORM</span> VARYING WS-PASS FROM 1 BY 1 UNTIL WS-PASS &gt; 2
+<span class="seq">000420</span>         <span class="kw">INITIATE</span> FRUIT-REPORT
+<span class="seq">000430</span>         <span class="kw">MOVE</span> <span class="str">&quot;APPLE&quot;</span> TO WS-FRUIT
+<span class="seq">000440</span>         <span class="kw">MOVE</span> 4 TO WS-BOXES <span class="kw">PERFORM</span> GENERATE-ONE
+<span class="seq">000450</span>         <span class="kw">MOVE</span> 6 TO WS-BOXES <span class="kw">PERFORM</span> GENERATE-ONE
+<span class="seq">000460</span>         <span class="kw">MOVE</span> <span class="str">&quot;PEAR&quot;</span> TO WS-FRUIT
+<span class="seq">000470</span>         <span class="kw">MOVE</span> 3 TO WS-BOXES <span class="kw">PERFORM</span> GENERATE-ONE
+<span class="seq">000480</span>         <span class="kw">TERMINATE</span> FRUIT-REPORT
+<span class="seq">000490</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000500</span>     <span class="kw">CLOSE</span> REPORT-FILE
+<span class="seq">000510</span>     <span class="kw">OPEN</span> INPUT READ-BACK
+<span class="seq">000520</span>     <span class="kw">PERFORM</span> UNTIL END-OF-FILE = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000530</span>         <span class="kw">READ</span> READ-BACK
+<span class="seq">000540</span>             AT <span class="kw">END</span> <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-OF-FILE
+<span class="seq">000550</span>             NOT AT <span class="kw">END</span>
+<span class="seq">000560</span>                 <span class="kw">DISPLAY</span> FUNCTION TRIM(PRINTED-LINE TRAILING)
+<span class="seq">000570</span>         <span class="kw">END-READ</span>
+<span class="seq">000580</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000590</span>     <span class="kw">CLOSE</span> READ-BACK
+<span class="seq">000600</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000610</span> GENERATE-ONE.
+<span class="seq">000620</span><span class="com">*    Pass 1 prints every detail line; pass 2 only the totals.</span>
+<span class="seq">000630</span>     <span class="kw">IF</span> WS-PASS = 1
+<span class="seq">000640</span>         <span class="kw">GENERATE</span> BOX-LINE
+<span class="seq">000650</span>     <span class="kw">ELSE</span>
+<span class="seq">000660</span>         <span class="kw">GENERATE</span> FRUIT-REPORT
+<span class="seq">000670</span>     <span class="kw">END-IF</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">PASS 1 FRUIT
+       APPLE   4
+       APPLE   6
+TOTAL  APPLE  10
+       PEAR    3
+TOTAL  PEAR    3
+
+
+PASS 2 FRUIT
+TOTAL  APPLE  10
+TOTAL  PEAR    3</pre>
+</figure>
+<p>The same data goes through the same report twice. In pass 1, GENERATE BOX-LINE prints a
+line for every record, and a TOTAL line each time WS-FRUIT changes. In pass 2,
+GENERATE FRUIT-REPORT prints no detail lines, only the totals, which come out the same.</p>
+
+<h2>See also</h2>
+<p><a href="report-writer.html">Report Writer</a>, <a href="initiate.html">INITIATE</a>,
+<a href="terminate.html">TERMINATE</a>, <a href="suppress.html">SUPPRESS</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="exit.html">&larr; EXIT</a><a class="next" href="go-to.html">GO TO &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

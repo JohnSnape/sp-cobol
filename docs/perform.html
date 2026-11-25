@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PERFORM - SP COBOL Reference</title>
+<meta name="description" content="Run a paragraph, a section or a block of statements, once or in a loop.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html" class="current" aria-current="page">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>PERFORM </h1>
+<p class="lede">Run a paragraph, a section or a block of statements, once or in a loop.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: run a paragraph or section once</span>
+PERFORM <var>procedure-1</var> [ { THRU | THROUGH } <var>procedure-2</var> ]
+
+<span class="fmt">Format 2: a fixed number of times</span>
+PERFORM <var>procedure-1</var> [ THRU <var>procedure-2</var> ] { <var>identifier-1</var> | <var>integer-1</var> } TIMES
+
+<span class="fmt">Format 3: until a condition is true</span>
+PERFORM <var>procedure-1</var> [ THRU <var>procedure-2</var> ]
+    [ WITH TEST { BEFORE | AFTER } ] UNTIL <var>condition-1</var>
+
+<span class="fmt">Format 4: counting loops</span>
+PERFORM <var>procedure-1</var> [ THRU <var>procedure-2</var> ]
+    [ WITH TEST { BEFORE | AFTER } ]
+    VARYING <var>identifier-2</var> FROM { <var>identifier-3</var> | <var>literal-1</var> }
+                         BY { <var>identifier-4</var> | <var>literal-2</var> } UNTIL <var>condition-1</var>
+  [ AFTER <var>identifier-5</var> FROM { <var>identifier-6</var> | <var>literal-3</var> }
+                       BY { <var>identifier-7</var> | <var>literal-4</var> } UNTIL <var>condition-2</var> ] ...
+
+Inline: <var>the</var> <var>same</var>, <var>with</var> <var>statements</var> <var>instead</var> <var>of</var> <var>a</var> <var>procedure</var> <var>name</var>
+PERFORM [ <var>times-or-until-or-varying-phrase</var> ]
+    <var>statement</var> ...
+END-PERFORM</pre>
+
+<h2>What it does</h2>
+<p>PERFORM is how COBOL runs a piece of code from somewhere else and comes back, and it is also
+COBOL's loop statement.</p>
+
+<h3>Out-of-line PERFORM</h3>
+<p><code>PERFORM SAY-HELLO</code> jumps to the paragraph named SAY-HELLO, runs it to its end
+(the next paragraph name), and then comes back to the statement after the PERFORM. A paragraph
+used this way works like a subroutine in other languages, but it has no parameters: it works
+on the program's data directly.</p>
+<p><code>PERFORM STEP-1 THRU STEP-3</code> runs every paragraph from STEP-1 up to and including
+STEP-3, in the order they are written in the program, then comes back.</p>
+<p>A <em>section</em> name can be performed too. <code>PERFORM HELPERS</code>, where HELPERS
+is a section, runs all the paragraphs of that section, from the section header to the next
+section header.</p>
+
+<h3>TIMES</h3>
+<p><code>PERFORM ADD-ONE 3 TIMES</code> runs the paragraph three times. The count can be a
+numeric field; it is read once, before the first run.</p>
+
+<h3>UNTIL, and WITH TEST</h3>
+<p><code>PERFORM ADD-ONE UNTIL N &gt;= 10</code> runs the paragraph again and again until the
+condition is true. By default the condition is checked <em>before</em> each run
+(<code>WITH TEST BEFORE</code>), so if it is already true, the paragraph doesn't run at all.
+<code>WITH TEST AFTER</code> checks it after each run instead, so the paragraph always runs at
+least once. Make sure something in the loop changes the condition, or the loop never ends.</p>
+
+<h3>VARYING</h3>
+<p><code>VARYING I FROM 1 BY 1 UNTIL I &gt; 10</code> sets I to 1, then repeats: check the
+condition, run the code, add 1 to I. <code>BY</code> can be negative to count down. When the
+loop ends, the counter holds the value that made the condition true (11 here), not the last
+value used.</p>
+<p>Each <code>AFTER</code> phrase adds an inner loop. For every value of the first counter, the
+second counter runs through all its values; this is how you walk through the rows and columns
+of a two-dimensional table.</p>
+<p>The counter can be a numeric item or an <a href="set.html">index</a>. If you count down to
+zero, give the counter an <code>S</code> in its picture or stop at zero, because an unsigned
+field can't go below zero and the loop would never end.</p>
+
+<h3>Inline PERFORM</h3>
+<p>Leave out the procedure name and put the statements to run between <code>PERFORM</code> and
+<code>END-PERFORM</code>. All the loop phrases (<code>TIMES</code>, <code>UNTIL</code>,
+<code>VARYING</code>, <code>WITH TEST</code>) work the same way. An inline PERFORM with no loop
+phrase just runs the statements once. Inline loops keep short loop bodies next to the code that
+uses them; out-of-line paragraphs suit longer or reused code.</p>
+
+<h3>Where control goes</h3>
+<p>After an out-of-line PERFORM finishes, control returns to the statement after it, even if
+the performed paragraph itself performed others. If the main code simply runs on into the
+paragraphs below it (you forgot a <code>STOP RUN</code>), they run again as ordinary code, so
+end the main paragraph with <a href="stop.html">STOP RUN</a> or
+<a href="goback.html">GOBACK</a>. To leave a paragraph or loop early, see
+<a href="exit.html">EXIT PARAGRAPH and EXIT PERFORM</a>.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PERFORM1.cbl" download>PERFORM1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PERFORM1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  N              PIC 99 VALUE 0.
+<span class="seq">000060</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000070</span> MAIN-PARA.
+<span class="seq">000080</span>     <span class="kw">PERFORM</span> SAY-HELLO
+<span class="seq">000090</span>     <span class="kw">PERFORM</span> STEP-1 THRU STEP-3
+<span class="seq">000100</span>     <span class="kw">PERFORM</span> ADD-ONE 3 TIMES
+<span class="seq">000110</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER 3 TIMES: &quot;</span> N
+<span class="seq">000120</span>     <span class="kw">PERFORM</span> ADD-ONE UNTIL N &gt;= 10
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER UNTIL:   &quot;</span> N
+<span class="seq">000140</span>     <span class="kw">PERFORM</span> ADD-ONE UNTIL N &gt;= 5
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TEST BEFORE:   &quot;</span> N
+<span class="seq">000160</span>     <span class="kw">PERFORM</span> ADD-ONE WITH TEST AFTER UNTIL N &gt;= 5
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TEST AFTER:    &quot;</span> N
+<span class="seq">000180</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000190</span> SAY-HELLO.
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;HELLO FROM SAY-HELLO&quot;</span>.
+<span class="seq">000210</span> STEP-1.
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;STEP 1&quot;</span>.
+<span class="seq">000230</span> STEP-2.
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;STEP 2&quot;</span>.
+<span class="seq">000250</span> STEP-3.
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;STEP 3&quot;</span>.
+<span class="seq">000270</span> ADD-ONE.
+<span class="seq">000280</span>     <span class="kw">ADD</span> 1 TO N.</code></pre>
+<div class="out-label">Output</div><pre class="output">HELLO FROM SAY-HELLO
+STEP 1
+STEP 2
+STEP 3
+AFTER 3 TIMES: 03
+AFTER UNTIL:   10
+TEST BEFORE:   10
+TEST AFTER:    11</pre>
+</figure>
+<p>The first PERFORM runs one paragraph; THRU runs STEP-1, STEP-2 and STEP-3 in order. After
+three runs of ADD-ONE, N is 3, and UNTIL takes it to 10. The next PERFORM tests before
+running: N is already 10, which is &gt;= 5, so ADD-ONE doesn't run. With TEST AFTER the same
+condition runs ADD-ONE once before checking, so N becomes 11.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PERFORM2.cbl" download>PERFORM2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PERFORM2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  ROW-NO         PIC 9.
+<span class="seq">000060</span> 01  COL-NO         PIC 9.
+<span class="seq">000070</span> 01  PRODUCT        PIC Z9.
+<span class="seq">000080</span> 01  K              PIC 99.
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> MAIN-LOGIC <span class="kw">SECTION</span>.
+<span class="seq">000110</span> START-HERE.
+<span class="seq">000120</span>     <span class="kw">PERFORM</span> SHOW-CELL
+<span class="seq">000130</span>         VARYING ROW-NO FROM 1 BY 1 UNTIL ROW-NO &gt; 3
+<span class="seq">000140</span>           AFTER COL-NO FROM 1 BY 1 UNTIL COL-NO &gt; 3
+<span class="seq">000150</span>     <span class="kw">PERFORM</span> VARYING K FROM 9 BY -3 UNTIL K = 0
+<span class="seq">000160</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;COUNTDOWN &quot;</span> K
+<span class="seq">000170</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;K AFTER THE LOOP: &quot;</span> K
+<span class="seq">000190</span>     <span class="kw">PERFORM</span> 2 TIMES
+<span class="seq">000200</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;INLINE, NO PARAGRAPH NEEDED&quot;</span>
+<span class="seq">000210</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000220</span>     <span class="kw">PERFORM</span> HELPERS
+<span class="seq">000230</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000240</span> SHOW-CELL.
+<span class="seq">000250</span>     <span class="kw">COMPUTE</span> PRODUCT = ROW-NO * COL-NO
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> ROW-NO <span class="str">&quot; x &quot;</span> COL-NO <span class="str">&quot; = &quot;</span> PRODUCT.
+<span class="seq">000270</span> HELPERS <span class="kw">SECTION</span>.
+<span class="seq">000280</span> HELP-1.
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SECTION HELPERS, FIRST PARAGRAPH&quot;</span>.
+<span class="seq">000300</span> HELP-2.
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SECTION HELPERS, SECOND PARAGRAPH&quot;</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">1 x 1 =  1
+1 x 2 =  2
+1 x 3 =  3
+2 x 1 =  2
+2 x 2 =  4
+2 x 3 =  6
+3 x 1 =  3
+3 x 2 =  6
+3 x 3 =  9
+COUNTDOWN 09
+COUNTDOWN 06
+COUNTDOWN 03
+K AFTER THE LOOP: 00
+INLINE, NO PARAGRAPH NEEDED
+INLINE, NO PARAGRAPH NEEDED
+SECTION HELPERS, FIRST PARAGRAPH
+SECTION HELPERS, SECOND PARAGRAPH</pre>
+</figure>
+<p>VARYING with AFTER makes two nested loops: COL-NO goes from 1 to 3 for each value of ROW-NO,
+giving a small multiplication table. The inline loop counts down by 3 and stops when K reaches
+0, which is the value left in K afterwards. <code>PERFORM 2 TIMES ... END-PERFORM</code> needs
+no paragraph at all. Performing the section HELPERS runs both of its paragraphs.</p>
+
+<h2>See also</h2>
+<p><a href="exit.html">EXIT</a> (EXIT PARAGRAPH, EXIT PERFORM), <a href="go-to.html">GO TO</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a> for paragraphs and sections,
+<a href="conditions.html">conditions</a>, <a href="occurs.html">OCCURS</a> and
+<a href="search.html">SEARCH</a> for tables, <a href="call.html">CALL</a> to run another
+program.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="open.html">&larr; OPEN</a><a class="next" href="read.html">READ &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

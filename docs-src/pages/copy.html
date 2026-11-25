@@ -1,0 +1,71 @@
+title: COPY
+summary: Bring the text of a copybook into the program as it is compiled.
+keywords: copybook cpy include REPLACING pseudo-text == COB_COPY_DIR COBCPY shared record layout library
+---
+<h2>Syntax</h2>
+<pre class="syntax">COPY { text-name | literal-1 }
+    [ REPLACING { { ==pseudo-text-1== | word-1 } BY { ==pseudo-text-2== | word-2 } } ... ] .</pre>
+
+<h2>What it does</h2>
+<p>COPY is not a statement that runs; it is an instruction to the compiler. Before the program
+is compiled, the COPY is replaced by the whole text of another file, called a
+<em>copybook</em>. It works anywhere in the program: in the DATA DIVISION to share a record
+layout between programs, in the PROCEDURE DIVISION to share code. Change the copybook, rebuild, and every program that copies it picks up the change.</p>
+<p>The COPY ends with a period. That period belongs to the COPY, not to the copied text, so
+COPY can sit in the middle of a paragraph without ending a sentence.</p>
+
+<h3>Naming the copybook</h3>
+<p>Write the name with or without quotes: <code>COPY CUSTREC.</code> or
+<code>COPY "CUSTREC.cpy".</code> Without an extension, the compiler tries the name with the
+usual extensions, including <code>.cpy</code>, which is what SP COBOL projects use. A copybook
+is written in the same <a href="source-format.html">source format</a> as the program.</p>
+
+<h3>REPLACING</h3>
+<p><code>REPLACING</code> changes text on its way in. Each pair says what to find and what to
+put in its place. Text between <code>==</code> marks is <em>pseudo-text</em>: a run of one or
+more COBOL words matched word by word, so spacing doesn't matter. This lets one copybook serve
+for several records: write a placeholder in it, such as <code>:TAG:</code> inside each name,
+and replace the placeholder differently in each COPY. A placeholder in colons can be part of
+a longer word (<code>:TAG:-NAME</code> becomes <code>OLD-NAME</code>).</p>
+
+<h3>Where copybooks are found</h3>
+<p>The compiler looks for a copybook in the current folder, in each folder given to it with
+<code>-I</code>, in the folders listed in the <code>COBCPY</code> environment variable, and in
+its own copybook folder (<code>COB_COPY_DIR</code>, which holds GnuCOBOL's standard copybooks
+such as <code>screenio.cpy</code>).</p>
+<p>In an SP COBOL project in Visual Studio you don't set any of this up. Put the
+<code>.cpy</code> files in the project folder (or a subfolder) and add them to the project.
+The build passes the project folder, the folder of every <code>.cbl</code> file, and the
+folder of every <code>.cpy</code> file in the project to the compiler with <code>-I</code>, so
+<code>COPY CUSTREC.</code> finds <code>CUSTREC.cpy</code> wherever it sits in the project.
+A program is also rebuilt when one of the project's copybooks changes.</p>
+
+<h2>Example: sharing a record and some code</h2>
+<!-- example COPY1 -->
+<p>The copybook COPY1REC.cpy holds the record layout:</p>
+<pre>000010*&gt; COPY1REC: the customer record, shared by every program
+000020 01  CUSTOMER-REC.
+000030     05  CUST-NAME       PIC X(15).
+000040     05  CUST-BALANCE    PIC 9(4)V99.</pre>
+<p>and COPY1SHOW.cpy, named here in quotes with its extension, holds two statements:</p>
+<pre>000010     DISPLAY "NAME:    " CUST-NAME
+000020     DISPLAY "BALANCE: " CUST-BALANCE</pre>
+<p>The first COPY puts the record into WORKING-STORAGE; the second puts the two DISPLAYs into
+the PROCEDURE DIVISION, so the program runs as if they had been typed in place.</p>
+
+<h2>Example: REPLACING</h2>
+<!-- example COPY2 -->
+<p>COPY2REC.cpy is a record with a placeholder in every name:</p>
+<pre>000010 01  :TAG:-RECORD.
+000020     05  :TAG:-NAME      PIC X(8).
+000030     05  :TAG:-AMOUNT    PIC 9(4).</pre>
+<p>The first COPY makes OLD-RECORD, OLD-NAME and OLD-AMOUNT. The second makes the NEW- names
+and also replaces <code>9(4)</code> by <code>9(6)</code>, so NEW-AMOUNT has room for 120000.</p>
+
+<h2>SP COBOL notes</h2>
+<p>COPY is handled by GnuCOBOL's own front end, so it behaves exactly as in GnuCOBOL 3.2.</p>
+
+<h2>See also</h2>
+<p><a href="replace.html">REPLACE</a> for replacing text in the program itself,
+<a href="data-division.html">DATA DIVISION</a>, <a href="source-format.html">source
+format</a>.</p>

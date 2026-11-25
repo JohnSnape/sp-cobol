@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SET - SP COBOL Reference</title>
+<meta name="description" content="Set or move a table index, turn on a condition name, or point a LINKAGE item at data.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html" class="current" aria-current="page">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>SET </h1>
+<p class="lede">Set or move a table index, turn on a condition name, or point a LINKAGE item at data.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: give an index (or a number) a value</span>
+SET { <var>index-name-1</var> | <var>identifier-1</var> } ... TO { <var>index-name-2</var> | <var>identifier-2</var> | <var>integer-1</var> }
+
+<span class="fmt">Format 2: move an index forward or back</span>
+SET <var>index-name-1</var> ... { UP | DOWN } BY { <var>identifier-3</var> | <var>integer-2</var> }
+
+<span class="fmt">Format 3: make a condition name true or false</span>
+SET <var>condition-name-1</var> ... TO { TRUE | FALSE }
+
+<span class="fmt">Format 4: point a LINKAGE SECTION item at some data</span>
+SET ADDRESS OF <var>identifier-4</var> TO ADDRESS OF <var>identifier-5</var></pre>
+
+<h2>What it does</h2>
+
+<h3>Indexes</h3>
+<p>An <em>index</em> is the counter named in a table's <code>INDEXED BY</code> clause (see
+<a href="occurs.html">OCCURS</a>). It holds an entry number, but internally it is stored in a
+form the computer can use quickly, so you can't <a href="move.html">MOVE</a> to it or ADD to it
+like an ordinary field. SET is how you change it:</p>
+<ul>
+<li><code>SET DX TO 1</code> points the index at entry 1. The value can be a number, a numeric
+field, or another index.</li>
+<li><code>SET DX UP BY 4</code> moves it four entries forward; <code>DOWN BY</code> moves it
+back.</li>
+<li><code>SET SLOT TO DX</code> goes the other way: it copies the entry number out of the index
+into an ordinary numeric field, where you can display it or do arithmetic.</li>
+</ul>
+
+<h3>Condition names</h3>
+<p>A <a href="condition-names.html">condition name</a> (a level-88 item) stands for one or
+more values of its parent field. <code>SET ORDER-SHIPPED TO TRUE</code> moves the condition's
+value (its first value, if it has several) into the parent field, so that the condition becomes
+true. This reads better than <code>MOVE "S" TO ORDER-STATUS</code> and keeps the actual code
+letter in one place.</p>
+<p><code>SET ... TO FALSE</code> works only when the 88 item has a <code>FALSE</code> phrase,
+as in <code>88 ALL-DONE VALUE "Y" FALSE "N"</code>; it moves the FALSE value into the
+field.</p>
+
+<h3>ADDRESS OF</h3>
+<p>An item in the <a href="data-division.html">LINKAGE SECTION</a> has no storage of its own;
+normally it describes data passed in by a <a href="call.html">CALL</a>.
+<code>SET ADDRESS OF VIEW TO ADDRESS OF GREETING</code> makes VIEW describe the bytes of
+GREETING, so reading or changing VIEW reads or changes GREETING. This is an advanced feature;
+most programs never need it.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SET1.cbl" download>SET1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SET1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  DAY-LIST       PIC X(21) VALUE <span class="str">&quot;MONTUEWEDTHUFRISATSUN&quot;</span>.
+<span class="seq">000060</span> 01  DAY-TABLE REDEFINES DAY-LIST.
+<span class="seq">000070</span>     05  DAY-NAME   PIC XXX OCCURS 7 TIMES INDEXED BY DX.
+<span class="seq">000080</span> 01  SLOT           PIC 9   VALUE 2.
+<span class="seq">000090</span> 01  ORDER-STATUS   PIC X   VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000100</span>     88  ORDER-NEW          VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000110</span>     88  ORDER-SHIPPED      VALUE <span class="str">&quot;S&quot;</span>.
+<span class="seq">000120</span> 01  DONE-FLAG      PIC X   VALUE SPACE.
+<span class="seq">000130</span>     88  ALL-DONE           VALUE <span class="str">&quot;Y&quot;</span> FALSE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000140</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000150</span>     <span class="kw">SET</span> DX TO 1
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SET TO 1:     &quot;</span> DAY-NAME (DX)
+<span class="seq">000170</span>     <span class="kw">SET</span> DX UP BY 4
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;UP BY 4:      &quot;</span> DAY-NAME (DX)
+<span class="seq">000190</span>     <span class="kw">SET</span> DX DOWN BY 2
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DOWN BY 2:    &quot;</span> DAY-NAME (DX)
+<span class="seq">000210</span>     <span class="kw">SET</span> DX TO SLOT
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SET TO SLOT:  &quot;</span> DAY-NAME (DX)
+<span class="seq">000230</span>     <span class="kw">SET</span> SLOT TO DX
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SLOT FROM DX: &quot;</span> SLOT
+<span class="seq">000250</span>     <span class="kw">SET</span> ORDER-SHIPPED TO TRUE
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;STATUS:       &quot;</span> ORDER-STATUS
+<span class="seq">000270</span>     <span class="kw">IF</span> ORDER-SHIPPED
+<span class="seq">000280</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;THE ORDER HAS SHIPPED&quot;</span>
+<span class="seq">000290</span>     <span class="kw">END-IF</span>
+<span class="seq">000300</span>     <span class="kw">SET</span> ALL-DONE TO TRUE
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DONE-FLAG:    &quot;</span> DONE-FLAG
+<span class="seq">000320</span>     <span class="kw">SET</span> ALL-DONE TO FALSE
+<span class="seq">000330</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DONE-FLAG:    &quot;</span> DONE-FLAG
+<span class="seq">000340</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SET TO 1:     MON
+UP BY 4:      FRI
+DOWN BY 2:    WED
+SET TO SLOT:  TUE
+SLOT FROM DX: 2
+STATUS:       S
+THE ORDER HAS SHIPPED
+DONE-FLAG:    Y
+DONE-FLAG:    N</pre>
+</figure>
+<p>The index starts at entry 1 (MON), moves up four to FRI and down two to WED. Setting it from
+SLOT, which holds 2, points it at TUE, and <code>SET SLOT TO DX</code> copies the 2 back out.
+<code>SET ORDER-SHIPPED TO TRUE</code> puts "S" in ORDER-STATUS, so the IF finds the condition
+true. ALL-DONE has a FALSE value, so it can be set either way.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SET2.cbl" download>SET2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SET2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  GREETING       PIC X(5) VALUE <span class="str">&quot;HELLO&quot;</span>.
+<span class="seq">000060</span> <span class="kw">LINKAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000070</span> 01  VIEW           PIC X(5).
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">SET</span> ADDRESS OF VIEW TO ADDRESS OF GREETING
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;VIEW SEES: &quot;</span> VIEW
+<span class="seq">000110</span>     <span class="kw">MOVE</span> <span class="str">&quot;WORLD&quot;</span> TO VIEW
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;GREETING IS NOW: &quot;</span> GREETING
+<span class="seq">000130</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">VIEW SEES: HELLO
+GREETING IS NOW: WORLD</pre>
+</figure>
+<p>VIEW is a LINKAGE SECTION item. After the SET it describes GREETING's five bytes, so
+displaying VIEW shows HELLO, and moving WORLD into VIEW changes GREETING.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">Not working in this preview, although they compile in GnuCOBOL 3.2:
+<ul>
+<li>Setting a <code>USAGE POINTER</code> item (<code>SET ptr TO ADDRESS OF x</code>,
+<code>SET ptr TO NULL</code>): the C# build fails.
+Use <code>SET ADDRESS OF x TO ADDRESS OF y</code> directly, as in the example.</li>
+<li><code>SET switch-name TO ON / OFF</code> and testing the switch's ON STATUS / OFF STATUS
+conditions (switches declared in SPECIAL-NAMES): the C# build fails. Use an ordinary field
+with 88-level condition names instead.</li>
+<li><code>SET program-pointer TO ENTRY "name"</code> is not supported (see
+<a href="call.html">CALL</a>).</li>
+</ul>
+</div>
+
+<h2>See also</h2>
+<p><a href="occurs.html">OCCURS</a>, <a href="search.html">SEARCH</a>,
+<a href="condition-names.html">condition names</a>, <a href="perform.html">PERFORM VARYING</a>
+(which can vary an index), <a href="call.html">CALL</a>, <a href="usage.html">USAGE</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="search.html">&larr; SEARCH</a><a class="next" href="sort.html">SORT &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SEARCH - SP COBOL Reference</title>
+<meta name="description" content="Look through a table for an entry that meets a condition.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html" class="current" aria-current="page">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>SEARCH </h1>
+<p class="lede">Look through a table for an entry that meets a condition.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: serial search, entry by entry</span>
+SEARCH <var>identifier-1</var> [ VARYING { <var>identifier-2</var> | <var>index-name-1</var> } ]
+    [ AT END <var>imperative-statement-1</var> ]
+    { WHEN <var>condition-1</var> { <var>imperative-statement-2</var> | NEXT SENTENCE } } ...
+[ END-SEARCH ]
+
+<span class="fmt">Format 2: binary search of a sorted table</span>
+SEARCH ALL <var>identifier-1</var>
+    [ AT END <var>imperative-statement-1</var> ]
+    WHEN <var>key-condition</var> [ AND <var>key-condition</var> ] ...
+        { <var>imperative-statement-2</var> | NEXT SENTENCE }
+[ END-SEARCH ]
+
+<var>where</var> <var>key-condition</var> <var>is</var>:
+    <var>data-name-1</var> [ ( <var>index-name</var> ) ] { IS EQUAL TO | IS = } { <var>identifier-3</var> | <var>literal-1</var> }
+  | <var>condition-name-1</var></pre>
+
+<h2>What it does</h2>
+<p>SEARCH looks through a table, an item defined with <a href="occurs.html">OCCURS</a>, for
+an entry that matches a condition. <code>identifier-1</code> is the item that has the OCCURS
+clause, and it must also have an <code>INDEXED BY</code> clause: SEARCH moves that
+<em>index</em> from entry to entry. An index is a special counter for a table; you set it and
+change it with <a href="set.html">SET</a>, and use it as a subscript, as in
+<code>COLOR-NAME (CX)</code>.</p>
+
+<h3>Serial SEARCH</h3>
+<p>The plain SEARCH starts at the entry the index points to <em>now</em>, so you normally
+write <code>SET CX TO 1</code> just before it. For each entry it checks the WHEN conditions in
+order. When one is true, its statements run and the SEARCH ends, with the index left pointing
+at the entry that matched. If the index runs past the last entry without a match, the
+<code>AT END</code> statements run instead (or, without AT END, the program just carries on
+after the SEARCH).</p>
+<p>You may write several WHEN phrases, and any kind of condition; the first one that is true
+wins.</p>
+<p><code>VARYING</code> names a second item that SEARCH moves along with the index. If it is a
+numeric item, it ends up holding the same entry number as the index.</p>
+
+<h3>SEARCH ALL</h3>
+<p>SEARCH ALL finds an entry much faster in a large table by doing a <em>binary search</em>: it
+looks at the middle entry, decides which half the wanted entry must be in, and repeats. For
+that to work:</p>
+<ul>
+<li>the table must have an <code>ASCENDING KEY</code> (or <code>DESCENDING KEY</code>)
+clause naming the field it is sorted on, and the entries must really be in that order;</li>
+<li>the WHEN condition may only test key fields for equality (<code>=</code>), joined with
+<code>AND</code>, and the key must be subscripted with the table's first index;</li>
+<li>there is only one WHEN.</li>
+</ul>
+<p>SEARCH ALL sets the index itself, so you don't SET it first. If the table is not in key
+order, SEARCH ALL can miss entries that are there; it doesn't check the order for you.</p>
+
+<h2>Examples</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SEARCH1.cbl" download>SEARCH1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SEARCH1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  COLOR-LIST     PIC X(24)
+<span class="seq">000060</span>                    VALUE <span class="str">&quot;RED   GREEN BLUE  YELLOW&quot;</span>.
+<span class="seq">000070</span> 01  COLOR-TABLE REDEFINES COLOR-LIST.
+<span class="seq">000080</span>     05  COLOR-NAME PIC X(6) OCCURS 4 TIMES
+<span class="seq">000090</span>                    INDEXED BY CX.
+<span class="seq">000100</span> 01  WANTED         PIC X(6).
+<span class="seq">000110</span> 01  POSITION-NO    PIC 9.
+<span class="seq">000120</span> 01  STEP-COUNT     PIC 99.
+<span class="seq">000130</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000140</span> MAIN-PARA.
+<span class="seq">000150</span>     <span class="kw">MOVE</span> <span class="str">&quot;BLUE&quot;</span> TO WANTED
+<span class="seq">000160</span>     <span class="kw">PERFORM</span> LOOK-UP
+<span class="seq">000170</span>     <span class="kw">MOVE</span> <span class="str">&quot;PINK&quot;</span> TO WANTED
+<span class="seq">000180</span>     <span class="kw">PERFORM</span> LOOK-UP
+<span class="seq">000190</span>     <span class="kw">MOVE</span> 0 TO STEP-COUNT
+<span class="seq">000200</span>     <span class="kw">SET</span> CX TO 2
+<span class="seq">000210</span>     <span class="kw">SEARCH</span> COLOR-NAME VARYING STEP-COUNT
+<span class="seq">000220</span>         AT <span class="kw">END</span> <span class="kw">DISPLAY</span> <span class="str">&quot;NO YELLOW&quot;</span>
+<span class="seq">000230</span>         <span class="kw">WHEN</span> COLOR-NAME (CX) = <span class="str">&quot;YELLOW&quot;</span>
+<span class="seq">000240</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;FOUND YELLOW&quot;</span>
+<span class="seq">000250</span>     <span class="kw">END-SEARCH</span>
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ENTRIES CHECKED: &quot;</span> STEP-COUNT
+<span class="seq">000270</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000280</span> LOOK-UP.
+<span class="seq">000290</span>     <span class="kw">SET</span> CX TO 1
+<span class="seq">000300</span>     <span class="kw">SEARCH</span> COLOR-NAME
+<span class="seq">000310</span>         AT <span class="kw">END</span>
+<span class="seq">000320</span>             <span class="kw">DISPLAY</span> WANTED <span class="str">&quot; IS NOT IN THE TABLE&quot;</span>
+<span class="seq">000330</span>         <span class="kw">WHEN</span> COLOR-NAME (CX) = WANTED
+<span class="seq">000340</span>             <span class="kw">SET</span> POSITION-NO TO CX
+<span class="seq">000350</span>             <span class="kw">DISPLAY</span> WANTED <span class="str">&quot; IS ENTRY &quot;</span> POSITION-NO
+<span class="seq">000360</span>     <span class="kw">END-SEARCH</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">BLUE   IS ENTRY 3
+PINK   IS NOT IN THE TABLE
+FOUND YELLOW
+ENTRIES CHECKED: 04</pre>
+</figure>
+<p>LOOK-UP sets the index to 1 and searches. BLUE is the third entry, so the WHEN runs and
+<code>SET POSITION-NO TO CX</code> copies the entry number out of the index. PINK isn't in the
+table, so AT END runs. The last SEARCH starts at entry 2 instead of 1 and finds YELLOW at entry
+4; STEP-COUNT, the VARYING item, holds that entry number too.</p>
+
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SEARCH2.cbl" download>SEARCH2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SEARCH2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  STATE-LIST.
+<span class="seq">000060</span>     05  FILLER     PIC X(14) VALUE <span class="str">&quot;AZARIZONA     &quot;</span>.
+<span class="seq">000070</span>     05  FILLER     PIC X(14) VALUE <span class="str">&quot;CACALIFORNIA  &quot;</span>.
+<span class="seq">000080</span>     05  FILLER     PIC X(14) VALUE <span class="str">&quot;NVNEVADA      &quot;</span>.
+<span class="seq">000090</span>     05  FILLER     PIC X(14) VALUE <span class="str">&quot;OROREGON      &quot;</span>.
+<span class="seq">000100</span>     05  FILLER     PIC X(14) VALUE <span class="str">&quot;WAWASHINGTON  &quot;</span>.
+<span class="seq">000110</span> 01  STATE-TABLE REDEFINES STATE-LIST.
+<span class="seq">000120</span>     05  STATE-ENTRY OCCURS 5 TIMES
+<span class="seq">000130</span>                     ASCENDING KEY IS STATE-CODE
+<span class="seq">000140</span>                     INDEXED BY SX.
+<span class="seq">000150</span>         10  STATE-CODE PIC XX.
+<span class="seq">000160</span>         10  STATE-NAME PIC X(12).
+<span class="seq">000170</span> 01  WANTED         PIC XX.
+<span class="seq">000180</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000190</span> MAIN-PARA.
+<span class="seq">000200</span>     <span class="kw">MOVE</span> <span class="str">&quot;NV&quot;</span> TO WANTED
+<span class="seq">000210</span>     <span class="kw">PERFORM</span> FIND-STATE
+<span class="seq">000220</span>     <span class="kw">MOVE</span> <span class="str">&quot;TX&quot;</span> TO WANTED
+<span class="seq">000230</span>     <span class="kw">PERFORM</span> FIND-STATE
+<span class="seq">000240</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000250</span> FIND-STATE.
+<span class="seq">000260</span>     <span class="kw">SEARCH</span> ALL STATE-ENTRY
+<span class="seq">000270</span>         AT <span class="kw">END</span>
+<span class="seq">000280</span>             <span class="kw">DISPLAY</span> WANTED <span class="str">&quot;: NO SUCH CODE&quot;</span>
+<span class="seq">000290</span>         <span class="kw">WHEN</span> STATE-CODE (SX) = WANTED
+<span class="seq">000300</span>             <span class="kw">DISPLAY</span> WANTED <span class="str">&quot;: &quot;</span> STATE-NAME (SX)
+<span class="seq">000310</span>     <span class="kw">END-SEARCH</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">NV: NEVADA      
+TX: NO SUCH CODE</pre>
+</figure>
+<p>The table of states is in order of the two-letter code, which the ASCENDING KEY clause
+declares. SEARCH ALL finds NV and shows its name. TX isn't there, so AT END runs.</p>
+
+<h2>See also</h2>
+<p><a href="occurs.html">OCCURS</a> (INDEXED BY, ASCENDING KEY), <a href="set.html">SET</a>,
+<a href="perform.html">PERFORM VARYING</a> for your own table loops,
+<a href="sort.html">SORT</a> (it can sort a table into key order),
+<a href="conditions.html">conditions</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="rewrite.html">&larr; REWRITE</a><a class="next" href="set.html">SET &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

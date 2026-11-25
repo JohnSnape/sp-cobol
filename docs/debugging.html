@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Debugging - SP COBOL Reference</title>
+<meta name="description" content="Find mistakes in SP COBOL programs with Visual Studio&#39;s debugger, plain-English messages, debugging lines and DISPLAY tracing.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html" class="current" aria-current="page">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Topics</p>
+<h1>Debugging </h1>
+<p class="lede">Find mistakes in SP COBOL programs with Visual Studio&#39;s debugger, plain-English messages, debugging lines and DISPLAY tracing.</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: debugging lines (compiled only in debugging mode)</span>
+SOURCE-COMPUTER. <var>computer-name</var> WITH DEBUGGING MODE.
+      D    <var>statement</var> ...                  (D <var>in</var> <var>column</var> 7)
+
+<span class="fmt">Format 2: Watch window expressions (Visual Studio)</span>
+DATA_NAME                 <var>a</var> <var>data</var> <var>item</var>, <var>with</var> _ <var>for</var> <var>each</var> -
+DATA_NAME[<var>n</var>]              <var>occurrence</var> <var>n</var> <var>of</var> <var>a</var> <var>table</var>
+COBOL                     <var>every</var> 01 <var>and</var> 77 <var>item</var>
+COBOL["<var>data-name</var>"]        <var>any</var> <var>item</var> <var>by</var> <var>its</var> COBOL <var>name</var></pre>
+
+<h2>What it does</h2>
+<p>A <em>bug</em> is a mistake that makes a program do the wrong thing. There are three
+kinds of help for finding one: the compiler's and runtime's error messages, Visual
+Studio's debugger, which lets you stop the program and look inside it, and extra
+<code>DISPLAY</code> statements that print what the program is doing as it runs.</p>
+
+<h3>Error messages</h3>
+<p>When a program doesn't compile, Visual Studio's Error List shows each message with its
+COBOL file and line; double-click one to jump there. For the mistakes beginners make most
+often, the message ends with a plain-English hint after <code>--</code>, for example a
+syntax error suggests checking for a missing period, a misspelled word or code that starts
+before column 8.</p>
+<p>When a running program stops with a fatal error (a file that isn't there, a CALL of a
+program that doesn't exist), the runtime prints GnuCOBOL's message and then a line starting
+<code>hint:</code> that says what to check. Set the environment variable
+<code>COB_NO_HINTS=1</code> to turn the hint lines off.</p>
+
+<h3>The Visual Studio debugger</h3>
+<p>Press <b>F5</b> to run the program under the debugger. Click in the margin next to a
+COBOL line to set a <em>breakpoint</em>: the program stops just before that line runs.
+Then step through the program one COBOL line at a time with Visual Studio's usual Step
+Over (F10) and Step Into (F11) commands. The <b>Call Stack</b> window shows the names of the
+paragraphs and sections being performed, because each paragraph becomes a method in the
+program SP COBOL builds.</p>
+
+<h3>The Watch window</h3>
+<p>While the program is stopped, type a data item's name into the Watch window to see its
+value. Write it in the debugger's style: <code>-</code> becomes <code>_</code>, so
+<code>WS-PAY</code> is <code>WS_PAY</code>. The value is shown the way DISPLAY would show it,
+and the Type column shows the item's PICTURE and USAGE. For the example program below:</p>
+<div class="table-wrap"><table>
+<tr><th>Watch</th><th>Shows</th></tr>
+<tr><td><code>WS_PAY</code></td><td><code>0712.50</code>, type <code>PIC 9(4)V99</code></td></tr>
+<tr><td><code>WS_TOTAL</code></td><td>its value, type <code>PIC S9(7)V99 COMP-3</code></td></tr>
+<tr><td><code>CUSTOMER</code></td><td>the whole group; expand it to see <code>CUST-NAME</code> and <code>CUST-CITY</code></td></tr>
+<tr><td><code>MONTH_ENTRY[2]</code></td><td>occurrence 2 of the table (expand <code>MONTH_ENTRY</code> to see them all)</td></tr>
+<tr><td><code>COBOL</code></td><td>every 01 and 77 item of the program</td></tr>
+<tr><td><code>COBOL["ws-pay"]</code></td><td>any item by its COBOL name, in upper or lower case</td></tr>
+</table></div>
+<p>Some things to know:</p>
+<ul>
+<li>An item inside a table, such as <code>MONTH_SALES</code>, shows its <em>first</em>
+occurrence. Use the table's <code>[n]</code> for the others.</li>
+<li>If two items have the same name (in different groups, the ones you'd qualify with
+<code>OF</code>), only the first gets a Watch name. Reach the others by expanding their
+group, or through <code>COBOL</code>.</li>
+<li>LINKAGE SECTION items show "(no data ...)" until the program has been CALLed.</li>
+<li>Not shown: elementary FILLER items, level 66 (RENAMES), 88 (condition names) and 78
+(constants), special registers such as RETURN-CODE, COB-CRT-STATUS, EXTERNAL items,
+LOCAL-STORAGE items and ANY LENGTH items. To see a condition name, watch the item it
+belongs to.</li>
+</ul>
+
+<h3>Debugging lines</h3>
+<p>A line with <code>D</code> in column 7 is a <em>debugging line</em>. It's compiled only
+when the SOURCE-COMPUTER paragraph says <code>WITH DEBUGGING MODE</code>; otherwise it's
+treated as a comment. That lets you leave tracing DISPLAYs in a program and switch them all
+on or off by changing one line.</p>
+
+<h3>Tracing with DISPLAY</h3>
+<p>The oldest way to debug still works everywhere: add <code>DISPLAY</code> statements that
+show where the program is and what its key fields hold, such as
+<code>DISPLAY "IN CALC-PAY: HOURS=" WS-HOURS</code>. Put square brackets around text fields
+(<code>DISPLAY "[" WS-NAME "]"</code>) to see trailing spaces.</p>
+
+<h2>Examples</h2>
+<h3>A program to try the Watch window on</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/DEBUG1.cbl" download>DEBUG1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. DEBUG1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  WS-PAY            PIC 9(4)V99 VALUE 712.50.
+<span class="seq">000060</span> 01  WS-COUNT          PIC S9(4) COMP VALUE -12.
+<span class="seq">000070</span> 01  WS-TOTAL          PIC S9(7)V99 COMP-3 VALUE 1234.56.
+<span class="seq">000080</span> 01  CUSTOMER.
+<span class="seq">000090</span>     05  CUST-NAME     PIC X(10) VALUE <span class="str">&quot;ADA&quot;</span>.
+<span class="seq">000100</span>     05  CUST-CITY     PIC X(8)  VALUE <span class="str">&quot;LA&quot;</span>.
+<span class="seq">000110</span>     05  FILLER        PIC X(2)  VALUE <span class="str">&quot;--&quot;</span>.
+<span class="seq">000120</span> 01  MONTHS.
+<span class="seq">000130</span>     05  MONTH-ENTRY OCCURS 3.
+<span class="seq">000140</span>         10  MONTH-NAME   PIC X(3).
+<span class="seq">000150</span>         10  MONTH-SALES  PIC 9(3).
+<span class="seq">000160</span> 77  RATE              COMP-2 VALUE 1.5.
+<span class="seq">000170</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000180</span> MAIN-PARA.
+<span class="seq">000190</span>     <span class="kw">MOVE</span> <span class="str">&quot;JAN&quot;</span> TO MONTH-NAME (1)
+<span class="seq">000200</span>     <span class="kw">MOVE</span> 100   TO MONTH-SALES (1)
+<span class="seq">000210</span>     <span class="kw">MOVE</span> <span class="str">&quot;FEB&quot;</span> TO MONTH-NAME (2)
+<span class="seq">000220</span>     <span class="kw">MOVE</span> 200   TO MONTH-SALES (2)
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;MAR&quot;</span> TO MONTH-NAME (3)
+<span class="seq">000240</span>     <span class="kw">MOVE</span> 300   TO MONTH-SALES (3)
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DONE&quot;</span>
+<span class="seq">000260</span>     <span class="kw">GOBACK</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">DONE</pre>
+</figure>
+<p>Open it in a COBOL project, set a breakpoint on the DISPLAY line, press F5, and try the
+Watch expressions from the table above. By then the MOVEs have filled in the table, so
+<code>MONTH_ENTRY[2]</code> shows FEB and 200. Run without the debugger, it just prints DONE.</p>
+
+<h3>Debugging lines</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/DEBUG2.cbl" download>DEBUG2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. DEBUG2.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> SOURCE-COMPUTER. PC WITH DEBUGGING MODE.
+<span class="seq">000060</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000070</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000080</span> 01  WS-I                PIC 9.
+<span class="seq">000090</span> 01  WS-TOTAL            PIC 99 VALUE 0.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">PERFORM</span> VARYING WS-I FROM 1 BY 1 UNTIL WS-I &gt; 3
+<span class="seq">000120</span>         <span class="kw">ADD</span> WS-I TO WS-TOTAL
+<span class="seq">000130</span>D        <span class="kw">DISPLAY</span> <span class="str">&quot;TRACE: I=&quot;</span> WS-I <span class="str">&quot; TOTAL=&quot;</span> WS-TOTAL
+<span class="seq">000140</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TOTAL: &quot;</span> WS-TOTAL
+<span class="seq">000160</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">TRACE: I=1 TOTAL=01
+TRACE: I=2 TOTAL=03
+TRACE: I=3 TOTAL=06
+TOTAL: 06</pre>
+</figure>
+<p>With <code>WITH DEBUGGING MODE</code> the D line runs and traces each pass of the loop.
+Remove those three words and the program prints only the TOTAL line.</p>
+
+<h3>A runtime error with a hint</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/DEBUG3.cbl" download>DEBUG3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. DEBUG3.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> CUSTOMERS ASSIGN TO <span class="str">&quot;customers.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000080</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000100</span> <span class="kw">FD</span>  CUSTOMERS.
+<span class="seq">000110</span> 01  CUSTOMER-LINE       PIC X(40).
+<span class="seq">000120</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;OPENING THE FILE&quot;</span>
+<span class="seq">000140</span>     <span class="kw">OPEN</span> INPUT CUSTOMERS
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NEVER GETS HERE&quot;</span>
+<span class="seq">000160</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">OPENING THE FILE
+libcob: error: file does not exist (status = 35) for file CUSTOMERS (&#39;customers.dat&#39;)
+  hint: Check the name in ASSIGN. The program looked in C:\Work. Use OPEN OUTPUT (or SELECT OPTIONAL) to create the file.</pre>
+</figure>
+<p>The file doesn't exist, so OPEN INPUT fails with status 35 and the program stops with
+exit code 1. The first message is GnuCOBOL's; the <code>hint:</code> line after it is
+SP COBOL's, and names the folder the program looked in (here, the folder the example was
+run in).</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn"><b>Differs from GnuCOBOL 3.2:</b> stock GnuCOBOL prints only the
+<code>libcob: error</code> line, without the hint. Its message also names the file as
+<code>'customers_dat' =&gt; customers.dat</code> (the last environment variable it looked
+up); SP COBOL names it as written in ASSIGN.</div>
+<div class="bad"><code>USE FOR DEBUGGING</code> declaratives (which fill in
+<code>DEBUG-ITEM</code>) don't work in SP COBOL yet: the program fails to build. Use
+debugging lines with DISPLAY instead.</div>
+
+<h2>See also</h2>
+<p><a href="display.html">DISPLAY</a>, <a href="source-format.html">source format</a>
+(column 7), <a href="environment-division.html">ENVIRONMENT DIVISION</a>
+(SOURCE-COMPUTER), <a href="file-status.html">file status</a>,
+<a href="differences.html">Differences from GnuCOBOL</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="special-registers.html">&larr; Special registers</a><a class="next" href="differences.html">Differences from GnuCOBOL &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

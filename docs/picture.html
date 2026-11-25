@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PICTURE - SP COBOL Reference</title>
+<meta name="description" content="Describe what an elementary item holds and how big it is, symbol by symbol.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html" class="current" aria-current="page">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Data description</p>
+<h1>PICTURE </h1>
+<p class="lede">Describe what an elementary item holds and how big it is, symbol by symbol.</p>
+<h2>Syntax</h2>
+<pre class="syntax">{ PICTURE | PIC } [ IS ] <var>character-string</var></pre>
+
+<h2>What it does</h2>
+<p>The PICTURE clause describes an elementary item: what kind of characters it holds and how
+many. Each symbol in the character string stands for one position (one character of the
+field), except <code>V</code>, <code>S</code> and <code>P</code>, which take no room in a
+normal DISPLAY field. A number in parentheses repeats the symbol before it, so
+<code>9(5)</code> is the same as <code>99999</code> and <code>X(30)</code> is thirty
+<code>X</code>s.</p>
+<p>A PICTURE puts an item in one of these categories:</p>
+<ul>
+<li><b>numeric</b> (only <code>9 V S P</code>): a number you can calculate with;</li>
+<li><b>alphanumeric</b> (<code>X</code>, or a mix of <code>X 9 A</code>): any characters;</li>
+<li><b>alphabetic</b> (only <code>A</code>): letters and spaces;</li>
+<li><b>numeric-edited</b> (<code>9</code> plus editing symbols such as <code>Z , . $ - CR</code>):
+a number laid out for people to read, used as the receiving field of a MOVE or a
+<code>GIVING</code>;</li>
+<li><b>national</b> (<code>N</code>): Unicode characters, see <a href="national.html">National data</a>.</li>
+</ul>
+
+<h3>Data symbols</h3>
+<div class="table-wrap"><table>
+<tr><th>Symbol</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code>9</code></td><td>One decimal digit.</td><td><code>PIC 9(5)</code> holds 0 to 99999.</td></tr>
+<tr><td><code>X</code></td><td>Any character.</td><td><code>PIC X(20)</code> holds 20 characters.</td></tr>
+<tr><td><code>A</code></td><td>A letter or a space.</td><td><code>PIC A(10)</code></td></tr>
+<tr><td><code>V</code></td><td>Where the decimal point is. It is only <em>implied</em>: no "." is stored and it takes no room.</td><td><code>PIC 9(3)V99</code> holds 123.45 in 5 bytes.</td></tr>
+<tr><td><code>S</code></td><td>The number has a sign. Must come first. Without it, a negative result loses its minus sign.</td><td><code>PIC S9(4)</code></td></tr>
+<tr><td><code>P</code></td><td>A scaling position: an assumed zero that is not stored.</td><td><code>PIC 9(3)PPP</code> holds 45000 in 3 bytes (see the warning below).</td></tr>
+<tr><td><code>N</code></td><td>One national (UTF-16) character, 2 bytes.</td><td><code>PIC N(10)</code></td></tr>
+</table></div>
+
+<h3>How many digits</h3>
+<p>A numeric item can have up to 38 digits in SP COBOL, as in GnuCOBOL 3.2. The last lines of
+the first example show a <code>PIC S9(38)</code> item holding a 38-digit number and doing
+arithmetic on it.</p>
+
+<h3>Numeric-edited symbols</h3>
+<p>These make a number readable. You don't calculate with an edited field; you MOVE a number
+into it (or name it in <code>GIVING</code>) and then DISPLAY or WRITE it.</p>
+<div class="table-wrap"><table>
+<tr><th>Symbol</th><th>What it does</th></tr>
+<tr><td><code>Z</code></td><td>A digit, but a leading zero becomes a space.</td></tr>
+<tr><td><code>*</code></td><td>A digit, but a leading zero becomes <code>*</code>. This is <em>check protection</em>: nobody can write extra digits in front of the amount on a check.</td></tr>
+<tr><td><code>.</code></td><td>The actual decimal point, printed. Lines up with the number's decimal point.</td></tr>
+<tr><td><code>,</code></td><td>A comma, printed. It becomes a space when it falls among suppressed leading zeros.</td></tr>
+<tr><td><code>$</code></td><td>The currency sign. One <code>$</code> is printed in a fixed place; several (<code>$$$</code>) <em>float</em>: the sign is printed just left of the first digit shown.</td></tr>
+<tr><td><code>+</code> <code>-</code></td><td>A sign. <code>+</code> prints + or -; <code>-</code> prints - for negative numbers and a space otherwise. One at the start or end is fixed; several at the start (<code>----9</code>) float like <code>$$$</code>.</td></tr>
+<tr><td><code>CR</code> <code>DB</code></td><td>At the right end: printed when the number is negative, spaces when it isn't. Accountants' credit and debit.</td></tr>
+<tr><td><code>B</code></td><td>Inserts a space.</td></tr>
+<tr><td><code>0</code></td><td>Inserts a zero.</td></tr>
+<tr><td><code>/</code></td><td>Inserts a slash.</td></tr>
+</table></div>
+<p>A numeric-edited picture may also use <code>9</code> for a digit that is always shown. If
+every digit position is <code>Z</code> (or <code>*</code>) and the value is zero, the whole
+field is spaces (or stars), decimal point included.</p>
+
+<h3>Alphanumeric-edited</h3>
+<p>A picture of <code>X</code> or <code>A</code> mixed with <code>B</code>, <code>0</code> or
+<code>/</code> is <em>alphanumeric-edited</em>: a MOVE into it is meant to insert those
+characters between the moved characters, for example <code>PIC XXXX/XX/XX</code> to turn
+<code>20261125</code> into <code>2026/11/25</code>.</p>
+<div class="bad">Alphanumeric-edited MOVEs don't insert anything in SP COBOL yet: the
+characters are copied as in a plain <code>PIC X</code> field and padded with spaces
+(<code>20261125</code> comes out as <code>20261125</code> followed by two spaces), where
+GnuCOBOL prints <code>2026/11/25</code>. Until this is fixed, build such text with
+<a href="string.html">STRING</a> or reference modification.</div>
+
+<h2>Example: data symbols</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PIC1.cbl" download>PIC1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PIC1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  WHOLE         PIC 9(5)      VALUE 42.
+<span class="seq">000060</span> 01  MONEY         PIC 9(3)V99   VALUE 7.5.
+<span class="seq">000070</span> 01  SIGNED-NUM    PIC S9(3)     VALUE -12.
+<span class="seq">000080</span> 01  UNSIGNED-NUM  PIC 9(3).
+<span class="seq">000090</span> 01  CODE-X        PIC X(5)      VALUE <span class="str">&quot;A1-B&quot;</span>.
+<span class="seq">000100</span> 01  LETTERS       PIC A(5)      VALUE <span class="str">&quot;ABC&quot;</span>.
+<span class="seq">000110</span> 01  BIG           PIC S9(38).
+<span class="seq">000120</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;9(5)      [&quot;</span> WHOLE <span class="str">&quot;]&quot;</span>
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;9(3)V99   [&quot;</span> MONEY <span class="str">&quot;]&quot;</span>
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;S9(3)     [&quot;</span> SIGNED-NUM <span class="str">&quot;]&quot;</span>
+<span class="seq">000160</span>     <span class="kw">MOVE</span> SIGNED-NUM TO UNSIGNED-NUM
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;9(3)      [&quot;</span> UNSIGNED-NUM <span class="str">&quot;]&quot;</span>
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;X(5)      [&quot;</span> CODE-X <span class="str">&quot;]&quot;</span>
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;A(5)      [&quot;</span> LETTERS <span class="str">&quot;]&quot;</span>
+<span class="seq">000200</span>     <span class="kw">COMPUTE</span> MONEY = MONEY * 2
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DOUBLED   [&quot;</span> MONEY <span class="str">&quot;]&quot;</span>
+<span class="seq">000220</span>     <span class="kw">MOVE</span> 12345678901234567890123456789012345678 TO BIG
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;38 DIGITS [&quot;</span> BIG <span class="str">&quot;]&quot;</span>
+<span class="seq">000240</span>     <span class="kw">SUBTRACT</span> 1 FROM BIG
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MINUS 1   [&quot;</span> BIG <span class="str">&quot;]&quot;</span>
+<span class="seq">000260</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">9(5)      [00042]
+9(3)V99   [007.50]
+S9(3)     [-012]
+9(3)      [012]
+X(5)      [A1-B ]
+A(5)      [ABC  ]
+DOUBLED   [015.00]
+38 DIGITS [+12345678901234567890123456789012345678]
+MINUS 1   [+12345678901234567890123456789012345677]</pre>
+</figure>
+<p>A DISPLAY shows a numeric item's digits with its implied decimal point as a real
+<code>.</code>, and a signed item with a leading <code>-</code> or <code>+</code>. Moving -12
+into the unsigned <code>9(3)</code> drops the sign. <code>A(5)</code> and <code>X(5)</code>
+pad short values with spaces on the right. The 38-digit item keeps every digit through the
+subtraction.</p>
+
+<h2>Example: edited pictures</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/PIC2.cbl" download>PIC2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. PIC2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  NUMS.
+<span class="seq">000060</span>     05  N  PIC S9(5)V99 OCCURS 4.
+<span class="seq">000070</span> 01  I     PIC 9.
+<span class="seq">000080</span> 01  NUM   PIC S9(5)V99.
+<span class="seq">000090</span> 01  E1    PIC ZZZZ9.99.
+<span class="seq">000100</span> 01  E2    PIC ****9.99.
+<span class="seq">000110</span> 01  E3    PIC $$$,$$9.99.
+<span class="seq">000120</span> 01  E4    PIC $ZZ,ZZ9.99CR.
+<span class="seq">000130</span> 01  E5    PIC ----9.99.
+<span class="seq">000140</span> 01  E6    PIC +++++9.
+<span class="seq">000150</span> 01  E7    PIC ZZ,ZZ9.99DB.
+<span class="seq">000160</span> 01  E8    PIC 99B999B99.
+<span class="seq">000170</span> 01  E9    PIC 9(5)00.
+<span class="seq">000180</span> 01  E10   PIC ZZZZZ.ZZ.
+<span class="seq">000190</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000200</span>     <span class="kw">MOVE</span> 1234.5 TO N(1)
+<span class="seq">000210</span>     <span class="kw">MOVE</span> -987.65 TO N(2)
+<span class="seq">000220</span>     <span class="kw">MOVE</span> 0 TO N(3)
+<span class="seq">000230</span>     <span class="kw">MOVE</span> 3.07 TO N(4)
+<span class="seq">000240</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 4
+<span class="seq">000250</span>         <span class="kw">MOVE</span> N(I) TO NUM
+<span class="seq">000260</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;VALUE &quot;</span> NUM
+<span class="seq">000270</span>         <span class="kw">MOVE</span> NUM TO E1 E2 E3 E4 E5 E6 E7 E8 E9 E10
+<span class="seq">000280</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  ZZZZ9.99     [&quot;</span> E1 <span class="str">&quot;]  ****9.99   [&quot;</span> E2 <span class="str">&quot;]&quot;</span>
+<span class="seq">000290</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  $$$,$$9.99   [&quot;</span> E3 <span class="str">&quot;]  $ZZ,ZZ9.99CR [&quot;</span> E4 <span class="str">&quot;]&quot;</span>
+<span class="seq">000300</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  ----9.99     [&quot;</span> E5 <span class="str">&quot;]  +++++9     [&quot;</span> E6 <span class="str">&quot;]&quot;</span>
+<span class="seq">000310</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  ZZ,ZZ9.99DB  [&quot;</span> E7 <span class="str">&quot;]  99B999B99  [&quot;</span> E8 <span class="str">&quot;]&quot;</span>
+<span class="seq">000320</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;  9(5)00       [&quot;</span> E9 <span class="str">&quot;]  ZZZZZ.ZZ   [&quot;</span> E10 <span class="str">&quot;]&quot;</span>
+<span class="seq">000330</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000340</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">VALUE +01234.50
+  ZZZZ9.99     [ 1234.50]  ****9.99   [*1234.50]
+  $$$,$$9.99   [ $1,234.50]  $ZZ,ZZ9.99CR [$ 1,234.50  ]
+  ----9.99     [ 1234.50]  +++++9     [ +1234]
+  ZZ,ZZ9.99DB  [ 1,234.50  ]  99B999B99  [00 012 34]
+  9(5)00       [0123400]  ZZZZZ.ZZ   [ 1234.50]
+VALUE -00987.65
+  ZZZZ9.99     [  987.65]  ****9.99   [**987.65]
+  $$$,$$9.99   [   $987.65]  $ZZ,ZZ9.99CR [$   987.65CR]
+  ----9.99     [ -987.65]  +++++9     [  -987]
+  ZZ,ZZ9.99DB  [   987.65DB]  99B999B99  [00 009 87]
+  9(5)00       [0098700]  ZZZZZ.ZZ   [  987.65]
+VALUE +00000.00
+  ZZZZ9.99     [    0.00]  ****9.99   [****0.00]
+  $$$,$$9.99   [     $0.00]  $ZZ,ZZ9.99CR [$     0.00  ]
+  ----9.99     [    0.00]  +++++9     [    +0]
+  ZZ,ZZ9.99DB  [     0.00  ]  99B999B99  [00 000 00]
+  9(5)00       [0000000]  ZZZZZ.ZZ   [        ]
+VALUE +00003.07
+  ZZZZ9.99     [    3.07]  ****9.99   [****3.07]
+  $$$,$$9.99   [     $3.07]  $ZZ,ZZ9.99CR [$     3.07  ]
+  ----9.99     [    3.07]  +++++9     [    +3]
+  ZZ,ZZ9.99DB  [     3.07  ]  99B999B99  [00 000 03]
+  9(5)00       [0000300]  ZZZZZ.ZZ   [    3.07]</pre>
+</figure>
+<p>Each number is moved into ten different edited fields. Look at how the zeros in front are
+replaced: by spaces with <code>Z</code>, by stars with <code>*</code>. The floating
+<code>$$$,$$9.99</code> puts the dollar sign right next to the first digit, while
+<code>$ZZ,ZZ9.99CR</code> keeps it in the first column and adds <code>CR</code> only for the
+negative number. <code>----9.99</code> shows a minus sign only for -987.65, while
+<code>+++++9</code> always shows a sign and, having no decimal places, drops the cents.
+<code>99B999B99</code> and <code>9(5)00</code> show the inserted spaces and zeros, and the
+all-<code>Z</code> picture <code>ZZZZZ.ZZ</code> turns zero into a blank field.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn"><b>P (scaling) is not reliable yet.</b> Values stored in a <code>P</code>
+item and MOVEd out of it are right (<code>9(3)PPP</code> holding 45000 moves out as 45000),
+but a DISPLAY of the item itself shows only the stored digits (<code>000045</code>, where
+GnuCOBOL shows <code>045000</code>), and <code>ADD 1000 TO</code> such an item stops the
+program with an error. Avoid <code>P</code> for now; use a field with enough
+<code>9</code>s.</div>
+<p>Alphanumeric-edited pictures don't edit yet (see above).</p>
+
+<h2>See also</h2>
+<p><a href="usage.html">USAGE</a> for how a number is stored,
+<a href="blank-when-zero.html">BLANK WHEN ZERO</a>, <a href="sign.html">SIGN</a>,
+<a href="justified.html">JUSTIFIED</a>, <a href="move.html">MOVE</a>,
+<a href="level-numbers.html">Level numbers</a>, <a href="national.html">National data</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="level-numbers.html">&larr; Level numbers</a><a class="next" href="usage.html">USAGE &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

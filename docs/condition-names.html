@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Condition-names (level 88) - SP COBOL Reference</title>
+<meta name="description" content="Give a name to a value or set of values, then test it like a true/false condition.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html" class="current" aria-current="page">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Data description</p>
+<h1>Condition-names (level 88) </h1>
+<p class="lede">Give a name to a value or set of values, then test it like a true/false condition.</p>
+<h2>Syntax</h2>
+<pre class="syntax">88 <var>condition-name</var> { VALUE [ IS ] | VALUES [ ARE ] }
+       { <var>literal-1</var> [ { THROUGH | THRU } <var>literal-2</var> ] } ...
+       [ FALSE [ IS ] <var>literal-3</var> ] .
+
+Using <var>it</var>
+IF [ NOT ] <var>condition-name</var> ...
+SET <var>condition-name</var> ... TO TRUE
+SET <var>condition-name</var> ... TO FALSE</pre>
+
+<h2>What it does</h2>
+<p>A level-88 entry comes right under a data item (its <em>conditional variable</em>) and names
+some of the values that item can have. The name then works as a condition: it is true when
+the item holds one of those values. Instead of <code>IF GRADE &gt;= 60 AND GRADE &lt;= 100</code>
+you write <code>IF PASSED</code>, which says what the test means.</p>
+<p>An 88 takes up no storage. One item may have many 88 entries, and their value lists may
+overlap: in the example, 100 makes both PASSED and PERFECT true.</p>
+
+<h3>Values, lists and ranges</h3>
+<p>List as many values as you need after <code>VALUE</code> or <code>VALUES</code> (the two
+words mean the same). <code>THRU</code> (or <code>THROUGH</code>) gives a range, both ends
+included. Values and ranges can be mixed in one entry.</p>
+
+<h3>Where to use them</h3>
+<p>Anywhere a condition is allowed: <a href="if.html">IF</a>, <code>EVALUATE TRUE</code> with
+<code>WHEN condition-name</code> (see <a href="evaluate.html">EVALUATE</a>),
+<code>PERFORM ... UNTIL condition-name</code> (see <a href="perform.html">PERFORM</a>), and
+with <code>NOT</code>, <code>AND</code> and <code>OR</code> (see
+<a href="conditions.html">Conditions</a>).</p>
+
+<h3>SET TO TRUE and SET TO FALSE</h3>
+<p><code>SET condition-name TO TRUE</code> moves the condition's (first) value into the
+conditional variable, which makes the condition true. It is a clearer way of writing a flag
+than <code>MOVE "Y" TO END-FLAG</code>. <code>SET condition-name TO FALSE</code> needs a
+<code>FALSE</code> phrase in the 88 entry, and moves that value instead.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/COND88X1.cbl" download>COND88X1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. COND88X1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  GRADE             PIC 999.
+<span class="seq">000060</span>     88  PASSED        VALUE 60 THRU 100.
+<span class="seq">000070</span>     88  PERFECT       VALUE 100.
+<span class="seq">000080</span>     88  BAD-GRADE     VALUES 101 THRU 999.
+<span class="seq">000090</span> 01  COLOR-CODE        PIC X.
+<span class="seq">000100</span>     88  WARM          VALUES <span class="str">&quot;R&quot;</span> <span class="str">&quot;O&quot;</span> <span class="str">&quot;Y&quot;</span>.
+<span class="seq">000110</span>     88  COOL          VALUE <span class="str">&quot;G&quot;</span> <span class="str">&quot;B&quot;</span>.
+<span class="seq">000120</span> 01  END-FLAG          PIC X       VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000130</span>     88  ALL-DONE      VALUE <span class="str">&quot;Y&quot;</span>   FALSE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000140</span> 01  N                 PIC 9       VALUE 0.
+<span class="seq">000150</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000160</span>     <span class="kw">MOVE</span> 75 TO GRADE
+<span class="seq">000170</span>     <span class="kw">IF</span> PASSED <span class="kw">DISPLAY</span> <span class="str">&quot;75: PASSED&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000180</span>     <span class="kw">IF</span> NOT PERFECT <span class="kw">DISPLAY</span> <span class="str">&quot;75: NOT PERFECT&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000190</span>     <span class="kw">MOVE</span> 250 TO GRADE
+<span class="seq">000200</span>     <span class="kw">IF</span> BAD-GRADE <span class="kw">DISPLAY</span> <span class="str">&quot;250: BAD GRADE&quot;</span> <span class="kw">END-IF</span>
+<span class="seq">000210</span>     <span class="kw">SET</span> PERFECT TO TRUE
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER SET PERFECT: &quot;</span> GRADE
+<span class="seq">000230</span>     <span class="kw">MOVE</span> <span class="str">&quot;O&quot;</span> TO COLOR-CODE
+<span class="seq">000240</span>     <span class="kw">EVALUATE</span> TRUE
+<span class="seq">000250</span>         <span class="kw">WHEN</span> WARM <span class="kw">DISPLAY</span> <span class="str">&quot;O IS WARM&quot;</span>
+<span class="seq">000260</span>         <span class="kw">WHEN</span> COOL <span class="kw">DISPLAY</span> <span class="str">&quot;O IS COOL&quot;</span>
+<span class="seq">000270</span>     <span class="kw">END-EVALUATE</span>
+<span class="seq">000280</span>     <span class="kw">PERFORM</span> UNTIL ALL-DONE
+<span class="seq">000290</span>         <span class="kw">ADD</span> 1 TO N
+<span class="seq">000300</span>         <span class="kw">IF</span> N = 3 <span class="kw">SET</span> ALL-DONE TO TRUE <span class="kw">END-IF</span>
+<span class="seq">000310</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LOOPED &quot;</span> N <span class="str">&quot; TIMES, FLAG &quot;</span> END-FLAG
+<span class="seq">000330</span>     <span class="kw">SET</span> ALL-DONE TO FALSE
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER SET FALSE, FLAG &quot;</span> END-FLAG
+<span class="seq">000350</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">75: PASSED
+75: NOT PERFECT
+250: BAD GRADE
+AFTER SET PERFECT: 100
+O IS WARM
+LOOPED 3 TIMES, FLAG Y
+AFTER SET FALSE, FLAG N</pre>
+</figure>
+<p>75 is in the range 60 THRU 100 but isn't 100, so PASSED is true and PERFECT is not.
+<code>SET PERFECT TO TRUE</code> moves 100 into GRADE. "O" is in WARM's list, so EVALUATE takes
+the first WHEN. The loop runs until <code>SET ALL-DONE TO TRUE</code> puts "Y" in END-FLAG, and
+<code>SET ALL-DONE TO FALSE</code> puts back the FALSE value, "N".</p>
+
+<h2>See also</h2>
+<p><a href="set.html">SET</a>, <a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,
+<a href="conditions.html">Conditions</a>, <a href="value.html">VALUE</a>,
+<a href="level-numbers.html">Level numbers</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="renames.html">&larr; RENAMES</a><a class="next" href="constants.html">Constants (level 78 and CONSTANT) &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

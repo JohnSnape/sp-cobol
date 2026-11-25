@@ -1,0 +1,16 @@
+PASS 1 FRUIT
+       APPLE   4
+       APPLE   6
+TOTAL  APPLE  10
+       PEAR    3
+TOTAL  PEAR    3
+
+
+PASS 2 FRUIT
+TOTAL  APPLE  10
+TOTAL  PEAR    3
+
+
+
+
+

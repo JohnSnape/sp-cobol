@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intrinsic functions - SP COBOL Reference</title>
+<meta name="description" content="Built-in functions for text, arithmetic, dates, statistics and money, used as FUNCTION name (arguments).">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html" class="current" aria-current="page">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Topics</p>
+<h1>Intrinsic functions </h1>
+<p class="lede">Built-in functions for text, arithmetic, dates, statistics and money, used as FUNCTION name (arguments).</p>
+<h2>Syntax</h2>
+<pre class="syntax"><span class="fmt">Format 1: call a function</span>
+FUNCTION <var>function-name</var> [ ( <var>argument-1</var> ... ) ] [ ( <var>start</var> : [ <var>length</var> ] ) ]
+
+<span class="fmt">Format 2: allow function names without the word FUNCTION</span>
+ENVIRONMENT DIVISION.
+CONFIGURATION SECTION.
+REPOSITORY.
+    FUNCTION ALL INTRINSIC.</pre>
+
+<h2>What it does</h2>
+<p>An <em>intrinsic function</em> is a calculation built into COBOL. You write
+<code>FUNCTION</code>, the function's name and, in parentheses, its <em>arguments</em>: the
+values it works on, separated by spaces (commas are allowed too). The function returns a
+value, which you use where you would use a data item of that kind: in
+<a href="display.html">DISPLAY</a>, <a href="move.html">MOVE</a>,
+<a href="compute.html">COMPUTE</a>, <a href="if.html">IF</a> and so on.</p>
+<pre>MOVE FUNCTION UPPER-CASE(WS-NAME) TO WS-NAME
+COMPUTE WS-ROOT = FUNCTION SQRT(WS-AREA)
+IF FUNCTION MOD(WS-YEAR 4) = 0 ...</pre>
+<p>Functions return either a number (numeric functions, used in arithmetic such as
+COMPUTE) or text (alphanumeric functions, used where text goes). A text result
+can be cut with reference modification, as in
+<code>FUNCTION UPPER-CASE(WS-TEXT)(3:5)</code>, and functions can be nested:
+<code>FUNCTION LENGTH(FUNCTION TRIM(WS-TEXT))</code>.</p>
+<p>Functions that take "a list of numbers" (MAX, SUM, MEAN, ...) take any number of
+arguments. GnuCOBOL 3.2 doesn't accept a whole table as <code>ITEM(ALL)</code>, so list the
+items, or add them up in a <a href="perform.html">PERFORM</a> loop.</p>
+
+<h3>Without the word FUNCTION</h3>
+<p><code>FUNCTION ALL INTRINSIC</code> in the REPOSITORY paragraph lets you leave out the
+word <code>FUNCTION</code> everywhere in the program: <code>DISPLAY UPPER-CASE(WS-NAME)</code>.
+The function names then become reserved words in that program, so you can't use them as
+data names (no item called <code>SUM</code> or <code>LENGTH</code>).</p>
+
+<h2>The functions</h2>
+<p>Every function below works in SP COBOL and gives the same results as GnuCOBOL 3.2.</p>
+
+<h3>Text</h3>
+<div class="table-wrap"><table>
+<tr><th>Function</th><th>Returns</th></tr>
+<tr><td>UPPER-CASE(text)</td><td>the text with letters changed to capitals</td></tr>
+<tr><td>LOWER-CASE(text)</td><td>the text with letters changed to small letters</td></tr>
+<tr><td>TRIM(text [LEADING | TRAILING])</td><td>the text without spaces at both ends (or only the front, or only the end)</td></tr>
+<tr><td>REVERSE(text)</td><td>the characters in reverse order</td></tr>
+<tr><td>LENGTH(item)</td><td>the number of characters (or bytes) in the item</td></tr>
+<tr><td>BYTE-LENGTH(item)</td><td>the number of bytes the item takes in storage</td></tr>
+<tr><td>LENGTH-AN(item)</td><td>the item's length in bytes, as for alphanumeric data</td></tr>
+<tr><td>STORED-CHAR-LENGTH(text)</td><td>the length without trailing spaces</td></tr>
+<tr><td>CONCATENATE(text ...) / CONCAT</td><td>all the arguments joined into one string</td></tr>
+<tr><td>SUBSTITUTE(text from to ...)</td><td>the text with every "from" string replaced by its "to" string (pairs may repeat)</td></tr>
+<tr><td>SUBSTITUTE-CASE(text from to ...)</td><td>the same, ignoring upper and lower case when finding "from"</td></tr>
+<tr><td>CHAR(n)</td><td>the character at position n of the character set (counting from 1, so CHAR(66) is "A")</td></tr>
+<tr><td>ORD(char)</td><td>the position of a character in the character set (ORD("A") is 66)</td></tr>
+<tr><td>HEX-OF(item)</td><td>the item's bytes written as hexadecimal digits</td></tr>
+<tr><td>HEX-TO-CHAR(text)</td><td>the bytes that a string of hex digits stands for</td></tr>
+<tr><td>BIT-OF(item)</td><td>the item's bytes written as 0s and 1s</td></tr>
+<tr><td>BIT-TO-CHAR(text)</td><td>the bytes that a string of 0s and 1s stands for</td></tr>
+<tr><td>NUMVAL(text)</td><td>the number written in the text, such as " -12.5 " or "12.5CR"</td></tr>
+<tr><td>NUMVAL-C(text [currency])</td><td>the same, also allowing a currency sign and thousands commas ("$1,234.50")</td></tr>
+<tr><td>NUMVAL-F(text)</td><td>the number in a floating-point string such as "1.5E+3"</td></tr>
+<tr><td>TEST-NUMVAL(text), TEST-NUMVAL-C, TEST-NUMVAL-F</td><td>0 if the matching NUMVAL function would accept the text, otherwise the position of the first bad character</td></tr>
+<tr><td>LOCALE-COMPARE(text-1 text-2 [locale])</td><td>"=", "&lt;" or "&gt;" comparing the two texts by the rules of a language</td></tr>
+</table></div>
+
+<h3>Numbers and mathematics</h3>
+<div class="table-wrap"><table>
+<tr><th>Function</th><th>Returns</th></tr>
+<tr><td>ABS(n)</td><td>n without its sign</td></tr>
+<tr><td>SIGN(n)</td><td>-1, 0 or 1 for a negative, zero or positive n</td></tr>
+<tr><td>INTEGER(n)</td><td>the largest whole number not greater than n (INTEGER(-3.5) is -4)</td></tr>
+<tr><td>INTEGER-PART(n)</td><td>n with its decimals dropped (INTEGER-PART(-3.5) is -3)</td></tr>
+<tr><td>FRACTION-PART(n)</td><td>just the decimals of n, with n's sign</td></tr>
+<tr><td>MOD(a b)</td><td>the remainder of a divided by b, with b's sign (MOD(-17 5) is 3)</td></tr>
+<tr><td>REM(a b)</td><td>the remainder of a divided by b, with a's sign (REM(-17 5) is -2)</td></tr>
+<tr><td>SQRT(n)</td><td>the square root</td></tr>
+<tr><td>FACTORIAL(n)</td><td>1 x 2 x ... x n</td></tr>
+<tr><td>EXP(n), EXP10(n)</td><td>e to the power n, 10 to the power n</td></tr>
+<tr><td>LOG(n), LOG10(n)</td><td>the natural logarithm, the base-10 logarithm</td></tr>
+<tr><td>SIN(n), COS(n), TAN(n)</td><td>sine, cosine, tangent of an angle in radians</td></tr>
+<tr><td>ASIN(n), ACOS(n), ATAN(n)</td><td>the angle (in radians) for a sine, cosine, tangent</td></tr>
+<tr><td>PI, E</td><td>the constants &pi; and e (no arguments)</td></tr>
+<tr><td>RANDOM [(seed)]</td><td>a pseudo-random number from 0 up to (not including) 1; give a seed once to start a repeatable sequence</td></tr>
+<tr><td>HIGHEST-ALGEBRAIC(item), LOWEST-ALGEBRAIC(item)</td><td>the largest and smallest value the numeric item can hold</td></tr>
+</table></div>
+
+<h3>Statistics and money</h3>
+<div class="table-wrap"><table>
+<tr><th>Function</th><th>Returns</th></tr>
+<tr><td>MAX(n ...), MIN(n ...)</td><td>the largest, the smallest argument (they work on text too)</td></tr>
+<tr><td>ORD-MAX(n ...), ORD-MIN(n ...)</td><td>which argument (1, 2, ...) is the largest, the smallest</td></tr>
+<tr><td>SUM(n ...)</td><td>the total</td></tr>
+<tr><td>MEAN(n ...)</td><td>the average</td></tr>
+<tr><td>MEDIAN(n ...)</td><td>the middle value once sorted (the average of the two middle ones for an even count)</td></tr>
+<tr><td>MIDRANGE(n ...)</td><td>halfway between the smallest and largest</td></tr>
+<tr><td>RANGE(n ...)</td><td>largest minus smallest</td></tr>
+<tr><td>VARIANCE(n ...), STANDARD-DEVIATION(n ...)</td><td>how spread out the values are</td></tr>
+<tr><td>ANNUITY(rate periods)</td><td>the payment per period that pays off a loan of 1 at that interest rate per period</td></tr>
+<tr><td>PRESENT-VALUE(rate amount ...)</td><td>what a series of future amounts, one per period, is worth today</td></tr>
+</table></div>
+
+<h3>Dates and times</h3>
+<p>Many date functions use an <em>integer date</em>: a day number counted from
+1 January 1601 (day 1). Turn two dates into day numbers and you can subtract them, or add
+days and turn the number back into a date.</p>
+<div class="table-wrap"><table>
+<tr><th>Function</th><th>Returns</th></tr>
+<tr><td>CURRENT-DATE</td><td>21 characters: YYYYMMDDHHMMSSss, then the offset from UTC (+hhmm)</td></tr>
+<tr><td>INTEGER-OF-DATE(yyyymmdd)</td><td>the day number of a date</td></tr>
+<tr><td>DATE-OF-INTEGER(n)</td><td>the YYYYMMDD date of a day number</td></tr>
+<tr><td>INTEGER-OF-DAY(yyyyddd)</td><td>the day number of a year-and-day-of-year date</td></tr>
+<tr><td>DAY-OF-INTEGER(n)</td><td>the YYYYDDD date of a day number</td></tr>
+<tr><td>TEST-DATE-YYYYMMDD(n), TEST-DAY-YYYYDDD(n)</td><td>0 if the date is valid; 1, 2 or 3 if the year, month or day part is wrong</td></tr>
+<tr><td>DATE-TO-YYYYMMDD(yymmdd [window year])</td><td>a date with a 2-digit year expanded to 4 digits</td></tr>
+<tr><td>DAY-TO-YYYYDDD(yyddd [window year])</td><td>the same for YYDDD dates</td></tr>
+<tr><td>YEAR-TO-YYYY(yy [window year])</td><td>a 2-digit year expanded to 4 digits</td></tr>
+<tr><td>FORMATTED-DATE(format n)</td><td>a day number as text in a format such as "YYYY-MM-DD" or "YYYYDDD"</td></tr>
+<tr><td>FORMATTED-TIME(format seconds [offset])</td><td>seconds past midnight as text in a format such as "hh:mm:ss"</td></tr>
+<tr><td>FORMATTED-DATETIME(format n seconds [offset])</td><td>a date and time together, in a format such as "YYYY-MM-DDThh:mm:ss"</td></tr>
+<tr><td>FORMATTED-CURRENT-DATE(format)</td><td>today's date and time in that format</td></tr>
+<tr><td>INTEGER-OF-FORMATTED-DATE(format text)</td><td>the day number of a formatted date</td></tr>
+<tr><td>SECONDS-FROM-FORMATTED-TIME(format text)</td><td>the seconds past midnight of a formatted time</td></tr>
+<tr><td>TEST-FORMATTED-DATETIME(format text)</td><td>0 if the text matches the format and is a valid date/time, otherwise the position of the problem</td></tr>
+<tr><td>SECONDS-PAST-MIDNIGHT</td><td>the time now, in seconds since midnight</td></tr>
+<tr><td>COMBINED-DATETIME(n seconds)</td><td>a day number and seconds as one number, n.sssss</td></tr>
+<tr><td>LOCALE-DATE(yyyymmdd [locale]), LOCALE-TIME(hhmmss [locale]), LOCALE-TIME-FROM-SECONDS(seconds [locale])</td><td>a date or time written the way the computer's language settings write it</td></tr>
+<tr><td>WHEN-COMPILED</td><td>the date and time the program was compiled</td></tr>
+</table></div>
+
+<h3>Other</h3>
+<div class="table-wrap"><table>
+<tr><th>Function</th><th>Returns</th></tr>
+<tr><td>CURRENCY-SYMBOL</td><td>the currency sign of the computer's settings</td></tr>
+<tr><td>NUMERIC-DECIMAL-POINT, NUMERIC-THOUSANDS-SEPARATOR</td><td>the decimal point and thousands separator of the computer's settings</td></tr>
+<tr><td>MONETARY-DECIMAL-POINT, MONETARY-THOUSANDS-SEPARATOR</td><td>the same, for money amounts</td></tr>
+<tr><td>EXCEPTION-STATUS</td><td>the name of the last exception condition (such as EC-SIZE-ZERO-DIVIDE), or spaces</td></tr>
+<tr><td>EXCEPTION-FILE</td><td>the file status and file name of the last file error</td></tr>
+<tr><td>EXCEPTION-LOCATION</td><td>where the last exception happened (program, paragraph, line)</td></tr>
+<tr><td>EXCEPTION-STATEMENT</td><td>the statement that raised the last exception</td></tr>
+<tr><td>MODULE-ID, MODULE-CALLER-ID</td><td>this program's name, and the name of the program that called it</td></tr>
+<tr><td>MODULE-SOURCE, MODULE-PATH</td><td>the source file name, and the path of the running program</td></tr>
+<tr><td>MODULE-DATE, MODULE-TIME, MODULE-FORMATTED-DATE</td><td>when this program was compiled</td></tr>
+<tr><td>CONTENT-LENGTH(pointer), CONTENT-OF(pointer [length])</td><td>the length of, and the text at, the data a pointer points to</td></tr>
+</table></div>
+
+<h2>Examples</h2>
+<h3>Text functions</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FUNC1.cbl" download>FUNC1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FUNC1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  WS-TEXT             PIC X(20) VALUE <span class="str">&quot;  Hello, World  &quot;</span>.
+<span class="seq">000060</span> 01  WS-AMOUNT-TEXT      PIC X(10) VALUE <span class="str">&quot;1,234.50&quot;</span>.
+<span class="seq">000070</span> 01  WS-AMOUNT           PIC 9(5)V99.
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> FUNCTION UPPER-CASE(WS-TEXT) <span class="str">&quot;]&quot;</span>
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> FUNCTION LOWER-CASE(WS-TEXT) <span class="str">&quot;]&quot;</span>
+<span class="seq">000110</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> FUNCTION TRIM(WS-TEXT) <span class="str">&quot;]&quot;</span>
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> FUNCTION TRIM(WS-TEXT LEADING) <span class="str">&quot;]&quot;</span>
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;[&quot;</span> FUNCTION REVERSE(<span class="str">&quot;ABC&quot;</span>) <span class="str">&quot;]&quot;</span>
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> FUNCTION LENGTH(WS-TEXT)
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> FUNCTION LENGTH(FUNCTION TRIM(WS-TEXT))
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> FUNCTION CONCATENATE(<span class="str">&quot;ab&quot;</span> <span class="str">&quot;-&quot;</span> <span class="str">&quot;cd&quot;</span>)
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> FUNCTION SUBSTITUTE(WS-TEXT <span class="str">&quot;World&quot;</span> <span class="str">&quot;there&quot;</span>)
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> FUNCTION ORD(<span class="str">&quot;A&quot;</span>) <span class="str">&quot; &quot;</span> FUNCTION CHAR(66)
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> FUNCTION UPPER-CASE(WS-TEXT)(3:5)
+<span class="seq">000200</span>     <span class="kw">MOVE</span> FUNCTION NUMVAL-C(WS-AMOUNT-TEXT) TO WS-AMOUNT
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> WS-AMOUNT
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> FUNCTION NUMVAL(<span class="str">&quot; -12.5 &quot;</span>)
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> FUNCTION HEX-OF(<span class="str">&quot;AB&quot;</span>)
+<span class="seq">000240</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">[  HELLO, WORLD      ]
+[  hello, world      ]
+[Hello, World]
+[Hello, World      ]
+[CBA]
+20
+000000012
+ab-cd
+  Hello, there      
+000000066 A
+HELLO
+01234.50
+-00000012.5
+4142</pre>
+</figure>
+<p>UPPER-CASE and LOWER-CASE keep the field's 20 characters, spaces included; TRIM removes
+them. LENGTH of the field is 20, of the trimmed text 12. ORD("A") is 66 because COBOL counts
+character positions from 1. The <code>(3:5)</code> after UPPER-CASE takes five characters
+starting at the third. NUMVAL-C reads "1,234.50" as a number that can be stored in a
+numeric field.</p>
+
+<h3>Numeric functions</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FUNC2.cbl" download>FUNC2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FUNC2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  WS-RESULT           PIC -9(5).9(4).
+<span class="seq">000060</span> 01  WS-WHOLE            PIC -9(5).
+<span class="seq">000070</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span>     <span class="kw">COMPUTE</span> WS-RESULT = FUNCTION SQRT(2)
+<span class="seq">000090</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SQRT(2)        &quot;</span> WS-RESULT
+<span class="seq">000100</span>     <span class="kw">COMPUTE</span> WS-RESULT = FUNCTION ABS(-7.25)
+<span class="seq">000110</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ABS(-7.25)     &quot;</span> WS-RESULT
+<span class="seq">000120</span>     <span class="kw">COMPUTE</span> WS-WHOLE = FUNCTION MOD(17 5)
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MOD(17 5)      &quot;</span> WS-WHOLE
+<span class="seq">000140</span>     <span class="kw">COMPUTE</span> WS-WHOLE = FUNCTION MOD(-17 5)
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MOD(-17 5)     &quot;</span> WS-WHOLE
+<span class="seq">000160</span>     <span class="kw">COMPUTE</span> WS-WHOLE = FUNCTION REM(-17 5)
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;REM(-17 5)     &quot;</span> WS-WHOLE
+<span class="seq">000180</span>     <span class="kw">COMPUTE</span> WS-WHOLE = FUNCTION INTEGER(-3.5)
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;INTEGER(-3.5)  &quot;</span> WS-WHOLE
+<span class="seq">000200</span>     <span class="kw">COMPUTE</span> WS-WHOLE = FUNCTION INTEGER-PART(-3.5)
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;INTEGER-PART   &quot;</span> WS-WHOLE
+<span class="seq">000220</span>     <span class="kw">COMPUTE</span> WS-WHOLE = FUNCTION FACTORIAL(6)
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FACTORIAL(6)   &quot;</span> WS-WHOLE
+<span class="seq">000240</span>     <span class="kw">COMPUTE</span> WS-RESULT = FUNCTION PI
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PI             &quot;</span> WS-RESULT
+<span class="seq">000260</span>     <span class="kw">COMPUTE</span> WS-RESULT = FUNCTION LOG10(1000)
+<span class="seq">000270</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LOG10(1000)    &quot;</span> WS-RESULT
+<span class="seq">000280</span>     <span class="kw">COMPUTE</span> WS-RESULT = FUNCTION SIN(FUNCTION PI / 2)
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SIN(PI / 2)    &quot;</span> WS-RESULT
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MAX            &quot;</span> FUNCTION MAX(3 9 4)
+<span class="seq">000310</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MIN            &quot;</span> FUNCTION MIN(3 9 4)
+<span class="seq">000320</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SUM            &quot;</span> FUNCTION SUM(3 9 4)
+<span class="seq">000330</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MEAN           &quot;</span> FUNCTION MEAN(3 9 4 8)
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;MEDIAN         &quot;</span> FUNCTION MEDIAN(3 9 4 8)
+<span class="seq">000350</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;RANGE          &quot;</span> FUNCTION RANGE(3 9 4 8)
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ORD-MAX        &quot;</span> FUNCTION ORD-MAX(3 9 4 8)
+<span class="seq">000370</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SQRT(2)         00001.4142
+ABS(-7.25)      00007.2500
+MOD(17 5)       00002
+MOD(-17 5)      00003
+REM(-17 5)     -00002
+INTEGER(-3.5)  -00004
+INTEGER-PART   -00003
+FACTORIAL(6)    00720
+PI              00003.1415
+LOG10(1000)     00003.0000
+SIN(PI / 2)     00001.0000
+MAX            9
+MIN            3
+SUM            000000016
+MEAN           000000006
+MEDIAN         000000006
+RANGE          000000006
+ORD-MAX        000000002</pre>
+</figure>
+<p>Results go through COMPUTE into an edited field so they print readably. Compare MOD and
+REM, and INTEGER and INTEGER-PART, on negative numbers. Values displayed straight from a
+function (MAX, SUM, ...) are shown in a size the function chose.</p>
+
+<h3>Date functions</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FUNC3.cbl" download>FUNC3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FUNC3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  WS-START            PIC 9(8) VALUE 20261125.
+<span class="seq">000060</span> 01  WS-DAY-NUMBER       PIC 9(7).
+<span class="seq">000070</span> 01  WS-DAYS             PIC 9(7).
+<span class="seq">000080</span> 01  WS-DUE              PIC 9(8).
+<span class="seq">000090</span> 01  WS-WEEKDAY          PIC 9.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">COMPUTE</span> WS-DAY-NUMBER = FUNCTION INTEGER-OF-DATE(WS-START)
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DAY NUMBER      &quot;</span> WS-DAY-NUMBER
+<span class="seq">000130</span>     <span class="kw">COMPUTE</span> WS-DUE = FUNCTION DATE-OF-INTEGER(WS-DAY-NUMBER + 30)
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;30 DAYS LATER   &quot;</span> WS-DUE
+<span class="seq">000150</span>     <span class="kw">COMPUTE</span> WS-DAYS = FUNCTION INTEGER-OF-DATE(20261225)
+<span class="seq">000160</span>                     - WS-DAY-NUMBER
+<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DAYS TO 25 DEC  &quot;</span> WS-DAYS
+<span class="seq">000180</span>     <span class="kw">COMPUTE</span> WS-WEEKDAY = FUNCTION MOD(WS-DAY-NUMBER 7)
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WEEKDAY (0=SUN) &quot;</span> WS-WEEKDAY
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;YYYYDDD         &quot;</span>
+<span class="seq">000210</span>         FUNCTION DAY-OF-INTEGER(WS-DAY-NUMBER)
+<span class="seq">000220</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FORMATTED       &quot;</span>
+<span class="seq">000230</span>         FUNCTION FORMATTED-DATE(<span class="str">&quot;YYYY-MM-DD&quot;</span> WS-DAY-NUMBER)
+<span class="seq">000240</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TEST 20260230   &quot;</span>
+<span class="seq">000250</span>         FUNCTION TEST-DATE-YYYYMMDD(20260230)
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;TEST 20260228   &quot;</span>
+<span class="seq">000270</span>         FUNCTION TEST-DATE-YYYYMMDD(20260228)
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;FROM YYMMDD     &quot;</span>
+<span class="seq">000290</span>         FUNCTION DATE-TO-YYYYMMDD(261125 50 2026)
+<span class="seq">000300</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">DAY NUMBER      0155557
+30 DAYS LATER   20261225
+DAYS TO 25 DEC  0000030
+WEEKDAY (0=SUN) 3
+YYYYDDD         2026329
+FORMATTED       2026-11-25
+TEST 20260230   000000003
+TEST 20260228   000000000
+FROM YYMMDD     020261125</pre>
+</figure>
+<p>25 November 2026 is day 155557 counted from 1 January 1601. Adding 30 and converting
+back gives 25 December. Because day 1 (1 January 1601) was a Monday, the day number MOD 7
+gives the weekday with 0 for Sunday: 3 is Wednesday. TEST-DATE-YYYYMMDD returns 3 for
+30 February: the day part is wrong. The example uses fixed dates so its output never
+changes; CURRENT-DATE gives today's.</p>
+
+<h3>FUNCTION ALL INTRINSIC, and money</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FUNC4.cbl" download>FUNC4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FUNC4.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> REPOSITORY.
+<span class="seq">000060</span>     FUNCTION ALL INTRINSIC.
+<span class="seq">000070</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000090</span> 01  WS-NAME             PIC X(10) VALUE <span class="str">&quot;ada&quot;</span>.
+<span class="seq">000100</span> 01  WS-PAYMENT          PIC 9(5).99.
+<span class="seq">000110</span> 01  WS-VALUE            PIC 9(5).99.
+<span class="seq">000120</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> UPPER-CASE(WS-NAME)
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> LENGTH(WS-NAME)
+<span class="seq">000150</span><span class="com">*    Monthly payment on 10,000 at 6% a year for 12 months.</span>
+<span class="seq">000160</span>     <span class="kw">COMPUTE</span> WS-PAYMENT ROUNDED =
+<span class="seq">000170</span>         10000 * ANNUITY(0.06 / 12, 12)
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PAYMENT  &quot;</span> WS-PAYMENT
+<span class="seq">000190</span><span class="com">*    What 3 payments of 100 a year from now are worth at 5%.</span>
+<span class="seq">000200</span>     <span class="kw">COMPUTE</span> WS-VALUE ROUNDED = PRESENT-VALUE(0.05 100 100 100)
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PRESENT  &quot;</span> WS-VALUE
+<span class="seq">000220</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">ADA       
+10
+PAYMENT  00860.66
+PRESENT  00272.32</pre>
+</figure>
+<p>With FUNCTION ALL INTRINSIC in the REPOSITORY, UPPER-CASE and LENGTH need no
+<code>FUNCTION</code> in front. ANNUITY gives the monthly payment on a loan of 1 at 0.5% a
+month for 12 months; times 10,000 that is 860.66. PRESENT-VALUE says three yearly payments
+of 100 are worth 272.32 today at 5% interest.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">Not implemented, in GnuCOBOL 3.2 or SP COBOL: BASECONVERT,
+BOOLEAN-OF-INTEGER, CHAR-NATIONAL, CONVERT, DISPLAY-OF, EXCEPTION-FILE-N,
+EXCEPTION-LOCATION-N, FIND-STRING, INTEGER-OF-BOOLEAN, MODULE-NAME, NATIONAL-OF and
+STANDARD-COMPARE. The compiler stops with "FUNCTION 'name' is not implemented". For
+FIND-STRING use <a href="inspect.html">INSPECT</a> TALLYING, and for DISPLAY-OF /
+NATIONAL-OF a <a href="move.html">MOVE</a> between PIC X and PIC N items.</div>
+<p>Known limits: EXCEPTION-STATUS reports the current exception rather than keeping the
+last one separately as GnuCOBOL does; EXCEPTION-STATEMENT always returns spaces;
+CONTENT-OF treats every pointer as NULL.</p>
+<div class="warn"><b>Differs from GnuCOBOL 3.2:</b> stock GnuCOBOL's
+SECONDS-FROM-FORMATTED-TIME can return a wrong number of decimals when the time has a
+fraction of a second, picking up a scale left over from another function. SP COBOL doesn't.
+Some odd stock behaviors are kept, so results match: TEST-NUMVAL-C rejects a currency
+string of more than one character, and SECONDS-PAST-MIDNIGHT ignores the
+<code>COB_CURRENT_DATE</code> setting.</div>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a>, <a href="inspect.html">INSPECT</a>,
+<a href="string.html">STRING</a>, <a href="accept.html">ACCEPT</a> (FROM DATE, TIME),
+<a href="special-registers.html">special registers</a>,
+<a href="environment-division.html">ENVIRONMENT DIVISION</a> (REPOSITORY).</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="report-writer.html">&larr; Report Writer</a><a class="next" href="special-registers.html">Special registers &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

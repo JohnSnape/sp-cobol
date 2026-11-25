@@ -1,0 +1,51 @@
+title: Condition-names (level 88)
+summary: Give a name to a value or set of values, then test it like a true/false condition.
+keywords: 88 level-88 condition-name VALUE VALUES THRU THROUGH SET TO TRUE SET TO FALSE FALSE IS flag switch boolean
+---
+<h2>Syntax</h2>
+<pre class="syntax">88 condition-name { VALUE [ IS ] | VALUES [ ARE ] }
+       { literal-1 [ { THROUGH | THRU } literal-2 ] } ...
+       [ FALSE [ IS ] literal-3 ] .
+
+Using it
+IF [ NOT ] condition-name ...
+SET condition-name ... TO TRUE
+SET condition-name ... TO FALSE</pre>
+
+<h2>What it does</h2>
+<p>A level-88 entry comes right under a data item (its <em>conditional variable</em>) and names
+some of the values that item can have. The name then works as a condition: it is true when
+the item holds one of those values. Instead of <code>IF GRADE &gt;= 60 AND GRADE &lt;= 100</code>
+you write <code>IF PASSED</code>, which says what the test means.</p>
+<p>An 88 takes up no storage. One item may have many 88 entries, and their value lists may
+overlap: in the example, 100 makes both PASSED and PERFECT true.</p>
+
+<h3>Values, lists and ranges</h3>
+<p>List as many values as you need after <code>VALUE</code> or <code>VALUES</code> (the two
+words mean the same). <code>THRU</code> (or <code>THROUGH</code>) gives a range, both ends
+included. Values and ranges can be mixed in one entry.</p>
+
+<h3>Where to use them</h3>
+<p>Anywhere a condition is allowed: <a href="if.html">IF</a>, <code>EVALUATE TRUE</code> with
+<code>WHEN condition-name</code> (see <a href="evaluate.html">EVALUATE</a>),
+<code>PERFORM ... UNTIL condition-name</code> (see <a href="perform.html">PERFORM</a>), and
+with <code>NOT</code>, <code>AND</code> and <code>OR</code> (see
+<a href="conditions.html">Conditions</a>).</p>
+
+<h3>SET TO TRUE and SET TO FALSE</h3>
+<p><code>SET condition-name TO TRUE</code> moves the condition's (first) value into the
+conditional variable, which makes the condition true. It is a clearer way of writing a flag
+than <code>MOVE "Y" TO END-FLAG</code>. <code>SET condition-name TO FALSE</code> needs a
+<code>FALSE</code> phrase in the 88 entry, and moves that value instead.</p>
+
+<h2>Example</h2>
+<!-- example COND88X1 -->
+<p>75 is in the range 60 THRU 100 but isn't 100, so PASSED is true and PERFECT is not.
+<code>SET PERFECT TO TRUE</code> moves 100 into GRADE. "O" is in WARM's list, so EVALUATE takes
+the first WHEN. The loop runs until <code>SET ALL-DONE TO TRUE</code> puts "Y" in END-FLAG, and
+<code>SET ALL-DONE TO FALSE</code> puts back the FALSE value, "N".</p>
+
+<h2>See also</h2>
+<p><a href="set.html">SET</a>, <a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,
+<a href="conditions.html">Conditions</a>, <a href="value.html">VALUE</a>,
+<a href="level-numbers.html">Level numbers</a>.</p>

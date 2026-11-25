@@ -1,0 +1,88 @@
+title: Program structure
+summary: How a COBOL program is built from divisions, sections, paragraphs, sentences and statements.
+keywords: divisions sections paragraphs sentences statements period full stop scope terminator END-IF END-PERFORM END PROGRAM nested program several programs one file structure outline
+---
+<h2>Syntax</h2>
+<pre class="syntax">IDENTIFICATION DIVISION.
+PROGRAM-ID. program-name.
+[ ENVIRONMENT DIVISION.
+    environment-entries ]
+[ DATA DIVISION.
+    data-entries ]
+[ PROCEDURE DIVISION [ USING data-name-1 ... ].
+    [ section-name SECTION. ]
+    paragraph-name.
+        statement-1 [ statement-2 ] ... .
+    ... ]
+[ nested-program ... ]
+[ END PROGRAM program-name. ]</pre>
+
+<h2>What it does</h2>
+<p>A COBOL program is a nest of named parts, from large to small:</p>
+<div class="table-wrap">
+<table>
+<tr><th>Part</th><th>What it is</th></tr>
+<tr><td>division</td><td>The four main parts, always in this order:
+<a href="identification-division.html">IDENTIFICATION</a> (the program's name),
+<a href="environment-division.html">ENVIRONMENT</a> (the computer and the files),
+<a href="data-division.html">DATA</a> (every data item) and
+<a href="procedure-division.html">PROCEDURE</a> (the code). Only the IDENTIFICATION DIVISION
+is required; leave out any other division you don't need.</td></tr>
+<tr><td>section</td><td>A named group inside a division. The ENVIRONMENT and DATA divisions
+have fixed sections (WORKING-STORAGE SECTION, ...). In the PROCEDURE DIVISION you name your
+own sections, or use none.</td></tr>
+<tr><td>paragraph</td><td>In the PROCEDURE DIVISION, a name followed by a period, starting in
+area A, and the code after it up to the next paragraph or section name. Paragraphs are what
+<a href="perform.html">PERFORM</a> and <a href="go-to.html">GO TO</a> refer to.</td></tr>
+<tr><td>sentence</td><td>One or more statements ended by a period.</td></tr>
+<tr><td>statement</td><td>One action, starting with a COBOL verb: <code>MOVE</code>,
+<code>ADD</code>, <code>IF</code>, ...</td></tr>
+</table>
+</div>
+
+<h3>The period</h3>
+<p>In the PROCEDURE DIVISION, a period ends a sentence, and it also ends <em>every</em>
+statement that is still open, however deeply nested. That is the classic COBOL trap: a period
+inside an IF ends the IF there, and the lines after it run whether the condition was true or
+not. The safe modern style is to write one period at the end of each paragraph and none
+inside it, closing each statement with its scope terminator instead.</p>
+<p>Outside the PROCEDURE DIVISION, periods end each header and each entry
+(<code>01 TOTAL PIC 9(5).</code>) and are required.</p>
+
+<h3>Scope terminators</h3>
+<p>Statements that contain other statements, or that have phrases like
+<code>ON SIZE ERROR</code> or <code>AT END</code>, can be closed with a matching
+<code>END-</code> word: <code>END-IF</code>, <code>END-PERFORM</code>, <code>END-EVALUATE</code>,
+<code>END-READ</code>, <code>END-ADD</code>, <code>END-COMPUTE</code>, <code>END-STRING</code>,
+<code>END-CALL</code> and so on. The terminator shows exactly where the statement stops, so
+you can nest one IF inside another without periods.</p>
+
+<h3>Several programs in one file</h3>
+<p>A source file may hold more than one program. Each one starts with its own
+IDENTIFICATION DIVISION and ends with <code>END PROGRAM name.</code> A program placed before its
+outer program's END PROGRAM is a <em>nested</em> program: it belongs to the outer program and
+is called with <a href="call.html">CALL</a>. A program placed after another's END PROGRAM is a
+separate program that happens to share the file. When a file has only one program, END PROGRAM
+is optional.</p>
+
+<h2>Example: the parts of a program</h2>
+<!-- example PROGSTR1 -->
+<p>The PROCEDURE DIVISION has two sections. In MAIN-LOGIC, the first IF is closed by
+END-IF, so "AFTER END-IF" is shown no matter what. The second IF is ended by the period after
+<code>DISPLAY "NOT SHOWN"</code>, so the next sentence runs as usual. <code>PERFORM HELPERS</code>
+runs the whole HELPERS section: both its paragraphs, so COUNT-UP adds 1 a fourth time and
+SAY-DONE speaks. STOP RUN ends the program before control could fall into HELPERS on its
+own.</p>
+
+<h2>Example: programs in one file</h2>
+<!-- example PROGSTR2 -->
+<p>PROGSTR2IN sits inside PROGSTR2 (before <code>END PROGRAM PROGSTR2</code>), so it is a
+nested program. PROGSTR2NEXT comes after PROGSTR2's END PROGRAM, so it is a separate program
+in the same file. Both are reached with CALL and come back with GOBACK.</p>
+
+<h2>See also</h2>
+<p><a href="source-format.html">Source format</a>, <a href="procedure-division.html">PROCEDURE
+DIVISION</a> for how control moves between paragraphs, <a href="call.html">CALL</a>,
+<a href="perform.html">PERFORM</a>, <a href="if.html">IF</a>,
+<a href="identification-division.html">IDENTIFICATION DIVISION</a> for COMMON and INITIAL
+programs.</p>

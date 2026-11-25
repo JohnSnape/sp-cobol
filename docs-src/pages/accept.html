@@ -1,0 +1,111 @@
+title: ACCEPT
+summary: Read a line of input, or get the date, the time, a command-line argument or an environment variable.
+keywords: input keyboard stdin FROM DATE YYYYMMDD DAY YYYYDDD DAY-OF-WEEK TIME COMMAND-LINE ARGUMENT-NUMBER ARGUMENT-VALUE ENVIRONMENT ENVIRONMENT-VALUE ON EXCEPTION END-ACCEPT read user input
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: read a line of input
+ACCEPT identifier-1
+[ END-ACCEPT ]
+
+Format 2: the date and time
+ACCEPT identifier-1 FROM { DATE [ YYYYMMDD ] | DAY [ YYYYDDD ] | DAY-OF-WEEK | TIME }
+[ END-ACCEPT ]
+
+Format 3: the command line and the environment
+ACCEPT identifier-1 FROM { COMMAND-LINE | ARGUMENT-NUMBER | ARGUMENT-VALUE
+                         | ENVIRONMENT literal-1 | ENVIRONMENT-VALUE }
+    [ ON EXCEPTION imperative-statement-1 ]
+    [ NOT ON EXCEPTION imperative-statement-2 ]
+[ END-ACCEPT ]
+
+Format 4: a field on the screen (see SCREEN SECTION)
+ACCEPT { identifier-1 AT LINE line-number COL column-number | screen-name }
+[ END-ACCEPT ]</pre>
+
+<h2>What it does</h2>
+<p><code>ACCEPT</code> puts a value into a data item from outside the program. Where the value
+comes from depends on the format.</p>
+
+<h3>Reading input (Format 1)</h3>
+<p>Plain <code>ACCEPT identifier</code> reads one line from <em>standard input</em>: what the
+user types at the keyboard, or a file fed to the program with <code>&lt;</code> on the command
+line. The line is then moved into the field the way <a href="move.html">MOVE</a> would:</p>
+<ul>
+<li>Into an alphanumeric field (<code>PIC X</code>), text is placed from the left. A short line
+is padded with spaces; a long one is cut off on the right.</li>
+<li>Into a numeric field, the text is read as a number, so you can type <code>12.5</code> or
+<code>-42</code> and the decimal point and sign go where the PICTURE says.</li>
+<li>When there is no more input (end of file), an alphanumeric field is filled with spaces.</li>
+</ul>
+<p>Nothing you type is shown by the program itself; the console echoes it as you type. To print
+a prompt on the same line as the answer, use <code>DISPLAY ... WITH NO ADVANCING</code> first.</p>
+
+<h3>Date and time (Format 2)</h3>
+<div class="table-wrap"><table>
+<tr><th>Phrase</th><th>Gives</th><th>Example</th></tr>
+<tr><td><code>DATE</code></td><td>YYMMDD, 6 digits</td><td>261125</td></tr>
+<tr><td><code>DATE YYYYMMDD</code></td><td>YYYYMMDD, 8 digits</td><td>20261125</td></tr>
+<tr><td><code>DAY</code></td><td>YYDDD: year and day of the year</td><td>26329</td></tr>
+<tr><td><code>DAY YYYYDDD</code></td><td>YYYYDDD, 7 digits</td><td>2026329</td></tr>
+<tr><td><code>DAY-OF-WEEK</code></td><td>1 digit, 1 = Monday ... 7 = Sunday</td><td>3</td></tr>
+<tr><td><code>TIME</code></td><td>HHMMSSCC: hours, minutes, seconds, hundredths</td><td>14302517</td></tr>
+</table></div>
+<p>Use the four-digit-year forms in new programs. For more control (time zone, formatting)
+use the <a href="intrinsic-functions.html">intrinsic functions</a> such as
+<code>FUNCTION CURRENT-DATE</code>.</p>
+
+<h3>Command line and environment (Format 3)</h3>
+<ul>
+<li><code>COMMAND-LINE</code>: everything typed after the program's name, as one string.</li>
+<li><code>ARGUMENT-NUMBER</code>: how many arguments there are.</li>
+<li><code>ARGUMENT-VALUE</code>: the next argument, one per ACCEPT. <code>ON EXCEPTION</code>
+runs when there are no more.</li>
+<li><code>ENVIRONMENT "NAME"</code>: the value of environment variable NAME.
+<code>ON EXCEPTION</code> runs when it isn't set, and the field is filled with spaces.</li>
+<li><code>ENVIRONMENT-VALUE</code>: the value of the variable named earlier by
+<code>DISPLAY "NAME" UPON ENVIRONMENT-NAME</code>.</li>
+</ul>
+<p>A program can set a variable for itself (and the programs it starts) with
+<code>SET ENVIRONMENT "NAME" TO value</code>; see <a href="set.html">SET</a>.</p>
+
+<h3>Screens (Format 4)</h3>
+<p>With <code>AT LINE ... COL ...</code>, or with the name of a screen from the SCREEN SECTION,
+ACCEPT lets the user type into fields on a full screen instead of reading a line. That is
+covered on the <a href="screen-section.html">SCREEN SECTION</a> page.</p>
+
+<h2>Examples</h2>
+<h3>Reading lines of input</h3>
+<!-- example ACCEPT1 -->
+<p>The prompt and the name appear on one line because of <code>WITH NO ADVANCING</code> (the
+typed text isn't part of the output here, because it came from a file). <code>7</code> and
+<code>12.5</code> become numbers with leading zeros, <code>-42</code> keeps its sign, and
+<code>TOOLONGTEXT</code> is cut to the five characters SHORT-CODE holds. The last ACCEPT finds
+no more input, so LEFT-OVER becomes spaces.</p>
+
+<h3>Date and time</h3>
+<!-- example ACCEPT2 -->
+<p>The program checks each value instead of printing it, so its output is the same every day.
+In your own programs you would simply <code>DISPLAY TODAY-8</code>. NOW-TIME is a group, so its
+parts can be used one by one after a single ACCEPT.</p>
+
+<h3>Arguments and environment variables</h3>
+<!-- example ACCEPT3 -->
+<p>The program was run with no arguments, so ARGUMENT-NUMBER is 0 and the command line is
+blank. ACCEPT3_MODE was set by the program itself just before it was read. ACCEPT3_NOT_SET
+doesn't exist, so the exception branch runs and the field is cleared to spaces.</p>
+<div class="warn">Look at the <code>END-DISPLAY</code> after the first DISPLAY. Without it, the
+<code>NOT ON EXCEPTION</code> line would belong to that DISPLAY, not to the ACCEPT, because
+DISPLAY has exception phrases of its own; both messages would print. Close any statement that
+could take the next phrase with its END- word.</div>
+
+<h2>SP COBOL notes</h2>
+<p>Plain ACCEPT, the date and time forms, and the command-line and environment forms behave as
+in GnuCOBOL 3.2. The screen form follows SP COBOL's screen rules, which differ from GnuCOBOL in a
+few ways meant for beginners (the first key typed replaces a field's contents, for example);
+see <a href="screen-section.html">SCREEN SECTION</a>.</p>
+
+<h2>See also</h2>
+<p><a href="display.html">DISPLAY</a>, <a href="screen-section.html">SCREEN SECTION</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a> (CURRENT-DATE and friends),
+<a href="set.html">SET ENVIRONMENT</a>, <a href="move.html">MOVE</a> for how values are placed
+in fields.</p>

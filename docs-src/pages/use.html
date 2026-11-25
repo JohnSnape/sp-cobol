@@ -1,0 +1,76 @@
+title: USE
+summary: Name a section in DECLARATIVES that runs automatically when a file operation fails.
+keywords: USE AFTER STANDARD ERROR EXCEPTION PROCEDURE ON INPUT OUTPUT I-O EXTEND GLOBAL DECLARATIVES END DECLARATIVES error handler file error nested program
+---
+<h2>Syntax</h2>
+<pre class="syntax">PROCEDURE DIVISION.
+DECLARATIVES.
+section-name SECTION.
+    USE [ GLOBAL ] AFTER STANDARD { EXCEPTION | ERROR } PROCEDURE
+        ON { file-name-1 ... | INPUT | OUTPUT | I-O | EXTEND } .
+paragraph-name.
+    statements ...
+[ another section with its own USE ] ...
+END DECLARATIVES.
+section-name-2 SECTION.
+    the rest of the program ...</pre>
+
+<h2>What it does</h2>
+<p>A USE statement turns a section into an <em>error procedure</em> for files. You don't
+PERFORM it yourself: the runtime runs it right after a file statement fails, and then the
+program carries on with the statement after the one that failed. Inside the procedure the
+file's <a href="file-status.html">FILE STATUS</a> item already holds the code, so the
+procedure can report it, count it or set a flag.</p>
+<p>All USE sections go at the very start of the PROCEDURE DIVISION, between
+<code>DECLARATIVES.</code> and <code>END DECLARATIVES.</code> Each one is a section whose first
+sentence is the USE statement. After <code>END DECLARATIVES</code> the program proper must
+start with a section header.</p>
+<p><code>ERROR</code> and <code>EXCEPTION</code> mean the same; <code>STANDARD</code> is
+optional.</p>
+
+<h3>Which files it covers</h3>
+<ul>
+<li><code>ON file-name</code>: errors on those files.</li>
+<li><code>ON INPUT</code>, <code>ON OUTPUT</code>, <code>ON I-O</code>, <code>ON EXTEND</code>:
+errors on any file open in that mode (that has no procedure of its own).</li>
+</ul>
+<p>A procedure for a particular file is used for that file in place of an open-mode
+procedure.</p>
+
+<h3>When it runs</h3>
+<ul>
+<li>For errors (status 30 and up, and 46 / 47 / 48 / 49 and the like).</li>
+<li>For end of file (10) and key problems (2x), but only when the statement has no
+<code>AT END</code> or <code>INVALID KEY</code> phrase. With the phrase, the phrase runs
+instead.</li>
+<li>A READ after end of file (46) is an error, so the procedure runs even when that READ has
+an AT END phrase, and the AT END statements don't.</li>
+</ul>
+<p>A file with a USE procedure doesn't stop the program on errors, even with no FILE STATUS
+clause. Use that with care: if the procedure only prints a message, the program goes on as if
+nothing happened.</p>
+
+<h3>USE GLOBAL</h3>
+<p>In a program that contains <a href="call.html">nested programs</a>, <code>USE GLOBAL</code>
+makes the procedure cover errors in the nested programs too: on a GLOBAL file they use, or on
+their own files by open mode. The procedure runs in the outer program and control then goes
+back to the nested program.</p>
+<p>Two other kinds of USE exist: <code>USE BEFORE REPORTING</code>, part of the
+<a href="report-writer.html">Report Writer</a>, and <code>USE FOR DEBUGGING</code>, described
+with <a href="debugging.html">debugging</a>.</p>
+
+<h2>Examples</h2>
+<!-- example USE1 -->
+<p>OPEN INPUT of the missing <code>config.dat</code> runs CONFIG-PROBLEM, which has the status
+35, and the program goes on. CONFIG was open for input too, but only its own procedure runs.
+The second READ of ORDERS hits the end and has no AT END phrase, so INPUT-PROBLEM runs with
+status 10. The third READ is past the end: status 46, an error, so INPUT-PROBLEM runs again
+and the AT END phrase doesn't.</p>
+<!-- example USE2 -->
+<p>The nested program USE2LOAD opens the GLOBAL file HISTORY, which doesn't exist. The outer
+program's USE GLOBAL procedure handles it, then USE2LOAD continues and sees the 35 itself.</p>
+
+<h2>See also</h2>
+<p><a href="file-status.html">FILE STATUS codes</a>, <a href="files.html">Files</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a>,
+<a href="global-external.html">GLOBAL</a>, <a href="report-writer.html">Report Writer</a>.</p>

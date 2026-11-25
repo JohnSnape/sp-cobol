@@ -1,0 +1,41 @@
+title: GENERATE
+summary: Print a Report Writer detail line, with any headings, footings and page breaks it triggers.
+keywords: report writer detail line summary reporting control break print report-name
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: print a detail line
+GENERATE detail-group-name
+
+Format 2: summary reporting (totals only)
+GENERATE report-name</pre>
+
+<h2>What it does</h2>
+<p><code>GENERATE</code> is the statement that makes a <a href="report-writer.html">Report
+Writer</a> report grow. Before it, move the values for the line into the fields the
+report's SOURCE, SUM and CONTROL clauses name. GENERATE then does, in order, whatever is
+due:</p>
+<ol>
+<li>On the first GENERATE after <a href="initiate.html">INITIATE</a>: the report heading
+and the first page heading.</li>
+<li>If a control field changed since the last GENERATE: the control footings (with their
+totals) for the old value, then the control headings for the new one.</li>
+<li>If the lines won't fit on this page: the page footing, a new page, and its page
+heading.</li>
+<li>The detail line itself (Format 1), and adding the values into the SUM counters.</li>
+</ol>
+
+<h3>Detail reporting and summary reporting</h3>
+<p><b>Format 1</b> names a <code>TYPE DETAIL</code> group and prints it. <b>Format 2</b>
+names the report itself. It does everything in the list above except print a detail line:
+the totals still add up and the headings and footings still print. That's called
+<em>summary reporting</em>: a report of totals only, from the same RD.</p>
+
+<h2>Example</h2>
+<!-- example GENERATE1 -->
+<p>The same data goes through the same report twice. In pass 1, GENERATE BOX-LINE prints a
+line for every record, and a TOTAL line each time WS-FRUIT changes. In pass 2,
+GENERATE FRUIT-REPORT prints no detail lines, only the totals, which come out the same.</p>
+
+<h2>See also</h2>
+<p><a href="report-writer.html">Report Writer</a>, <a href="initiate.html">INITIATE</a>,
+<a href="terminate.html">TERMINATE</a>, <a href="suppress.html">SUPPRESS</a>.</p>

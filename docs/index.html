@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SP COBOL Language Reference</title>
+<meta name="description" content="Every statement and data clause SP COBOL supports, explained for people learning COBOL, each with an example you can run.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details open><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details open><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details open><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details open><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details open><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+
+
+<h1>SP COBOL Language Reference</h1>
+<p class="lede">Every statement and data clause SP COBOL supports, in plain English, each
+with a short program you can compile and run.</p>
+
+<div class="index-search">
+  <label for="q2">Find a statement, clause or topic</label>
+  <input type="search" id="q2" placeholder="Try MOVE, PIC, OCCURS, FILE STATUS..." autocomplete="off">
+  <ul id="results2" class="inline-results" hidden></ul>
+</div>
+
+<p><a href="https://github.com/JohnSnape/sp-cobol">SP COBOL</a> turns standard COBOL into
+an ordinary .NET program. Its front end is GnuCOBOL 3.2's, so the language is GnuCOBOL's
+default dialect (close to COBOL 2014), and a test suite checks that its programs print the same
+output and write the same data files as GnuCOBOL 3.2 does. A few things work differently on
+purpose, to help people learning COBOL; the pages mark them, and
+<a href="differences.html">Differences from GnuCOBOL</a> lists them all. SP COBOL is a
+preview, and some things that work in GnuCOBOL don't work in it yet; the pages warn about
+them, and <a href="not-supported.html#known-problems">Known problems</a> collects them with
+what to write instead.</p>
+
+<p>New to COBOL? Start with <a href="reading-this-reference.html">Reading this
+reference</a>, then <a href="source-format.html">Source format</a> and
+<a href="program-structure.html">Program structure</a>. After that, the pages for
+<a href="display.html">DISPLAY</a>, <a href="move.html">MOVE</a>,
+<a href="picture.html">PICTURE</a>, <a href="if.html">IF</a> and
+<a href="perform.html">PERFORM</a> cover most of what a first program needs.</p>
+
+<p>Every example on these pages was compiled with SP COBOL and run, and the output shown under
+it is what it printed. Click an example's file name to download it.</p>
+
+<h2 id="getting-started">Getting started</h2>
+<ul class="cards">
+<li><a href="reading-this-reference.html"><b>Reading this reference</b><small>How the syntax boxes, the examples and the common COBOL terms on these pages work.</small></a></li>
+<li><a href="source-format.html"><b>Source format</b><small>Where things go on a line of fixed-format COBOL: sequence numbers, the indicator column, areas A and B.</small></a></li>
+<li><a href="program-structure.html"><b>Program structure</b><small>How a COBOL program is built from divisions, sections, paragraphs, sentences and statements.</small></a></li>
+</ul>
+<h2 id="divisions">Divisions</h2>
+<ul class="cards">
+<li><a href="identification-division.html"><b>IDENTIFICATION DIVISION</b><small>Name the program, and optionally mark it COMMON or INITIAL.</small></a></li>
+<li><a href="environment-division.html"><b>ENVIRONMENT DIVISION</b><small>Describe the computer, special names, and the files a program uses.</small></a></li>
+<li><a href="data-division.html"><b>DATA DIVISION</b><small>Describe every piece of data the program uses, section by section.</small></a></li>
+<li><a href="procedure-division.html"><b>PROCEDURE DIVISION</b><small>The division that holds the program&#39;s code, and how control moves through it.</small></a></li>
+</ul>
+<h2 id="data-description">Data description</h2>
+<ul class="cards">
+<li><a href="level-numbers.html"><b>Level numbers</b><small>How the numbers in front of data names build records out of groups and elementary items.</small></a></li>
+<li><a href="picture.html"><b>PICTURE</b><small>Describe what an elementary item holds and how big it is, symbol by symbol.</small></a></li>
+<li><a href="usage.html"><b>USAGE</b><small>Choose how an item is stored in memory: as characters, binary, packed decimal or floating point.</small></a></li>
+<li><a href="value.html"><b>VALUE</b><small>Give a data item the value it starts with when the program begins.</small></a></li>
+<li><a href="occurs.html"><b>OCCURS</b><small>Repeat an item to make a table (an array), with fixed or variable size.</small></a></li>
+<li><a href="redefines.html"><b>REDEFINES</b><small>Describe the same bytes of storage a second way.</small></a></li>
+<li><a href="renames.html"><b>RENAMES</b><small>Level 66: give one name to a run of neighboring items in a record.</small></a></li>
+<li><a href="condition-names.html"><b>Condition-names (level 88)</b><small>Give a name to a value or set of values, then test it like a true/false condition.</small></a></li>
+<li><a href="constants.html"><b>Constants (level 78 and CONSTANT)</b><small>Give a name to a fixed value that the compiler substitutes wherever you use it.</small></a></li>
+<li><a href="justified.html"><b>JUSTIFIED</b><small>Line text up on the right of an alphanumeric item instead of the left.</small></a></li>
+<li><a href="blank-when-zero.html"><b>BLANK WHEN ZERO</b><small>Show a numeric display field as all spaces when its value is zero.</small></a></li>
+<li><a href="sign.html"><b>SIGN</b><small>Choose where the sign of a signed DISPLAY number is kept, and whether it gets its own byte.</small></a></li>
+<li><a href="synchronized.html"><b>SYNCHRONIZED</b><small>Line binary items up on memory boundaries, adding unused bytes in front of them.</small></a></li>
+<li><a href="global-external.html"><b>GLOBAL and EXTERNAL</b><small>Share data with nested programs (GLOBAL) or between separately compiled programs (EXTERNAL).</small></a></li>
+<li><a href="national.html"><b>National data (PIC N)</b><small>Hold Unicode text as UTF-16 characters with PIC N, N&quot;...&quot; literals and USAGE NATIONAL.</small></a></li>
+</ul>
+<h2 id="using-data">Using data</h2>
+<ul class="cards">
+<li><a href="literals.html"><b>Literals</b><small>Values written directly in the program: numbers, quoted text, hexadecimal and other forms.</small></a></li>
+<li><a href="figurative-constants.html"><b>Figurative constants</b><small>Reserved words such as ZERO, SPACES and HIGH-VALUES that stand for a value and fill a whole field.</small></a></li>
+<li><a href="referring-to-data.html"><b>Referring to data</b><small>Name the exact data you mean: qualification with OF/IN, subscripts, indexes and reference modification.</small></a></li>
+<li><a href="conditions.html"><b>Conditions</b><small>The tests that IF, EVALUATE, PERFORM UNTIL and SEARCH WHEN use: relations, classes, signs, condition names, AND/OR/NOT.</small></a></li>
+<li><a href="arithmetic-expressions.html"><b>Arithmetic expressions</b><small>Formulas built from numbers, data items and the operators + - * / **, as used in COMPUTE.</small></a></li>
+</ul>
+<h2 id="statements">Statements</h2>
+<ul class="cards">
+<li><a href="accept.html"><b>ACCEPT</b><small>Read a line of input, or get the date, the time, a command-line argument or an environment variable.</small></a></li>
+<li><a href="add.html"><b>ADD</b><small>Add numbers together and store the sum.</small></a></li>
+<li><a href="alter.html"><b>ALTER</b><small>Change where a GO TO jumps, while the program runs. Obsolete; SP COBOL can&#39;t build it at present.</small></a></li>
+<li><a href="call.html"><b>CALL</b><small>Run another COBOL program as a subprogram, passing it data, and come back.</small></a></li>
+<li><a href="cancel.html"><b>CANCEL</b><small>Reset a called program, so that the next CALL starts it with fresh WORKING-STORAGE.</small></a></li>
+<li><a href="close.html"><b>CLOSE</b><small>Finish with one or more files, writing out anything still waiting.</small></a></li>
+<li><a href="compute.html"><b>COMPUTE</b><small>Work out an arithmetic expression and store the result.</small></a></li>
+<li><a href="continue.html"><b>CONTINUE</b><small>A statement that does nothing, for places where COBOL needs a statement but you have nothing to do.</small></a></li>
+<li><a href="delete.html"><b>DELETE</b><small>Remove a record from a relative or indexed file, or delete a whole file.</small></a></li>
+<li><a href="display.html"><b>DISPLAY</b><small>Print literals and data items on the screen (standard output), or send them elsewhere with UPON.</small></a></li>
+<li><a href="divide.html"><b>DIVIDE</b><small>Divide one number by another, optionally keeping the remainder.</small></a></li>
+<li><a href="evaluate.html"><b>EVALUATE</b><small>Choose one of several actions by comparing values or testing conditions; COBOL&#39;s case statement.</small></a></li>
+<li><a href="exit.html"><b>EXIT</b><small>Leave a paragraph, a section, a PERFORM loop or a called program early; or mark the end of a PERFORM THRU range.</small></a></li>
+<li><a href="generate.html"><b>GENERATE</b><small>Print a Report Writer detail line, with any headings, footings and page breaks it triggers.</small></a></li>
+<li><a href="go-to.html"><b>GO TO</b><small>Jump to another paragraph or section, without coming back.</small></a></li>
+<li><a href="goback.html"><b>GOBACK</b><small>End the current program: return to the caller from a subprogram, or end the run from the main program.</small></a></li>
+<li><a href="if.html"><b>IF</b><small>Run statements only when a condition is true, with an optional ELSE for when it is false.</small></a></li>
+<li><a href="initialize.html"><b>INITIALIZE</b><small>Reset the fields of a group, record or table: spaces in text fields, zeros in numeric ones.</small></a></li>
+<li><a href="initiate.html"><b>INITIATE</b><small>Start a Report Writer report, resetting its page and line counters and its totals.</small></a></li>
+<li><a href="inspect.html"><b>INSPECT</b><small>Count, replace or convert characters inside a field.</small></a></li>
+<li><a href="json-generate.html"><b>JSON GENERATE</b><small>Turn a group item and its fields into JSON text.</small></a></li>
+<li><a href="merge.html"><b>MERGE</b><small>Combine files that are already in key order into one file in that order.</small></a></li>
+<li><a href="move.html"><b>MOVE</b><small>Copy a value into one or more fields, converting it to fit each one.</small></a></li>
+<li><a href="multiply.html"><b>MULTIPLY</b><small>Multiply two numbers and store the product.</small></a></li>
+<li><a href="open.html"><b>OPEN</b><small>Open one or more files for reading, writing, updating or adding to the end.</small></a></li>
+<li><a href="perform.html"><b>PERFORM</b><small>Run a paragraph, a section or a block of statements, once or in a loop.</small></a></li>
+<li><a href="read.html"><b>READ</b><small>Get the next record of a file, or the record with a given key.</small></a></li>
+<li><a href="release.html"><b>RELEASE</b><small>Hand a record to a SORT from inside its INPUT PROCEDURE.</small></a></li>
+<li><a href="return.html"><b>RETURN</b><small>Take the next sorted or merged record inside an OUTPUT PROCEDURE.</small></a></li>
+<li><a href="rewrite.html"><b>REWRITE</b><small>Replace a record that is already in a file with a changed version.</small></a></li>
+<li><a href="search.html"><b>SEARCH</b><small>Look through a table for an entry that meets a condition.</small></a></li>
+<li><a href="set.html"><b>SET</b><small>Set or move a table index, turn on a condition name, or point a LINKAGE item at data.</small></a></li>
+<li><a href="sort.html"><b>SORT</b><small>Put the records of a file, or the entries of a table, in order by one or more keys.</small></a></li>
+<li><a href="start.html"><b>START</b><small>Position a relative or indexed file so the next READ NEXT begins at a chosen key.</small></a></li>
+<li><a href="stop.html"><b>STOP</b><small>End the program, optionally with an exit code for whatever started it.</small></a></li>
+<li><a href="string.html"><b>STRING</b><small>Join pieces of text together into one field.</small></a></li>
+<li><a href="subtract.html"><b>SUBTRACT</b><small>Subtract one or more numbers from a field and store the difference.</small></a></li>
+<li><a href="suppress.html"><b>SUPPRESS</b><small>Stop one Report Writer group from printing, from inside a USE BEFORE REPORTING declarative.</small></a></li>
+<li><a href="terminate.html"><b>TERMINATE</b><small>Finish a Report Writer report, printing its last footings and final totals.</small></a></li>
+<li><a href="unstring.html"><b>UNSTRING</b><small>Split text into separate fields at the delimiters you name.</small></a></li>
+<li><a href="use.html"><b>USE</b><small>Name a section in DECLARATIVES that runs automatically when a file operation fails.</small></a></li>
+<li><a href="write.html"><b>WRITE</b><small>Add a record to a file, with line spacing for printed reports.</small></a></li>
+<li><a href="xml-generate.html"><b>XML GENERATE</b><small>Turn a group item and its fields into XML text.</small></a></li>
+<li><a href="xml-parse.html"><b>XML PARSE</b><small>Read XML text event by event. Not supported: the compiler refuses it.</small></a></li>
+</ul>
+<h2 id="compiler-directives">Compiler directives</h2>
+<ul class="cards">
+<li><a href="copy.html"><b>COPY</b><small>Bring the text of a copybook into the program as it is compiled.</small></a></li>
+<li><a href="replace.html"><b>REPLACE</b><small>Replace pieces of text throughout the source, until REPLACE OFF.</small></a></li>
+</ul>
+<h2 id="topics">Topics</h2>
+<ul class="cards">
+<li><a href="screen-section.html"><b>SCREEN SECTION</b><small>Lay out a full-screen form with labels, input fields and colors, then DISPLAY and ACCEPT it.</small></a></li>
+<li><a href="files.html"><b>Files</b><small>How a COBOL program names, describes, opens, reads, writes and closes data files.</small></a></li>
+<li><a href="file-status.html"><b>FILE STATUS codes</b><small>The two-character code set after every file operation, what each value means, and how to test it.</small></a></li>
+<li><a href="report-writer.html"><b>Report Writer</b><small>Describe a printed report&#39;s layout once, then let COBOL handle headings, page breaks and totals.</small></a></li>
+<li><a href="intrinsic-functions.html"><b>Intrinsic functions</b><small>Built-in functions for text, arithmetic, dates, statistics and money, used as FUNCTION name (arguments).</small></a></li>
+<li><a href="special-registers.html"><b>Special registers</b><small>Data items COBOL defines for you, such as RETURN-CODE, TALLY, LINAGE-COUNTER and LENGTH OF.</small></a></li>
+<li><a href="debugging.html"><b>Debugging</b><small>Find mistakes in SP COBOL programs with Visual Studio&#39;s debugger, plain-English messages, debugging lines and DISPLAY tracing.</small></a></li>
+<li><a href="differences.html"><b>Differences from GnuCOBOL</b><small>Every place SP COBOL deliberately behaves differently from GnuCOBOL 3.2, and the GnuCOBOL quirks it keeps.</small></a></li>
+<li><a href="not-supported.html"><b>Not supported</b><small>COBOL features SP COBOL does not support, and what to write instead.</small></a></li>
+</ul>
+
+
+<nav class="prevnext" aria-label="Previous and next page"><span></span><a class="next" href="reading-this-reference.html">Reading this reference &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

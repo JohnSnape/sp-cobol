@@ -1,0 +1,2 @@
+<POINT X-POS="010" Y-POS="020" QTY="00"><LABEL-TEXT>HOME</LABEL-TEXT></POINT>
+<m:POINT xmlns:m="http://example.com/map"><m:X-POS>10</m:X-POS><m:Y-POS>20</m:Y-POS><m:LABEL-TEXT>HOME</m:LABEL-TEXT></m:POINT>

@@ -1,0 +1,62 @@
+title: IDENTIFICATION DIVISION
+summary: Name the program, and optionally mark it COMMON or INITIAL.
+keywords: PROGRAM-ID AUTHOR INSTALLATION DATE-WRITTEN DATE-COMPILED SECURITY COMMON INITIAL RECURSIVE program name
+---
+<h2>Syntax</h2>
+<pre class="syntax">IDENTIFICATION DIVISION.
+PROGRAM-ID. program-name [ IS { COMMON | INITIAL | RECURSIVE } ].
+[ AUTHOR. comment-entry ]
+[ INSTALLATION. comment-entry ]
+[ DATE-WRITTEN. comment-entry ]
+[ DATE-COMPILED. comment-entry ]
+[ SECURITY. comment-entry ]</pre>
+
+<h2>What it does</h2>
+<p>The IDENTIFICATION DIVISION comes first in every program. Its one required entry is
+<code>PROGRAM-ID</code>, which gives the program its name. The name is what other programs use
+in <a href="call.html">CALL</a>, and what <code>END PROGRAM</code> repeats. Use letters,
+digits and hyphens.</p>
+
+<h3>Comment paragraphs</h3>
+<p><code>AUTHOR</code>, <code>INSTALLATION</code>, <code>DATE-WRITTEN</code>,
+<code>DATE-COMPILED</code> and <code>SECURITY</code> are left over from early COBOL. The
+compiler reads the text after each one as a comment, up to the next paragraph, so they change
+nothing about the program. Many shops still fill them in as a standard header. Today a block
+of <code>*</code> comment lines does the same job.</p>
+
+<h3>COMMON</h3>
+<p>Normally a <a href="program-structure.html">nested program</a> can be called only by the
+program that directly contains it. <code>IS COMMON</code> lets its sibling nested programs
+(the others inside the same outer program) call it too. That makes it a good place for a
+helper every part of the outer program uses.</p>
+
+<h3>INITIAL</h3>
+<p>A called program normally keeps its WORKING-STORAGE from one CALL to the next: a counter
+that was 2 when the program last returned is still 2 next time. <code>IS INITIAL</code> makes
+the program start fresh each time it is called, with every item back at its VALUE.</p>
+
+<h3>RECURSIVE</h3>
+<p><code>IS RECURSIVE</code> allows a program to CALL itself, directly or through another
+program. See SP COBOL notes.</p>
+
+<h2>Example: the comment paragraphs</h2>
+<!-- example IDDIV1 -->
+<p>The five paragraphs after PROGRAM-ID are only comments; the program just runs its one
+DISPLAY.</p>
+
+<h2>Example: COMMON and INITIAL</h2>
+<!-- example IDDIV2 -->
+<p>IDDIV2KEEP is an ordinary program, so CALLS-SEEN keeps counting: 1, 2, 3. IDDIV2INIT is
+INITIAL, so its CALLS-SEEN goes back to 0 on every CALL and always shows 1. IDDIV2SHOW is
+COMMON, which is why IDDIV2KEEP, its sibling, may call it.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad"><code>IS RECURSIVE</code> is accepted by the compiler, but in this preview a
+recursive program that has a <code>PROCEDURE DIVISION USING</code> doesn't build (the
+generated C# fails to compile). Write the repetition as a loop with
+<a href="perform.html">PERFORM</a> instead.</div>
+
+<h2>See also</h2>
+<p><a href="program-structure.html">Program structure</a>, <a href="call.html">CALL</a>,
+<a href="cancel.html">CANCEL</a> (which also resets a called program),
+<a href="environment-division.html">ENVIRONMENT DIVISION</a>.</p>

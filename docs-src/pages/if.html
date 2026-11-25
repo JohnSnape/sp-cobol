@@ -1,0 +1,54 @@
+title: IF
+summary: Run statements only when a condition is true, with an optional ELSE for when it is false.
+keywords: IF ELSE END-IF THEN NEXT SENTENCE CONTINUE nested if condition decision period scope terminator
+---
+<h2>Syntax</h2>
+<pre class="syntax">IF condition [ THEN ]
+    { statement-1 ... | NEXT SENTENCE }
+[ ELSE
+    { statement-2 ... | NEXT SENTENCE } ]
+[ END-IF ]</pre>
+
+<h2>What it does</h2>
+<p><code>IF</code> tests a <a href="conditions.html">condition</a>. When it is true, the statements
+after it run; when it is false, the statements after <code>ELSE</code> run (or nothing, if there is
+no ELSE). Either way, the program then goes on after <code>END-IF</code>.</p>
+<p>A branch can hold any number of statements, including other IFs. Each IF inside another one is
+<em>nested</em>, and needs its own END-IF; an ELSE belongs to the nearest IF before it that doesn't
+already have one. Indent each level so the structure is easy to see, but remember that COBOL
+ignores the indentation: only END-IF and periods decide where an IF ends.</p>
+<p>Conditions can compare values (<code>BALANCE &lt; 0</code>), test a class
+(<code>QTY IS NUMERIC</code>), test a sign (<code>AMOUNT IS NEGATIVE</code>), use an 88-level
+<a href="condition-names.html">condition name</a>, and be combined with <code>AND</code>,
+<code>OR</code> and <code>NOT</code>. See <a href="conditions.html">conditions</a>.</p>
+
+<h3>Doing nothing in a branch: CONTINUE and NEXT SENTENCE</h3>
+<p>A branch must hold something. <a href="continue.html">CONTINUE</a> means "nothing here", and the
+program goes on after the END-IF. <code>NEXT SENTENCE</code> is older and different: it jumps to
+just after the next <em>period</em> in the source, skipping everything up to it, even statements
+after the END-IF. Use CONTINUE.</p>
+
+<h3>The period trap</h3>
+<p>A period ends a <em>sentence</em>, and it ends every IF that is still open, however deeply nested.
+In older code without END-IF, the period was how an IF was closed. If you put a period at the end of
+a line inside an IF by mistake, the IF stops there and the lines after it run every time, though
+the indentation says otherwise. The safe habit: close every IF with END-IF, and put periods only at
+the end of a paragraph.</p>
+
+<h2>Examples</h2>
+<!-- example IF1 -->
+<p>For 750 the outer condition is false, so the ELSE runs and the nested IF finds it over the
+limit. For 120 the nested IF's ELSE prints OK. For -30 the first branch runs and the nested IF is
+never reached.</p>
+
+<h3>CONTINUE, NEXT SENTENCE and the period trap</h3>
+<!-- example IF2 -->
+<p>N is 5. With CONTINUE, the program goes on after END-IF and prints "AFTER END-IF". With NEXT
+SENTENCE, it jumps past the next period, so "AFTER END-IF" is skipped and the program resumes at
+the next sentence. In the last part, N &gt; 7 is false, and "BIG" is not shown. But the period after
+<code>DISPLAY "  BIG"</code> ended the IF, so the next DISPLAY isn't part of it and runs anyway.</p>
+
+<h2>See also</h2>
+<p><a href="conditions.html">conditions</a>, <a href="condition-names.html">condition names</a>,
+<a href="evaluate.html">EVALUATE</a> (for many cases), <a href="continue.html">CONTINUE</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a> (statements and sentences).</p>

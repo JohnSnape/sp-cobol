@@ -1,0 +1,50 @@
+title: OPEN
+summary: Open one or more files for reading, writing, updating or adding to the end.
+keywords: INPUT OUTPUT I-O EXTEND OPTIONAL open file create file replace append 35 41 05
+---
+<h2>Syntax</h2>
+<pre class="syntax">OPEN { { INPUT | OUTPUT | I-O | EXTEND } file-name-1 ... } ...</pre>
+
+<h2>What it does</h2>
+<p>A file must be opened before any READ, WRITE, REWRITE, DELETE or START, and the
+<em>open mode</em> decides which of those you may use:</p>
+<div class="table-wrap"><table>
+<tr><th>Mode</th><th>What it's for</th><th>If the file doesn't exist</th><th>If it exists</th></tr>
+<tr><td><code>INPUT</code></td><td>Reading only. Reading starts at the first record.</td>
+<td>Status 35 (or 05 for an OPTIONAL file)</td><td>Left as it is</td></tr>
+<tr><td><code>OUTPUT</code></td><td>Writing a new file.</td><td>Created</td>
+<td><b>Emptied</b>: the old records are gone</td></tr>
+<tr><td><code>I-O</code></td><td>Reading and changing records (REWRITE, DELETE, and WRITE for
+RELATIVE and INDEXED files).</td><td>Status 35</td><td>Left as it is</td></tr>
+<tr><td><code>EXTEND</code></td><td>Adding records after the last one.</td><td>Status 35</td>
+<td>New records go after the old ones</td></tr>
+</table></div>
+<p>One OPEN can open several files, and can mix modes:
+<code>OPEN INPUT OLD-MASTER TRANSACTIONS OUTPUT NEW-MASTER</code>. It does the same as
+separate OPENs, one after another.</p>
+<p>The <a href="file-status.html">FILE STATUS</a> after OPEN is <code>00</code> when it
+worked. Opening a file that is already open gives 41, and leaves it open as it was. Opening a
+file that was closed <code>WITH LOCK</code> gives 38.</p>
+
+<h3>OPTIONAL files</h3>
+<p>A file declared <code>SELECT OPTIONAL</code> is allowed to be missing. OPEN INPUT of a
+missing optional file succeeds with status 05, and the first READ is at end (status 10). This
+suits files such as "yesterday's errors" that may or may not be there.</p>
+
+<h2>Example</h2>
+<!-- example OPEN1 -->
+<p>The first OPEN opens two files for output at once. <code>OPEN EXTEND</code> then adds a
+second line to <code>open-a.txt</code>, while <code>OPEN OUTPUT</code> on
+<code>open-b.txt</code> throws its old line away, so only "B NEW" is left. The optional file
+<code>open-c.txt</code> was never created: OPEN gives 05 and the READ gives 10.</p>
+
+<div class="warn">
+<p>OPEN OUTPUT on an existing file empties it without asking. When a program should add to a
+file, use EXTEND (or I-O); when it should create a file only if there is none, try
+OPEN INPUT first and look for status 35.</p>
+</div>
+
+<h2>See also</h2>
+<p><a href="close.html">CLOSE</a>, <a href="files.html">Files</a> for SELECT and ASSIGN,
+<a href="file-status.html">FILE STATUS codes</a>, <a href="read.html">READ</a>,
+<a href="write.html">WRITE</a>.</p>

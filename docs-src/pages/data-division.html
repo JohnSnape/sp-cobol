@@ -1,0 +1,90 @@
+title: DATA DIVISION
+summary: Describe every piece of data the program uses, section by section.
+keywords: FILE SECTION WORKING-STORAGE SECTION LOCAL-STORAGE SECTION LINKAGE SECTION REPORT SECTION SCREEN SECTION FD SD group item elementary item level number 01 77 FILLER variables declare
+---
+<h2>Syntax</h2>
+<pre class="syntax">DATA DIVISION.
+[ FILE SECTION.
+    { FD | SD } file-name [ file-clauses ] .
+        record-description ... ]
+[ WORKING-STORAGE SECTION.
+    data-description ... ]
+[ LOCAL-STORAGE SECTION.
+    data-description ... ]
+[ LINKAGE SECTION.
+    data-description ... ]
+[ REPORT SECTION.
+    report-description ... ]
+[ SCREEN SECTION.
+    screen-description ... ]
+
+data-description:
+level-number { data-name | FILLER } [ clauses ] .</pre>
+
+<h2>What it does</h2>
+<p>Every data item a program uses is described in the DATA DIVISION before the code runs:
+its name, its size and what kind of data it holds. COBOL has no "declare as you go"; if it
+isn't here, the PROCEDURE DIVISION can't use it. The sections must appear in the order
+above, and you include only the ones you need.</p>
+<div class="table-wrap">
+<table>
+<tr><th>Section</th><th>What it holds</th></tr>
+<tr><td>FILE SECTION</td><td>One <code>FD</code> (file description) for each file named in a
+SELECT, followed by its record layout: the area a READ fills and a WRITE takes from.
+<code>SD</code> describes a sort work file. See <a href="files.html">files</a> and
+<a href="sort.html">SORT</a>.</td></tr>
+<tr><td>WORKING-STORAGE SECTION</td><td>The program's own data. It is set up once, when the
+program first runs, and keeps its values for as long as the program is loaded, including
+between CALLs of a subprogram.</td></tr>
+<tr><td>LOCAL-STORAGE SECTION</td><td>Like WORKING-STORAGE, but set up fresh (with its VALUE
+clauses) every time the program is called. See SP COBOL notes.</td></tr>
+<tr><td>LINKAGE SECTION</td><td>Describes data that belongs to the <em>calling</em> program,
+passed in through <code>PROCEDURE DIVISION USING</code>. No storage is set aside here; the
+names are laid over the caller's items. See <a href="call.html">CALL</a>.</td></tr>
+<tr><td>REPORT SECTION</td><td>Report layouts for the Report Writer. See
+<a href="report-writer.html">Report Writer</a>.</td></tr>
+<tr><td>SCREEN SECTION</td><td>Screen layouts for ACCEPT and DISPLAY of whole screens. See
+<a href="screen-section.html">SCREEN SECTION</a>.</td></tr>
+</table>
+</div>
+
+<h3>Data descriptions and level numbers</h3>
+<p>Each entry starts with a level number, then the item's name (or <code>FILLER</code> for a
+part you never refer to by name), then clauses such as <a href="picture.html">PICTURE</a>,
+<a href="value.html">VALUE</a>, <a href="usage.html">USAGE</a> and
+<a href="occurs.html">OCCURS</a>, and ends with a period.</p>
+<ul>
+<li><b>01</b> starts a record: a new item at the top level, in area A.</li>
+<li><b>02 to 49</b> are parts of the item above them with a smaller number. Most programs use
+05, 10, 15, ... so there is room to add levels later.</li>
+<li><b>77</b> is a stand-alone elementary item that can't have parts.</li>
+<li><b>88</b> names a condition on the item above it; <b>66</b> renames part of a record.
+See <a href="condition-names.html">condition names</a> and <a href="renames.html">RENAMES</a>.</li>
+</ul>
+<p>The full rules are on the <a href="level-numbers.html">level numbers</a> page.</p>
+
+<h3>Group and elementary items</h3>
+<p>An item with parts under it is a <em>group item</em>; an item with no parts is an
+<em>elementary item</em>. Only elementary items have a PICTURE. A group is simply its parts
+laid end to end, and when you use the group name you get all of them as one alphanumeric
+field, whatever their own pictures say. MOVE to a group fills the whole group as text.</p>
+
+<h2>Example</h2>
+<!-- example DATADIV1 -->
+<p>CUSTOMER is a group of two parts: CUST-NAME (itself a group of FIRST-NAME and LAST-NAME)
+and CUST-BALANCE. Displaying CUSTOMER shows all 20 bytes in a row, with the balance as its six
+digits and no decimal point, since the group is just text. MOVE SPACES to CUST-NAME clears
+both names but leaves the balance alone. VISITS is a level 77 item.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">LOCAL-STORAGE SECTION is accepted by the compiler, but in this preview a
+program that has one doesn't build (the generated C# fails to compile). Use WORKING-STORAGE
+and set the items at the start of the program yourself, or mark the subprogram
+<code>IS INITIAL</code> (see <a href="identification-division.html">IDENTIFICATION
+DIVISION</a>) so its WORKING-STORAGE starts fresh on every CALL.</div>
+
+<h2>See also</h2>
+<p><a href="level-numbers.html">Level numbers</a>, <a href="picture.html">PICTURE</a>,
+<a href="value.html">VALUE</a>, <a href="usage.html">USAGE</a>,
+<a href="referring-to-data.html">referring to data</a>,
+<a href="procedure-division.html">PROCEDURE DIVISION</a>.</p>

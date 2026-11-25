@@ -1,0 +1,113 @@
+title: Debugging
+summary: Find mistakes in SP COBOL programs with Visual Studio's debugger, plain-English messages, debugging lines and DISPLAY tracing.
+keywords: debug debugger Visual Studio F5 breakpoint step Watch window call stack WS_PAY COBOL["name"] error message hint COB_NO_HINTS WITH DEBUGGING MODE D column 7 debugging line trace DISPLAY
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: debugging lines (compiled only in debugging mode)
+SOURCE-COMPUTER. computer-name WITH DEBUGGING MODE.
+      D    statement ...                  (D in column 7)
+
+Format 2: Watch window expressions (Visual Studio)
+DATA_NAME                 a data item, with _ for each -
+DATA_NAME[n]              occurrence n of a table
+COBOL                     every 01 and 77 item
+COBOL["data-name"]        any item by its COBOL name</pre>
+
+<h2>What it does</h2>
+<p>A <em>bug</em> is a mistake that makes a program do the wrong thing. There are three
+kinds of help for finding one: the compiler's and runtime's error messages, Visual
+Studio's debugger, which lets you stop the program and look inside it, and extra
+<code>DISPLAY</code> statements that print what the program is doing as it runs.</p>
+
+<h3>Error messages</h3>
+<p>When a program doesn't compile, Visual Studio's Error List shows each message with its
+COBOL file and line; double-click one to jump there. For the mistakes beginners make most
+often, the message ends with a plain-English hint after <code>--</code>, for example a
+syntax error suggests checking for a missing period, a misspelled word or code that starts
+before column 8.</p>
+<p>When a running program stops with a fatal error (a file that isn't there, a CALL of a
+program that doesn't exist), the runtime prints GnuCOBOL's message and then a line starting
+<code>hint:</code> that says what to check. Set the environment variable
+<code>COB_NO_HINTS=1</code> to turn the hint lines off.</p>
+
+<h3>The Visual Studio debugger</h3>
+<p>Press <b>F5</b> to run the program under the debugger. Click in the margin next to a
+COBOL line to set a <em>breakpoint</em>: the program stops just before that line runs.
+Then step through the program one COBOL line at a time with Visual Studio's usual Step
+Over (F10) and Step Into (F11) commands. The <b>Call Stack</b> window shows the names of the
+paragraphs and sections being performed, because each paragraph becomes a method in the
+program SP COBOL builds.</p>
+
+<h3>The Watch window</h3>
+<p>While the program is stopped, type a data item's name into the Watch window to see its
+value. Write it in the debugger's style: <code>-</code> becomes <code>_</code>, so
+<code>WS-PAY</code> is <code>WS_PAY</code>. The value is shown the way DISPLAY would show it,
+and the Type column shows the item's PICTURE and USAGE. For the example program below:</p>
+<div class="table-wrap"><table>
+<tr><th>Watch</th><th>Shows</th></tr>
+<tr><td><code>WS_PAY</code></td><td><code>0712.50</code>, type <code>PIC 9(4)V99</code></td></tr>
+<tr><td><code>WS_TOTAL</code></td><td>its value, type <code>PIC S9(7)V99 COMP-3</code></td></tr>
+<tr><td><code>CUSTOMER</code></td><td>the whole group; expand it to see <code>CUST-NAME</code> and <code>CUST-CITY</code></td></tr>
+<tr><td><code>MONTH_ENTRY[2]</code></td><td>occurrence 2 of the table (expand <code>MONTH_ENTRY</code> to see them all)</td></tr>
+<tr><td><code>COBOL</code></td><td>every 01 and 77 item of the program</td></tr>
+<tr><td><code>COBOL["ws-pay"]</code></td><td>any item by its COBOL name, in upper or lower case</td></tr>
+</table></div>
+<p>Some things to know:</p>
+<ul>
+<li>An item inside a table, such as <code>MONTH_SALES</code>, shows its <em>first</em>
+occurrence. Use the table's <code>[n]</code> for the others.</li>
+<li>If two items have the same name (in different groups, the ones you'd qualify with
+<code>OF</code>), only the first gets a Watch name. Reach the others by expanding their
+group, or through <code>COBOL</code>.</li>
+<li>LINKAGE SECTION items show "(no data ...)" until the program has been CALLed.</li>
+<li>Not shown: elementary FILLER items, level 66 (RENAMES), 88 (condition names) and 78
+(constants), special registers such as RETURN-CODE, COB-CRT-STATUS, EXTERNAL items,
+LOCAL-STORAGE items and ANY LENGTH items. To see a condition name, watch the item it
+belongs to.</li>
+</ul>
+
+<h3>Debugging lines</h3>
+<p>A line with <code>D</code> in column 7 is a <em>debugging line</em>. It's compiled only
+when the SOURCE-COMPUTER paragraph says <code>WITH DEBUGGING MODE</code>; otherwise it's
+treated as a comment. That lets you leave tracing DISPLAYs in a program and switch them all
+on or off by changing one line.</p>
+
+<h3>Tracing with DISPLAY</h3>
+<p>The oldest way to debug still works everywhere: add <code>DISPLAY</code> statements that
+show where the program is and what its key fields hold, such as
+<code>DISPLAY "IN CALC-PAY: HOURS=" WS-HOURS</code>. Put square brackets around text fields
+(<code>DISPLAY "[" WS-NAME "]"</code>) to see trailing spaces.</p>
+
+<h2>Examples</h2>
+<h3>A program to try the Watch window on</h3>
+<!-- example DEBUG1 -->
+<p>Open it in a COBOL project, set a breakpoint on the DISPLAY line, press F5, and try the
+Watch expressions from the table above. By then the MOVEs have filled in the table, so
+<code>MONTH_ENTRY[2]</code> shows FEB and 200. Run without the debugger, it just prints DONE.</p>
+
+<h3>Debugging lines</h3>
+<!-- example DEBUG2 -->
+<p>With <code>WITH DEBUGGING MODE</code> the D line runs and traces each pass of the loop.
+Remove those three words and the program prints only the TOTAL line.</p>
+
+<h3>A runtime error with a hint</h3>
+<!-- example DEBUG3 -->
+<p>The file doesn't exist, so OPEN INPUT fails with status 35 and the program stops with
+exit code 1. The first message is GnuCOBOL's; the <code>hint:</code> line after it is
+SP COBOL's, and names the folder the program looked in (here, the folder the example was
+run in).</p>
+
+<h2>SP COBOL notes</h2>
+<div class="warn"><b>Differs from GnuCOBOL 3.2:</b> stock GnuCOBOL prints only the
+<code>libcob: error</code> line, without the hint. Its message also names the file as
+<code>'customers_dat' =&gt; customers.dat</code> (the last environment variable it looked
+up); SP COBOL names it as written in ASSIGN.</div>
+<div class="bad"><code>USE FOR DEBUGGING</code> declaratives (which fill in
+<code>DEBUG-ITEM</code>) don't work in SP COBOL yet: the program fails to build. Use
+debugging lines with DISPLAY instead.</div>
+
+<h2>See also</h2>
+<p><a href="display.html">DISPLAY</a>, <a href="source-format.html">source format</a>
+(column 7), <a href="environment-division.html">ENVIRONMENT DIVISION</a>
+(SOURCE-COMPUTER), <a href="file-status.html">file status</a>,
+<a href="differences.html">Differences from GnuCOBOL</a>.</p>

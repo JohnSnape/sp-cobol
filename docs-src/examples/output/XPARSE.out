@@ -1,0 +1,2 @@
+﻿XPARSE.cbl:7: warning: XML PARSE is not implemented [-Wpending]
+XPARSE.cbl:8: error: XML PARSE is not implemented (GnuCOBOL 3.2 doesn't implement it either)

@@ -17,6 +17,13 @@ DOS-style text screen, as a Windows window, or both from the same source.
 > Not supported, as in GnuCOBOL 3.2: PROCEDURE DIVISION RETURNING (pass results back through
 > RETURN-CODE or a BY REFERENCE argument) and XML PARSE.
 
+## Learning the language
+
+The **[SP COBOL Language Reference](https://johnsnape.github.io/sp-cobol/)** explains every
+statement and data clause SP COBOL supports, in plain English, each with a short example
+program and the output it prints. Its source is in [docs-src/](docs-src/); the published
+pages are in [docs/](docs/index.html).
+
 ## What's here
 
 | Folder | What it is |
@@ -27,6 +34,7 @@ DOS-style text screen, as a Windows window, or both from the same source.
 | `templates/` | The "COBOL Screen App" project template (`dotnet new cobol-screen`). |
 | `editor/` | A Visual Studio 2022/2026 extension: COBOL syntax colors, column guides, and sequence numbers (000010, 000020, ...) kept automatically as you insert and delete lines. |
 | `samples/` | Test programs, with the output they must produce. |
+| `docs/`, `docs-src/` | The language reference web site (GitHub Pages) and the pages and example programs it is built from. |
 | `tools/` | Build, packaging and test scripts. |
 
 ## Trying it

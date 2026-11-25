@@ -1,0 +1,76 @@
+title: Arithmetic expressions
+summary: Formulas built from numbers, data items and the operators + - * / **, as used in COMPUTE.
+keywords: expression formula operators plus minus times divide power exponent ** precedence parentheses unary minus intermediate results precision COMPUTE order of operations
+---
+<h2>Syntax</h2>
+<pre class="syntax">operand  [ { + | - | * | / | ** } operand ] ...
+
+operand:
+    identifier | numeric-literal | FUNCTION function-name [ ( arguments ) ]
+  | ( arithmetic-expression ) | { + | - } operand</pre>
+
+<h2>What it does</h2>
+<p>An arithmetic expression is a formula: numbers and numeric data items joined by
+operators. Its main home is <a href="compute.html">COMPUTE</a>:
+<code>COMPUTE PAY = HOURS * RATE</code>. Expressions are also allowed in reference modification
+(<code>TEXT-1 (N - 2 : N + 1)</code>) and in relation conditions (see SP
+COBOL notes).</p>
+<div class="table-wrap">
+<table>
+<tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><code>+</code></td><td>add</td><td><code>A + B</code></td></tr>
+<tr><td><code>-</code></td><td>subtract (or, in front of one operand, negate)</td>
+<td><code>A - B</code>, <code>- A</code></td></tr>
+<tr><td><code>*</code></td><td>multiply</td><td><code>A * B</code></td></tr>
+<tr><td><code>/</code></td><td>divide</td><td><code>A / B</code></td></tr>
+<tr><td><code>**</code></td><td>raise to a power</td><td><code>2 ** 10</code>,
+<code>9 ** 0.5</code> (square root)</td></tr>
+</table>
+</div>
+<div class="warn">Put a space on both sides of every operator. <code>A-B</code> is not
+"A minus B": a hyphen between letters makes it one name, <code>A-B</code>. Write <code>A - B</code>.</div>
+
+<h3>Order of operations</h3>
+<p>As in ordinary arithmetic:</p>
+<ol>
+<li>parentheses, innermost first;</li>
+<li>a sign in front of an operand (unary <code>+</code> or <code>-</code>);</li>
+<li><code>**</code>;</li>
+<li><code>*</code> and <code>/</code>, left to right;</li>
+<li><code>+</code> and <code>-</code>, left to right.</li>
+</ol>
+<p>So <code>A + B * 2</code> multiplies first, and <code>A - B - 1</code> is
+<code>(A - B) - 1</code>. Several <code>**</code> in a row are worked from the right in
+GnuCOBOL: <code>2 ** 3 ** 2</code> is <code>2 ** 9</code>, 512. When in doubt, add
+parentheses.</p>
+
+<h3>Precision of the working values</h3>
+<p>While an expression is worked out, COBOL keeps far more digits than any field holds, so
+<code>A / B</code> is not cut to the size of A or B. The answer is only fitted to the
+receiving field at the end: extra decimal places are dropped, or rounded if you write
+<code>ROUNDED</code>. Because of that, the order of operations still matters for division.
+<code>1 / 3 * 3</code> works out <code>1 / 3</code> as 0.3333... with many digits but not
+infinitely many, so the product is a little under 1 and a field with two decimals gets 0.99;
+with ROUNDED it gets 1.00. Multiplying first (<code>1 * 3 / 3</code>) avoids the problem.</p>
+<p>If the answer is too big for the receiving field, or you divide by zero, that is a size
+error; see <a href="compute.html">COMPUTE</a> for <code>ON SIZE ERROR</code>.</p>
+
+<h2>Example</h2>
+<!-- example ARITH1 -->
+<p>Each result is stored in R (<code>PIC S9(5)V99</code>) and shown through an edited
+picture. <code>A / B</code> is 10 / 4 = 2.50. <code>- A + 3</code> negates A first, giving -7.
+<code>9 ** 0.5</code> takes a square root. The last two lines show the truncated and the
+ROUNDED result of <code>1 / 3 * 3</code>.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview, an arithmetic expression inside a condition doesn't build:
+<code>IF A * 2 &gt; B + 10</code>, <code>IF A + 1 &gt; 5</code>,
+<code>PERFORM UNTIL A * 2 &gt; 30</code> and <code>EVALUATE TRUE WHEN A * 2 &gt; B</code> all
+fail with a C# compile error. Until it is fixed, COMPUTE the value into a field and compare the
+field. Expressions in COMPUTE and in reference modification work.</div>
+
+<h2>See also</h2>
+<p><a href="compute.html">COMPUTE</a>, <a href="add.html">ADD</a>,
+<a href="subtract.html">SUBTRACT</a>, <a href="multiply.html">MULTIPLY</a>,
+<a href="divide.html">DIVIDE</a>, <a href="conditions.html">conditions</a>,
+<a href="intrinsic-functions.html">intrinsic functions</a>.</p>

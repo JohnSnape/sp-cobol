@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XML PARSE - SP COBOL Reference</title>
+<meta name="description" content="Read XML text event by event. Not supported: the compiler refuses it.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details open><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html" class="current" aria-current="page">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Statements</p>
+<h1>XML PARSE <span class="badge bad">Not supported</span></h1>
+<p class="lede">Read XML text event by event. Not supported: the compiler refuses it.</p>
+<h2>Syntax</h2>
+<pre class="syntax">XML PARSE <var>identifier-1</var>
+    PROCESSING PROCEDURE <var>procedure-1</var> [ { THRU | THROUGH } <var>procedure-2</var> ]
+    [ ON EXCEPTION <var>imperative-statement-1</var> ]
+    [ NOT ON EXCEPTION <var>imperative-statement-2</var> ]
+[ END-XML ]</pre>
+
+<div class="bad">XML PARSE is not supported. SP COBOL stops with a compile error when a program
+uses it.</div>
+
+<h2>What it does (in other compilers)</h2>
+<p>In compilers that implement it, XML PARSE reads an XML document from a field and calls the
+processing procedure once for every part it finds: the start of the document, each start tag,
+each piece of text, each end tag, and so on. Inside the procedure, special registers such as
+<code>XML-EVENT</code> (what was found) and <code>XML-TEXT</code> (the text of it) tell your
+code what to do with each part.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/XPARSE.cbl" download>XPARSE.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. XPARSE.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  DOC             PIC X(40) VALUE <span class="str">&quot;&lt;a&gt;1&lt;/a&gt;&quot;</span>.
+<span class="seq">000060</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000070</span>     <span class="kw">XML</span> PARSE DOC PROCESSING <span class="kw">PROCEDURE</span> HANDLER
+<span class="seq">000080</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000090</span> HANDLER.
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> XML-EVENT.</code></pre>
+<div class="out-label">What the compiler says</div><pre class="output">XPARSE.cbl:7: warning: XML PARSE is not implemented [-Wpending]
+XPARSE.cbl:8: error: XML PARSE is not implemented (GnuCOBOL 3.2 doesn&#39;t implement it either)</pre>
+</figure>
+<p>The compiler accepts the syntax, then rejects the statement with an error. The warning line
+is GnuCOBOL's own; the error line comes from SP COBOL.</p>
+
+<h2>SP COBOL notes</h2>
+<p>GnuCOBOL 3.2 doesn't implement XML PARSE either. It compiles the statement, but when the
+program runs, the runtime delivers the first event and then stops the program with the message
+"XML PARSE is not implemented". Rather than build a program that half runs, SP COBOL reports the
+problem when you compile.</p>
+
+<h3>What to do instead</h3>
+<ul>
+<li>If the XML always has the same simple, known layout (one record per line, the same tags in
+the same order), you can pick it apart yourself: <a href="unstring.html">UNSTRING</a> with the
+tags as delimiters, or <a href="inspect.html">INSPECT</a> to find and count them, with
+<a href="referring-to-data.html">reference modification</a> to take out the values. This only
+works for XML you control; it is not a general XML reader.</li>
+<li>For real-world XML, let a program in another language (C#, for example, which has a full
+XML reader built in) convert the document into a plain fixed-layout or line sequential file,
+and read that file from COBOL with <a href="read.html">READ</a>.</li>
+<li>To <em>write</em> XML, use <a href="xml-generate.html">XML GENERATE</a>, which is
+supported.</li>
+</ul>
+
+<h2>See also</h2>
+<p><a href="xml-generate.html">XML GENERATE</a>, <a href="json-generate.html">JSON GENERATE</a>,
+<a href="unstring.html">UNSTRING</a>, <a href="files.html">files</a>,
+<a href="not-supported.html">not supported</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="xml-generate.html">&larr; XML GENERATE</a><a class="next" href="copy.html">COPY &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

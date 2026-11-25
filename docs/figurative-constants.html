@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Figurative constants - SP COBOL Reference</title>
+<meta name="description" content="Reserved words such as ZERO, SPACES and HIGH-VALUES that stand for a value and fill a whole field.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details open><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html" class="current" aria-current="page">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Using data</p>
+<h1>Figurative constants </h1>
+<p class="lede">Reserved words such as ZERO, SPACES and HIGH-VALUES that stand for a value and fill a whole field.</p>
+<h2>Syntax</h2>
+<pre class="syntax">{ ZERO | ZEROS | ZEROES }
+{ SPACE | SPACES }
+{ HIGH-VALUE | HIGH-VALUES }
+{ LOW-VALUE | LOW-VALUES }
+{ QUOTE | QUOTES }
+ALL <var>literal</var>
+{ NULL | NULLS }</pre>
+
+<h2>What it does</h2>
+<p>A figurative constant is a word that stands for a value. Unlike a literal it has no fixed
+length: it repeats as often as needed to fill whatever it is moved to or compared with. The
+singular and plural spellings mean exactly the same thing.</p>
+<div class="table-wrap">
+<table>
+<tr><th>Word</th><th>Value</th><th>Typical use</th></tr>
+<tr><td><code>ZERO</code>, <code>ZEROS</code>, <code>ZEROES</code></td><td>The number 0, or
+the character "0" repeated in a text field.</td><td>Clearing totals and counters.</td></tr>
+<tr><td><code>SPACE</code>, <code>SPACES</code></td><td>Blank characters.</td><td>Clearing
+text fields and records; testing for an empty field.</td></tr>
+<tr><td><code>HIGH-VALUE</code>, <code>HIGH-VALUES</code></td><td>The highest byte value,
+X"FF" (255).</td><td>A key that sorts after every real key, such as an end-of-file marker
+when matching two files.</td></tr>
+<tr><td><code>LOW-VALUE</code>, <code>LOW-VALUES</code></td><td>The lowest byte value,
+X"00".</td><td>A key that sorts before everything; filling a field with binary zeros.</td></tr>
+<tr><td><code>QUOTE</code>, <code>QUOTES</code></td><td>The quotation mark character
+<code>"</code>.</td><td>Building text that contains quotes.</td></tr>
+<tr><td><code>ALL literal</code></td><td>The literal repeated: <code>ALL "AB"</code> fills a
+field with ABABAB...</td><td>Lines of dashes or stars; filling with a pattern.</td></tr>
+<tr><td><code>NULL</code>, <code>NULLS</code></td><td>The null address.</td><td>Only with
+<code>USAGE POINTER</code> items. See SP COBOL notes.</td></tr>
+</table>
+</div>
+
+<h3>Where you can use them</h3>
+<ul>
+<li>As the source of a <a href="move.html">MOVE</a>: <code>MOVE SPACES TO CUST-NAME</code> fills
+every byte of CUST-NAME. Moved to a numeric field, <code>ZERO</code> sets it to 0.</li>
+<li>In a <a href="value.html">VALUE</a> clause: <code>01 TOTAL PIC 9(5) VALUE ZERO.</code></li>
+<li>In a comparison: <code>IF CUST-NAME = SPACES</code> is true when the field is all blanks,
+however long it is.</li>
+</ul>
+<p>Only ZERO makes sense for a numeric field. SPACE, QUOTE and ALL "x" are for alphanumeric
+fields; HIGH-VALUES and LOW-VALUES are bytes, not numbers.</p>
+
+<h2>Example</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FIGCON1.cbl" download>FIGCON1.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FIGCON1.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  TEXT-6              PIC X(6)  VALUE SPACES.
+<span class="seq">000060</span> 01  NUM-4               PIC 9(4)  VALUE ZERO.
+<span class="seq">000070</span> 01  BYTE-VALUE          PIC 999.
+<span class="seq">000080</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000090</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;VALUE SPACES:  [&quot;</span> TEXT-6 <span class="str">&quot;]&quot;</span>
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;VALUE ZERO:    [&quot;</span> NUM-4 <span class="str">&quot;]&quot;</span>
+<span class="seq">000110</span>     <span class="kw">MOVE</span> ZEROS TO TEXT-6
+<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ZEROS:         [&quot;</span> TEXT-6 <span class="str">&quot;]&quot;</span>
+<span class="seq">000130</span>     <span class="kw">MOVE</span> ALL <span class="str">&quot;AB&quot;</span> TO TEXT-6
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ALL &quot;&quot;AB&quot;&quot;:      [&quot;</span> TEXT-6 <span class="str">&quot;]&quot;</span>
+<span class="seq">000150</span>     <span class="kw">MOVE</span> ALL <span class="str">&quot;*&quot;</span> TO TEXT-6
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ALL &quot;&quot;*&quot;&quot;:       [&quot;</span> TEXT-6 <span class="str">&quot;]&quot;</span>
+<span class="seq">000170</span>     <span class="kw">MOVE</span> QUOTES TO TEXT-6
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;QUOTES:        [&quot;</span> TEXT-6 <span class="str">&quot;]&quot;</span>
+<span class="seq">000190</span>     <span class="kw">MOVE</span> SPACE TO TEXT-6
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SPACE:         [&quot;</span> TEXT-6 <span class="str">&quot;]&quot;</span>
+<span class="seq">000210</span>     <span class="kw">MOVE</span> HIGH-VALUES TO TEXT-6
+<span class="seq">000220</span>     <span class="kw">COMPUTE</span> BYTE-VALUE = FUNCTION ORD (TEXT-6 (1:1)) - 1
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;HIGH-VALUES:   FIRST BYTE IS &quot;</span> BYTE-VALUE
+<span class="seq">000240</span>     <span class="kw">MOVE</span> LOW-VALUES TO TEXT-6
+<span class="seq">000250</span>     <span class="kw">COMPUTE</span> BYTE-VALUE = FUNCTION ORD (TEXT-6 (1:1)) - 1
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;LOW-VALUES:    FIRST BYTE IS &quot;</span> BYTE-VALUE
+<span class="seq">000270</span>     <span class="kw">MOVE</span> 1234 TO NUM-4
+<span class="seq">000280</span>     <span class="kw">MOVE</span> ZEROES TO NUM-4
+<span class="seq">000290</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ZEROES:        [&quot;</span> NUM-4 <span class="str">&quot;]&quot;</span>
+<span class="seq">000300</span>     <span class="kw">MOVE</span> <span class="str">&quot;ABC&quot;</span> TO TEXT-6
+<span class="seq">000310</span>     <span class="kw">IF</span> TEXT-6 (4:3) = SPACES
+<span class="seq">000320</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;THE LAST THREE BYTES ARE SPACES&quot;</span>
+<span class="seq">000330</span>     <span class="kw">END-IF</span>
+<span class="seq">000340</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">VALUE SPACES:  [      ]
+VALUE ZERO:    [0000]
+ZEROS:         [000000]
+ALL &quot;AB&quot;:      [ABABAB]
+ALL &quot;*&quot;:       [******]
+QUOTES:        [&quot;&quot;&quot;&quot;&quot;&quot;]
+SPACE:         [      ]
+HIGH-VALUES:   FIRST BYTE IS 255
+LOW-VALUES:    FIRST BYTE IS 000
+ZEROES:        [0000]
+THE LAST THREE BYTES ARE SPACES</pre>
+</figure>
+<p>TEXT-6 starts as SPACES and NUM-4 as ZERO, from their VALUE clauses. Moving ZEROS to a text
+field fills it with the character 0. <code>ALL "AB"</code> repeats the pattern across all six
+bytes. HIGH-VALUES and LOW-VALUES are bytes you can't see on the screen, so the program shows
+the code of the first byte instead: 255 and 0. The last test compares part of the field with
+SPACES; the figurative constant takes the length of whatever it is compared with.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad">In this preview two things don't work yet:
+<ul>
+<li>Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
+<code>LOW-VALUES</code> (or <code>ALL X"FF"</code>) gives "not equal" even when every byte
+matches. A one-byte comparison, such as <code>IF FLD (1:1) = LOW-VALUE</code>, works. Compare
+a field with SPACES or ZEROS, or test a byte at a time, until this is fixed.</li>
+<li>Programs with <code>USAGE POINTER</code> items that use <code>NULL</code>
+(<code>VALUE NULL</code>, <code>SET ptr TO NULL</code>, <code>IF ptr = NULL</code>) don't
+build.</li>
+</ul></div>
+
+<h2>See also</h2>
+<p><a href="literals.html">Literals</a>, <a href="move.html">MOVE</a>,
+<a href="initialize.html">INITIALIZE</a>, <a href="value.html">VALUE</a>,
+<a href="conditions.html">conditions</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="literals.html">&larr; Literals</a><a class="next" href="referring-to-data.html">Referring to data &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

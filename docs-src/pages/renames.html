@@ -1,0 +1,34 @@
+title: RENAMES
+summary: Level 66: give one name to a run of neighboring items in a record.
+keywords: RENAMES 66 THRU THROUGH regroup alias
+---
+<h2>Syntax</h2>
+<pre class="syntax">66 data-name-1 RENAMES data-name-2 [ { THROUGH | THRU } data-name-3 ] .</pre>
+
+<h2>What it does</h2>
+<p>A level-66 entry gives a new name to part of the record just above it, without changing the
+record. With <code>THRU</code>, <code>data-name-1</code> covers everything from the start of
+<code>data-name-2</code> to the end of <code>data-name-3</code>, as if it were a group of those
+items. Without <code>THRU</code>, it is simply another name for <code>data-name-2</code>.</p>
+<p>It is useful when you need a group that the record's layout doesn't have, such as "city,
+state and ZIP" out of an address, without reorganizing the record.</p>
+
+<h3>Rules</h3>
+<ul>
+<li>66 entries come right after the last item of the 01 record they belong to.</li>
+<li>The renamed items must be in that record, and <code>data-name-3</code> must come after
+<code>data-name-2</code>.</li>
+<li>You can't rename an 01 or 77 item, a level-88 or another 66, or an item with (or inside
+an item with) <code>OCCURS</code>.</li>
+<li>A RENAMES of several items acts like a group: it is alphanumeric and its length is the
+total of the items it covers.</li>
+</ul>
+
+<h2>Example</h2>
+<!-- example RENAMES1 -->
+<p>CITY-STATE-ZIP covers CITY, STATE and ZIP: 10 + 2 + 5 = 17 bytes. POSTAL-CODE is just
+another name for ZIP. Moving one 17-character string into CITY-STATE-ZIP fills all three
+items by position.</p>
+
+<h2>See also</h2>
+<p><a href="redefines.html">REDEFINES</a>, <a href="level-numbers.html">Level numbers</a>.</p>

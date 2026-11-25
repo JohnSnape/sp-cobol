@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Differences from GnuCOBOL - SP COBOL Reference</title>
+<meta name="description" content="Every place SP COBOL deliberately behaves differently from GnuCOBOL 3.2, and the GnuCOBOL quirks it keeps.">
+<script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+  <button class="menu-btn" type="button" aria-label="Show the page list" aria-expanded="false">&#9776;</button>
+  <a class="brand" href="index.html">SP COBOL <span>Language Reference</span></a>
+  <div class="search">
+    <input type="search" id="q" placeholder="Search statements, clauses..." autocomplete="off" aria-label="Search the reference">
+    <ul id="results" hidden></ul>
+  </div>
+  <button class="theme-btn" type="button" aria-label="Switch between light and dark"><span class="sun">&#9728;</span><span class="moon">&#9790;</span></button>
+</header>
+<div class="layout">
+<nav class="side" aria-label="All pages">
+<a class="home" href="index.html">Overview</a>
+<details><summary>Getting started</summary><ul>
+<li><a href="reading-this-reference.html">Reading this reference</a></li>
+<li><a href="source-format.html">Source format</a></li>
+<li><a href="program-structure.html">Program structure</a></li>
+</ul></details>
+<details><summary>Divisions</summary><ul>
+<li><a href="identification-division.html">IDENTIFICATION DIVISION</a></li>
+<li><a href="environment-division.html">ENVIRONMENT DIVISION</a></li>
+<li><a href="data-division.html">DATA DIVISION</a></li>
+<li><a href="procedure-division.html">PROCEDURE DIVISION</a></li>
+</ul></details>
+<details><summary>Data description</summary><ul>
+<li><a href="level-numbers.html">Level numbers</a></li>
+<li><a href="picture.html">PICTURE</a></li>
+<li><a href="usage.html">USAGE</a></li>
+<li><a href="value.html">VALUE</a></li>
+<li><a href="occurs.html">OCCURS</a></li>
+<li><a href="redefines.html">REDEFINES</a></li>
+<li><a href="renames.html">RENAMES</a></li>
+<li><a href="condition-names.html">Condition-names (level 88)</a></li>
+<li><a href="constants.html">Constants (level 78 and CONSTANT)</a></li>
+<li><a href="justified.html">JUSTIFIED</a></li>
+<li><a href="blank-when-zero.html">BLANK WHEN ZERO</a></li>
+<li><a href="sign.html">SIGN</a></li>
+<li><a href="synchronized.html">SYNCHRONIZED</a></li>
+<li><a href="global-external.html">GLOBAL and EXTERNAL</a></li>
+<li><a href="national.html">National data (PIC N)</a></li>
+</ul></details>
+<details><summary>Using data</summary><ul>
+<li><a href="literals.html">Literals</a></li>
+<li><a href="figurative-constants.html">Figurative constants</a></li>
+<li><a href="referring-to-data.html">Referring to data</a></li>
+<li><a href="conditions.html">Conditions</a></li>
+<li><a href="arithmetic-expressions.html">Arithmetic expressions</a></li>
+</ul></details>
+<details><summary>Statements</summary><ul>
+<li><a href="accept.html">ACCEPT</a></li>
+<li><a href="add.html">ADD</a></li>
+<li><a href="alter.html">ALTER</a></li>
+<li><a href="call.html">CALL</a></li>
+<li><a href="cancel.html">CANCEL</a></li>
+<li><a href="close.html">CLOSE</a></li>
+<li><a href="compute.html">COMPUTE</a></li>
+<li><a href="continue.html">CONTINUE</a></li>
+<li><a href="delete.html">DELETE</a></li>
+<li><a href="display.html">DISPLAY</a></li>
+<li><a href="divide.html">DIVIDE</a></li>
+<li><a href="evaluate.html">EVALUATE</a></li>
+<li><a href="exit.html">EXIT</a></li>
+<li><a href="generate.html">GENERATE</a></li>
+<li><a href="go-to.html">GO TO</a></li>
+<li><a href="goback.html">GOBACK</a></li>
+<li><a href="if.html">IF</a></li>
+<li><a href="initialize.html">INITIALIZE</a></li>
+<li><a href="initiate.html">INITIATE</a></li>
+<li><a href="inspect.html">INSPECT</a></li>
+<li><a href="json-generate.html">JSON GENERATE</a></li>
+<li><a href="merge.html">MERGE</a></li>
+<li><a href="move.html">MOVE</a></li>
+<li><a href="multiply.html">MULTIPLY</a></li>
+<li><a href="open.html">OPEN</a></li>
+<li><a href="perform.html">PERFORM</a></li>
+<li><a href="read.html">READ</a></li>
+<li><a href="release.html">RELEASE</a></li>
+<li><a href="return.html">RETURN</a></li>
+<li><a href="rewrite.html">REWRITE</a></li>
+<li><a href="search.html">SEARCH</a></li>
+<li><a href="set.html">SET</a></li>
+<li><a href="sort.html">SORT</a></li>
+<li><a href="start.html">START</a></li>
+<li><a href="stop.html">STOP</a></li>
+<li><a href="string.html">STRING</a></li>
+<li><a href="subtract.html">SUBTRACT</a></li>
+<li><a href="suppress.html">SUPPRESS</a></li>
+<li><a href="terminate.html">TERMINATE</a></li>
+<li><a href="unstring.html">UNSTRING</a></li>
+<li><a href="use.html">USE</a></li>
+<li><a href="write.html">WRITE</a></li>
+<li><a href="xml-generate.html">XML GENERATE</a></li>
+<li><a href="xml-parse.html">XML PARSE</a></li>
+</ul></details>
+<details><summary>Compiler directives</summary><ul>
+<li><a href="copy.html">COPY</a></li>
+<li><a href="replace.html">REPLACE</a></li>
+</ul></details>
+<details open><summary>Topics</summary><ul>
+<li><a href="screen-section.html">SCREEN SECTION</a></li>
+<li><a href="files.html">Files</a></li>
+<li><a href="file-status.html">FILE STATUS codes</a></li>
+<li><a href="report-writer.html">Report Writer</a></li>
+<li><a href="intrinsic-functions.html">Intrinsic functions</a></li>
+<li><a href="special-registers.html">Special registers</a></li>
+<li><a href="debugging.html">Debugging</a></li>
+<li><a href="differences.html" class="current" aria-current="page">Differences from GnuCOBOL</a></li>
+<li><a href="not-supported.html">Not supported</a></li>
+</ul></details>
+
+</nav>
+<main id="main">
+<p class="crumb">Topics</p>
+<h1>Differences from GnuCOBOL <span class="badge warn">Differs from GnuCOBOL</span></h1>
+<p class="lede">Every place SP COBOL deliberately behaves differently from GnuCOBOL 3.2, and the GnuCOBOL quirks it keeps.</p>
+<p>SP COBOL uses GnuCOBOL 3.2's compiler front end, and its runtime is written to give the
+same results as GnuCOBOL's: a test suite runs every sample program under both and compares
+the output and the data files byte for byte. So a program that works with GnuCOBOL 3.2
+should work the same way with SP COBOL, and the other way round.</p>
+<p>The exceptions are listed here. Each one is deliberate: either GnuCOBOL has a plain bug,
+or its behavior would only confuse someone learning COBOL. Things that differ because SP
+COBOL doesn't handle them correctly yet are not on this page: they are listed under
+<a href="not-supported.html#known-problems">Known problems</a>.</p>
+
+<h2>Deliberate differences</h2>
+<div class="table-wrap"><table>
+<tr><th>Area</th><th>GnuCOBOL 3.2</th><th>SP COBOL</th><th>Page</th></tr>
+<tr><td>Screen colors</td><td>An item with no color uses the terminal's default colors.</td><td>It uses the colors of the last BLANK SCREEN.</td><td><a href="screen-section.html">SCREEN SECTION</a></td></tr>
+<tr><td>Typing in a screen field</td><td>Typing overwrites the old value in place.</td><td>The first key typed replaces the old value, like a Windows text box.</td><td><a href="screen-section.html">SCREEN SECTION</a></td></tr>
+<tr><td>Numeric screen fields</td><td>No check when leaving the field.</td><td>Checked when you leave the field, with plain-English messages, then shown again through the PICTURE.</td><td><a href="screen-section.html">SCREEN SECTION</a></td></tr>
+<tr><td>DISPLAY of PIC N (national) data</td><td>Writes the raw UTF-16 bytes, so <code>N"ABC"</code> prints with a NUL byte before each letter.</td><td>Prints the characters (anything the console can't show as <code>?</code>). Storage, MOVE and comparisons are unchanged.</td><td><a href="national.html">National data</a></td></tr>
+<tr><td>TAB, form feed or ESC in a LINE SEQUENTIAL record</td><td>Rejected with status 71.</td><td>Written, as intended.</td><td><a href="files.html">Files</a></td></tr>
+<tr><td>A quoted name inside ASSIGN (<code>"'a.dat'"</code>)</td><td>Keeps the first quote, fails with status 30.</td><td>Quotes removed.</td><td><a href="files.html">Files</a></td></tr>
+<tr><td><code>$VAR</code> in the middle of an ASSIGN path</td><td>Swallows the next <code>\</code>.</td><td>Separators kept.</td><td><a href="files.html">Files</a></td></tr>
+<tr><td>Reading LINE SEQUENTIAL files</td><td>Windows text mode: Ctrl-Z ends the file, and LF-only files can lose text when a long line is split.</td><td>CR LF and LF both end a line; Ctrl-Z is data (status 09 like other control bytes).</td><td><a href="files.html">Files</a></td></tr>
+<tr><td>LINE SEQUENTIAL REWRITE of a shorter record</td><td>Overwrites the CR of the line end.</td><td>The line end is kept.</td><td><a href="rewrite.html">REWRITE</a></td></tr>
+<tr><td>REWRITE or DELETE of an empty RELATIVE slot</td><td>Status 00 (REWRITE even stores the record).</td><td>Status 23, record not found.</td><td><a href="file-status.html">File status</a></td></tr>
+<tr><td>File error messages</td><td>Name the last environment variable looked up (<code>'missing_dat'</code>).</td><td>Name the ASSIGN value (<code>'missing.dat'</code>).</td><td><a href="file-status.html">File status</a></td></tr>
+<tr><td>Fatal runtime errors</td><td>One <code>libcob: error</code> line.</td><td>The same line, then a <code>hint:</code> line saying what to check (<code>COB_NO_HINTS=1</code> turns it off).</td><td><a href="debugging.html">Debugging</a></td></tr>
+<tr><td>ORGANIZATION INDEXED files</td><td>Need an external ISAM library, with its own file format.</td><td>Built in, in SP COBOL's own simple one-file format. Same file statuses, but the files can't be shared with GnuCOBOL programs.</td><td><a href="files.html">Files</a></td></tr>
+<tr><td>USE BEFORE REPORTING on a DETAIL group</td><td>Each detail is added into the SUM counters twice, so totals are doubled.</td><td>Added once.</td><td><a href="report-writer.html">Report Writer</a></td></tr>
+<tr><td>Table SORT (<code>SORT table ON ... KEY</code>)</td><td>Elements with equal keys may come out in any order (C's qsort).</td><td>Equal elements keep their order (a stable sort).</td><td><a href="sort.html">SORT</a></td></tr>
+<tr><td>SORT and MERGE files</td><td>Records past a memory limit spill to temporary work files.</td><td>All records are kept in memory. Same results.</td><td><a href="sort.html">SORT</a></td></tr>
+<tr><td>FUNCTION SECONDS-FROM-FORMATTED-TIME with fractions of a second</td><td>Can pick up the wrong number of decimals from another function's work area.</td><td>Correct.</td><td><a href="intrinsic-functions.html">Intrinsic functions</a></td></tr>
+<tr><td>NUMERIC class test on COMP-1 / COMP-2</td><td>True only for "not a number" or infinity (inverted).</td><td>True for any ordinary floating-point value.</td><td><a href="conditions.html">Conditions</a></td></tr>
+<tr><td>XML PARSE</td><td>Compiles; at run time sends one event and stops with "XML PARSE is not implemented".</td><td>A compile error with the same message.</td><td><a href="xml-parse.html">XML PARSE</a></td></tr>
+<tr><td>The "unfinished" warning</td><td>cobc warns that BY VALUE and PIC N handling are unfinished.</td><td>SP COBOL projects compile with <code>-Wno-unfinished</code>, since its runtime handles both.</td><td><a href="call.html">CALL</a>, <a href="national.html">National data</a></td></tr>
+</table></div>
+
+<h2>Kept on purpose, although surprising</h2>
+<p>These GnuCOBOL 3.2 behaviors look odd, but SP COBOL keeps them so that programs give
+the same results in both:</p>
+<ul>
+<li>Report Writer: <code>PRESENT WHEN</code> on a single field never prints the field
+(<a href="report-writer.html">Report Writer</a>). On a LINE it works.</li>
+<li>UNSTRING into a <code>JUSTIFIED RIGHT</code> item fills it from the left
+(<a href="unstring.html">UNSTRING</a>). MOVE does justify.</li>
+<li>XML and JSON GENERATE output only the first occurrence of an OCCURS item, put the raw
+bytes of a number into an XML attribute (<code>-123.45</code> becomes
+<code>001234u</code>), and stop the program on COMP-1 / COMP-2 items
+(<a href="xml-generate.html">XML GENERATE</a>, <a href="json-generate.html">JSON GENERATE</a>).</li>
+<li>A READ after the end of a file gives status 46, and goes to a USE AFTER ERROR procedure
+even when the READ has an AT END phrase (<a href="use.html">USE</a>).</li>
+<li>Files: lines end with CR LF on Windows; CLOSE ... REEL gives status 07; a LINAGE file
+pads pages with blank lines, not form feeds; an "implicit CLOSE" warning appears when
+STOP RUN finds a file still open; the program ends with exit code 1 after a fatal file
+error (<a href="files.html">Files</a>).</li>
+<li>DISPLAY of a COMP-5 item shows as many digits as its size can hold (5 for 2 bytes, 10
+for 4, 20 for 8), whatever its PICTURE says (<a href="usage.html">USAGE</a>).</li>
+<li>Intrinsic functions: TEST-NUMVAL-C rejects a currency string longer than one
+character; EXCEPTION-FILE treats any exception in the 05xx group as a file error; short
+negative UTC offsets print as <code>+00mm</code>; COMBINED-DATETIME overflows for very
+large day numbers; SECONDS-PAST-MIDNIGHT ignores <code>COB_CURRENT_DATE</code>
+(<a href="intrinsic-functions.html">Intrinsic functions</a>).</li>
+<li>Not implemented in either: PROCEDURE DIVISION RETURNING and the intrinsic functions
+listed on <a href="not-supported.html">Not supported</a>.</li>
+</ul>
+
+<h2>See also</h2>
+<p><a href="not-supported.html">Not supported</a>, <a href="debugging.html">Debugging</a>,
+<a href="reading-this-reference.html">Reading this reference</a>.</p>
+
+<nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="debugging.html">&larr; Debugging</a><a class="next" href="not-supported.html">Not supported &rarr;</a></nav>
+<footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>
+</main>
+</div>
+<script src="assets/site.js"></script>
+</body>
+</html>

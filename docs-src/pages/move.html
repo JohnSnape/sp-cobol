@@ -1,0 +1,112 @@
+title: MOVE
+summary: Copy a value into one or more fields, converting it to fit each one.
+keywords: TO CORRESPONDING CORR copy assign assignment padding truncation justify edited de-editing figurative SPACES ZEROS
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: copy a value
+MOVE { identifier-1 | literal-1 } TO identifier-2 ...
+
+Format 2: copy matching fields of two groups
+MOVE { CORRESPONDING | CORR } group-1 TO group-2 ...</pre>
+
+<h2>What it does</h2>
+<p>MOVE copies the value on the left into every field after <code>TO</code>. The field it
+copies from (the <em>sending</em> field) doesn't change. Each <em>receiving</em> field gets the
+value in its own format: COBOL pads, cuts or converts the value so that it fits the
+receiving field's PICTURE. Most of what there is to learn about MOVE is how that fitting works.</p>
+
+<h3>Moves into alphanumeric fields</h3>
+<p>When the receiving field is alphanumeric (<code>PIC X</code>) the characters are copied
+from the left. If the value is shorter than the field, the rest is filled with spaces. If it is
+longer, the characters that don't fit on the right are lost. A field described with
+<a href="justified.html">JUSTIFIED RIGHT</a> works the other way round: the value is placed at
+the right end, spaces fill the left, and extra characters are cut from the left.</p>
+
+<h3>Moves into numeric fields</h3>
+<p>When the receiving field is numeric (<code>PIC 9</code>) COBOL moves the <em>value</em>,
+not the characters. The decimal points are lined up first. Then:</p>
+<ul>
+<li>missing digits are filled with zeros, on both sides of the decimal point;</li>
+<li>digits that don't fit on the left (the high-order digits) are lost, with no warning:
+moving 1234 to <code>PIC 9(3)</code> leaves 234;</li>
+<li>extra decimal places are cut off, not rounded (use <a href="compute.html">COMPUTE ... ROUNDED</a>
+if you want rounding);</li>
+<li>if the receiving field has no <code>S</code> in its picture, the sign is dropped and the
+value is stored as positive.</li>
+</ul>
+
+<h3>Group moves</h3>
+<p>If either field is a group item, the move is a plain copy of bytes, treated like an
+alphanumeric move: no numbers are converted, no decimal points lined up. The bytes are copied
+from the left, and spaces fill a longer receiving field. This is quick and is often used to
+copy a whole record, but it puts the sending field's bytes into each item of the receiving
+group exactly as they are.</p>
+
+<h3>Moves into edited fields</h3>
+<p>A numeric-edited field (one whose PICTURE has editing symbols such as <code>Z</code>,
+<code>,</code>, <code>.</code>, <code>$</code>, <code>-</code> or <code>/</code>) is for
+showing a number to a person. Moving a number into it lines up the decimal point and then
+formats the digits: leading zeros become spaces or a floating <code>$</code>, commas and the
+sign are inserted. See <a href="picture.html">PICTURE</a> for the symbols.</p>
+<p>The reverse move also works: moving a numeric-edited field to a numeric field reads the
+number back out of the formatted text (this is called <em>de-editing</em>). The commas, the
+currency sign and the spaces are ignored, and the sign is kept.</p>
+
+<h3>Figurative constants</h3>
+<p><code>MOVE SPACES</code>, <code>MOVE ZEROS</code>, <code>MOVE HIGH-VALUES</code> and the
+others fill the whole receiving field. <code>MOVE ALL "*-" TO X</code> repeats the text until
+the field is full. See <a href="figurative-constants.html">figurative constants</a>.</p>
+
+<h3>MOVE CORRESPONDING</h3>
+<p><code>MOVE CORRESPONDING A TO B</code> looks for items in group A and group B that have the
+same name, and moves each one to its partner as a normal elementary move, with the usual
+conversion. The items don't need to be in the same order or the same format, which makes it
+a quick way to copy an input record into a print line. FILLER items and items whose names have
+no partner are left alone.</p>
+
+<h3>What can move to what</h3>
+<div class="table-wrap">
+<table>
+<tr><th>Sending field</th><th>Receiving field</th><th>What happens</th></tr>
+<tr><td>alphanumeric</td><td>alphanumeric</td><td>Characters copied from the left; padded with spaces or cut on the right.</td></tr>
+<tr><td>numeric</td><td>numeric</td><td>Value moved, decimal points lined up; high digits and extra decimals lost.</td></tr>
+<tr><td>numeric</td><td>numeric-edited</td><td>Value lined up and formatted for display.</td></tr>
+<tr><td>numeric-edited</td><td>numeric</td><td>De-editing: the number is read back out of the formatted text.</td></tr>
+<tr><td>numeric (integer)</td><td>alphanumeric</td><td>All the digits, leading zeros included, are copied as characters; the sign is dropped.</td></tr>
+<tr><td>alphanumeric</td><td>numeric</td><td>Allowed: the characters are taken as digits of a whole number. Only do this when the field holds digits.</td></tr>
+<tr><td>group</td><td>anything</td><td>Byte copy, no conversion.</td></tr>
+<tr><td>anything</td><td>group</td><td>Byte copy, no conversion.</td></tr>
+<tr><td>figurative constant</td><td>anything</td><td>The whole field is filled (ZERO into a numeric field gives the value 0).</td></tr>
+</table>
+</div>
+<p>Moving a number with decimal places into an alphanumeric field is not allowed: the compiler
+stops with "invalid MOVE statement". Move it to a numeric-edited field first.</p>
+
+<h2>Examples</h2>
+<!-- example MOVE1 -->
+<p>"COBOL" is padded with five spaces in a 10-character field and cut to "PROG" in a
+4-character one; the JUSTIFIED RIGHT field puts the spaces in front. The numeric moves show
+zero filling (042), the lost high digit (1234 becomes 234), decimal alignment (7.5 becomes
+007.50) and lost low digits (12.3456 becomes 012.34, cut, not rounded). Moving -8.25 to an
+unsigned whole-number field drops both the sign and the decimals. The last line shows
+figurative constants, including <code>ALL "*-"</code> repeated to fill six characters.</p>
+
+<!-- example MOVE2 -->
+<p>-1234.5 is formatted with a floating dollar sign, a comma and a trailing minus, and the
+de-editing move reads the same value back. Moving a plain number into
+<code>PIC 99/99/9999</code> inserts the slashes. MOVE CORRESPONDING moves ITEM, QTY and CUST-NO
+by name, each converted to its new picture, while the FILLER slashes stay. The two group moves
+copy bytes only: QTY's digits appear as they are stored, and moving X's into ORDER-IN even fills
+its numeric items with X's, which is why group moves need care.</p>
+
+<!-- example MOVE3 -->
+<p>The signed number -42 moved into a text field arrives as the characters <code>0042</code>:
+all four digits, no sign. Going the other way, the text "123" becomes the number 123, and
+you can then do arithmetic with it.</p>
+
+<h2>See also</h2>
+<p><a href="picture.html">PICTURE</a>, <a href="justified.html">JUSTIFIED</a>,
+<a href="initialize.html">INITIALIZE</a> to clear a whole group by type,
+<a href="compute.html">COMPUTE</a> for rounding, <a href="set.html">SET</a> for indexes and
+condition names, <a href="referring-to-data.html">referring to data</a> for qualified names
+(<code>ITEM OF ORDER-OUT</code>).</p>

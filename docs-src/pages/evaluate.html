@@ -1,0 +1,77 @@
+title: EVALUATE
+summary: Choose one of several actions by comparing values or testing conditions; COBOL's case statement.
+keywords: EVALUATE WHEN OTHER ALSO THRU THROUGH TRUE FALSE ANY NOT END-EVALUATE case switch select multiway decision table
+---
+<h2>Syntax</h2>
+<pre class="syntax">EVALUATE subject-1 [ ALSO subject-2 ] ...
+    { { WHEN object-1 [ ALSO object-2 ] ... } ...
+          imperative-statement-1 } ...
+    [ WHEN OTHER imperative-statement-2 ]
+[ END-EVALUATE ]
+
+subject:  { identifier | literal | arithmetic-expression | condition | TRUE | FALSE }
+
+object:   { ANY
+          | condition
+          | TRUE | FALSE
+          | [ NOT ] { identifier-1 | literal-1 | arithmetic-expression-1 }
+                [ { THRU | THROUGH } { identifier-2 | literal-2 | arithmetic-expression-2 } ] }</pre>
+
+<h2>What it does</h2>
+<p><code>EVALUATE</code> looks at a value (the <em>subject</em>) and runs the statements under the
+first <code>WHEN</code> that matches it. Only one WHEN runs; then the program goes on after
+<code>END-EVALUATE</code>. If no WHEN matches, the statements under <code>WHEN OTHER</code> run, or
+nothing at all if there is no WHEN OTHER. It does the job of a long chain of
+<code>IF ... ELSE IF ...</code>, and is much easier to read.</p>
+
+<h3>What a WHEN can say</h3>
+<ul>
+<li>A value: <code>WHEN "A"</code>, <code>WHEN 100</code>, <code>WHEN LIMIT-AMT</code>. Matches when
+the subject equals it.</li>
+<li>A range: <code>WHEN 90 THRU 100</code> matches anything from 90 to 100, both ends included.</li>
+<li><code>NOT</code> before a value or range: matches when the subject is anything else.</li>
+<li>With <code>EVALUATE TRUE</code>, each WHEN is a condition (<code>WHEN AGE &lt; 18</code>,
+<code>WHEN IS-MEMBER</code>), and the first one that is true is chosen. With
+<code>EVALUATE FALSE</code>, the first condition that is false is chosen.</li>
+</ul>
+
+<h3>Several WHENs sharing one action</h3>
+<p>Write the WHENs one after another with no statement between them. The statements after the
+last one run when any of them matches.</p>
+
+<h3>ALSO: more than one subject</h3>
+<p><code>EVALUATE AGE ALSO MEMBER-FLAG</code> tests two things at once. Each WHEN then has one
+object per subject, separated by <code>ALSO</code>, and matches only when every pair matches. This
+is a <em>decision table</em> written as code. Subjects may be of different kinds:
+<code>EVALUATE TRUE ALSO QTY</code> takes a condition and then a value in each WHEN.</p>
+
+<h2>Examples</h2>
+<!-- example EVAL1 -->
+<p>Each score is checked against the ranges in order. 72 and 61 both reach the shared action of
+the two WHENs for 70-79 and 60-69. 40 matches no range, so WHEN OTHER runs.</p>
+
+<h3>Two subjects, and EVALUATE TRUE</h3>
+<!-- example EVAL2 -->
+<p>The first EVALUATE is a small decision table on age and membership. A 70-year-old non-member
+matches <code>65 THRU 999 ALSO "N"</code>. A 40-year-old non-member matches nothing and gets the
+OTHER branch. The second EVALUATE tests conditions in order: the 10-year-old is caught by the first
+WHEN, so the member test is never reached for that row.</p>
+
+<h3>EVALUATE FALSE, and NOT in a WHEN</h3>
+<!-- example EVAL3 -->
+<p>In the first EVALUATE each WHEN fires when its condition is <em>false</em>. Both conditions are
+true here, so WHEN OTHER runs. In the second, QTY 5 is in the range 1 THRU 9, so the first WHEN
+matches; a QTY of 0 or 10 or more would have matched <code>NOT 1 THRU 9</code>.</p>
+
+<h2>SP COBOL notes</h2>
+<div class="bad"><code>WHEN ANY</code> (in any position, such as <code>WHEN 0 THRU 12 ALSO
+ANY</code>) can't be built by SP COBOL yet: the translation stops with a C# error. GnuCOBOL 3.2
+accepts it. Until it is fixed, list the cases instead (<code>WHEN 0 THRU 12 ALSO "Y"</code>
+followed by <code>WHEN 0 THRU 12 ALSO "N"</code>, as in the second example), or test only the
+subjects that matter in a nested EVALUATE or IF.</div>
+
+<h2>See also</h2>
+<p><a href="if.html">IF</a>, <a href="conditions.html">conditions</a>,
+<a href="condition-names.html">condition names (88 levels)</a>,
+<a href="continue.html">CONTINUE</a> (a WHEN that does nothing),
+<a href="perform.html">PERFORM</a>.</p>

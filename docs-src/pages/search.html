@@ -1,0 +1,72 @@
+title: SEARCH
+summary: Look through a table for an entry that meets a condition.
+keywords: SEARCH ALL AT END WHEN VARYING END-SEARCH INDEXED BY ASCENDING KEY DESCENDING binary search lookup table find
+---
+<h2>Syntax</h2>
+<pre class="syntax">Format 1: serial search, entry by entry
+SEARCH identifier-1 [ VARYING { identifier-2 | index-name-1 } ]
+    [ AT END imperative-statement-1 ]
+    { WHEN condition-1 { imperative-statement-2 | NEXT SENTENCE } } ...
+[ END-SEARCH ]
+
+Format 2: binary search of a sorted table
+SEARCH ALL identifier-1
+    [ AT END imperative-statement-1 ]
+    WHEN key-condition [ AND key-condition ] ...
+        { imperative-statement-2 | NEXT SENTENCE }
+[ END-SEARCH ]
+
+where key-condition is:
+    data-name-1 [ ( index-name ) ] { IS EQUAL TO | IS = } { identifier-3 | literal-1 }
+  | condition-name-1</pre>
+
+<h2>What it does</h2>
+<p>SEARCH looks through a table, an item defined with <a href="occurs.html">OCCURS</a>, for
+an entry that matches a condition. <code>identifier-1</code> is the item that has the OCCURS
+clause, and it must also have an <code>INDEXED BY</code> clause: SEARCH moves that
+<em>index</em> from entry to entry. An index is a special counter for a table; you set it and
+change it with <a href="set.html">SET</a>, and use it as a subscript, as in
+<code>COLOR-NAME (CX)</code>.</p>
+
+<h3>Serial SEARCH</h3>
+<p>The plain SEARCH starts at the entry the index points to <em>now</em>, so you normally
+write <code>SET CX TO 1</code> just before it. For each entry it checks the WHEN conditions in
+order. When one is true, its statements run and the SEARCH ends, with the index left pointing
+at the entry that matched. If the index runs past the last entry without a match, the
+<code>AT END</code> statements run instead (or, without AT END, the program just carries on
+after the SEARCH).</p>
+<p>You may write several WHEN phrases, and any kind of condition; the first one that is true
+wins.</p>
+<p><code>VARYING</code> names a second item that SEARCH moves along with the index. If it is a
+numeric item, it ends up holding the same entry number as the index.</p>
+
+<h3>SEARCH ALL</h3>
+<p>SEARCH ALL finds an entry much faster in a large table by doing a <em>binary search</em>: it
+looks at the middle entry, decides which half the wanted entry must be in, and repeats. For
+that to work:</p>
+<ul>
+<li>the table must have an <code>ASCENDING KEY</code> (or <code>DESCENDING KEY</code>)
+clause naming the field it is sorted on, and the entries must really be in that order;</li>
+<li>the WHEN condition may only test key fields for equality (<code>=</code>), joined with
+<code>AND</code>, and the key must be subscripted with the table's first index;</li>
+<li>there is only one WHEN.</li>
+</ul>
+<p>SEARCH ALL sets the index itself, so you don't SET it first. If the table is not in key
+order, SEARCH ALL can miss entries that are there; it doesn't check the order for you.</p>
+
+<h2>Examples</h2>
+<!-- example SEARCH1 -->
+<p>LOOK-UP sets the index to 1 and searches. BLUE is the third entry, so the WHEN runs and
+<code>SET POSITION-NO TO CX</code> copies the entry number out of the index. PINK isn't in the
+table, so AT END runs. The last SEARCH starts at entry 2 instead of 1 and finds YELLOW at entry
+4; STEP-COUNT, the VARYING item, holds that entry number too.</p>
+
+<!-- example SEARCH2 -->
+<p>The table of states is in order of the two-letter code, which the ASCENDING KEY clause
+declares. SEARCH ALL finds NV and shows its name. TX isn't there, so AT END runs.</p>
+
+<h2>See also</h2>
+<p><a href="occurs.html">OCCURS</a> (INDEXED BY, ASCENDING KEY), <a href="set.html">SET</a>,
+<a href="perform.html">PERFORM VARYING</a> for your own table loops,
+<a href="sort.html">SORT</a> (it can sort a table into key order),
+<a href="conditions.html">conditions</a>.</p>

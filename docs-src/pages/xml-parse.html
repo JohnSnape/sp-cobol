@@ -1,0 +1,51 @@
+title: XML PARSE
+summary: Read XML text event by event. Not supported: the compiler refuses it.
+keywords: XML PARSE PROCESSING PROCEDURE XML-EVENT XML-TEXT XML-CODE parse read XML not implemented
+badge: not-supported
+---
+<h2>Syntax</h2>
+<pre class="syntax">XML PARSE identifier-1
+    PROCESSING PROCEDURE procedure-1 [ { THRU | THROUGH } procedure-2 ]
+    [ ON EXCEPTION imperative-statement-1 ]
+    [ NOT ON EXCEPTION imperative-statement-2 ]
+[ END-XML ]</pre>
+
+<div class="bad">XML PARSE is not supported. SP COBOL stops with a compile error when a program
+uses it.</div>
+
+<h2>What it does (in other compilers)</h2>
+<p>In compilers that implement it, XML PARSE reads an XML document from a field and calls the
+processing procedure once for every part it finds: the start of the document, each start tag,
+each piece of text, each end tag, and so on. Inside the procedure, special registers such as
+<code>XML-EVENT</code> (what was found) and <code>XML-TEXT</code> (the text of it) tell your
+code what to do with each part.</p>
+
+<h2>Example</h2>
+<!-- example XPARSE -->
+<p>The compiler accepts the syntax, then rejects the statement with an error. The warning line
+is GnuCOBOL's own; the error line comes from SP COBOL.</p>
+
+<h2>SP COBOL notes</h2>
+<p>GnuCOBOL 3.2 doesn't implement XML PARSE either. It compiles the statement, but when the
+program runs, the runtime delivers the first event and then stops the program with the message
+"XML PARSE is not implemented". Rather than build a program that half runs, SP COBOL reports the
+problem when you compile.</p>
+
+<h3>What to do instead</h3>
+<ul>
+<li>If the XML always has the same simple, known layout (one record per line, the same tags in
+the same order), you can pick it apart yourself: <a href="unstring.html">UNSTRING</a> with the
+tags as delimiters, or <a href="inspect.html">INSPECT</a> to find and count them, with
+<a href="referring-to-data.html">reference modification</a> to take out the values. This only
+works for XML you control; it is not a general XML reader.</li>
+<li>For real-world XML, let a program in another language (C#, for example, which has a full
+XML reader built in) convert the document into a plain fixed-layout or line sequential file,
+and read that file from COBOL with <a href="read.html">READ</a>.</li>
+<li>To <em>write</em> XML, use <a href="xml-generate.html">XML GENERATE</a>, which is
+supported.</li>
+</ul>
+
+<h2>See also</h2>
+<p><a href="xml-generate.html">XML GENERATE</a>, <a href="json-generate.html">JSON GENERATE</a>,
+<a href="unstring.html">UNSTRING</a>, <a href="files.html">files</a>,
+<a href="not-supported.html">not supported</a>.</p>

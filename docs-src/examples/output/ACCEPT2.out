@@ -1,0 +1,5 @@
+DATE YYYYMMDD: a valid date
+DATE:          the same day as YYMMDD
+DAY YYYYDDD:   a valid year and day
+DAY-OF-WEEK:   between 1 and 7
+TIME:          hours, minutes, seconds

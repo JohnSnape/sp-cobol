@@ -184,7 +184,8 @@ Ctrl-Z.</td><td>The file may not be text.</td></tr>
 <tr><td>10</td><td>End of file: no next record (sequential READ, READ NEXT, RETURN).</td>
 <td>Normal at the end of a loop.</td></tr>
 <tr><td>14</td><td>Sequential READ of a RELATIVE file reached a slot number too big for the
-RELATIVE KEY item.</td><td>Give the RELATIVE KEY more digits.</td></tr>
+RELATIVE KEY item. The record is still read, and the key is set to 0.</td><td>Give the
+RELATIVE KEY more digits.</td></tr>
 <tr><td>21</td><td>Key out of order: an INDEXED file with sequential access must be written in
 ascending key order (after OPEN EXTEND too: above the highest key already there).</td><td>Sort the
 data first, or use random access.</td></tr>
@@ -193,8 +194,9 @@ INDEXED record whose RECORD KEY is already in the file.</td><td>Read
 first, or REWRITE instead.</td></tr>
 <tr><td>23</td><td>Record not found: READ, START, REWRITE or DELETE of a key or slot that
 isn't there.</td><td>The key value; normal when looking things up.</td></tr>
-<tr><td>24</td><td>Key outside the file's limits, such as RELATIVE KEY 0.</td><td>Slot numbers
-start at 1.</td></tr>
+<tr><td>24</td><td>Key outside the file's limits, such as RELATIVE KEY 0, or a sequential
+WRITE of a RELATIVE file whose next slot number is too big for the RELATIVE KEY item (nothing
+is written).</td><td>Slot numbers start at 1. Give the RELATIVE KEY more digits.</td></tr>
 <tr><td>30</td><td>Permanent error reported by Windows while reading or writing.</td>
 <td>The disk, the path, the file.</td></tr>
 <tr><td>31</td><td>The file name is empty or badly quoted.</td><td>The ASSIGN data item has a
@@ -375,11 +377,58 @@ slot, 44 for a 1-character record when the FD says at least 2. Reading a 10-char
 into a 6-character record gives 06 and the first six characters; the next READ returns the
 rest with 00. <code>CLOSE ... REEL</code> on a disk file gives 07 and leaves the file open,
 so a plain CLOSE follows.</p>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FSTAT3.cbl" download>FSTAT3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FSTAT3.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> ROOMS ASSIGN TO <span class="str">&quot;rooms.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS RANDOM
+<span class="seq">000080</span>         RELATIVE KEY IS ROOM-NO <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span>     <span class="kw">SELECT</span> ROOMS-IN ASSIGN TO <span class="str">&quot;rooms.dat&quot;</span>
+<span class="seq">000100</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS SEQUENTIAL
+<span class="seq">000110</span>         RELATIVE KEY IS SHORT-NO <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000120</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000130</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> <span class="kw">FD</span>  ROOMS.
+<span class="seq">000150</span> 01  ROOM-REC            PIC X(6).
+<span class="seq">000160</span> <span class="kw">FD</span>  ROOMS-IN.
+<span class="seq">000170</span> 01  ROOM-IN-REC         PIC X(6).
+<span class="seq">000180</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000190</span> 01  ROOM-NO             PIC 99.
+<span class="seq">000200</span> 01  SHORT-NO            PIC 9.
+<span class="seq">000210</span> 01  FS                  PIC XX.
+<span class="seq">000220</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000230</span>     <span class="kw">OPEN</span> OUTPUT ROOMS
+<span class="seq">000240</span>     <span class="kw">PERFORM</span> VARYING ROOM-NO FROM 8 BY 1 UNTIL ROOM-NO &gt; 11
+<span class="seq">000250</span>         <span class="kw">MOVE</span> <span class="str">&quot;ROOM&quot;</span> TO ROOM-REC
+<span class="seq">000260</span>         <span class="kw">MOVE</span> ROOM-NO TO ROOM-REC (5:2)
+<span class="seq">000270</span>         <span class="kw">WRITE</span> ROOM-REC
+<span class="seq">000280</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000290</span>     <span class="kw">CLOSE</span> ROOMS
+<span class="seq">000300</span>     <span class="kw">OPEN</span> INPUT ROOMS-IN
+<span class="seq">000310</span>     <span class="kw">PERFORM</span> 3 TIMES
+<span class="seq">000320</span>         <span class="kw">READ</span> ROOMS-IN
+<span class="seq">000330</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;STATUS &quot;</span> FS <span class="str">&quot; KEY &quot;</span> SHORT-NO <span class="str">&quot; &quot;</span> ROOM-IN-REC
+<span class="seq">000340</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000350</span>     <span class="kw">CLOSE</span> ROOMS-IN
+<span class="seq">000360</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">STATUS 00 KEY 8 ROOM08
+STATUS 00 KEY 9 ROOM09
+STATUS 14 KEY 0 ROOM10</pre>
+</figure>
+<p>Slots 8 to 11 are written through ROOM-NO, which has two digits. The file is then read in
+order through a second SELECT whose RELATIVE KEY, SHORT-NO, has only one digit. Slots 8 and 9
+read normally. Slot 10 doesn't fit: status 14, SHORT-NO is set to 0, and the record ROOM10 is
+still read.</p>
 
 <h2>SP COBOL notes</h2>
-<p>The codes are the ones GnuCOBOL 3.2 sets in each situation. The exceptions are the plain
-GnuCOBOL bugs listed on the <a href="files.html">Files</a> page, for example REWRITE or DELETE
-of an empty RELATIVE slot, which gives 23 here and 00 in GnuCOBOL.</p>
+<p>The codes are the ones GnuCOBOL 3.2 sets in each situation. The exceptions are listed on
+the <a href="files.html">Files</a> page, for example REWRITE or DELETE of an empty RELATIVE
+slot, which gives 23 here and 00 in GnuCOBOL, and a sequential WRITE whose slot number
+doesn't fit the RELATIVE KEY, which gives 24 here and 00 in GnuCOBOL (see
+<a href="write.html">WRITE</a>).</p>
 <p>When a file error stops the program, SP COBOL adds a <code>hint:</code> line under
 GnuCOBOL's message saying what to check. <code>COB_NO_HINTS=1</code> turns it off.</p>
 

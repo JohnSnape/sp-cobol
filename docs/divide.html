@@ -190,31 +190,35 @@ stores anything, with or without the phrase, so test for it.</p>
 <span class="seq">000150</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
 <span class="seq">000160</span>     <span class="kw">DIVIDE</span> 4 INTO TOTAL GIVING QUARTER
 <span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;100 / 4         &quot;</span> QUARTER
-<span class="seq">000180</span>     <span class="kw">DIVIDE</span> TOTAL BY PEOPLE GIVING SHARE REMAINDER LEFT-OVER
-<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;100 / 7         &quot;</span> SHARE <span class="str">&quot; REMAINDER &quot;</span> LEFT-OVER
-<span class="seq">000200</span>     <span class="kw">DIVIDE</span> PEOPLE INTO TOTAL GIVING SHARE-CENTS ROUNDED
-<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ROUNDED         &quot;</span> SHARE-CENTS
-<span class="seq">000220</span>     <span class="kw">DIVIDE</span> 60 INTO MINUTES GIVING HOURS REMAINDER MINS
-<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;125 MINUTES     &quot;</span> HOURS <span class="str">&quot; H &quot;</span> MINS <span class="str">&quot; MIN&quot;</span>
-<span class="seq">000240</span>     <span class="kw">DIVIDE</span> TOTAL BY 8 GIVING TINY
-<span class="seq">000250</span>         ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;12.5 TOO BIG, TINY STAYS &quot;</span> TINY
-<span class="seq">000260</span>         NOT ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;TINY IS &quot;</span> TINY
-<span class="seq">000270</span>     <span class="kw">END-DIVIDE</span>
-<span class="seq">000280</span>     <span class="kw">DIVIDE</span> 0 INTO TOTAL GIVING SHARE
-<span class="seq">000290</span>         ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;BY ZERO, SHARE STAYS &quot;</span> SHARE
-<span class="seq">000300</span>     <span class="kw">END-DIVIDE</span>
-<span class="seq">000310</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<span class="seq">000180</span>     <span class="kw">DIVIDE</span> 2 INTO QUARTER
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;HALF OF THAT    &quot;</span> QUARTER
+<span class="seq">000200</span>     <span class="kw">DIVIDE</span> TOTAL BY PEOPLE GIVING SHARE REMAINDER LEFT-OVER
+<span class="seq">000210</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;100 / 7         &quot;</span> SHARE <span class="str">&quot; REMAINDER &quot;</span> LEFT-OVER
+<span class="seq">000220</span>     <span class="kw">DIVIDE</span> PEOPLE INTO TOTAL GIVING SHARE-CENTS ROUNDED
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;ROUNDED         &quot;</span> SHARE-CENTS
+<span class="seq">000240</span>     <span class="kw">DIVIDE</span> 60 INTO MINUTES GIVING HOURS REMAINDER MINS
+<span class="seq">000250</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;125 MINUTES     &quot;</span> HOURS <span class="str">&quot; H &quot;</span> MINS <span class="str">&quot; MIN&quot;</span>
+<span class="seq">000260</span>     <span class="kw">DIVIDE</span> TOTAL BY 8 GIVING TINY
+<span class="seq">000270</span>         ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;12.5 TOO BIG, TINY STAYS &quot;</span> TINY
+<span class="seq">000280</span>         NOT ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;TINY IS &quot;</span> TINY
+<span class="seq">000290</span>     <span class="kw">END-DIVIDE</span>
+<span class="seq">000300</span>     <span class="kw">DIVIDE</span> 0 INTO SHARE
+<span class="seq">000310</span>         ON SIZE ERROR <span class="kw">DISPLAY</span> <span class="str">&quot;BY ZERO, SHARE STAYS &quot;</span> SHARE
+<span class="seq">000320</span>     <span class="kw">END-DIVIDE</span>
+<span class="seq">000330</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
 <div class="out-label">Output</div><pre class="output">100 / 4         025
+HALF OF THAT    012
 100 / 7         014 REMAINDER 002
 ROUNDED         014.29
 125 MINUTES     2 H 05 MIN
 12.5 TOO BIG, TINY STAYS 5
 BY ZERO, SHARE STAYS 014</pre>
 </figure>
-<p>100 / 4 is 25. 100 / 7 is 14 with 2 left over (14 &times; 7 = 98). The ROUNDED quotient
-14.2857... becomes 14.29. 125 minutes is 2 hours and 5 minutes. 100 / 8 is 12.5, too many digits
-for <code>PIC 9</code>, so TINY keeps 5. The division by zero is a size error and SHARE keeps the
-14 it had.</p>
+<p>100 / 4 is 25. <code>DIVIDE 2 INTO QUARTER</code> (Format 1) halves QUARTER in place: 12.5,
+cut to 12 because QUARTER has no decimal places. 100 / 7 is 14 with 2 left over (14 &times; 7 =
+98). The ROUNDED quotient 14.2857... becomes 14.29. 125 minutes is 2 hours and 5 minutes. 100 /
+8 is 12.5, too many digits for <code>PIC 9</code>, so TINY keeps 5. <code>DIVIDE 0 INTO
+SHARE</code> is a division by zero, a size error, so SHARE keeps the 14 it had.</p>
 
 <h3>The remainder with a ROUNDED quotient</h3>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/DIVIDE2.cbl" download>DIVIDE2.cbl</a></figcaption>
@@ -252,10 +256,6 @@ rounds the quotient to 7, but the remainder is still 2: it is worked out from th
 7. The last line shows the signs with a negative dividend.</p>
 
 <h2>SP COBOL notes</h2>
-<div class="bad">Format 1 (<code>DIVIDE x INTO y</code> with no GIVING) can't be built by SP COBOL
-yet: the translation stops with a C# error (<code>cob_div</code> does not exist). Use Format 2 with
-another field after GIVING, or write <code>COMPUTE y = y / x</code> instead. Formats 2 and 3
-work and match GnuCOBOL.</div>
 <p>As in GnuCOBOL, the remainder uses the quotient truncated to the quotient field's decimal
 places, even when the quotient is ROUNDED.</p>
 

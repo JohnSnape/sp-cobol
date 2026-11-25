@@ -165,6 +165,13 @@ If the two sides are different lengths, the shorter one is treated as if padded 
 the right. So a <code>PIC X(8)</code> field holding "ADA" equals the literal
 <code>"ADA"</code>, and the same rule makes <code>IF NAME = SPACES</code> true for an
 all-blank field of any length.</li>
+<li>Either side may be an <a href="arithmetic-expressions.html">arithmetic expression</a>:
+<code>IF A + 1 &gt; B * 2</code>. Both sides may even be literals (<code>IF 1 &lt; 2</code>),
+though such a test always gives the same answer.</li>
+<li>A <a href="figurative-constants.html">figurative constant</a> such as
+<code>HIGH-VALUES</code>, <code>SPACES</code> or <code>ALL "*"</code> is repeated to the
+length of the other side, so <code>IF KEY-FIELD = HIGH-VALUES</code> is true only when every
+byte of KEY-FIELD is a high value.</li>
 </ul>
 
 <h3>Class conditions</h3>
@@ -179,7 +186,7 @@ space.</td></tr>
 <tr><td><code>ALPHABETIC-UPPER</code></td><td>Every character is A-Z or a space.</td></tr>
 <tr><td><code>ALPHABETIC-LOWER</code></td><td>Every character is a-z or a space.</td></tr>
 <tr><td><code>class-name</code></td><td>Every character is in a CLASS you defined in
-SPECIAL-NAMES (see SP COBOL notes).</td></tr>
+SPECIAL-NAMES, such as <code>CLASS HEX-DIGIT IS "0" THRU "9" "A" THRU "F"</code>.</td></tr>
 </table>
 </div>
 <p>Spaces count as alphabetic, so a blank field passes ALPHABETIC.</p>
@@ -187,7 +194,7 @@ SPECIAL-NAMES (see SP COBOL notes).</td></tr>
 <h3>Sign conditions</h3>
 <p><code>POSITIVE</code> is true for a value greater than zero, <code>NEGATIVE</code> for
 less than zero, and <code>ZERO</code> for exactly zero. Zero is neither positive nor
-negative.</p>
+negative. The item tested may be an arithmetic expression: <code>IF BAL + 12 IS ZERO</code>.</p>
 
 <h3>Condition names</h3>
 <p>A level 88 entry gives a name to one or more values of an item; the name itself is a
@@ -361,20 +368,58 @@ NOT (A = 1 OR A = 2): FALSE</pre>
 second half is true and the whole test passes. The version with parentheses says what was
 meant.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad">In this preview these conditions don't build yet (the generated C# fails to
-compile):
-<ul>
-<li>a relation or sign condition with an arithmetic expression in it, such as
-<code>IF A + 1 &gt; 5</code>, <code>IF A &gt; B * 2</code>,
-<code>PERFORM UNTIL A * 2 &gt; 30</code> or <code>IF BAL + 12 IS ZERO</code>. Work it out
-with <a href="compute.html">COMPUTE</a> into a field first, then compare the field.</li>
-<li>a comparison of two literals, such as <code>IF 1 &lt; 2</code>.</li>
-<li>a test of a user-defined CLASS from SPECIAL-NAMES.</li>
-</ul></div>
-<div class="bad">Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
-<code>LOW-VALUES</code> gives the wrong answer (see
-<a href="figurative-constants.html">figurative constants</a>).</div>
+<h2>Example: expressions, literals, a CLASS and HIGH-VALUES</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/COND4.cbl" download>COND4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. COND4.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">SPECIAL-NAMES</span>.
+<span class="seq">000060</span>     CLASS HEX-DIGIT IS <span class="str">&quot;0&quot;</span> THRU <span class="str">&quot;9&quot;</span> <span class="str">&quot;A&quot;</span> THRU <span class="str">&quot;F&quot;</span>.
+<span class="seq">000070</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000090</span> 01  A              PIC 99      VALUE 10.
+<span class="seq">000100</span> 01  B              PIC 99      VALUE 4.
+<span class="seq">000110</span> 01  BAL            PIC S9(3)   VALUE -12.
+<span class="seq">000120</span> 01  COLOR-CODE     PIC X(4)    VALUE <span class="str">&quot;1F3A&quot;</span>.
+<span class="seq">000130</span> 01  BAD-CODE       PIC X(4)    VALUE <span class="str">&quot;1G3A&quot;</span>.
+<span class="seq">000140</span> 01  LAST-KEY       PIC X(5)    VALUE HIGH-VALUES.
+<span class="seq">000150</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000160</span>     <span class="kw">IF</span> A + 1 &gt; B * 2
+<span class="seq">000170</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;A + 1 &gt; B * 2&quot;</span>
+<span class="seq">000180</span>     <span class="kw">END-IF</span>
+<span class="seq">000190</span>     <span class="kw">IF</span> BAL + 12 IS ZERO
+<span class="seq">000200</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;BAL + 12 IS ZERO&quot;</span>
+<span class="seq">000210</span>     <span class="kw">END-IF</span>
+<span class="seq">000220</span>     <span class="kw">IF</span> 1 &lt; 2
+<span class="seq">000230</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;1 &lt; 2 IS ALWAYS TRUE&quot;</span>
+<span class="seq">000240</span>     <span class="kw">END-IF</span>
+<span class="seq">000250</span>     <span class="kw">IF</span> COLOR-CODE IS HEX-DIGIT
+<span class="seq">000260</span>         <span class="kw">DISPLAY</span> COLOR-CODE <span class="str">&quot; IS ALL HEX DIGITS&quot;</span>
+<span class="seq">000270</span>     <span class="kw">END-IF</span>
+<span class="seq">000280</span>     <span class="kw">IF</span> BAD-CODE IS NOT HEX-DIGIT
+<span class="seq">000290</span>         <span class="kw">DISPLAY</span> BAD-CODE <span class="str">&quot; IS NOT&quot;</span>
+<span class="seq">000300</span>     <span class="kw">END-IF</span>
+<span class="seq">000310</span>     <span class="kw">IF</span> LAST-KEY = HIGH-VALUES
+<span class="seq">000320</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;LAST-KEY IS ALL HIGH-VALUES&quot;</span>
+<span class="seq">000330</span>     <span class="kw">END-IF</span>
+<span class="seq">000340</span>     <span class="kw">IF</span> <span class="str">&quot;ZZZZZ&quot;</span> &lt; HIGH-VALUES
+<span class="seq">000350</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;ANY TEXT IS LESS THAN HIGH-VALUES&quot;</span>
+<span class="seq">000360</span>     <span class="kw">END-IF</span>
+<span class="seq">000370</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">A + 1 &gt; B * 2
+BAL + 12 IS ZERO
+1 &lt; 2 IS ALWAYS TRUE
+1F3A IS ALL HEX DIGITS
+1G3A IS NOT
+LAST-KEY IS ALL HIGH-VALUES
+ANY TEXT IS LESS THAN HIGH-VALUES</pre>
+</figure>
+<p>11 is more than 8, and -12 + 12 is zero, so the first two tests are true. <code>1 &lt;
+2</code> compares two literals and is always true. HEX-DIGIT is a class defined in
+SPECIAL-NAMES: every character of "1F3A" is in it, but the G in "1G3A" is not. LAST-KEY was
+filled with HIGH-VALUES, so it equals them, and any ordinary text compares less than
+HIGH-VALUES.</p>
 
 <h2>See also</h2>
 <p><a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,

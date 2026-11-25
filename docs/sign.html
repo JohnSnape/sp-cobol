@@ -160,15 +160,16 @@ the PICTURE.</p>
 <span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
 <span class="seq">000100</span>     <span class="kw">MOVE</span> -123 TO T-DEFAULT T-LEADING T-TRAIL-SEP T-LEAD-SEP
 <span class="seq">000110</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DISPLAY:  &quot;</span> T-DEFAULT <span class="str">&quot; &quot;</span> T-LEADING <span class="str">&quot; &quot;</span> T-LEAD-SEP
-<span class="seq">000120</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF DEFAULT -123:   [&quot;</span> T-DEFAULT(1:3) <span class="str">&quot;]&quot;</span>
-<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF LEADING -123:   [&quot;</span> T-LEADING(1:3) <span class="str">&quot;]&quot;</span>
-<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF TRAILING SEP:   [&quot;</span> T-TRAIL-SEP(1:4) <span class="str">&quot;]&quot;</span>
-<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF LEADING SEP:    [&quot;</span> T-LEAD-SEP(1:4) <span class="str">&quot;]&quot;</span>
-<span class="seq">000160</span>     <span class="kw">MOVE</span> 123 TO T-DEFAULT
-<span class="seq">000170</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF DEFAULT +123:   [&quot;</span> T-DEFAULT(1:3) <span class="str">&quot;]&quot;</span>
-<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SIZES &quot;</span> LENGTH OF T-DEFAULT <span class="str">&quot; &quot;</span> LENGTH OF T-LEAD-SEP
-<span class="seq">000190</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
-<div class="out-label">Output</div><pre class="output">DISPLAY:  -123 -123 -123
+<span class="seq">000120</span>             <span class="str">&quot; &quot;</span> T-TRAIL-SEP
+<span class="seq">000130</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF DEFAULT -123:   [&quot;</span> T-DEFAULT(1:3) <span class="str">&quot;]&quot;</span>
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF LEADING -123:   [&quot;</span> T-LEADING(1:3) <span class="str">&quot;]&quot;</span>
+<span class="seq">000150</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF TRAILING SEP:   [&quot;</span> T-TRAIL-SEP(1:4) <span class="str">&quot;]&quot;</span>
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF LEADING SEP:    [&quot;</span> T-LEAD-SEP(1:4) <span class="str">&quot;]&quot;</span>
+<span class="seq">000170</span>     <span class="kw">MOVE</span> 123 TO T-DEFAULT
+<span class="seq">000180</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BYTES OF DEFAULT +123:   [&quot;</span> T-DEFAULT(1:3) <span class="str">&quot;]&quot;</span>
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SIZES &quot;</span> LENGTH OF T-DEFAULT <span class="str">&quot; &quot;</span> LENGTH OF T-LEAD-SEP
+<span class="seq">000200</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">DISPLAY:  -123 -123 -123 123-
 BYTES OF DEFAULT -123:   [12s]
 BYTES OF LEADING -123:   [q23]
 BYTES OF TRAILING SEP:   [123-]
@@ -176,18 +177,12 @@ BYTES OF LEADING SEP:    [-123]
 BYTES OF DEFAULT +123:   [123]
 SIZES 3 4</pre>
 </figure>
-<p>The first line DISPLAYs three of the items, and each shows <code>-123</code>. The next lines
+<p>The first line DISPLAYs all four items. Three show <code>-123</code>; the TRAILING SEPARATE item is shown as it is stored, <code>123-</code>, with the sign last. The next lines
 look at their bytes with reference modification, which treats them as plain characters: the
 default puts the sign in the last digit (<code>3</code> becomes <code>s</code>), LEADING puts it
 in the first (<code>1</code> becomes <code>q</code>), and the SEPARATE forms keep an ordinary
 <code>-</code> in a byte of its own, which is why they are 4 bytes long. +123 is stored as plain
 <code>123</code>.</p>
-
-<h2>SP COBOL notes</h2>
-<div class="warn">A DISPLAY of a <code>SIGN TRAILING SEPARATE</code> item prints the sign in
-front (<code>-123</code>) in SP COBOL, while GnuCOBOL prints the field as it is stored
-(<code>123-</code>). The stored bytes are the same in both, so files and MOVEs agree; only the
-DISPLAY of such an item differs. This is a known bug, not a deliberate difference.</div>
 
 <h2>See also</h2>
 <p><a href="picture.html">PICTURE</a> (the <code>S</code> symbol and edited signs

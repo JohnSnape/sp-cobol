@@ -1,6 +1,6 @@
 title: SCREEN SECTION
 summary: Lay out a full-screen form with labels, input fields and colors, then DISPLAY and ACCEPT it.
-keywords: SCREEN SECTION screen form LINE COL COLUMN PLUS VALUE USING FROM TO BLANK SCREEN BLANK LINE ERASE EOL EOS FOREGROUND-COLOR BACKGROUND-COLOR HIGHLIGHT LOWLIGHT REVERSE-VIDEO UNDERLINE BLINK SECURE REQUIRED AUTO FULL BELL CRT STATUS function keys F1 F3 Esc COB-CRT-STATUS console window COB_SCREEN DISPLAY AT ACCEPT AT
+keywords: SCREEN SECTION screen form LINE COL COLUMN PLUS VALUE USING FROM TO BLANK SCREEN BLANK LINE ERASE EOL EOS FOREGROUND-COLOR BACKGROUND-COLOR HIGHLIGHT LOWLIGHT REVERSE-VIDEO UNDERLINE BLINK SECURE REQUIRED AUTO FULL BELL CRT STATUS CURSOR IS cursor position function keys F1 F3 Esc COB-CRT-STATUS console window COB_SCREEN DISPLAY AT ACCEPT AT
 badge: differs
 ---
 <p>A SCREEN SECTION describes a whole screen at once: where each label goes, which fields
@@ -39,9 +39,10 @@ DISPLAY { identifier-4 | literal-3 } LINE integer-5 { COLUMN | COL } integer-6
 ACCEPT identifier-5 LINE integer-5 { COLUMN | COL } integer-6
     [ WITH { AUTO | SECURE | REQUIRED | UPPER | LOWER | UPDATE | HIGHLIGHT ... } ... ]
 
-Format 4: which key ended the ACCEPT (ENVIRONMENT DIVISION)
+Format 4: which key ended the ACCEPT, and where the cursor starts (ENVIRONMENT DIVISION)
 SPECIAL-NAMES.
-    CRT STATUS IS identifier-6.</pre>
+    [ CRT STATUS IS identifier-6 ]
+    [ CURSOR IS identifier-7 ] .</pre>
 
 <h2>What it does</h2>
 
@@ -130,6 +131,13 @@ the key that ended it:</p>
 <code>COB-CRT-STATUS</code> (see <a href="special-registers.html">special registers</a>).
 Up and Down move between fields rather than ending the ACCEPT, so they don't return a code.</p>
 
+<h3>CURSOR IS: where the ACCEPT starts</h3>
+<p>Normally an ACCEPT of a screen starts in its first input field. Name a 4-digit field
+(line and column, <code>LLCC</code>) in <code>CURSOR IS</code> in SPECIAL-NAMES, and the
+ACCEPT starts in the input field at that position instead: with 0410 in it, the field at
+line 4, column 10. When the ACCEPT ends, the field holds the position of the input field the
+cursor was in.</p>
+
 <h3>Single fields with LINE and COL</h3>
 <p>Without a SCREEN SECTION you can still place things: <code>DISPLAY "Age:" LINE 3 COL 1</code>
 shows a value at a position, and <code>ACCEPT WS-AGE LINE 3 COL 8</code> reads one field
@@ -180,6 +188,14 @@ only, and "-5" because it has no sign; each time the cursor stays in the field. 
 shown as 007, the way PIC 9(3) shows it. The Code field is AUTO and UPPER, so "abc"
 becomes ABC and the ACCEPT ends when the third letter fills it.</p>
 
+<h3>Starting in a chosen field, and an assumed decimal point</h3>
+<!-- example SCREEN4 -->
+<p>The keys were "12.5" Enter. WS-CURSOR holds 0410, so the ACCEPT starts in the Price
+field on line 4, column 10, not in Item, and Item keeps PENCIL. The Price field has the
+same picture as WS-PRICE, <code>9(3)V99</code>: it shows 1.25 as 00125, with no point,
+and the 12.5 typed is stored as 12.50. After the ACCEPT, WS-CURSOR holds 0410, the start of
+the field the cursor was in.</p>
+
 <h2>SP COBOL notes</h2>
 <div class="warn"><b>Differs from GnuCOBOL 3.2</b>, on purpose, to suit beginners (plain
 DISPLAY and ACCEPT without screens are not affected):
@@ -192,10 +208,12 @@ End first.</li>
 <li>Numeric fields are checked when you leave them, with plain-English messages ("This
 field holds whole numbers only."), and are shown again through their PICTURE.</li>
 </ul></div>
-<div class="warn">A numeric input field whose PICTURE has an assumed decimal point but no
-printed one (<code>PIC 9(3)V99</code>) loses what is typed: the item keeps its old value.
-Give the screen field an edited picture with a real point, such as
-<code>PIC ZZ9.99 USING WS-PRICE</code>.</div>
+<div class="warn">After an ACCEPT, the <code>CURSOR IS</code> field holds the start position of
+the input field the cursor was in. GnuCOBOL gets the exact column from its curses library, so
+there it can be a column inside the field, after what was typed.</div>
+<p>A numeric input field with an assumed decimal point (<code>PIC 9(3)V99</code>) shows no
+point, which is hard to read. An edited picture with a real point, such as
+<code>PIC ZZ9.99 USING WS-PRICE</code>, is friendlier.</p>
 <p>On <code>ACCEPT ... LINE ... COL</code>, the phrases for TIMEOUT, SCROLL, SIZE, CONTROL and
 CURSOR are accepted but ignored. JUSTIFIED and BLANK WHEN ZERO on screen items are accepted;
 JUSTIFIED RIGHT had no visible effect in a test.</p>

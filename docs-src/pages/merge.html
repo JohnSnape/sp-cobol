@@ -22,7 +22,9 @@ no INPUT PROCEDURE: the input always comes from the USING files.</p>
 <a href="return.html">RETURN</a>.</p>
 <p>When records in different files have equal keys, the one from the file named first in
 USING comes first.</p>
-<p>Each input file must already be in order by the merge keys; sort it first if it isn't.</p>
+<p>Each input file must already be in order by the merge keys; sort it first if it isn't.
+With <code>COLLATING SEQUENCE IS alphabet-name</code> the keys are compared in the order of
+that ALPHABET instead of ASCII order, as on <a href="sort.html">SORT</a>.</p>
 
 <h2>Examples</h2>
 <!-- example MERGE1 -->
@@ -31,11 +33,15 @@ A100 appears in both; Monday's record comes first because MONDAY-F is named firs
 <!-- example MERGE2 -->
 <p>The output procedure RETURNs the merged sales in date order and prints a total each time
 the date changes, plus one for the last date.</p>
+<!-- example MERGE3 -->
+<p>Each shop's orders are in size order S, M, L, X, which isn't ASCII order, so the MERGE
+names the alphabet SIZES with <code>COLLATING SEQUENCE</code>. Both size-S orders come first,
+shop A's before shop B's because SHOP1-F is named first.</p>
 
 <h2>SP COBOL notes</h2>
 <div class="bad">
-<p><code>COLLATING SEQUENCE</code> doesn't work in SP COBOL yet; see
-<a href="sort.html">SORT</a>.</p>
+<p><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet; list the characters
+of the alphabet instead, as the third example does.</p>
 </div>
 
 <h2>See also</h2>

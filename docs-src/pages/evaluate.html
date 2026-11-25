@@ -30,6 +30,8 @@ nothing at all if there is no WHEN OTHER. It does the job of a long chain of
 the subject equals it.</li>
 <li>A range: <code>WHEN 90 THRU 100</code> matches anything from 90 to 100, both ends included.</li>
 <li><code>NOT</code> before a value or range: matches when the subject is anything else.</li>
+<li><code>ANY</code>: matches every value. It is most useful with ALSO, to say "this subject
+doesn't matter here" (<code>WHEN 0 THRU 12 ALSO ANY</code>).</li>
 <li>With <code>EVALUATE TRUE</code>, each WHEN is a condition (<code>WHEN AGE &lt; 18</code>,
 <code>WHEN IS-MEMBER</code>), and the first one that is true is chosen. With
 <code>EVALUATE FALSE</code>, the first condition that is false is chosen.</li>
@@ -63,12 +65,12 @@ WHEN, so the member test is never reached for that row.</p>
 true here, so WHEN OTHER runs. In the second, QTY 5 is in the range 1 THRU 9, so the first WHEN
 matches; a QTY of 0 or 10 or more would have matched <code>NOT 1 THRU 9</code>.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad"><code>WHEN ANY</code> (in any position, such as <code>WHEN 0 THRU 12 ALSO
-ANY</code>) can't be built by SP COBOL yet: the translation stops with a C# error. GnuCOBOL 3.2
-accepts it. Until it is fixed, list the cases instead (<code>WHEN 0 THRU 12 ALSO "Y"</code>
-followed by <code>WHEN 0 THRU 12 ALSO "N"</code>, as in the second example), or test only the
-subjects that matter in a nested EVALUATE or IF.</div>
+<h3>WHEN ANY</h3>
+<!-- example EVAL4 -->
+<p>The ticket table again, shorter. A child pays the child price whether or not they are a
+member, so the first WHEN says <code>ALSO ANY</code> instead of listing "Y" and "N". Any member
+older than 12 then matches <code>ANY ALSO "Y"</code>, because the children were already caught by
+the first WHEN. The 70-year-old non-member gets the senior ticket.</p>
 
 <h2>See also</h2>
 <p><a href="if.html">IF</a>, <a href="conditions.html">conditions</a>,

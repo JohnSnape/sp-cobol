@@ -138,10 +138,8 @@ an ordinary .NET program. Its front end is GnuCOBOL 3.2's, so the language is Gn
 default dialect (close to COBOL 2014), and a test suite checks that its programs print the same
 output and write the same data files as GnuCOBOL 3.2 does. A few things work differently on
 purpose, to help people learning COBOL; the pages mark them, and
-<a href="differences.html">Differences from GnuCOBOL</a> lists them all. SP COBOL is a
-preview, and some things that work in GnuCOBOL don't work in it yet; the pages warn about
-them, and <a href="not-supported.html#known-problems">Known problems</a> collects them with
-what to write instead.</p>
+<a href="differences.html">Differences from GnuCOBOL</a> lists them all. What isn't supported at all, mostly because GnuCOBOL 3.2
+doesn't support it either, is on <a href="not-supported.html">Not supported</a>.</p>
 
 <p>New to COBOL? Start with <a href="reading-this-reference.html">Reading this
 reference</a>, then <a href="source-format.html">Source format</a> and
@@ -161,7 +159,7 @@ it is what it printed. Click an example's file name to download it.</p>
 </ul>
 <h2 id="divisions">Divisions</h2>
 <ul class="cards">
-<li><a href="identification-division.html"><b>IDENTIFICATION DIVISION</b><small>Name the program, and optionally mark it COMMON or INITIAL.</small></a></li>
+<li><a href="identification-division.html"><b>IDENTIFICATION DIVISION</b><small>Name the program, and optionally mark it COMMON, INITIAL or RECURSIVE.</small></a></li>
 <li><a href="environment-division.html"><b>ENVIRONMENT DIVISION</b><small>Describe the computer, special names, and the files a program uses.</small></a></li>
 <li><a href="data-division.html"><b>DATA DIVISION</b><small>Describe every piece of data the program uses, section by section.</small></a></li>
 <li><a href="procedure-division.html"><b>PROCEDURE DIVISION</b><small>The division that holds the program&#39;s code, and how control moves through it.</small></a></li>
@@ -196,7 +194,7 @@ it is what it printed. Click an example's file name to download it.</p>
 <ul class="cards">
 <li><a href="accept.html"><b>ACCEPT</b><small>Read a line of input, or get the date, the time, a command-line argument or an environment variable.</small></a></li>
 <li><a href="add.html"><b>ADD</b><small>Add numbers together and store the sum.</small></a></li>
-<li><a href="alter.html"><b>ALTER</b><small>Change where a GO TO jumps, while the program runs. Obsolete; SP COBOL can&#39;t build it at present.</small></a></li>
+<li><a href="alter.html"><b>ALTER</b><small>Change where a GO TO jumps, while the program runs. Obsolete: use a flag instead.</small></a></li>
 <li><a href="call.html"><b>CALL</b><small>Run another COBOL program as a subprogram, passing it data, and come back.</small></a></li>
 <li><a href="cancel.html"><b>CANCEL</b><small>Reset a called program, so that the next CALL starts it with fresh WORKING-STORAGE.</small></a></li>
 <li><a href="close.html"><b>CLOSE</b><small>Finish with one or more files, writing out anything still waiting.</small></a></li>
@@ -225,7 +223,7 @@ it is what it printed. Click an example's file name to download it.</p>
 <li><a href="return.html"><b>RETURN</b><small>Take the next sorted or merged record inside an OUTPUT PROCEDURE.</small></a></li>
 <li><a href="rewrite.html"><b>REWRITE</b><small>Replace a record that is already in a file with a changed version.</small></a></li>
 <li><a href="search.html"><b>SEARCH</b><small>Look through a table for an entry that meets a condition.</small></a></li>
-<li><a href="set.html"><b>SET</b><small>Set or move a table index, turn on a condition name, or point a LINKAGE item at data.</small></a></li>
+<li><a href="set.html"><b>SET</b><small>Set or move a table index, turn on a condition name, set a pointer or switch, or point a LINKAGE item at data.</small></a></li>
 <li><a href="sort.html"><b>SORT</b><small>Put the records of a file, or the entries of a table, in order by one or more keys.</small></a></li>
 <li><a href="start.html"><b>START</b><small>Position a relative or indexed file so the next READ NEXT begins at a chosen key.</small></a></li>
 <li><a href="stop.html"><b>STOP</b><small>End the program, optionally with an exit code for whatever started it.</small></a></li>

@@ -43,6 +43,13 @@ If the two sides are different lengths, the shorter one is treated as if padded 
 the right. So a <code>PIC X(8)</code> field holding "ADA" equals the literal
 <code>"ADA"</code>, and the same rule makes <code>IF NAME = SPACES</code> true for an
 all-blank field of any length.</li>
+<li>Either side may be an <a href="arithmetic-expressions.html">arithmetic expression</a>:
+<code>IF A + 1 &gt; B * 2</code>. Both sides may even be literals (<code>IF 1 &lt; 2</code>),
+though such a test always gives the same answer.</li>
+<li>A <a href="figurative-constants.html">figurative constant</a> such as
+<code>HIGH-VALUES</code>, <code>SPACES</code> or <code>ALL "*"</code> is repeated to the
+length of the other side, so <code>IF KEY-FIELD = HIGH-VALUES</code> is true only when every
+byte of KEY-FIELD is a high value.</li>
 </ul>
 
 <h3>Class conditions</h3>
@@ -57,7 +64,7 @@ space.</td></tr>
 <tr><td><code>ALPHABETIC-UPPER</code></td><td>Every character is A-Z or a space.</td></tr>
 <tr><td><code>ALPHABETIC-LOWER</code></td><td>Every character is a-z or a space.</td></tr>
 <tr><td><code>class-name</code></td><td>Every character is in a CLASS you defined in
-SPECIAL-NAMES (see SP COBOL notes).</td></tr>
+SPECIAL-NAMES, such as <code>CLASS HEX-DIGIT IS "0" THRU "9" "A" THRU "F"</code>.</td></tr>
 </table>
 </div>
 <p>Spaces count as alphabetic, so a blank field passes ALPHABETIC.</p>
@@ -65,7 +72,7 @@ SPECIAL-NAMES (see SP COBOL notes).</td></tr>
 <h3>Sign conditions</h3>
 <p><code>POSITIVE</code> is true for a value greater than zero, <code>NEGATIVE</code> for
 less than zero, and <code>ZERO</code> for exactly zero. Zero is neither positive nor
-negative.</p>
+negative. The item tested may be an arithmetic expression: <code>IF BAL + 12 IS ZERO</code>.</p>
 
 <h3>Condition names</h3>
 <p>A level 88 entry gives a name to one or more values of an item; the name itself is a
@@ -112,20 +119,13 @@ is false.</p>
 second half is true and the whole test passes. The version with parentheses says what was
 meant.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad">In this preview these conditions don't build yet (the generated C# fails to
-compile):
-<ul>
-<li>a relation or sign condition with an arithmetic expression in it, such as
-<code>IF A + 1 &gt; 5</code>, <code>IF A &gt; B * 2</code>,
-<code>PERFORM UNTIL A * 2 &gt; 30</code> or <code>IF BAL + 12 IS ZERO</code>. Work it out
-with <a href="compute.html">COMPUTE</a> into a field first, then compare the field.</li>
-<li>a comparison of two literals, such as <code>IF 1 &lt; 2</code>.</li>
-<li>a test of a user-defined CLASS from SPECIAL-NAMES.</li>
-</ul></div>
-<div class="bad">Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
-<code>LOW-VALUES</code> gives the wrong answer (see
-<a href="figurative-constants.html">figurative constants</a>).</div>
+<h2>Example: expressions, literals, a CLASS and HIGH-VALUES</h2>
+<!-- example COND4 -->
+<p>11 is more than 8, and -12 + 12 is zero, so the first two tests are true. <code>1 &lt;
+2</code> compares two literals and is always true. HEX-DIGIT is a class defined in
+SPECIAL-NAMES: every character of "1F3A" is in it, but the G in "1G3A" is not. LAST-KEY was
+filled with HIGH-VALUES, so it equals them, and any ordinary text compares less than
+HIGH-VALUES.</p>
 
 <h2>See also</h2>
 <p><a href="if.html">IF</a>, <a href="evaluate.html">EVALUATE</a>,

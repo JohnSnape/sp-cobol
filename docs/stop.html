@@ -153,10 +153,11 @@ statement. <code>STOP RUN WITH ERROR STATUS 2</code> does the same thing in the 
 2014 standard, and <code>WITH NORMAL STATUS</code> ends with zero.</p>
 
 <h3>STOP literal</h3>
-<p>Old programs sometimes contain <code>STOP "MOUNT TAPE 2"</code>, which showed the message
-to the operator and waited before carrying on. It is obsolete; use
-<a href="display.html">DISPLAY</a> followed by <a href="accept.html">ACCEPT</a> to pause for the
-user instead.</p>
+<p>Old programs sometimes contain <code>STOP "MOUNT TAPE 2"</code>. It shows the message to
+the operator, waits for Enter, and then carries on with the next statement: the program does
+<em>not</em> end. It is obsolete; use <a href="display.html">DISPLAY</a> followed by
+<a href="accept.html">ACCEPT</a> to pause for the user instead, which also lets you read what
+was typed.</p>
 
 <h2>Examples</h2>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/STOP1.cbl" download>STOP1.cbl</a></figcaption>
@@ -190,10 +191,22 @@ never runs.</p>
 </figure>
 <p>RETURNING sets the exit code to 4 without touching RETURN-CODE yourself.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad"><code>STOP literal</code> compiles but fails when it runs in this preview:
-the program stops with an error (a NullReferenceException) where GnuCOBOL shows the message
-and waits for Enter. Use DISPLAY and ACCEPT.</div>
+<h3>STOP literal</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/STOP3.cbl" download>STOP3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. STOP3.
+<span class="seq">000030</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PART ONE DONE&quot;</span>
+<span class="seq">000050</span>     <span class="kw">STOP</span> <span class="str">&quot;MOUNT TAPE 2, THEN PRESS ENTER&quot;</span>
+<span class="seq">000060</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PART TWO DONE&quot;</span>
+<span class="seq">000070</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">What the user types</div><pre class="input"></pre>
+<div class="out-label">Output</div><pre class="output">PART ONE DONE
+MOUNT TAPE 2, THEN PRESS ENTER
+PART TWO DONE</pre>
+</figure>
+<p>The message is shown and the program waits. Once Enter is pressed, it goes on to the next
+DISPLAY; only STOP RUN ends it.</p>
 
 <h2>See also</h2>
 <p><a href="goback.html">GOBACK</a>, <a href="exit.html">EXIT PROGRAM</a>,

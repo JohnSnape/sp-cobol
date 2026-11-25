@@ -31,7 +31,7 @@ a number laid out for people to read, used as the receiving field of a MOVE or a
 <tr><td><code>A</code></td><td>A letter or a space.</td><td><code>PIC A(10)</code></td></tr>
 <tr><td><code>V</code></td><td>Where the decimal point is. It is only <em>implied</em>: no "." is stored and it takes no room.</td><td><code>PIC 9(3)V99</code> holds 123.45 in 5 bytes.</td></tr>
 <tr><td><code>S</code></td><td>The number has a sign. Must come first. Without it, a negative result loses its minus sign.</td><td><code>PIC S9(4)</code></td></tr>
-<tr><td><code>P</code></td><td>A scaling position: an assumed zero that is not stored.</td><td><code>PIC 9(3)PPP</code> holds 45000 in 3 bytes (see the warning below).</td></tr>
+<tr><td><code>P</code></td><td>A scaling position: an assumed zero that is not stored.</td><td><code>PIC 9(3)PPP</code> holds 45000 in 3 bytes (see the third example).</td></tr>
 <tr><td><code>N</code></td><td>One national (UTF-16) character, 2 bytes.</td><td><code>PIC N(10)</code></td></tr>
 </table></div>
 
@@ -62,14 +62,11 @@ field is spaces (or stars), decimal point included.</p>
 
 <h3>Alphanumeric-edited</h3>
 <p>A picture of <code>X</code> or <code>A</code> mixed with <code>B</code>, <code>0</code> or
-<code>/</code> is <em>alphanumeric-edited</em>: a MOVE into it is meant to insert those
-characters between the moved characters, for example <code>PIC XXXX/XX/XX</code> to turn
-<code>20261125</code> into <code>2026/11/25</code>.</p>
-<div class="bad">Alphanumeric-edited MOVEs don't insert anything in SP COBOL yet: the
-characters are copied as in a plain <code>PIC X</code> field and padded with spaces
-(<code>20261125</code> comes out as <code>20261125</code> followed by two spaces), where
-GnuCOBOL prints <code>2026/11/25</code>. Until this is fixed, build such text with
-<a href="string.html">STRING</a> or reference modification.</div>
+<code>/</code> is <em>alphanumeric-edited</em>: a MOVE into it inserts those characters between the moved
+characters, for example <code>PIC XXXX/XX/XX</code> turns <code>20261125</code> into
+<code>2026/11/25</code>. The moved text fills the <code>X</code> and <code>A</code> positions
+from the left; the inserted characters take no characters from it. The third example shows
+it.</p>
 
 <h2>Example: data symbols</h2>
 <!-- example PIC1 -->
@@ -90,14 +87,13 @@ negative number. <code>----9.99</code> shows a minus sign only for -987.65, whil
 <code>99B999B99</code> and <code>9(5)00</code> show the inserted spaces and zeros, and the
 all-<code>Z</code> picture <code>ZZZZZ.ZZ</code> turns zero into a blank field.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="warn"><b>P (scaling) is not reliable yet.</b> Values stored in a <code>P</code>
-item and MOVEd out of it are right (<code>9(3)PPP</code> holding 45000 moves out as 45000),
-but a DISPLAY of the item itself shows only the stored digits (<code>000045</code>, where
-GnuCOBOL shows <code>045000</code>), and <code>ADD 1000 TO</code> such an item stops the
-program with an error. Avoid <code>P</code> for now; use a field with enough
-<code>9</code>s.</div>
-<p>Alphanumeric-edited pictures don't edit yet (see above).</p>
+<h2>Example: alphanumeric-edited and P scaling</h2>
+<!-- example PIC3 -->
+<p>The first three lines are alphanumeric-edited MOVEs: slashes, spaces (<code>B</code>) and
+zeros are inserted between the moved characters. <code>9(3)PPP</code> stores only three
+digits; the three <code>P</code>s stand for zeros after them. A DISPLAY shows the assumed
+zeros (<code>045000</code>), ADD and MOVE work with the full value, and moving 123456 into it
+keeps only the digits it can hold, so the last three become zeros.</p>
 
 <h2>See also</h2>
 <p><a href="usage.html">USAGE</a> for how a number is stored,

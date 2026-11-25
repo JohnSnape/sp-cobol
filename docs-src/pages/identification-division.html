@@ -1,5 +1,5 @@
 title: IDENTIFICATION DIVISION
-summary: Name the program, and optionally mark it COMMON or INITIAL.
+summary: Name the program, and optionally mark it COMMON, INITIAL or RECURSIVE.
 keywords: PROGRAM-ID AUTHOR INSTALLATION DATE-WRITTEN DATE-COMPILED SECURITY COMMON INITIAL RECURSIVE program name
 ---
 <h2>Syntax</h2>
@@ -37,7 +37,12 @@ the program start fresh each time it is called, with every item back at its VALU
 
 <h3>RECURSIVE</h3>
 <p><code>IS RECURSIVE</code> allows a program to CALL itself, directly or through another
-program. See SP COBOL notes.</p>
+program. Without it, a program that is already running may not be called again until it
+returns. Each active call of a recursive program needs its own copy of its working items, so
+put them in the <code>LOCAL-STORAGE SECTION</code> (see <a href="data-division.html">DATA
+DIVISION</a>), which is set up fresh on every call; WORKING-STORAGE is shared by all the
+calls. A program with LOCAL-STORAGE can't be nested inside another, so a recursive program is
+usually a separate program, as in the third example.</p>
 
 <h2>Example: the comment paragraphs</h2>
 <!-- example IDDIV1 -->
@@ -50,11 +55,13 @@ DISPLAY.</p>
 INITIAL, so its CALLS-SEEN goes back to 0 on every CALL and always shows 1. IDDIV2SHOW is
 COMMON, which is why IDDIV2KEEP, its sibling, may call it.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad"><code>IS RECURSIVE</code> is accepted by the compiler, but in this preview a
-recursive program that has a <code>PROCEDURE DIVISION USING</code> doesn't build (the
-generated C# fails to compile). Write the repetition as a loop with
-<a href="perform.html">PERFORM</a> instead.</div>
+<h2>Example: a RECURSIVE program</h2>
+<!-- example IDDIV3 -->
+<p>IDDIV3FACT works out a factorial: N! is N times (N - 1)!, and 1! is 1. For any N above 1 it
+CALLs itself with N - 1, then multiplies the answer it gets back by N. SMALLER and SUB-ANSWER
+are in LOCAL-STORAGE, so each level of the call has its own pair, and a deeper call can't
+overwrite the values of the call waiting for it. IDDIV3FACT follows <code>END PROGRAM
+IDDIV3</code> in the same file, so it is a separate program, not a nested one.</p>
 
 <h2>See also</h2>
 <p><a href="program-structure.html">Program structure</a>, <a href="call.html">CALL</a>,

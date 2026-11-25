@@ -154,7 +154,8 @@ X"00".</td><td>A key that sorts before everything; filling a field with binary z
 <tr><td><code>ALL literal</code></td><td>The literal repeated: <code>ALL "AB"</code> fills a
 field with ABABAB...</td><td>Lines of dashes or stars; filling with a pattern.</td></tr>
 <tr><td><code>NULL</code>, <code>NULLS</code></td><td>The null address.</td><td>Only with
-<code>USAGE POINTER</code> items. See SP COBOL notes.</td></tr>
+<code>USAGE POINTER</code> items: <code>SET PTR TO NULL</code>, <code>IF PTR = NULL</code>
+(see <a href="set.html">SET</a>).</td></tr>
 </table>
 </div>
 
@@ -164,12 +165,14 @@ field with ABABAB...</td><td>Lines of dashes or stars; filling with a pattern.</
 every byte of CUST-NAME. Moved to a numeric field, <code>ZERO</code> sets it to 0.</li>
 <li>In a <a href="value.html">VALUE</a> clause: <code>01 TOTAL PIC 9(5) VALUE ZERO.</code></li>
 <li>In a comparison: <code>IF CUST-NAME = SPACES</code> is true when the field is all blanks,
-however long it is.</li>
+however long it is. The same goes for <code>HIGH-VALUES</code>, <code>LOW-VALUES</code> and
+<code>ALL "x"</code>: <code>IF END-KEY = HIGH-VALUES</code> is true only when every byte is a
+high value.</li>
 </ul>
 <p>Only ZERO makes sense for a numeric field. SPACE, QUOTE and ALL "x" are for alphanumeric
 fields; HIGH-VALUES and LOW-VALUES are bytes, not numbers.</p>
 
-<h2>Example</h2>
+<h2>Examples</h2>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/FIGCON1.cbl" download>FIGCON1.cbl</a></figcaption>
 <pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
 <span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FIGCON1.
@@ -223,17 +226,50 @@ bytes. HIGH-VALUES and LOW-VALUES are bytes you can't see on the screen, so the 
 the code of the first byte instead: 255 and 0. The last test compares part of the field with
 SPACES; the figurative constant takes the length of whatever it is compared with.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad">In this preview two things don't work yet:
-<ul>
-<li>Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
-<code>LOW-VALUES</code> (or <code>ALL X"FF"</code>) gives "not equal" even when every byte
-matches. A one-byte comparison, such as <code>IF FLD (1:1) = LOW-VALUE</code>, works. Compare
-a field with SPACES or ZEROS, or test a byte at a time, until this is fixed.</li>
-<li>Programs with <code>USAGE POINTER</code> items that use <code>NULL</code>
-(<code>VALUE NULL</code>, <code>SET ptr TO NULL</code>, <code>IF ptr = NULL</code>) don't
-build.</li>
-</ul></div>
+<h3>Comparing with figurative constants</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/FIGCON2.cbl" download>FIGCON2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. FIGCON2.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  END-KEY             PIC X(6)  VALUE HIGH-VALUES.
+<span class="seq">000060</span> 01  START-KEY           PIC X(6)  VALUE LOW-VALUES.
+<span class="seq">000070</span> 01  CUST-KEY            PIC X(6)  VALUE <span class="str">&quot;SMITH&quot;</span>.
+<span class="seq">000080</span> 01  STARS               PIC X(6)  VALUE ALL <span class="str">&quot;*&quot;</span>.
+<span class="seq">000090</span> 01  PATTERN             PIC X(6)  VALUE <span class="str">&quot;ABABAB&quot;</span>.
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">IF</span> END-KEY = HIGH-VALUES
+<span class="seq">000120</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;END-KEY = HIGH-VALUES&quot;</span>
+<span class="seq">000130</span>     <span class="kw">END-IF</span>
+<span class="seq">000140</span>     <span class="kw">IF</span> START-KEY = LOW-VALUES
+<span class="seq">000150</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;START-KEY = LOW-VALUES&quot;</span>
+<span class="seq">000160</span>     <span class="kw">END-IF</span>
+<span class="seq">000170</span>     <span class="kw">IF</span> CUST-KEY &lt; HIGH-VALUES AND CUST-KEY &gt; LOW-VALUES
+<span class="seq">000180</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;SMITH IS BETWEEN LOW-VALUES AND HIGH-VALUES&quot;</span>
+<span class="seq">000190</span>     <span class="kw">END-IF</span>
+<span class="seq">000200</span>     <span class="kw">IF</span> STARS = ALL <span class="str">&quot;*&quot;</span>
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;STARS = ALL &quot;&quot;*&quot;&quot;&quot;</span>
+<span class="seq">000220</span>     <span class="kw">END-IF</span>
+<span class="seq">000230</span>     <span class="kw">IF</span> PATTERN = ALL <span class="str">&quot;AB&quot;</span>
+<span class="seq">000240</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;PATTERN = ALL &quot;&quot;AB&quot;&quot;&quot;</span>
+<span class="seq">000250</span>     <span class="kw">END-IF</span>
+<span class="seq">000260</span>     <span class="kw">MOVE</span> <span class="str">&quot;X&quot;</span> TO STARS (6:1)
+<span class="seq">000270</span>     <span class="kw">IF</span> STARS NOT = ALL <span class="str">&quot;*&quot;</span>
+<span class="seq">000280</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;ONE BYTE CHANGED: STARS NOT = ALL &quot;&quot;*&quot;&quot;&quot;</span>
+<span class="seq">000290</span>     <span class="kw">END-IF</span>
+<span class="seq">000300</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">END-KEY = HIGH-VALUES
+START-KEY = LOW-VALUES
+SMITH IS BETWEEN LOW-VALUES AND HIGH-VALUES
+STARS = ALL &quot;*&quot;
+PATTERN = ALL &quot;AB&quot;
+ONE BYTE CHANGED: STARS NOT = ALL &quot;*&quot;</pre>
+</figure>
+<p>Each constant is stretched to the six bytes of the field it is compared with. END-KEY and
+START-KEY were filled from their VALUE clauses, so they match. Any ordinary text such as SMITH
+lies between LOW-VALUES and HIGH-VALUES, which is why they make good "before everything" and
+"after everything" keys. <code>ALL "AB"</code> is compared as ABABAB. Changing one byte of
+STARS is enough to make it unequal to <code>ALL "*"</code>.</p>
 
 <h2>See also</h2>
 <p><a href="literals.html">Literals</a>, <a href="move.html">MOVE</a>,

@@ -57,7 +57,8 @@ their own files by open mode. The procedure runs in the outer program and contro
 back to the nested program.</p>
 <p>Two other kinds of USE exist: <code>USE BEFORE REPORTING</code>, part of the
 <a href="report-writer.html">Report Writer</a>, and <code>USE FOR DEBUGGING</code>, described
-with <a href="debugging.html">debugging</a>.</p>
+with <a href="debugging.html">debugging</a>. Its procedures run only when the environment
+variable <code>COB_SET_DEBUG=Y</code> is set, as in GnuCOBOL.</p>
 
 <h2>Examples</h2>
 <!-- example USE1 -->

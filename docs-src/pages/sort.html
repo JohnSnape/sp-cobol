@@ -44,6 +44,9 @@ or a report.</li>
 </ul>
 <p>Records with equal keys come out in the order they went in. <code>WITH DUPLICATES IN
 ORDER</code> asks for exactly that.</p>
+<p>Keys that aren't numeric are compared in the normal character (ASCII) order.
+<code>COLLATING SEQUENCE IS alphabet-name</code> sorts them in another order: one you list
+with an <code>ALPHABET</code> clause in SPECIAL-NAMES (see <a href="environment-division.html">ENVIRONMENT DIVISION</a>).</p>
 <p>After the SORT, the special register <code>SORT-RETURN</code> is 0 if it worked and 16 if
 it failed.</p>
 
@@ -73,6 +76,12 @@ they were released (2, 4, 6 and 1, 5).</p>
 <!-- example SORT4 -->
 <p>The same table is sorted twice in place, by number of moons and then by name.</p>
 
+<h3>Your own order: COLLATING SEQUENCE</h3>
+<!-- example SORT5 -->
+<p>The same five shirts are sorted twice by size. The first SORT uses the normal character
+order, so L comes before M and S. The second names the alphabet SIZES, defined in
+SPECIAL-NAMES as S, M, L, X, and the shirts come out smallest first.</p>
+
 <h2>SP COBOL notes</h2>
 <p>SP COBOL sorts in memory, without work files, so the file named in the sort file's ASSIGN
 is never created. That suits the record counts of learning and business programs; a file too
@@ -86,9 +95,8 @@ example above. If the order of equal entries matters to you, add a second key th
 apart.</p>
 </div>
 <div class="bad">
-<p><code>COLLATING SEQUENCE IS alphabet-name</code> on SORT and MERGE doesn't work in SP COBOL
-yet: a program that uses it with an ALPHABET (EBCDIC or one you define) fails to build, because
-the alphabet's table isn't translated to C#. Sort with the default (ASCII) order.</p>
+<p><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet. An ALPHABET that lists
+its characters, as in the example above, works.</p>
 </div>
 
 <h2>See also</h2>

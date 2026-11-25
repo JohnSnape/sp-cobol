@@ -197,7 +197,8 @@ GnuCOBOL 3.2 writes them (CR LF line ends, the 4-byte header of variable-length 
 FILE STATUS values and the AT END / INVALID KEY / END-OF-PAGE conditions are the same too.</p>
 <div class="warn">
 <p>Where GnuCOBOL 3.2 has a plain bug in its file handling, SP COBOL does what the code was
-clearly meant to do:</p>
+clearly meant to do, or what the COBOL standard says (see also
+<a href="differences.html">Differences from GnuCOBOL</a>):</p>
 <div class="table-wrap"><table>
 <tr><th>Situation</th><th>GnuCOBOL 3.2</th><th>SP COBOL</th></tr>
 <tr><td>A TAB, form feed or ESC character inside a LINE SEQUENTIAL record</td><td>WRITE
@@ -214,6 +215,13 @@ characters)</td></tr>
 line end</td><td>the line end is kept</td></tr>
 <tr><td>REWRITE or DELETE of an empty RELATIVE slot</td><td>status 00 (REWRITE even fills the
 slot)</td><td>status 23, record not found</td></tr>
+<tr><td>READ PREVIOUS on a RELATIVE file (<a href="read.html">READ</a>)</td><td>skips a
+record</td><td>the record before the last one read, as the standard says</td></tr>
+<tr><td>READ NEXT on a RELATIVE file after a WRITE by key</td><td>at end of file</td><td>the
+WRITE doesn't move the position, as the standard says</td></tr>
+<tr><td>A sequential WRITE to a RELATIVE file whose slot number doesn't fit the RELATIVE KEY
+(<a href="write.html">WRITE</a>)</td><td>status 00, the record is written and the key set to
+0</td><td>status 24, nothing written</td></tr>
 <tr><td>The error message for a missing file</td><td>names the last environment variable it
 tried</td><td>names the ASSIGN value</td></tr>
 </table></div>

@@ -37,7 +37,7 @@ SELECT, followed by its record layout: the area a READ fills and a WRITE takes f
 program first runs, and keeps its values for as long as the program is loaded, including
 between CALLs of a subprogram.</td></tr>
 <tr><td>LOCAL-STORAGE SECTION</td><td>Like WORKING-STORAGE, but set up fresh (with its VALUE
-clauses) every time the program is called. See SP COBOL notes.</td></tr>
+clauses) every time the program is called, and gone when it returns. See the second example.</td></tr>
 <tr><td>LINKAGE SECTION</td><td>Describes data that belongs to the <em>calling</em> program,
 passed in through <code>PROCEDURE DIVISION USING</code>. No storage is set aside here; the
 names are laid over the caller's items. See <a href="call.html">CALL</a>.</td></tr>
@@ -76,13 +76,15 @@ and CUST-BALANCE. Displaying CUSTOMER shows all 20 bytes in a row, with the bala
 digits and no decimal point, since the group is just text. MOVE SPACES to CUST-NAME clears
 both names but leaves the balance alone. VISITS is a level 77 item.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad">LOCAL-STORAGE SECTION is accepted by the compiler, but in this preview a
-program that has one doesn't build (the generated C# fails to compile). Use WORKING-STORAGE
-and set the items at the start of the program yourself, or mark the subprogram
-<code>IS INITIAL</code> (see <a href="identification-division.html">IDENTIFICATION
-DIVISION</a>) so its WORKING-STORAGE starts fresh on every CALL.</div>
-
+<h2>Example: LOCAL-STORAGE and WORKING-STORAGE</h2>
+<!-- example DATADIV2 -->
+<p>The main program CALLs the subprogram COUNTER (in <code>DATADIV2.sub\COUNTER.cbl</code>)
+twice. COUNTER adds 1 to a WORKING-STORAGE count and to a LOCAL-STORAGE count. The
+WORKING-STORAGE count keeps its value between the calls, so it reaches 2. The LOCAL-STORAGE
+items are set up again from their VALUE clauses on each call: the count is back to 0 before
+the ADD, and LS-NOTE says FRESH again even though the first call changed it to USED.
+LOCAL-STORAGE is what you want for a <a href="identification-division.html">RECURSIVE</a>
+program, where each active call needs its own copy.</p>
 <h2>See also</h2>
 <p><a href="level-numbers.html">Level numbers</a>, <a href="picture.html">PICTURE</a>,
 <a href="value.html">VALUE</a>, <a href="usage.html">USAGE</a>,

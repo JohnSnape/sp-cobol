@@ -43,14 +43,8 @@ statement sits inside an IF or another statement.</p>
 38.97 &times; 0.0725 is 2.825325: TAX is rounded to 2.83 while TAX-CUT is cut to 2.82.
 25 &times; 10 = 250 doesn't fit in <code>PIC 99</code>, so TINY keeps 25 and the SIZE ERROR
 message shows. 25 &times; 7 = 175 without a SIZE ERROR phrase keeps only the last two digits,
-75.</p>
-
-<h2>SP COBOL notes</h2>
-<div class="bad">In this preview, Format 1 (<code>MULTIPLY a BY b</code> with no
-<code>GIVING</code>) doesn't build: the generated C# calls a runtime routine that is missing,
-and the build fails with "The name 'cob_mul' does not exist". Until that is fixed, write
-<code>MULTIPLY a BY b GIVING b</code>, as the example does, or use
-<a href="compute.html">COMPUTE</a> <code>b = a * b</code>.</div>
+75. The last two statements use Format 1 (<code>MULTIPLY 10 BY TINY</code>), so the answer
+goes back into TINY itself.</p>
 
 <h2>See also</h2>
 <p><a href="compute.html">COMPUTE</a> for whole formulas, <a href="add.html">ADD</a>,

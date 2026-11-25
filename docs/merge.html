@@ -144,7 +144,9 @@ no INPUT PROCEDURE: the input always comes from the USING files.</p>
 <a href="return.html">RETURN</a>.</p>
 <p>When records in different files have equal keys, the one from the file named first in
 USING comes first.</p>
-<p>Each input file must already be in order by the merge keys; sort it first if it isn't.</p>
+<p>Each input file must already be in order by the merge keys; sort it first if it isn't.
+With <code>COLLATING SEQUENCE IS alphabet-name</code> the keys are compared in the order of
+that ALPHABET instead of ASCII order, as on <a href="sort.html">SORT</a>.</p>
 
 <h2>Examples</h2>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/MERGE1.cbl" download>MERGE1.cbl</a></figcaption>
@@ -260,11 +262,70 @@ DATE 0103 TOTAL 000300</pre>
 </figure>
 <p>The output procedure RETURNs the merged sales in date order and prints a total each time
 the date changes, plus one for the last date.</p>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/MERGE3.cbl" download>MERGE3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. MERGE3.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">SPECIAL-NAMES</span>.
+<span class="seq">000060</span>     ALPHABET SIZES IS <span class="str">&quot;S&quot;</span> <span class="str">&quot;M&quot;</span> <span class="str">&quot;L&quot;</span> <span class="str">&quot;X&quot;</span>.
+<span class="seq">000070</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000080</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000090</span>     <span class="kw">SELECT</span> SHOP1-F ASSIGN TO <span class="str">&quot;shop1.txt&quot;</span>
+<span class="seq">000100</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000110</span>     <span class="kw">SELECT</span> SHOP2-F ASSIGN TO <span class="str">&quot;shop2.txt&quot;</span>
+<span class="seq">000120</span>         ORGANIZATION IS LINE SEQUENTIAL.
+<span class="seq">000130</span>     <span class="kw">SELECT</span> WORK-F ASSIGN TO <span class="str">&quot;mergework&quot;</span>.
+<span class="seq">000140</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000150</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000160</span> <span class="kw">FD</span>  SHOP1-F.
+<span class="seq">000170</span> 01  SHOP1-REC           PIC X(6).
+<span class="seq">000180</span> <span class="kw">FD</span>  SHOP2-F.
+<span class="seq">000190</span> 01  SHOP2-REC           PIC X(6).
+<span class="seq">000200</span> <span class="kw">SD</span>  WORK-F.
+<span class="seq">000210</span> 01  WORK-REC.
+<span class="seq">000220</span>     05  W-SIZE          PIC X.
+<span class="seq">000230</span>     05  W-ORDER         PIC X(5).
+<span class="seq">000240</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000250</span> 01  END-FLAG            PIC X VALUE <span class="str">&quot;N&quot;</span>.
+<span class="seq">000260</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000270</span> MAIN-PARA.
+<span class="seq">000280</span><span class="com">*    Each shop&#39;s orders are already in size order: S M L X.</span>
+<span class="seq">000290</span>     <span class="kw">OPEN</span> OUTPUT SHOP1-F SHOP2-F
+<span class="seq">000300</span>     <span class="kw">MOVE</span> <span class="str">&quot;SA-01&quot;</span> TO SHOP1-REC <span class="kw">WRITE</span> SHOP1-REC
+<span class="seq">000310</span>     <span class="kw">MOVE</span> <span class="str">&quot;MA-02&quot;</span> TO SHOP1-REC <span class="kw">WRITE</span> SHOP1-REC
+<span class="seq">000320</span>     <span class="kw">MOVE</span> <span class="str">&quot;XA-03&quot;</span> TO SHOP1-REC <span class="kw">WRITE</span> SHOP1-REC
+<span class="seq">000330</span>     <span class="kw">MOVE</span> <span class="str">&quot;SB-01&quot;</span> TO SHOP2-REC <span class="kw">WRITE</span> SHOP2-REC
+<span class="seq">000340</span>     <span class="kw">MOVE</span> <span class="str">&quot;LB-02&quot;</span> TO SHOP2-REC <span class="kw">WRITE</span> SHOP2-REC
+<span class="seq">000350</span>     <span class="kw">CLOSE</span> SHOP1-F SHOP2-F
+<span class="seq">000360</span>     <span class="kw">MERGE</span> WORK-F ON ASCENDING KEY W-SIZE
+<span class="seq">000370</span>         COLLATING SEQUENCE IS SIZES
+<span class="seq">000380</span>         USING SHOP1-F SHOP2-F
+<span class="seq">000390</span>         OUTPUT <span class="kw">PROCEDURE</span> IS SHOW-ALL
+<span class="seq">000400</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000410</span> SHOW-ALL.
+<span class="seq">000420</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000430</span>         <span class="kw">RETURN</span> WORK-F
+<span class="seq">000440</span>             AT <span class="kw">END</span>
+<span class="seq">000450</span>                 <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000460</span>             NOT AT <span class="kw">END</span>
+<span class="seq">000470</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;SIZE &quot;</span> W-SIZE <span class="str">&quot; ORDER &quot;</span> W-ORDER
+<span class="seq">000480</span>         <span class="kw">END-RETURN</span>
+<span class="seq">000490</span>     <span class="kw">END-PERFORM</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SIZE S ORDER A-01 
+SIZE S ORDER B-01 
+SIZE M ORDER A-02 
+SIZE L ORDER B-02 
+SIZE X ORDER A-03</pre>
+</figure>
+<p>Each shop's orders are in size order S, M, L, X, which isn't ASCII order, so the MERGE
+names the alphabet SIZES with <code>COLLATING SEQUENCE</code>. Both size-S orders come first,
+shop A's before shop B's because SHOP1-F is named first.</p>
 
 <h2>SP COBOL notes</h2>
 <div class="bad">
-<p><code>COLLATING SEQUENCE</code> doesn't work in SP COBOL yet; see
-<a href="sort.html">SORT</a>.</p>
+<p><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet; list the characters
+of the alphabet instead, as the third example does.</p>
 </div>
 
 <h2>See also</h2>

@@ -1,6 +1,7 @@
 title: READ
 summary: Get the next record of a file, or the record with a given key.
 keywords: READ NEXT PREVIOUS INTO AT END NOT AT END INVALID KEY NOT INVALID KEY KEY IS END-READ end of file 10 23 46 random read
+badge: differs
 ---
 <h2>Syntax</h2>
 <pre class="syntax">Format 1: the next (or previous) record
@@ -50,8 +51,10 @@ run; otherwise <code>NOT INVALID KEY</code> runs. A keyed READ also sets the pos
 <code>READ NEXT</code> afterwards carries on from that record in key order.</p>
 
 <h3>READ PREVIOUS</h3>
-<p><code>READ file PREVIOUS</code> (INDEXED, dynamic access) goes one record backwards in
-key order.</p>
+<p><code>READ file PREVIOUS</code> (RELATIVE or INDEXED, dynamic access) goes one record
+backwards: to the record before the last one read, in key or slot order.</p>
+<p>A WRITE doesn't move the reading position. After OPEN, then a WRITE by key, a READ NEXT
+still starts at the first record of the file.</p>
 
 <h2>Examples</h2>
 <h3>A read loop</h3>
@@ -74,6 +77,13 @@ AUTHOR key (PERSUASION, then HARD TIMES by Dickens), and READ PREVIOUS steps bac
 doesn't exist: status 23. This example isn't compared with stock GnuCOBOL, whose reference
 build has no indexed file support.</p>
 
+<h3>READ PREVIOUS on a relative file</h3>
+<!-- example READ4 -->
+<p>START and READ NEXT give seat 7. Each READ PREVIOUS then steps back one record: seat 5,
+then seat 2. After the file is opened again, the WRITE of seat 9 leaves the position at the
+start of the file, so READ NEXT gives seat 2 and then seat 5. GnuCOBOL 3.2 prints something
+else here (see the notes below).</p>
+
 <h2>SP COBOL notes</h2>
 <div class="warn">
 <p>A READ after the end of the file is status 46 and counts as an error: if the file has a
@@ -81,11 +91,15 @@ build has no indexed file support.</p>
 GnuCOBOL.</p>
 </div>
 <div class="warn">
-<p><code>READ PREVIOUS</code> on a RELATIVE file doesn't always give the same result as
-GnuCOBOL 3.2: after a START and READ NEXT, two READ PREVIOUS in a row step back two slots in
-SP COBOL, while GnuCOBOL reports end of file (10) on the second one. Use READ PREVIOUS with
-INDEXED files.</p>
+<p><b>Differs from GnuCOBOL 3.2, on purpose.</b> On a RELATIVE file SP COBOL follows the
+COBOL standard: READ PREVIOUS gives the record just before the last one read, and a WRITE
+doesn't move the reading position. GnuCOBOL 3.2 skips a record on READ PREVIOUS (seat 2
+instead of seat 5 in the last example), and after a WRITE by key its READ NEXT is at end of
+file. See <a href="differences.html">Differences from GnuCOBOL</a>.</p>
 </div>
+<p>A RELATIVE file read in order whose next slot number has more digits than the RELATIVE
+KEY item can hold gives status 14. The record is still read, and the key is set to 0, as in
+GnuCOBOL. See <a href="file-status.html">FILE STATUS codes</a> for an example.</p>
 
 <h2>See also</h2>
 <p><a href="start.html">START</a> to choose where reading begins,

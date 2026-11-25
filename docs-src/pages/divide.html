@@ -51,10 +51,11 @@ stores anything, with or without the phrase, so test for it.</p>
 
 <h2>Examples</h2>
 <!-- example DIVIDE1 -->
-<p>100 / 4 is 25. 100 / 7 is 14 with 2 left over (14 &times; 7 = 98). The ROUNDED quotient
-14.2857... becomes 14.29. 125 minutes is 2 hours and 5 minutes. 100 / 8 is 12.5, too many digits
-for <code>PIC 9</code>, so TINY keeps 5. The division by zero is a size error and SHARE keeps the
-14 it had.</p>
+<p>100 / 4 is 25. <code>DIVIDE 2 INTO QUARTER</code> (Format 1) halves QUARTER in place: 12.5,
+cut to 12 because QUARTER has no decimal places. 100 / 7 is 14 with 2 left over (14 &times; 7 =
+98). The ROUNDED quotient 14.2857... becomes 14.29. 125 minutes is 2 hours and 5 minutes. 100 /
+8 is 12.5, too many digits for <code>PIC 9</code>, so TINY keeps 5. <code>DIVIDE 0 INTO
+SHARE</code> is a division by zero, a size error, so SHARE keeps the 14 it had.</p>
 
 <h3>The remainder with a ROUNDED quotient</h3>
 <!-- example DIVIDE2 -->
@@ -64,10 +65,6 @@ rounds the quotient to 7, but the remainder is still 2: it is worked out from th
 7. The last line shows the signs with a negative dividend.</p>
 
 <h2>SP COBOL notes</h2>
-<div class="bad">Format 1 (<code>DIVIDE x INTO y</code> with no GIVING) can't be built by SP COBOL
-yet: the translation stops with a C# error (<code>cob_div</code> does not exist). Use Format 2 with
-another field after GIVING, or write <code>COMPUTE y = y / x</code> instead. Formats 2 and 3
-work and match GnuCOBOL.</div>
 <p>As in GnuCOBOL, the remainder uses the quotient truncated to the quotient field's decimal
 places, even when the quotient is ROUNDED.</p>
 

@@ -32,7 +32,8 @@ X"00".</td><td>A key that sorts before everything; filling a field with binary z
 <tr><td><code>ALL literal</code></td><td>The literal repeated: <code>ALL "AB"</code> fills a
 field with ABABAB...</td><td>Lines of dashes or stars; filling with a pattern.</td></tr>
 <tr><td><code>NULL</code>, <code>NULLS</code></td><td>The null address.</td><td>Only with
-<code>USAGE POINTER</code> items. See SP COBOL notes.</td></tr>
+<code>USAGE POINTER</code> items: <code>SET PTR TO NULL</code>, <code>IF PTR = NULL</code>
+(see <a href="set.html">SET</a>).</td></tr>
 </table>
 </div>
 
@@ -42,12 +43,14 @@ field with ABABAB...</td><td>Lines of dashes or stars; filling with a pattern.</
 every byte of CUST-NAME. Moved to a numeric field, <code>ZERO</code> sets it to 0.</li>
 <li>In a <a href="value.html">VALUE</a> clause: <code>01 TOTAL PIC 9(5) VALUE ZERO.</code></li>
 <li>In a comparison: <code>IF CUST-NAME = SPACES</code> is true when the field is all blanks,
-however long it is.</li>
+however long it is. The same goes for <code>HIGH-VALUES</code>, <code>LOW-VALUES</code> and
+<code>ALL "x"</code>: <code>IF END-KEY = HIGH-VALUES</code> is true only when every byte is a
+high value.</li>
 </ul>
 <p>Only ZERO makes sense for a numeric field. SPACE, QUOTE and ALL "x" are for alphanumeric
 fields; HIGH-VALUES and LOW-VALUES are bytes, not numbers.</p>
 
-<h2>Example</h2>
+<h2>Examples</h2>
 <!-- example FIGCON1 -->
 <p>TEXT-6 starts as SPACES and NUM-4 as ZERO, from their VALUE clauses. Moving ZEROS to a text
 field fills it with the character 0. <code>ALL "AB"</code> repeats the pattern across all six
@@ -55,17 +58,13 @@ bytes. HIGH-VALUES and LOW-VALUES are bytes you can't see on the screen, so the 
 the code of the first byte instead: 255 and 0. The last test compares part of the field with
 SPACES; the figurative constant takes the length of whatever it is compared with.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad">In this preview two things don't work yet:
-<ul>
-<li>Comparing a field longer than one byte with <code>HIGH-VALUES</code> or
-<code>LOW-VALUES</code> (or <code>ALL X"FF"</code>) gives "not equal" even when every byte
-matches. A one-byte comparison, such as <code>IF FLD (1:1) = LOW-VALUE</code>, works. Compare
-a field with SPACES or ZEROS, or test a byte at a time, until this is fixed.</li>
-<li>Programs with <code>USAGE POINTER</code> items that use <code>NULL</code>
-(<code>VALUE NULL</code>, <code>SET ptr TO NULL</code>, <code>IF ptr = NULL</code>) don't
-build.</li>
-</ul></div>
+<h3>Comparing with figurative constants</h3>
+<!-- example FIGCON2 -->
+<p>Each constant is stretched to the six bytes of the field it is compared with. END-KEY and
+START-KEY were filled from their VALUE clauses, so they match. Any ordinary text such as SMITH
+lies between LOW-VALUES and HIGH-VALUES, which is why they make good "before everything" and
+"after everything" keys. <code>ALL "AB"</code> is compared as ABABAB. Changing one byte of
+STARS is enough to make it unequal to <code>ALL "*"</code>.</p>
 
 <h2>See also</h2>
 <p><a href="literals.html">Literals</a>, <a href="move.html">MOVE</a>,

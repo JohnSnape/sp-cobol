@@ -122,7 +122,7 @@
 </nav>
 <main id="main">
 <p class="crumb">Statements</p>
-<h1>READ </h1>
+<h1>READ <span class="badge warn">Differs from GnuCOBOL</span></h1>
 <p class="lede">Get the next record of a file, or the record with a given key.</p>
 <h2>Syntax</h2>
 <pre class="syntax"><span class="fmt">Format 1: the next (or previous) record</span>
@@ -172,8 +172,10 @@ run; otherwise <code>NOT INVALID KEY</code> runs. A keyed READ also sets the pos
 <code>READ NEXT</code> afterwards carries on from that record in key order.</p>
 
 <h3>READ PREVIOUS</h3>
-<p><code>READ file PREVIOUS</code> (INDEXED, dynamic access) goes one record backwards in
-key order.</p>
+<p><code>READ file PREVIOUS</code> (RELATIVE or INDEXED, dynamic access) goes one record
+backwards: to the record before the last one read, in key or slot order.</p>
+<p>A WRITE doesn't move the reading position. After OPEN, then a WRITE by key, a READ NEXT
+still starts at the first record of the file.</p>
 
 <h2>Examples</h2>
 <h3>A read loop</h3>
@@ -332,6 +334,60 @@ AUTHOR key (PERSUASION, then HARD TIMES by Dickens), and READ PREVIOUS steps bac
 doesn't exist: status 23. This example isn't compared with stock GnuCOBOL, whose reference
 build has no indexed file support.</p>
 
+<h3>READ PREVIOUS on a relative file</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/READ4.cbl" download>READ4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. READ4.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> SEATS ASSIGN TO <span class="str">&quot;seats4.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS DYNAMIC
+<span class="seq">000080</span>         RELATIVE KEY IS SEAT-NO <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  SEATS.
+<span class="seq">000120</span> 01  SEAT-REC            PIC X(8).
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  SEAT-NO             PIC 99.
+<span class="seq">000150</span> 01  FS                  PIC XX.
+<span class="seq">000160</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span>     <span class="kw">OPEN</span> OUTPUT SEATS
+<span class="seq">000180</span>     <span class="kw">MOVE</span> 2 TO SEAT-NO <span class="kw">MOVE</span> <span class="str">&quot;KIM&quot;</span> TO SEAT-REC <span class="kw">WRITE</span> SEAT-REC
+<span class="seq">000190</span>     <span class="kw">MOVE</span> 5 TO SEAT-NO <span class="kw">MOVE</span> <span class="str">&quot;OMAR&quot;</span> TO SEAT-REC <span class="kw">WRITE</span> SEAT-REC
+<span class="seq">000200</span>     <span class="kw">MOVE</span> 7 TO SEAT-NO <span class="kw">MOVE</span> <span class="str">&quot;TESS&quot;</span> TO SEAT-REC <span class="kw">WRITE</span> SEAT-REC
+<span class="seq">000210</span>     <span class="kw">CLOSE</span> SEATS
+<span class="seq">000220</span>     <span class="kw">OPEN</span> I-O SEATS
+<span class="seq">000230</span>     <span class="kw">MOVE</span> 7 TO SEAT-NO
+<span class="seq">000240</span>     <span class="kw">START</span> SEATS KEY = SEAT-NO
+<span class="seq">000250</span>     <span class="kw">READ</span> SEATS NEXT
+<span class="seq">000260</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NEXT     STATUS &quot;</span> FS <span class="str">&quot; SEAT &quot;</span> SEAT-NO <span class="str">&quot; &quot;</span> SEAT-REC
+<span class="seq">000270</span>     <span class="kw">READ</span> SEATS PREVIOUS
+<span class="seq">000280</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PREVIOUS STATUS &quot;</span> FS <span class="str">&quot; SEAT &quot;</span> SEAT-NO <span class="str">&quot; &quot;</span> SEAT-REC
+<span class="seq">000290</span>     <span class="kw">READ</span> SEATS PREVIOUS
+<span class="seq">000300</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;PREVIOUS STATUS &quot;</span> FS <span class="str">&quot; SEAT &quot;</span> SEAT-NO <span class="str">&quot; &quot;</span> SEAT-REC
+<span class="seq">000310</span>     <span class="kw">CLOSE</span> SEATS
+<span class="seq">000320</span>     <span class="kw">OPEN</span> I-O SEATS
+<span class="seq">000330</span>     <span class="kw">MOVE</span> 9 TO SEAT-NO <span class="kw">MOVE</span> <span class="str">&quot;UMA&quot;</span> TO SEAT-REC <span class="kw">WRITE</span> SEAT-REC
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE    STATUS &quot;</span> FS <span class="str">&quot; SEAT &quot;</span> SEAT-NO
+<span class="seq">000350</span>     <span class="kw">READ</span> SEATS NEXT
+<span class="seq">000360</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NEXT     STATUS &quot;</span> FS <span class="str">&quot; SEAT &quot;</span> SEAT-NO <span class="str">&quot; &quot;</span> SEAT-REC
+<span class="seq">000370</span>     <span class="kw">READ</span> SEATS NEXT
+<span class="seq">000380</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;NEXT     STATUS &quot;</span> FS <span class="str">&quot; SEAT &quot;</span> SEAT-NO <span class="str">&quot; &quot;</span> SEAT-REC
+<span class="seq">000390</span>     <span class="kw">CLOSE</span> SEATS
+<span class="seq">000400</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">NEXT     STATUS 00 SEAT 07 TESS    
+PREVIOUS STATUS 00 SEAT 05 OMAR    
+PREVIOUS STATUS 00 SEAT 02 KIM     
+WRITE    STATUS 00 SEAT 09
+NEXT     STATUS 00 SEAT 02 KIM     
+NEXT     STATUS 00 SEAT 05 OMAR</pre>
+</figure>
+<p>START and READ NEXT give seat 7. Each READ PREVIOUS then steps back one record: seat 5,
+then seat 2. After the file is opened again, the WRITE of seat 9 leaves the position at the
+start of the file, so READ NEXT gives seat 2 and then seat 5. GnuCOBOL 3.2 prints something
+else here (see the notes below).</p>
+
 <h2>SP COBOL notes</h2>
 <div class="warn">
 <p>A READ after the end of the file is status 46 and counts as an error: if the file has a
@@ -339,11 +395,15 @@ build has no indexed file support.</p>
 GnuCOBOL.</p>
 </div>
 <div class="warn">
-<p><code>READ PREVIOUS</code> on a RELATIVE file doesn't always give the same result as
-GnuCOBOL 3.2: after a START and READ NEXT, two READ PREVIOUS in a row step back two slots in
-SP COBOL, while GnuCOBOL reports end of file (10) on the second one. Use READ PREVIOUS with
-INDEXED files.</p>
+<p><b>Differs from GnuCOBOL 3.2, on purpose.</b> On a RELATIVE file SP COBOL follows the
+COBOL standard: READ PREVIOUS gives the record just before the last one read, and a WRITE
+doesn't move the reading position. GnuCOBOL 3.2 skips a record on READ PREVIOUS (seat 2
+instead of seat 5 in the last example), and after a WRITE by key its READ NEXT is at end of
+file. See <a href="differences.html">Differences from GnuCOBOL</a>.</p>
 </div>
+<p>A RELATIVE file read in order whose next slot number has more digits than the RELATIVE
+KEY item can hold gives status 14. The record is still read, and the key is set to 0, as in
+GnuCOBOL. See <a href="file-status.html">FILE STATUS codes</a> for an example.</p>
 
 <h2>See also</h2>
 <p><a href="start.html">START</a> to choose where reading begins,

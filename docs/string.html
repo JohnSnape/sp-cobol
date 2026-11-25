@@ -212,24 +212,26 @@ is copied. <code>NOT ON OVERFLOW</code> runs when everything fit.</p>
 <span class="seq">000390</span>         ON OVERFLOW <span class="kw">DISPLAY</span> <span class="str">&quot;OVERFLOW&quot;</span>
 <span class="seq">000400</span>         NOT ON OVERFLOW <span class="kw">DISPLAY</span> <span class="str">&quot;IT FIT: [&quot;</span> SHORT-OUT <span class="str">&quot;]&quot;</span>
 <span class="seq">000410</span>     <span class="kw">END-STRING</span>
-<span class="seq">000420</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<span class="seq">000420</span>     <span class="kw">MOVE</span> 0 TO PTR
+<span class="seq">000430</span>     <span class="kw">STRING</span> <span class="str">&quot;XYZ&quot;</span> DELIMITED BY SIZE
+<span class="seq">000440</span>         INTO SHORT-OUT WITH POINTER PTR
+<span class="seq">000450</span>         ON OVERFLOW <span class="kw">DISPLAY</span> <span class="str">&quot;PTR 0, OVERFLOW: [&quot;</span> SHORT-OUT <span class="str">&quot;]&quot;</span>
+<span class="seq">000460</span>     <span class="kw">END-STRING</span>
+<span class="seq">000470</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
 <div class="out-label">Output</div><pre class="output">FULL NAME: [ADA LOVELACE             ]
 UP TO THE COMMA: [CITY=LONDON              ]
 AT POSITION 4: [...ABCDEF................]  POINTER NOW 10
 OVERFLOW: [ADA     ]
-IT FIT: [ADA     ]</pre>
+IT FIT: [ADA     ]
+PTR 0, OVERFLOW: [ADA     ]</pre>
 </figure>
 <p>The full name is built from the first name up to its first space, one space, and the last
 name up to its first space. In the second STRING, the comma delimiter applies to both
 <code>"CITY="</code> and CITY, so the city is copied only up to its comma. With the pointer set
 to 4, ABCDEF goes into positions 4 to 9 of a field of periods and the pointer ends at 10.
 "ADA" plus seven spaces plus "LOVELACE" is too long for 8 characters, so only the first eight
-are kept and ON OVERFLOW runs; the last STRING fits.</p>
-
-<h2>SP COBOL notes</h2>
-<div class="bad">In this preview, a pointer that starts out of range (0, or past the end of the
-receiving field) does not raise ON OVERFLOW as it does in GnuCOBOL 3.2. Check the pointer
-yourself before the STRING if it might be out of range.</div>
+are kept and ON OVERFLOW runs; the next STRING fits. In the last one the pointer starts at 0,
+outside the field, so ON OVERFLOW runs and nothing is copied: SHORT-OUT still holds ADA.</p>
 
 <h2>See also</h2>
 <p><a href="unstring.html">UNSTRING</a> to split text apart, <a href="inspect.html">INSPECT</a>,

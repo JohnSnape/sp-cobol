@@ -152,8 +152,8 @@ four sales figures.</p>
 starts at 1, not 0. A subscript can be a number, a numeric item, an index name, or an item
 plus or minus a number (<code>ITEM(IX + 1)</code>, <code>QTR-SALES(R - 1, Q)</code>). A space
 before the parenthesis is allowed; inside, a space or comma separates subscripts.</p>
-<p>COBOL doesn't check subscripts for you by default, so check your loop limits. See the
-SP COBOL notes for what happens when a subscript is out of range.</p>
+<p>COBOL doesn't check subscripts for you by default, so check your loop limits. The third
+example and the SP COBOL notes show what happens when a subscript is out of range.</p>
 
 <h3>Tables of tables</h3>
 <p>When an item with OCCURS is inside a group that also has OCCURS, you need one subscript for
@@ -273,13 +273,47 @@ ITEM(IX + 1): TAPE</pre>
 the third item. Setting the count to 5 makes it 26 bytes. The loop runs the index IX up to the
 current count, and <code>SET IX UP BY 1</code> moves it from 2 to 3.</p>
 
+<h2>Example: a subscript past the end</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/OCCURS3.cbl" download>OCCURS3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. OCCURS3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  SCORE-TABLE.
+<span class="seq">000060</span>     05  SCORE           PIC 99   OCCURS 3.
+<span class="seq">000070</span> 01  BONUS               PIC 99   VALUE 50.
+<span class="seq">000080</span> 01  N                   PIC 9.
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span>     <span class="kw">MOVE</span> 10 TO SCORE (1)
+<span class="seq">000110</span>     <span class="kw">MOVE</span> 20 TO SCORE (2)
+<span class="seq">000120</span>     <span class="kw">MOVE</span> 30 TO SCORE (3)
+<span class="seq">000130</span>     <span class="kw">PERFORM</span> VARYING N FROM 1 BY 1 UNTIL N &gt; 4
+<span class="seq">000140</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;SCORE &quot;</span> N <span class="str">&quot;: &quot;</span> SCORE (N)
+<span class="seq">000150</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;BONUS: &quot;</span> BONUS
+<span class="seq">000170</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SCORE 1: 10
+SCORE 2: 20
+SCORE 3: 30
+SCORE 4: libcob: error: a subscript, index or reference modification is outside its data item
+  hint: Check the subscript against the OCCURS size (or the (start:length) against the item&#39;s size). Run it in Visual Studio (F5) to stop on the statement.</pre>
+</figure>
+<p>SCORE has 3 occurrences, but the loop runs N up to 4. <code>SCORE (4)</code> would be past
+the end of SCORE-TABLE, so SP COBOL stops the program there with an error line and a hint, and
+the exit code is 1. Stock GnuCOBOL prints <code>SCORE 4:</code> followed by whatever two bytes
+come after the table in memory (here two spaces), then carries on. See the SP COBOL notes.</p>
+
 <h2>SP COBOL notes</h2>
-<div class="warn">A subscript that points past the end of a table is not checked. In GnuCOBOL
-it silently reads or overwrites whatever bytes follow the table. In SP COBOL each 01 record is
-its own block of memory, so a subscript that reaches past the end of the whole record stops
-the program with an <code>IndexOutOfRangeException</code> instead. One that stays inside the
-record (past the table but before the record ends) still touches the neighboring items, as in
-GnuCOBOL.</div>
+<div class="warn"><b>Deliberate difference from GnuCOBOL 3.2</b> (see
+<a href="differences.html">Differences from GnuCOBOL</a>): a subscript or index that reaches
+past the end of the whole 01 record stops the program with
+<code>libcob: error: a subscript, index or reference modification is outside its data
+item</code> and a hint line, exit code 1. Plain GnuCOBOL silently reads or overwrites the bytes
+after the record; it gives the same error only when the program is compiled with
+<code>-debug</code>. In SP COBOL each 01 record is its own block of memory, so there are no
+bytes after it to use. A subscript that stays inside the record (past the table but before the
+record ends) still reads or changes the items that follow the table, as in GnuCOBOL. Run the
+program in Visual Studio (F5) to stop on the statement that went out of range.</div>
 
 <h2>See also</h2>
 <p><a href="search.html">SEARCH</a>, <a href="set.html">SET</a>,

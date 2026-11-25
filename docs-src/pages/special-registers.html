@@ -79,9 +79,10 @@ JSON-CODE would be 1.</p>
 COB-CRT-STATUS.</p>
 
 <h2>SP COBOL notes</h2>
-<p>All of these behave as in GnuCOBOL 3.2. <code>DEBUG-ITEM</code> exists but is only
-filled in by <code>USE FOR DEBUGGING</code> declaratives, which SP COBOL can't build yet (see
-<a href="debugging.html">Debugging</a>). The registers used by XML PARSE (XML-EVENT,
+<p>All of these behave as in GnuCOBOL 3.2. <code>DEBUG-ITEM</code> is filled in
+while a <code>USE FOR DEBUGGING</code> declarative runs, which happens only when the program
+runs with the environment variable <code>COB_SET_DEBUG=Y</code>, as in GnuCOBOL (see
+<a href="debugging.html">Debugging</a>, which has an example). The registers used by XML PARSE (XML-EVENT,
 XML-TEXT, ...) are defined, but XML PARSE itself is not supported (see
 <a href="xml-parse.html">XML PARSE</a>). Special registers are not shown in the Visual
 Studio Watch window.</p>

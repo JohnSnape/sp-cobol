@@ -3,7 +3,8 @@ summary: Work out an arithmetic expression and store the result.
 keywords: COMPUTE = EQUAL ROUNDED SIZE ERROR END-COMPUTE formula expression ** power divide by zero ROUNDED MODE
 ---
 <h2>Syntax</h2>
-<pre class="syntax">COMPUTE { identifier-1 [ ROUNDED ] } ... { = | EQUAL } arithmetic-expression
+<pre class="syntax">COMPUTE { identifier-1 [ ROUNDED [ MODE IS rounding-mode ] ] } ...
+        { = | EQUAL } arithmetic-expression
     [ ON SIZE ERROR imperative-statement-1 ]
     [ NOT ON SIZE ERROR imperative-statement-2 ]
 [ END-COMPUTE ]</pre>
@@ -30,6 +31,22 @@ dropped, unless you write <code>ROUNDED</code> after the field. ROUNDED rounds a
 or more away from zero: 64.46 stored in one decimal place becomes 64.5, and -2.5 stored in a whole
 number becomes -3.</p>
 
+<h3>ROUNDED MODE</h3>
+<p><code>ROUNDED MODE IS</code> picks another way of rounding for that field:</p>
+<div class="table-wrap"><table>
+<tr><th>Mode</th><th>What it does</th><th>2.5</th><th>-2.5</th><th>2.1</th></tr>
+<tr><td><code>NEAREST-AWAY-FROM-ZERO</code></td><td>Nearest; a half goes away from zero. This is what plain ROUNDED does.</td><td>3</td><td>-3</td><td>2</td></tr>
+<tr><td><code>NEAREST-EVEN</code></td><td>Nearest; a half goes to the even digit ("banker's rounding").</td><td>2</td><td>-2</td><td>2</td></tr>
+<tr><td><code>NEAREST-TOWARD-ZERO</code></td><td>Nearest; a half goes toward zero.</td><td>2</td><td>-2</td><td>2</td></tr>
+<tr><td><code>AWAY-FROM-ZERO</code></td><td>Any extra digits push the number away from zero.</td><td>3</td><td>-3</td><td>3</td></tr>
+<tr><td><code>TRUNCATION</code></td><td>Drop the extra digits (the same as no ROUNDED).</td><td>2</td><td>-2</td><td>2</td></tr>
+<tr><td><code>TOWARD-GREATER</code></td><td>Always up, toward the larger number.</td><td>3</td><td>-2</td><td>3</td></tr>
+<tr><td><code>TOWARD-LESSER</code></td><td>Always down, toward the smaller number.</td><td>2</td><td>-3</td><td>2</td></tr>
+<tr><td><code>PROHIBITED</code></td><td>The answer must fit exactly; if digits would be lost, it is a size error and the field keeps its old value.</td><td>error</td><td>error</td><td>error</td></tr>
+</table></div>
+<p>The same phrase works on <a href="add.html">ADD</a>, <a href="subtract.html">SUBTRACT</a>,
+<a href="multiply.html">MULTIPLY</a> and <a href="divide.html">DIVIDE</a>.</p>
+
 <h3>SIZE ERROR</h3>
 <p>A <em>size error</em> happens when the answer has more digits before the decimal point than
 the field can hold, or when the formula divides by zero. With <code>ON SIZE ERROR</code>, the
@@ -39,7 +56,7 @@ and a division by zero leaves the field unchanged.</p>
 <p>Write <code>END-COMPUTE</code> when the COMPUTE has a SIZE ERROR phrase and sits inside another
 statement such as IF.</p>
 
-<h2>Example</h2>
+<h2>Examples</h2>
 <!-- example COMPUTE1 -->
 <p>19.99 &times; 3 &times; 1.075 is 64.46775. TOTAL has two decimal places, so it gets 64.46
 (the rest is dropped). The second COMPUTE stores the same answer in two fields: CUT drops the
@@ -47,12 +64,15 @@ extra digits, NEAR is ROUNDED to 64.5. 3 ** 4 is 81, which fits in PIC 99, so NO
 runs. 3 ** 5 is 243, which doesn't fit, so SMALL keeps 81. Dividing by ZERO-QTY is a size error
 too, and AVERAGE keeps its value of 5.</p>
 
+<h3>Rounding modes</h3>
+<!-- example COMPUTE2 -->
+<p>Each value is stored in five one-digit fields, each rounded its own way. Plain ROUNDED and
+NEAREST-EVEN differ only on an exact half: 2.5 goes up to 3 with ROUNDED but down to the even 2
+with NEAREST-EVEN, while 3.5 goes to 4 both ways. AWAY-FROM-ZERO rounds 2.1 up to 3 because any
+leftover counts. UP (TOWARD-GREATER) and DOWN (TOWARD-LESSER) ignore the size of the leftover
+and look only at the direction, so -2.5 goes up to -2 and down to -3.</p>
+
 <h2>SP COBOL notes</h2>
-<div class="bad"><code>ROUNDED MODE</code> (<code>ROUNDED MODE NEAREST-EVEN</code>,
-<code>TRUNCATION</code>, <code>AWAY-FROM-ZERO</code> and the rest) compiles, but SP COBOL
-ignores the mode and always rounds the plain ROUNDED way (half away from zero). GnuCOBOL 3.2
-honors the mode. Until this is fixed, don't rely on ROUNDED MODE; use plain ROUNDED, or no
-ROUNDED for truncation.</div>
 <p>Division by zero leaves the receiving field unchanged and raises SIZE ERROR, as in GnuCOBOL.</p>
 
 <h2>See also</h2>

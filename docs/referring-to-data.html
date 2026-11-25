@@ -180,8 +180,11 @@ text, even when the item is a number. On a table element, the subscript comes fi
 <div class="warn">Keep subscripts between 1 and the OCCURS count. COBOL doesn't check them for
 you. In stock GnuCOBOL, <code>MONTH-NAME (7)</code> in a six-element table quietly reads
 whatever bytes lie in memory after the table. SP COBOL keeps each 01 record in its own block of
-memory, so a subscript that runs off the end of the record stops the program with a .NET
-error (<code>ArgumentOutOfRangeException</code>) instead.</div>
+memory, so a subscript, index or reference modification that runs off the end of the record
+stops the program with <code>libcob: error: a subscript, index or reference modification is
+outside its data item</code> and a hint, as GnuCOBOL does only when compiled with
+<code>-debug</code>. This is a deliberate difference (see <a href="differences.html">Differences
+from GnuCOBOL</a>); the <a href="occurs.html">OCCURS</a> page has an example.</div>
 
 <h2>Example: one of each</h2>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/REFDATA1.cbl" download>REFDATA1.cbl</a></figcaption>

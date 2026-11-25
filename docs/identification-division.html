@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IDENTIFICATION DIVISION - SP COBOL Reference</title>
-<meta name="description" content="Name the program, and optionally mark it COMMON or INITIAL.">
+<meta name="description" content="Name the program, and optionally mark it COMMON, INITIAL or RECURSIVE.">
 <script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="assets/site.css">
 </head>
@@ -123,7 +123,7 @@
 <main id="main">
 <p class="crumb">Divisions</p>
 <h1>IDENTIFICATION DIVISION </h1>
-<p class="lede">Name the program, and optionally mark it COMMON or INITIAL.</p>
+<p class="lede">Name the program, and optionally mark it COMMON, INITIAL or RECURSIVE.</p>
 <h2>Syntax</h2>
 <pre class="syntax">IDENTIFICATION DIVISION.
 PROGRAM-ID. <var>program-name</var> [ IS { COMMON | INITIAL | RECURSIVE } ].
@@ -159,7 +159,12 @@ the program start fresh each time it is called, with every item back at its VALU
 
 <h3>RECURSIVE</h3>
 <p><code>IS RECURSIVE</code> allows a program to CALL itself, directly or through another
-program. See SP COBOL notes.</p>
+program. Without it, a program that is already running may not be called again until it
+returns. Each active call of a recursive program needs its own copy of its working items, so
+put them in the <code>LOCAL-STORAGE SECTION</code> (see <a href="data-division.html">DATA
+DIVISION</a>), which is set up fresh on every call; WORKING-STORAGE is shared by all the
+calls. A program with LOCAL-STORAGE can't be nested inside another, so a recursive program is
+usually a separate program, as in the third example.</p>
 
 <h2>Example: the comment paragraphs</h2>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/IDDIV1.cbl" download>IDDIV1.cbl</a></figcaption>
@@ -235,11 +240,54 @@ IDDIV2INIT HAS BEEN CALLED 1 TIME(S)</pre>
 INITIAL, so its CALLS-SEEN goes back to 0 on every CALL and always shows 1. IDDIV2SHOW is
 COMMON, which is why IDDIV2KEEP, its sibling, may call it.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad"><code>IS RECURSIVE</code> is accepted by the compiler, but in this preview a
-recursive program that has a <code>PROCEDURE DIVISION USING</code> doesn't build (the
-generated C# fails to compile). Write the repetition as a loop with
-<a href="perform.html">PERFORM</a> instead.</div>
+<h2>Example: a RECURSIVE program</h2>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/IDDIV3.cbl" download>IDDIV3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. IDDIV3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  NUM         PIC 99.
+<span class="seq">000060</span> 01  ANSWER      PIC 9(8).
+<span class="seq">000070</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span>     <span class="kw">PERFORM</span> VARYING NUM FROM 1 BY 1 UNTIL NUM &gt; 8
+<span class="seq">000090</span>         <span class="kw">CALL</span> <span class="str">&quot;IDDIV3FACT&quot;</span> USING NUM ANSWER
+<span class="seq">000100</span>         <span class="kw">DISPLAY</span> NUM <span class="str">&quot;! = &quot;</span> ANSWER
+<span class="seq">000110</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000120</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000130</span> <span class="kw">END</span> PROGRAM IDDIV3.
+<span class="seq">000140</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000150</span> <span class="kw">PROGRAM-ID</span>. IDDIV3FACT IS RECURSIVE.
+<span class="seq">000160</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000170</span> <span class="kw">LOCAL-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000180</span> 01  SMALLER     PIC 99.
+<span class="seq">000190</span> 01  SUB-ANSWER  PIC 9(8).
+<span class="seq">000200</span> <span class="kw">LINKAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000210</span> 01  N           PIC 99.
+<span class="seq">000220</span> 01  RESULT      PIC 9(8).
+<span class="seq">000230</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span> USING N RESULT.
+<span class="seq">000240</span>     <span class="kw">IF</span> N &lt;= 1
+<span class="seq">000250</span>         <span class="kw">MOVE</span> 1 TO RESULT
+<span class="seq">000260</span>     <span class="kw">ELSE</span>
+<span class="seq">000270</span>         <span class="kw">COMPUTE</span> SMALLER = N - 1
+<span class="seq">000280</span>         <span class="kw">CALL</span> <span class="str">&quot;IDDIV3FACT&quot;</span> USING SMALLER SUB-ANSWER
+<span class="seq">000290</span>         <span class="kw">COMPUTE</span> RESULT = N * SUB-ANSWER
+<span class="seq">000300</span>     <span class="kw">END-IF</span>
+<span class="seq">000310</span>     <span class="kw">GOBACK</span>.
+<span class="seq">000320</span> <span class="kw">END</span> PROGRAM IDDIV3FACT.</code></pre>
+<div class="out-label">Output</div><pre class="output">01! = 00000001
+02! = 00000002
+03! = 00000006
+04! = 00000024
+05! = 00000120
+06! = 00000720
+07! = 00005040
+08! = 00040320</pre>
+</figure>
+<p>IDDIV3FACT works out a factorial: N! is N times (N - 1)!, and 1! is 1. For any N above 1 it
+CALLs itself with N - 1, then multiplies the answer it gets back by N. SMALLER and SUB-ANSWER
+are in LOCAL-STORAGE, so each level of the call has its own pair, and a deeper call can't
+overwrite the values of the call waiting for it. IDDIV3FACT follows <code>END PROGRAM
+IDDIV3</code> in the same file, so it is a separate program, not a nested one.</p>
 
 <h2>See also</h2>
 <p><a href="program-structure.html">Program structure</a>, <a href="call.html">CALL</a>,

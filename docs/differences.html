@@ -129,9 +129,9 @@ same results as GnuCOBOL's: a test suite runs every sample program under both an
 the output and the data files byte for byte. So a program that works with GnuCOBOL 3.2
 should work the same way with SP COBOL, and the other way round.</p>
 <p>The exceptions are listed here. Each one is deliberate: either GnuCOBOL has a plain bug,
-or its behavior would only confuse someone learning COBOL. Things that differ because SP
-COBOL doesn't handle them correctly yet are not on this page: they are listed under
-<a href="not-supported.html#known-problems">Known problems</a>.</p>
+or its behavior would only confuse someone learning COBOL, or the COBOL standard says
+otherwise. Features neither of them supports are on <a href="not-supported.html">Not
+supported</a>.</p>
 
 <h2>Deliberate differences</h2>
 <div class="table-wrap"><table>
@@ -146,8 +146,11 @@ COBOL doesn't handle them correctly yet are not on this page: they are listed un
 <tr><td>Reading LINE SEQUENTIAL files</td><td>Windows text mode: Ctrl-Z ends the file, and LF-only files can lose text when a long line is split.</td><td>CR LF and LF both end a line; Ctrl-Z is data (status 09 like other control bytes).</td><td><a href="files.html">Files</a></td></tr>
 <tr><td>LINE SEQUENTIAL REWRITE of a shorter record</td><td>Overwrites the CR of the line end.</td><td>The line end is kept.</td><td><a href="rewrite.html">REWRITE</a></td></tr>
 <tr><td>REWRITE or DELETE of an empty RELATIVE slot</td><td>Status 00 (REWRITE even stores the record).</td><td>Status 23, record not found.</td><td><a href="file-status.html">File status</a></td></tr>
+<tr><td>READ PREVIOUS on a RELATIVE file, and READ NEXT after a random WRITE</td><td>READ PREVIOUS can skip a record, and a READ NEXT after a random WRITE can hit end of file.</td><td>As the standard says: WRITE doesn't move the file position, and PREVIOUS is the record just before.</td><td><a href="read.html">READ</a></td></tr>
+<tr><td>Sequential WRITE to a RELATIVE file whose record number doesn't fit the RELATIVE KEY</td><td>Status 00: the record is written and the key set to 0.</td><td>Status 24, and nothing is written.</td><td><a href="file-status.html">File status</a></td></tr>
 <tr><td>File error messages</td><td>Name the last environment variable looked up (<code>'missing_dat'</code>).</td><td>Name the ASSIGN value (<code>'missing.dat'</code>).</td><td><a href="file-status.html">File status</a></td></tr>
 <tr><td>Fatal runtime errors</td><td>One <code>libcob: error</code> line.</td><td>The same line, then a <code>hint:</code> line saying what to check (<code>COB_NO_HINTS=1</code> turns it off).</td><td><a href="debugging.html">Debugging</a></td></tr>
+<tr><td>A subscript, index or reference modification outside its data item</td><td>Without <code>-debug</code>, quietly reads or overwrites the bytes after the item.</td><td>Stops with <code>libcob: error: a subscript, index or reference modification is outside its data item</code> and a hint, as GnuCOBOL does when compiled with <code>-debug</code>.</td><td><a href="occurs.html">OCCURS</a>, <a href="referring-to-data.html">Referring to data</a></td></tr>
 <tr><td>ORGANIZATION INDEXED files</td><td>Need an external ISAM library, with its own file format.</td><td>Built in, in SP COBOL's own simple one-file format. Same file statuses, but the files can't be shared with GnuCOBOL programs.</td><td><a href="files.html">Files</a></td></tr>
 <tr><td>USE BEFORE REPORTING on a DETAIL group</td><td>Each detail is added into the SUM counters twice, so totals are doubled.</td><td>Added once.</td><td><a href="report-writer.html">Report Writer</a></td></tr>
 <tr><td>Table SORT (<code>SORT table ON ... KEY</code>)</td><td>Elements with equal keys may come out in any order (C's qsort).</td><td>Equal elements keep their order (a stable sort).</td><td><a href="sort.html">SORT</a></td></tr>

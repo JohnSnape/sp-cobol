@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SET - SP COBOL Reference</title>
-<meta name="description" content="Set or move a table index, turn on a condition name, or point a LINKAGE item at data.">
+<meta name="description" content="Set or move a table index, turn on a condition name, set a pointer or switch, or point a LINKAGE item at data.">
 <script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="assets/site.css">
 </head>
@@ -123,7 +123,7 @@
 <main id="main">
 <p class="crumb">Statements</p>
 <h1>SET </h1>
-<p class="lede">Set or move a table index, turn on a condition name, or point a LINKAGE item at data.</p>
+<p class="lede">Set or move a table index, turn on a condition name, set a pointer or switch, or point a LINKAGE item at data.</p>
 <h2>Syntax</h2>
 <pre class="syntax"><span class="fmt">Format 1: give an index (or a number) a value</span>
 SET { <var>index-name-1</var> | <var>identifier-1</var> } ... TO { <var>index-name-2</var> | <var>identifier-2</var> | <var>integer-1</var> }
@@ -135,7 +135,13 @@ SET <var>index-name-1</var> ... { UP | DOWN } BY { <var>identifier-3</var> | <va
 SET <var>condition-name-1</var> ... TO { TRUE | FALSE }
 
 <span class="fmt">Format 4: point a LINKAGE SECTION item at some data</span>
-SET ADDRESS OF <var>identifier-4</var> TO ADDRESS OF <var>identifier-5</var></pre>
+SET ADDRESS OF <var>identifier-4</var> TO { ADDRESS OF <var>identifier-5</var> | <var>pointer-2</var> }
+
+<span class="fmt">Format 5: give a pointer a value</span>
+SET <var>pointer-1</var> TO { ADDRESS OF <var>identifier-6</var> | <var>pointer-2</var> | NULL }
+
+<span class="fmt">Format 6: turn a switch on or off</span>
+SET <var>switch-name-1</var> ... TO { ON | OFF }</pre>
 
 <h2>What it does</h2>
 
@@ -169,6 +175,22 @@ normally it describes data passed in by a <a href="call.html">CALL</a>.
 <code>SET ADDRESS OF VIEW TO ADDRESS OF GREETING</code> makes VIEW describe the bytes of
 GREETING, so reading or changing VIEW reads or changes GREETING. This is an advanced feature;
 most programs never need it.</p>
+
+<h3>Pointers</h3>
+<p>A field with <code>USAGE POINTER</code> holds an address. <code>SET PTR TO ADDRESS OF
+GREETING</code> stores GREETING's address in it, and <code>SET ADDRESS OF VIEW TO PTR</code>
+then points a LINKAGE item at that address. <code>SET PTR TO NULL</code> (or
+<code>VALUE NULL</code> in the data description) means "points at nothing"; test for it with
+<code>IF PTR = NULL</code>. A pointer lets you keep an address in a field, pass it around and
+use it later.</p>
+
+<h3>Switches</h3>
+<p>A switch is declared in the SPECIAL-NAMES paragraph (see <a
+href="environment-division.html">ENVIRONMENT DIVISION</a>), for example <code>SWITCH-1 IS
+TRACE-SWITCH ON STATUS IS TRACE-ON OFF STATUS IS TRACE-OFF</code>. TRACE-ON and TRACE-OFF are
+conditions you can test with IF. A switch is normally set from outside the program, before it
+runs: setting the environment variable <code>COB_SWITCH_1=ON</code> turns switch 1 on. Inside
+the program, <code>SET TRACE-SWITCH TO ON</code> or <code>TO OFF</code> changes it.</p>
 
 <h2>Examples</h2>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/SET1.cbl" download>SET1.cbl</a></figcaption>
@@ -241,19 +263,78 @@ GREETING IS NOW: WORLD</pre>
 <p>VIEW is a LINKAGE SECTION item. After the SET it describes GREETING's five bytes, so
 displaying VIEW shows HELLO, and moving WORLD into VIEW changes GREETING.</p>
 
+<h3>A pointer field</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SET3.cbl" download>SET3.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SET3.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  GREETING       PIC X(5) VALUE <span class="str">&quot;HELLO&quot;</span>.
+<span class="seq">000060</span> 01  FAREWELL       PIC X(5) VALUE <span class="str">&quot;BYE  &quot;</span>.
+<span class="seq">000070</span> 01  PTR            USAGE POINTER VALUE NULL.
+<span class="seq">000080</span> <span class="kw">LINKAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000090</span> 01  VIEW           PIC X(5).
+<span class="seq">000100</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span>     <span class="kw">IF</span> PTR = NULL
+<span class="seq">000120</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;PTR STARTS AS NULL&quot;</span>
+<span class="seq">000130</span>     <span class="kw">END-IF</span>
+<span class="seq">000140</span>     <span class="kw">SET</span> PTR TO ADDRESS OF GREETING
+<span class="seq">000150</span>     <span class="kw">SET</span> ADDRESS OF VIEW TO PTR
+<span class="seq">000160</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;VIEW THROUGH PTR: &quot;</span> VIEW
+<span class="seq">000170</span>     <span class="kw">SET</span> PTR TO ADDRESS OF FAREWELL
+<span class="seq">000180</span>     <span class="kw">SET</span> ADDRESS OF VIEW TO PTR
+<span class="seq">000190</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;VIEW THROUGH PTR: &quot;</span> VIEW
+<span class="seq">000200</span>     <span class="kw">SET</span> PTR TO NULL
+<span class="seq">000210</span>     <span class="kw">IF</span> PTR = NULL
+<span class="seq">000220</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;PTR IS NULL AGAIN&quot;</span>
+<span class="seq">000230</span>     <span class="kw">END-IF</span>
+<span class="seq">000240</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">PTR STARTS AS NULL
+VIEW THROUGH PTR: HELLO
+VIEW THROUGH PTR: BYE  
+PTR IS NULL AGAIN</pre>
+</figure>
+<p>PTR starts out NULL. It is then set to GREETING's address, and VIEW is pointed at whatever
+PTR holds, so VIEW shows HELLO. Pointing PTR at FAREWELL and repeating the SET moves VIEW to
+the other field. Finally PTR is set back to NULL.</p>
+
+<h3>A switch</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SET4.cbl" download>SET4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SET4.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">SPECIAL-NAMES</span>.
+<span class="seq">000060</span>     SWITCH-1 IS TRACE-SWITCH
+<span class="seq">000070</span>         ON STATUS IS TRACE-ON
+<span class="seq">000080</span>         OFF STATUS IS TRACE-OFF.
+<span class="seq">000090</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span>     <span class="kw">IF</span> TRACE-ON
+<span class="seq">000110</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;SWITCH 1 STARTS ON&quot;</span>
+<span class="seq">000120</span>     <span class="kw">ELSE</span>
+<span class="seq">000130</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;SWITCH 1 STARTS OFF&quot;</span>
+<span class="seq">000140</span>     <span class="kw">END-IF</span>
+<span class="seq">000150</span>     <span class="kw">SET</span> TRACE-SWITCH TO ON
+<span class="seq">000160</span>     <span class="kw">IF</span> TRACE-ON
+<span class="seq">000170</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER SET TO ON: TRACING&quot;</span>
+<span class="seq">000180</span>     <span class="kw">END-IF</span>
+<span class="seq">000190</span>     <span class="kw">SET</span> TRACE-SWITCH TO OFF
+<span class="seq">000200</span>     <span class="kw">IF</span> TRACE-OFF
+<span class="seq">000210</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;AFTER SET TO OFF: QUIET&quot;</span>
+<span class="seq">000220</span>     <span class="kw">END-IF</span>
+<span class="seq">000230</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">SWITCH 1 STARTS OFF
+AFTER SET TO ON: TRACING
+AFTER SET TO OFF: QUIET</pre>
+</figure>
+<p>Nothing set COB_SWITCH_1 before this run, so the switch starts off. The two SETs turn it on
+and off again, and the ON STATUS and OFF STATUS conditions follow it. Run with
+<code>COB_SWITCH_1=ON</code> in the environment, the first line would say the switch starts
+on.</p>
+
 <h2>SP COBOL notes</h2>
-<div class="bad">Not working in this preview, although they compile in GnuCOBOL 3.2:
-<ul>
-<li>Setting a <code>USAGE POINTER</code> item (<code>SET ptr TO ADDRESS OF x</code>,
-<code>SET ptr TO NULL</code>): the C# build fails.
-Use <code>SET ADDRESS OF x TO ADDRESS OF y</code> directly, as in the example.</li>
-<li><code>SET switch-name TO ON / OFF</code> and testing the switch's ON STATUS / OFF STATUS
-conditions (switches declared in SPECIAL-NAMES): the C# build fails. Use an ordinary field
-with 88-level condition names instead.</li>
-<li><code>SET program-pointer TO ENTRY "name"</code> is not supported (see
-<a href="call.html">CALL</a>).</li>
-</ul>
-</div>
+<div class="bad"><code>SET program-pointer TO ENTRY "name"</code> is not supported (see
+<a href="call.html">CALL</a>).</div>
 
 <h2>See also</h2>
 <p><a href="occurs.html">OCCURS</a>, <a href="search.html">SEARCH</a>,

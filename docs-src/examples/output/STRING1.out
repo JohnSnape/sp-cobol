@@ -3,3 +3,4 @@ UP TO THE COMMA: [CITY=LONDON              ]
 AT POSITION 4: [...ABCDEF................]  POINTER NOW 10
 OVERFLOW: [ADA     ]
 IT FIT: [ADA     ]
+PTR 0, OVERFLOW: [ADA     ]

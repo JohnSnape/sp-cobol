@@ -54,12 +54,8 @@ name up to its first space. In the second STRING, the comma delimiter applies to
 <code>"CITY="</code> and CITY, so the city is copied only up to its comma. With the pointer set
 to 4, ABCDEF goes into positions 4 to 9 of a field of periods and the pointer ends at 10.
 "ADA" plus seven spaces plus "LOVELACE" is too long for 8 characters, so only the first eight
-are kept and ON OVERFLOW runs; the last STRING fits.</p>
-
-<h2>SP COBOL notes</h2>
-<div class="bad">In this preview, a pointer that starts out of range (0, or past the end of the
-receiving field) does not raise ON OVERFLOW as it does in GnuCOBOL 3.2. Check the pointer
-yourself before the STRING if it might be out of range.</div>
+are kept and ON OVERFLOW runs; the next STRING fits. In the last one the pointer starts at 0,
+outside the field, so ON OVERFLOW runs and nothing is copied: SHORT-OUT still holds ADA.</p>
 
 <h2>See also</h2>
 <p><a href="unstring.html">UNSTRING</a> to split text apart, <a href="inspect.html">INSPECT</a>,

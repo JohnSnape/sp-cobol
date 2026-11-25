@@ -1,6 +1,6 @@
 title: Debugging
 summary: Find mistakes in SP COBOL programs with Visual Studio's debugger, plain-English messages, debugging lines and DISPLAY tracing.
-keywords: debug debugger Visual Studio F5 breakpoint step Watch window call stack WS_PAY COBOL["name"] error message hint COB_NO_HINTS WITH DEBUGGING MODE D column 7 debugging line trace DISPLAY
+keywords: debug debugger Visual Studio F5 breakpoint step Watch window call stack WS_PAY COBOL["name"] error message hint COB_NO_HINTS WITH DEBUGGING MODE D column 7 debugging line trace DISPLAY USE FOR DEBUGGING DEBUG-ITEM DEBUG-LINE DEBUG-NAME DEBUG-CONTENTS COB_SET_DEBUG declaratives libcob error stack trace
 ---
 <h2>Syntax</h2>
 <pre class="syntax">Format 1: debugging lines (compiled only in debugging mode)
@@ -11,7 +11,14 @@ Format 2: Watch window expressions (Visual Studio)
 DATA_NAME                 a data item, with _ for each -
 DATA_NAME[n]              occurrence n of a table
 COBOL                     every 01 and 77 item
-COBOL["data-name"]        any item by its COBOL name</pre>
+COBOL["data-name"]        any item by its COBOL name
+
+Format 3: debugging declaratives (run only when COB_SET_DEBUG=Y)
+DECLARATIVES.
+section-name SECTION.
+    USE FOR DEBUGGING ON { procedure-name | data-name | ALL PROCEDURES } ... .
+    statement ...
+END DECLARATIVES.</pre>
 
 <h2>What it does</h2>
 <p>A <em>bug</em> is a mistake that makes a program do the wrong thing. There are three
@@ -28,7 +35,12 @@ before column 8.</p>
 <p>When a running program stops with a fatal error (a file that isn't there, a CALL of a
 program that doesn't exist), the runtime prints GnuCOBOL's message and then a line starting
 <code>hint:</code> that says what to check. Set the environment variable
-<code>COB_NO_HINTS=1</code> to turn the hint lines off.</p>
+<code>COB_NO_HINTS=1</code> to turn the hint lines off. Every runtime error that the program
+doesn't handle itself ends this way, with a <code>libcob: error:</code> line, a hint and exit
+code 1, not a .NET stack trace. That includes a subscript or reference modification that
+runs past the end of its data (see <a href="occurs.html">OCCURS</a>). Run the program under
+the debugger (F5) and Visual Studio stops on the COBOL statement that failed, before the
+message is printed.</p>
 
 <h3>The Visual Studio debugger</h3>
 <p>Press <b>F5</b> to run the program under the debugger. Click in the margin next to a
@@ -72,6 +84,21 @@ when the SOURCE-COMPUTER paragraph says <code>WITH DEBUGGING MODE</code>; otherw
 treated as a comment. That lets you leave tracing DISPLAYs in a program and switch them all
 on or off by changing one line.</p>
 
+<h3>USE FOR DEBUGGING</h3>
+<p>A <code>USE FOR DEBUGGING ON</code> declarative names paragraphs, sections or data items to
+watch. Its code runs each time one of the paragraphs is PERFORMed or entered, and after each
+statement that changes one of the data items. While it runs, the special register
+<code>DEBUG-ITEM</code> says what happened: <code>DEBUG-LINE</code> is the source line,
+<code>DEBUG-NAME</code> the name, and <code>DEBUG-CONTENTS</code> the item's new value (for a
+paragraph, how it was reached, such as <code>PERFORM LOOP</code>). A field of DEBUG-ITEM that
+an event doesn't set keeps its last value.</p>
+<p>The declarative needs <code>WITH DEBUGGING MODE</code>, and even then it stays silent
+unless the environment variable <code>COB_SET_DEBUG</code> is <code>Y</code> when the program
+runs, as in GnuCOBOL. So you can leave it in the program and switch it on only for a run where
+you need the trace. Type
+<code>set COB_SET_DEBUG=Y</code> in a Command Prompt window, then run the program from that same
+window.</p>
+
 <h3>Tracing with DISPLAY</h3>
 <p>The oldest way to debug still works everywhere: add <code>DISPLAY</code> statements that
 show where the program is and what its key fields hold, such as
@@ -97,15 +124,26 @@ exit code 1. The first message is GnuCOBOL's; the <code>hint:</code> line after 
 SP COBOL's, and names the folder the program looked in (here, the folder the example was
 run in).</p>
 
+<h3>USE FOR DEBUGGING</h3>
+<!-- example DEBUG4 -->
+<p>The output above is from a normal run: COB_SET_DEBUG isn't set, so the declarative stays
+silent and only the TOTAL line appears. With <code>COB_SET_DEBUG=Y</code> the same program
+prints a line for every MOVE or ADD that changes TOTAL and every PERFORM of ADD-ONE:</p>
+<pre>  DEBUG: LINE     19 TOTAL    [040         ]
+  DEBUG: LINE     20 ADD-ONE  [PERFORM LOOP]
+  DEBUG: LINE     24 TOTAL    [041         ]
+  DEBUG: LINE     24 ADD-ONE  [041         ]
+  DEBUG: LINE     24 TOTAL    [042         ]
+TOTAL 042</pre>
+<p>Line 19 is the MOVE and line 20 the PERFORM. On the second pass through ADD-ONE only
+DEBUG-NAME changes, so the line number and contents are the ones left by the ADD on line 24.
+GnuCOBOL 3.2 prints the same.</p>
+
 <h2>SP COBOL notes</h2>
 <div class="warn"><b>Differs from GnuCOBOL 3.2:</b> stock GnuCOBOL prints only the
 <code>libcob: error</code> line, without the hint. Its message also names the file as
 <code>'customers_dat' =&gt; customers.dat</code> (the last environment variable it looked
 up); SP COBOL names it as written in ASSIGN.</div>
-<div class="bad"><code>USE FOR DEBUGGING</code> declaratives (which fill in
-<code>DEBUG-ITEM</code>) don't work in SP COBOL yet: the program fails to build. Use
-debugging lines with DISPLAY instead.</div>
-
 <h2>See also</h2>
 <p><a href="display.html">DISPLAY</a>, <a href="source-format.html">source format</a>
 (column 7), <a href="environment-division.html">ENVIRONMENT DIVISION</a>

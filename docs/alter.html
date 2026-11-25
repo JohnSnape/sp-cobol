@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ALTER - SP COBOL Reference</title>
-<meta name="description" content="Change where a GO TO jumps, while the program runs. Obsolete; SP COBOL can&#39;t build it at present.">
+<meta name="description" content="Change where a GO TO jumps, while the program runs. Obsolete: use a flag instead.">
 <script>(function(){try{var t=localStorage.getItem('spcobol-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <link rel="stylesheet" href="assets/site.css">
 </head>
@@ -123,7 +123,7 @@
 <main id="main">
 <p class="crumb">Statements</p>
 <h1>ALTER <span class="badge warn">Obsolete</span></h1>
-<p class="lede">Change where a GO TO jumps, while the program runs. Obsolete; SP COBOL can&#39;t build it at present.</p>
+<p class="lede">Change where a GO TO jumps, while the program runs. Obsolete: use a flag instead.</p>
 <h2>Syntax</h2>
 <pre class="syntax">ALTER <var>procedure-name-1</var> TO [ PROCEED TO ] <var>procedure-name-2</var>
     [ <var>procedure-name-3</var> TO [ PROCEED TO ] <var>procedure-name-4</var> ] ...</pre>
@@ -134,17 +134,7 @@ is running. <em>procedure-name-1</em> must be a paragraph that holds nothing but
 <code>GO TO</code> sentence. After the ALTER, that GO TO jumps to <em>procedure-name-2</em>
 instead of where its source code says.</p>
 <p>It was used in early COBOL as a switch: "the first time through, go here; after that, go
-there". Here is the classic pattern:</p>
-<pre>       GREET.
-           GO TO FIRST-TIME.
-       FIRST-TIME.
-           DISPLAY "WELCOME (FIRST TIME ONLY)"
-           ALTER GREET TO PROCEED TO LATER-TIMES
-           GO TO GREET-EXIT.
-       LATER-TIMES.
-           DISPLAY "WELCOME BACK".
-       GREET-EXIT.
-           EXIT.</pre>
+there". The example below shows the classic pattern.</p>
 
 <h3>Why not to use it</h3>
 <p>ALTER was declared obsolete in the 1985 standard and removed from the 2002 standard. The
@@ -156,11 +146,35 @@ and change. You will meet it only in old code.</p>
 name</a>) and an <a href="if.html">IF</a> or <a href="evaluate.html">EVALUATE</a> instead. The
 decision is then written where it happens.</p>
 
-<div class="bad">SP COBOL can't build a program that uses ALTER yet: the translation to .NET
-fails with a C# error ("No such label") even for the simple pattern above. GnuCOBOL 3.2 runs
-it. Rewrite the code with a flag, as in the example below.</div>
+<h2>Examples</h2>
+<h3>The classic ALTER switch</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/ALTER2.cbl" download>ALTER2.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. ALTER2.
+<span class="seq">000030</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> MAIN-PARA.
+<span class="seq">000050</span>     <span class="kw">PERFORM</span> GREET THRU GREET-EXIT 3 TIMES
+<span class="seq">000060</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000070</span> GREET.
+<span class="seq">000080</span>     <span class="kw">GO</span> TO FIRST-TIME.
+<span class="seq">000090</span> FIRST-TIME.
+<span class="seq">000100</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WELCOME (FIRST TIME ONLY)&quot;</span>
+<span class="seq">000110</span>     <span class="kw">ALTER</span> GREET TO PROCEED TO LATER-TIMES
+<span class="seq">000120</span>     <span class="kw">GO</span> TO GREET-EXIT.
+<span class="seq">000130</span> LATER-TIMES.
+<span class="seq">000140</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;WELCOME BACK&quot;</span>.
+<span class="seq">000150</span> GREET-EXIT.
+<span class="seq">000160</span>     <span class="kw">EXIT</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WELCOME (FIRST TIME ONLY)
+WELCOME BACK
+WELCOME BACK</pre>
+</figure>
+<p>GREET through GREET-EXIT is performed three times. The first time, GREET's
+<code>GO TO FIRST-TIME</code> goes where it says: the welcome prints, and the ALTER changes
+GREET so that from then on it goes to LATER-TIMES. The second and third times print
+"WELCOME BACK", although the source line still reads <code>GO TO FIRST-TIME</code>.</p>
 
-<h2>Example</h2>
+<h3>The better way: a flag</h3>
 <p>The same "first time only" greeting, written with a flag instead of ALTER:</p>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/ALTER1.cbl" download>ALTER1.cbl</a></figcaption>
 <pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
@@ -185,13 +199,12 @@ WELCOME BACK
 WELCOME BACK</pre>
 </figure>
 <p>GREET is performed three times. The first time the flag is still <code>"Y"</code>, so the
-welcome prints and the flag is turned off; after that the ELSE branch runs. This is the output
-the ALTER version above gives in GnuCOBOL.</p>
+welcome prints and the flag is turned off; after that the ELSE branch runs. The output is the
+same as the ALTER version, and the decision can be read straight from the code.</p>
 
 <h2>See also</h2>
 <p><a href="go-to.html">GO TO</a>, <a href="if.html">IF</a>,
-<a href="condition-names.html">condition names</a>, <a href="perform.html">PERFORM</a>,
-<a href="not-supported.html">not supported</a>.</p>
+<a href="condition-names.html">condition names</a>, <a href="perform.html">PERFORM</a>.</p>
 
 <nav class="prevnext" aria-label="Previous and next page"><a class="prev" href="add.html">&larr; ADD</a><a class="next" href="call.html">CALL &rarr;</a></nav>
 <footer><p>SP COBOL is free software: <a href="https://github.com/JohnSnape/sp-cobol">github.com/JohnSnape/sp-cobol</a>. Every example on these pages is compiled and run by <code>tools/check-doc-examples.ps1</code>, and its output is compared with GnuCOBOL 3.2.</p></footer>

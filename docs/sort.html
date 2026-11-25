@@ -165,6 +165,9 @@ or a report.</li>
 </ul>
 <p>Records with equal keys come out in the order they went in. <code>WITH DUPLICATES IN
 ORDER</code> asks for exactly that.</p>
+<p>Keys that aren't numeric are compared in the normal character (ASCII) order.
+<code>COLLATING SEQUENCE IS alphabet-name</code> sorts them in another order: one you list
+with an <code>ALPHABET</code> clause in SPECIAL-NAMES (see <a href="environment-division.html">ENVIRONMENT DIVISION</a>).</p>
 <p>After the SORT, the special register <code>SORT-RETURN</code> is 0 if it worked and 16 if
 it failed.</p>
 
@@ -374,6 +377,72 @@ BY NAME:
 </figure>
 <p>The same table is sorted twice in place, by number of moons and then by name.</p>
 
+<h3>Your own order: COLLATING SEQUENCE</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/SORT5.cbl" download>SORT5.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. SORT5.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">CONFIGURATION</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">SPECIAL-NAMES</span>.
+<span class="seq">000060</span>     ALPHABET SIZES IS <span class="str">&quot;S&quot;</span> <span class="str">&quot;M&quot;</span> <span class="str">&quot;L&quot;</span> <span class="str">&quot;X&quot;</span>.
+<span class="seq">000070</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000080</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000090</span>     <span class="kw">SELECT</span> WORK-F ASSIGN TO <span class="str">&quot;sortwork&quot;</span>.
+<span class="seq">000100</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000110</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000120</span> <span class="kw">SD</span>  WORK-F.
+<span class="seq">000130</span> 01  WORK-REC.
+<span class="seq">000140</span>     05  W-SIZE          PIC X.
+<span class="seq">000150</span>     05  W-NAME          PIC X(5).
+<span class="seq">000160</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000170</span> 01  SHIRT-DATA          VALUE <span class="str">&quot;MAnna SBen  XCarl LDora SEve  &quot;</span>.
+<span class="seq">000180</span>     05  SHIRT           PIC X(6) OCCURS 5 TIMES.
+<span class="seq">000190</span> 01  I                   PIC 9.
+<span class="seq">000200</span> 01  END-FLAG            PIC X.
+<span class="seq">000210</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000220</span> MAIN-PARA.
+<span class="seq">000230</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;DEFAULT ORDER:&quot;</span>
+<span class="seq">000240</span>     <span class="kw">SORT</span> WORK-F ON ASCENDING KEY W-SIZE
+<span class="seq">000250</span>         INPUT <span class="kw">PROCEDURE</span> IS LOAD-SHIRTS
+<span class="seq">000260</span>         OUTPUT <span class="kw">PROCEDURE</span> IS SHOW-SHIRTS
+<span class="seq">000270</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;SIZES ORDER:&quot;</span>
+<span class="seq">000280</span>     <span class="kw">SORT</span> WORK-F ON ASCENDING KEY W-SIZE
+<span class="seq">000290</span>         COLLATING SEQUENCE IS SIZES
+<span class="seq">000300</span>         INPUT <span class="kw">PROCEDURE</span> IS LOAD-SHIRTS
+<span class="seq">000310</span>         OUTPUT <span class="kw">PROCEDURE</span> IS SHOW-SHIRTS
+<span class="seq">000320</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000330</span> LOAD-SHIRTS.
+<span class="seq">000340</span>     <span class="kw">PERFORM</span> VARYING I FROM 1 BY 1 UNTIL I &gt; 5
+<span class="seq">000350</span>         <span class="kw">MOVE</span> SHIRT (I) TO WORK-REC
+<span class="seq">000360</span>         <span class="kw">RELEASE</span> WORK-REC
+<span class="seq">000370</span>     <span class="kw">END-PERFORM</span>.
+<span class="seq">000380</span> SHOW-SHIRTS.
+<span class="seq">000390</span>     <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO END-FLAG
+<span class="seq">000400</span>     <span class="kw">PERFORM</span> UNTIL END-FLAG = <span class="str">&quot;Y&quot;</span>
+<span class="seq">000410</span>         <span class="kw">RETURN</span> WORK-F
+<span class="seq">000420</span>             AT <span class="kw">END</span>
+<span class="seq">000430</span>                 <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO END-FLAG
+<span class="seq">000440</span>             NOT AT <span class="kw">END</span>
+<span class="seq">000450</span>                 <span class="kw">DISPLAY</span> <span class="str">&quot;  &quot;</span> W-SIZE <span class="str">&quot; &quot;</span> W-NAME
+<span class="seq">000460</span>         <span class="kw">END-RETURN</span>
+<span class="seq">000470</span>     <span class="kw">END-PERFORM</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">DEFAULT ORDER:
+  L Dora 
+  M Anna 
+  S Ben  
+  S Eve  
+  X Carl 
+SIZES ORDER:
+  S Ben  
+  S Eve  
+  M Anna 
+  L Dora 
+  X Carl</pre>
+</figure>
+<p>The same five shirts are sorted twice by size. The first SORT uses the normal character
+order, so L comes before M and S. The second names the alphabet SIZES, defined in
+SPECIAL-NAMES as S, M, L, X, and the shirts come out smallest first.</p>
+
 <h2>SP COBOL notes</h2>
 <p>SP COBOL sorts in memory, without work files, so the file named in the sort file's ASSIGN
 is never created. That suits the record counts of learning and business programs; a file too
@@ -387,9 +456,8 @@ example above. If the order of equal entries matters to you, add a second key th
 apart.</p>
 </div>
 <div class="bad">
-<p><code>COLLATING SEQUENCE IS alphabet-name</code> on SORT and MERGE doesn't work in SP COBOL
-yet: a program that uses it with an ALPHABET (EBCDIC or one you define) fails to build, because
-the alphabet's table isn't translated to C#. Sort with the default (ASCII) order.</p>
+<p><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet. An ALPHABET that lists
+its characters, as in the example above, works.</p>
 </div>
 
 <h2>See also</h2>

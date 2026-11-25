@@ -31,10 +31,11 @@ statement. <code>STOP RUN WITH ERROR STATUS 2</code> does the same thing in the 
 2014 standard, and <code>WITH NORMAL STATUS</code> ends with zero.</p>
 
 <h3>STOP literal</h3>
-<p>Old programs sometimes contain <code>STOP "MOUNT TAPE 2"</code>, which showed the message
-to the operator and waited before carrying on. It is obsolete; use
-<a href="display.html">DISPLAY</a> followed by <a href="accept.html">ACCEPT</a> to pause for the
-user instead.</p>
+<p>Old programs sometimes contain <code>STOP "MOUNT TAPE 2"</code>. It shows the message to
+the operator, waits for Enter, and then carries on with the next statement: the program does
+<em>not</em> end. It is obsolete; use <a href="display.html">DISPLAY</a> followed by
+<a href="accept.html">ACCEPT</a> to pause for the user instead, which also lets you read what
+was typed.</p>
 
 <h2>Examples</h2>
 <!-- example STOP1 -->
@@ -45,10 +46,10 @@ never runs.</p>
 <!-- example STOP2 -->
 <p>RETURNING sets the exit code to 4 without touching RETURN-CODE yourself.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad"><code>STOP literal</code> compiles but fails when it runs in this preview:
-the program stops with an error (a NullReferenceException) where GnuCOBOL shows the message
-and waits for Enter. Use DISPLAY and ACCEPT.</div>
+<h3>STOP literal</h3>
+<!-- example STOP3 -->
+<p>The message is shown and the program waits. Once Enter is pressed, it goes on to the next
+DISPLAY; only STOP RUN ends it.</p>
 
 <h2>See also</h2>
 <p><a href="goback.html">GOBACK</a>, <a href="exit.html">EXIT PROGRAM</a>,

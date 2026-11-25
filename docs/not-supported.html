@@ -124,10 +124,10 @@
 <p class="crumb">Topics</p>
 <h1>Not supported <span class="badge bad">Not supported</span></h1>
 <p class="lede">COBOL features SP COBOL does not support, and what to write instead.</p>
-<p>SP COBOL compiles the same language as GnuCOBOL 3.2. The first part of this page lists
-what it doesn't support, mostly because GnuCOBOL 3.2 doesn't either, and says what to do
-instead. The second part, <a href="#known-problems">Known problems</a>, lists things that
-work in GnuCOBOL 3.2 but not yet in SP COBOL, a preview release.</p>
+<p>SP COBOL compiles the same language as GnuCOBOL 3.2. This page lists what it doesn't
+support, mostly because GnuCOBOL 3.2 doesn't either, and says what to do instead. Where SP
+COBOL works but deliberately gives a different result, see
+<a href="differences.html">Differences from GnuCOBOL</a>.</p>
 
 <h2>Calling programs</h2>
 <div class="bad"><b>PROCEDURE DIVISION RETURNING</b>: a called program can't return a
@@ -164,21 +164,22 @@ between PIC X and PIC N items in place of DISPLAY-OF and NATIONAL-OF. Among the 
 that do work, EXCEPTION-STATEMENT always returns spaces and CONTENT-OF treats every
 pointer as NULL. See <a href="intrinsic-functions.html">Intrinsic functions</a>.</div>
 
-<h2>Debugging and reports</h2>
-<div class="bad"><b>USE FOR DEBUGGING</b> declaratives, and so <code>DEBUG-ITEM</code>,
-make the program fail to build. Use debugging lines (<code>D</code> in column 7) with
-DISPLAY; see <a href="debugging.html">Debugging</a>.</div>
-<div class="bad"><b>CODE IS</b> in a Report Writer RD makes the program fail to build (in
-GnuCOBOL 3.2 it produces an empty report). Leave it out; to tell several reports apart, give
-each its own file. See <a href="report-writer.html">Report Writer</a>.</div>
+<h2>Sorting and collating</h2>
+<div class="bad"><code>ALPHABET name IS EBCDIC</code> doesn't build in SP COBOL yet (it
+works in GnuCOBOL 3.2). An ALPHABET that lists its characters in order works, in PROGRAM
+COLLATING SEQUENCE and in the COLLATING SEQUENCE phrase of SORT and MERGE. See
+<a href="sort.html">SORT</a>.</div>
+
+<h2>Reports</h2>
+<div class="bad"><b>CODE IS</b> in a Report Writer RD compiles, but the report comes out
+empty, in GnuCOBOL 3.2 and in SP COBOL alike. Leave it out; to tell several reports apart,
+give each its own file. See <a href="report-writer.html">Report Writer</a>.</div>
 
 <h2>Screens</h2>
 <div class="bad">The screen attributes <code>LOWLIGHT</code>, <code>BLINK</code>,
 <code>BELL</code> and <code>FULL</code> are accepted but do nothing, and the
 <code>TIMEOUT</code>, <code>SCROLL</code>, <code>SIZE</code>, <code>CONTROL</code> and
-<code>CURSOR</code> phrases of ACCEPT/DISPLAY at a position are ignored. A numeric input
-field with an assumed decimal point (<code>PIC 9(3)V99</code>) doesn't store what is typed;
-use an edited picture such as <code>PIC ZZ9.99</code> for the screen field. Laying out a
+<code>CURSOR</code> phrases of ACCEPT/DISPLAY at a position are ignored. Laying out a
 screen in Visual Studio's Windows Forms designer is planned, not available: write the
 SCREEN SECTION. See <a href="screen-section.html">SCREEN SECTION</a>.</div>
 
@@ -186,40 +187,6 @@ SCREEN SECTION. See <a href="screen-section.html">SCREEN SECTION</a>.</div>
 <div class="note">INDEXED files work, but in SP COBOL's own file format, so they can't be
 read by GnuCOBOL programs (or the other way round). Sequential, line sequential and
 relative files are the same on disk in both. See <a href="files.html">Files</a>.</div>
-
-<h2 id="known-problems">Known problems in this preview</h2>
-<p>Checking the examples for this reference against GnuCOBOL 3.2 turned up the problems
-below. Each works in GnuCOBOL 3.2. In SP COBOL, "doesn't build" means the program
-translates but the .NET build stops with an error; the rest run but give a different
-answer. Until they are fixed, use the workaround given.</p>
-<div class="table-wrap"><table>
-<tr><th>What</th><th>What happens</th><th>Instead, write</th></tr>
-<tr><td>An arithmetic expression in a condition: <code>IF A + 1 &gt; 5</code>, <code>PERFORM UNTIL A * 2 &gt; 30</code></td><td>doesn't build</td><td><code>COMPUTE</code> the value into a field first, and test the field (<a href="conditions.html">conditions</a>)</td></tr>
-<tr><td>A literal compared with a literal: <code>IF 1 &lt; 2</code></td><td>doesn't build</td><td>compare a data item</td></tr>
-<tr><td>Comparing a field with <code>HIGH-VALUES</code> / <code>LOW-VALUES</code> (or <code>ALL X"FF"</code>)</td><td>false when it should be true</td><td>compare with a field you <code>MOVE HIGH-VALUES</code> into (<a href="figurative-constants.html">figurative constants</a>)</td></tr>
-<tr><td><code>MULTIPLY a BY b</code> and <code>DIVIDE a INTO b</code> without <code>GIVING</code></td><td>don't build</td><td>the GIVING form, or <a href="compute.html">COMPUTE</a> (<a href="multiply.html">MULTIPLY</a>, <a href="divide.html">DIVIDE</a>)</td></tr>
-<tr><td><code>EVALUATE ... WHEN ANY</code></td><td>doesn't build</td><td>list the cases, or <code>WHEN OTHER</code> (<a href="evaluate.html">EVALUATE</a>)</td></tr>
-<tr><td><code>ROUNDED MODE IS ...</code></td><td>the mode is ignored; plain ROUNDED is used</td><td><code>ROUNDED</code>, or adjust the value yourself (<a href="compute.html">COMPUTE</a>)</td></tr>
-<tr><td><code>MOVE</code> from a subscripted, reference-modified or FUNCTION item to two or more fields</td><td>doesn't build</td><td>one MOVE per receiving field (<a href="move.html">MOVE</a>)</td></tr>
-<tr><td>Alphanumeric-edited pictures (<code>PIC XXXX/XX/XX</code>, <code>B</code>, <code>0</code> with X)</td><td>the / B 0 characters aren't inserted</td><td><a href="string.html">STRING</a> the pieces together (<a href="picture.html">PICTURE</a>)</td></tr>
-<tr><td>Scaling with <code>P</code> in a PICTURE</td><td>DISPLAY shows the wrong digits; arithmetic can stop the program</td><td>a field without P (<a href="picture.html">PICTURE</a>)</td></tr>
-<tr><td>DISPLAY of a <code>SIGN TRAILING SEPARATE</code> item</td><td>shows <code>-123</code> instead of <code>123-</code> (the stored bytes are right)</td><td>MOVE it to an edited field (<a href="sign.html">SIGN</a>)</td></tr>
-<tr><td><code>DECIMAL-POINT IS COMMA</code>, <code>CURRENCY SIGN IS</code></td><td>edited output uses the wrong characters</td><td>the default point and $ (<a href="environment-division.html">ENVIRONMENT DIVISION</a>)</td></tr>
-<tr><td>A user <code>CLASS</code> test; an <code>ALPHABET</code> in PROGRAM COLLATING SEQUENCE or SORT / MERGE <code>COLLATING SEQUENCE</code></td><td>don't build</td><td>test characters with INSPECT or a table; sort on a key you prepare (<a href="sort.html">SORT</a>)</td></tr>
-<tr><td><code>CURSOR IS</code> in SPECIAL-NAMES</td><td>no effect: input starts at the first field</td><td>order the screen fields (<a href="screen-section.html">SCREEN SECTION</a>)</td></tr>
-<tr><td><code>LOCAL-STORAGE SECTION</code></td><td>doesn't build</td><td>WORKING-STORAGE, set up at the start of the program (<a href="data-division.html">DATA DIVISION</a>)</td></tr>
-<tr><td><code>EXTERNAL</code> data</td><td>doesn't build</td><td>pass the data on CALL ... USING (<a href="global-external.html">GLOBAL and EXTERNAL</a>)</td></tr>
-<tr><td><code>IS RECURSIVE</code> programs with <code>USING</code></td><td>don't build</td><td>a loop instead of recursion (<a href="identification-division.html">IDENTIFICATION DIVISION</a>)</td></tr>
-<tr><td><code>USAGE POINTER</code> with <code>VALUE NULL</code>, <code>SET ptr TO NULL</code> or <code>SET ptr TO ADDRESS OF</code></td><td>don't build</td><td><code>SET ADDRESS OF linkage-item TO ADDRESS OF item</code>, which works (<a href="set.html">SET</a>)</td></tr>
-<tr><td>Switches in SPECIAL-NAMES (<code>SET switch TO ON</code>, ON/OFF STATUS)</td><td>don't build</td><td>a flag with an 88-level (<a href="set.html">SET</a>)</td></tr>
-<tr><td><code>ALTER</code></td><td>doesn't build</td><td>a flag and IF or EVALUATE (<a href="alter.html">ALTER</a>)</td></tr>
-<tr><td><code>STOP "literal"</code></td><td>the program stops with an error</td><td>DISPLAY the message, then ACCEPT a reply (<a href="stop.html">STOP</a>)</td></tr>
-<tr><td><code>STRING ... WITH POINTER</code> when the pointer starts at 0 or past the end</td><td>no ON OVERFLOW</td><td>check the pointer before the STRING (<a href="string.html">STRING</a>)</td></tr>
-<tr><td><code>READ ... PREVIOUS</code> on a RELATIVE file</td><td>can return a record where GnuCOBOL gives end of file</td><td>READ PREVIOUS on INDEXED files (<a href="read.html">READ</a>)</td></tr>
-<tr><td>A subscript or index that points past the end of its record</td><td>the program stops with an error (GnuCOBOL reads or overwrites the bytes that follow)</td><td>check subscripts against the table size (<a href="occurs.html">OCCURS</a>)</td></tr>
-<tr><td>A numeric screen field with an assumed decimal point (<code>PIC 9(3)V99</code>)</td><td>the typed value isn't stored</td><td>an edited screen picture such as <code>PIC ZZ9.99</code> (<a href="screen-section.html">SCREEN SECTION</a>)</td></tr>
-<tr><td>A report written with <code>ASSIGN TO DISPLAY</code></td><td>the blank lines that fill the last page are left out</td><td>write the report to a file (<a href="report-writer.html">Report Writer</a>)</td></tr>
-</table></div>
 
 <h2>Example: returning a result without RETURNING</h2>
 <figure class="example"><figcaption><span>Example</span> <a href="examples/NOTSUP1.cbl" download>NOTSUP1.cbl</a></figcaption>

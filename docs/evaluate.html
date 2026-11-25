@@ -152,6 +152,8 @@ nothing at all if there is no WHEN OTHER. It does the job of a long chain of
 the subject equals it.</li>
 <li>A range: <code>WHEN 90 THRU 100</code> matches anything from 90 to 100, both ends included.</li>
 <li><code>NOT</code> before a value or range: matches when the subject is anything else.</li>
+<li><code>ANY</code>: matches every value. It is most useful with ALSO, to say "this subject
+doesn't matter here" (<code>WHEN 0 THRU 12 ALSO ANY</code>).</li>
 <li>With <code>EVALUATE TRUE</code>, each WHEN is a condition (<code>WHEN AGE &lt; 18</code>,
 <code>WHEN IS-MEMBER</code>), and the first one that is true is chosen. With
 <code>EVALUATE FALSE</code>, the first condition that is false is chosen.</li>
@@ -286,12 +288,49 @@ SMALL ORDER, IN STOCK</pre>
 true here, so WHEN OTHER runs. In the second, QTY 5 is in the range 1 THRU 9, so the first WHEN
 matches; a QTY of 0 or 10 or more would have matched <code>NOT 1 THRU 9</code>.</p>
 
-<h2>SP COBOL notes</h2>
-<div class="bad"><code>WHEN ANY</code> (in any position, such as <code>WHEN 0 THRU 12 ALSO
-ANY</code>) can't be built by SP COBOL yet: the translation stops with a C# error. GnuCOBOL 3.2
-accepts it. Until it is fixed, list the cases instead (<code>WHEN 0 THRU 12 ALSO "Y"</code>
-followed by <code>WHEN 0 THRU 12 ALSO "N"</code>, as in the second example), or test only the
-subjects that matter in a nested EVALUATE or IF.</div>
+<h3>WHEN ANY</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/EVAL4.cbl" download>EVAL4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. EVAL4.
+<span class="seq">000030</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> 01  AGE             PIC 999.
+<span class="seq">000060</span> 01  MEMBER-FLAG     PIC X.
+<span class="seq">000070</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000080</span>     <span class="kw">MOVE</span> 10 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO MEMBER-FLAG
+<span class="seq">000090</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000100</span>     <span class="kw">MOVE</span> 10 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO MEMBER-FLAG
+<span class="seq">000110</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000120</span>     <span class="kw">MOVE</span> 30 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;Y&quot;</span> TO MEMBER-FLAG
+<span class="seq">000130</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000140</span>     <span class="kw">MOVE</span> 70 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO MEMBER-FLAG
+<span class="seq">000150</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000160</span>     <span class="kw">MOVE</span> 40 TO AGE  <span class="kw">MOVE</span> <span class="str">&quot;N&quot;</span> TO MEMBER-FLAG
+<span class="seq">000170</span>     <span class="kw">PERFORM</span> PRICE-TICKET
+<span class="seq">000180</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.
+<span class="seq">000190</span> PRICE-TICKET.
+<span class="seq">000200</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;AGE &quot;</span> AGE <span class="str">&quot; MEMBER &quot;</span> MEMBER-FLAG <span class="str">&quot;: &quot;</span>
+<span class="seq">000210</span>         WITH NO ADVANCING
+<span class="seq">000220</span>     <span class="kw">EVALUATE</span> AGE          ALSO MEMBER-FLAG
+<span class="seq">000230</span>         <span class="kw">WHEN</span> 0 THRU 12    ALSO ANY
+<span class="seq">000240</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;CHILD TICKET&quot;</span>
+<span class="seq">000250</span>         <span class="kw">WHEN</span> ANY          ALSO <span class="str">&quot;Y&quot;</span>
+<span class="seq">000260</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;MEMBER TICKET&quot;</span>
+<span class="seq">000270</span>         <span class="kw">WHEN</span> 65 THRU 999  ALSO ANY
+<span class="seq">000280</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;SENIOR TICKET&quot;</span>
+<span class="seq">000290</span>         <span class="kw">WHEN</span> <span class="kw">OTHER</span>
+<span class="seq">000300</span>             <span class="kw">DISPLAY</span> <span class="str">&quot;FULL PRICE&quot;</span>
+<span class="seq">000310</span>     <span class="kw">END-EVALUATE</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">AGE 010 MEMBER Y: CHILD TICKET
+AGE 010 MEMBER N: CHILD TICKET
+AGE 030 MEMBER Y: MEMBER TICKET
+AGE 070 MEMBER N: SENIOR TICKET
+AGE 040 MEMBER N: FULL PRICE</pre>
+</figure>
+<p>The ticket table again, shorter. A child pays the child price whether or not they are a
+member, so the first WHEN says <code>ALSO ANY</code> instead of listing "Y" and "N". Any member
+older than 12 then matches <code>ANY ALSO "Y"</code>, because the children were already caught by
+the first WHEN. The 70-year-old non-member gets the senior ticket.</p>
 
 <h2>See also</h2>
 <p><a href="if.html">IF</a>, <a href="conditions.html">conditions</a>,

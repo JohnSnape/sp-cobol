@@ -27,18 +27,12 @@ the PICTURE.</p>
 
 <h2>Example</h2>
 <!-- example SIGN1 -->
-<p>The first line DISPLAYs three of the items, and each shows <code>-123</code>. The next lines
+<p>The first line DISPLAYs all four items. Three show <code>-123</code>; the TRAILING SEPARATE item is shown as it is stored, <code>123-</code>, with the sign last. The next lines
 look at their bytes with reference modification, which treats them as plain characters: the
 default puts the sign in the last digit (<code>3</code> becomes <code>s</code>), LEADING puts it
 in the first (<code>1</code> becomes <code>q</code>), and the SEPARATE forms keep an ordinary
 <code>-</code> in a byte of its own, which is why they are 4 bytes long. +123 is stored as plain
 <code>123</code>.</p>
-
-<h2>SP COBOL notes</h2>
-<div class="warn">A DISPLAY of a <code>SIGN TRAILING SEPARATE</code> item prints the sign in
-front (<code>-123</code>) in SP COBOL, while GnuCOBOL prints the field as it is stored
-(<code>123-</code>). The stored bytes are the same in both, so files and MOVEs agree; only the
-DISPLAY of such an item differs. This is a known bug, not a deliberate difference.</div>
 
 <h2>See also</h2>
 <p><a href="picture.html">PICTURE</a> (the <code>S</code> symbol and edited signs

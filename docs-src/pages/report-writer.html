@@ -194,11 +194,10 @@ counters twice, so every total is doubled (the third example prints 563.00 there
 also run control-heading declaratives again and print a page heading twice. SP COBOL adds
 each detail once and prints 287.75. Declaratives on headings and footings behave the same
 in both.</div>
-<div class="bad"><code>CODE IS</code> in the RD is not usable: stock GnuCOBOL 3.2 writes an
-empty report file with it, and SP COBOL fails to build the program.</div>
-<div class="warn">Write reports to a disk file, as the examples do. A report file assigned
-with <code>ASSIGN TO DISPLAY</code> prints on the screen, but SP COBOL then leaves out the
-blank lines that pad the last page, which GnuCOBOL prints.</div>
+<div class="warn">Don't use <code>CODE IS</code> in the RD. The program builds, but GnuCOBOL 3.2
+writes an empty report file when it is given, and SP COBOL does the same.</div>
+<p>A report file assigned with <code>ASSIGN TO DISPLAY</code> prints on the screen, including
+the blank lines that pad the last page, as in GnuCOBOL.</p>
 <p>Not checked against GnuCOBOL yet, so use with care: PAGE LIMIT and the other PAGE
 numbers given by data items instead of integers, OCCURS in report lines,
 PRESENT AFTER / ABSENT AFTER.</p>

@@ -122,7 +122,7 @@
 </nav>
 <main id="main">
 <p class="crumb">Statements</p>
-<h1>WRITE </h1>
+<h1>WRITE <span class="badge warn">Differs from GnuCOBOL</span></h1>
 <p class="lede">Add a record to a file, with line spacing for printed reports.</p>
 <h2>Syntax</h2>
 <pre class="syntax"><span class="fmt">Format 1: sequential and line sequential files</span>
@@ -151,7 +151,8 @@ and INDEXED files with random or dynamic access). Otherwise the status is 48.</p
 <ul>
 <li>SEQUENTIAL and LINE SEQUENTIAL: after the last record written.</li>
 <li>RELATIVE: with sequential access, in the next slot (1, 2, 3, ...), and the slot number is
-put in the RELATIVE KEY item. With random or dynamic access, in the slot whose number you put
+put in the RELATIVE KEY item. If the next slot number has more digits than the RELATIVE KEY
+can hold, the status is 24 and nothing is written. With random or dynamic access, in the slot whose number you put
 in the RELATIVE KEY first. If that slot is in use, the status is 22 and
 <code>INVALID KEY</code> runs.</li>
 <li>INDEXED: by the value of its RECORD KEY. A key that already exists gives 22 and
@@ -315,9 +316,69 @@ LOCKER 12 TAKEN, STATUS 22</pre>
 <p>Locker 12 is free the first time, so the NOT INVALID KEY branch runs. The second WRITE to
 slot 12 finds it in use: status 22, INVALID KEY.</p>
 
+<h3>A RELATIVE KEY that is too small</h3>
+<figure class="example"><figcaption><span>Example</span> <a href="examples/WRITE4.cbl" download>WRITE4.cbl</a></figcaption>
+<pre class="cobol"><code><span class="seq">000010</span> <span class="kw">IDENTIFICATION</span> <span class="kw">DIVISION</span>.
+<span class="seq">000020</span> <span class="kw">PROGRAM-ID</span>. WRITE4.
+<span class="seq">000030</span> <span class="kw">ENVIRONMENT</span> <span class="kw">DIVISION</span>.
+<span class="seq">000040</span> <span class="kw">INPUT-OUTPUT</span> <span class="kw">SECTION</span>.
+<span class="seq">000050</span> <span class="kw">FILE-CONTROL</span>.
+<span class="seq">000060</span>     <span class="kw">SELECT</span> BINS ASSIGN TO <span class="str">&quot;bins.dat&quot;</span>
+<span class="seq">000070</span>         ORGANIZATION IS RELATIVE ACCESS MODE IS SEQUENTIAL
+<span class="seq">000080</span>         RELATIVE KEY IS BIN-NO <span class="kw">FILE</span> STATUS IS FS.
+<span class="seq">000090</span> <span class="kw">DATA</span> <span class="kw">DIVISION</span>.
+<span class="seq">000100</span> <span class="kw">FILE</span> <span class="kw">SECTION</span>.
+<span class="seq">000110</span> <span class="kw">FD</span>  BINS.
+<span class="seq">000120</span> 01  BIN-REC             PIC X(4).
+<span class="seq">000130</span> <span class="kw">WORKING-STORAGE</span> <span class="kw">SECTION</span>.
+<span class="seq">000140</span> 01  BIN-NO              PIC 9.
+<span class="seq">000150</span> 01  FS                  PIC XX.
+<span class="seq">000160</span> 01  WRITES              PIC 99.
+<span class="seq">000170</span> 01  RECORDS-READ        PIC 99 VALUE 0.
+<span class="seq">000180</span> <span class="kw">PROCEDURE</span> <span class="kw">DIVISION</span>.
+<span class="seq">000190</span>     <span class="kw">OPEN</span> OUTPUT BINS
+<span class="seq">000200</span>     <span class="kw">PERFORM</span> VARYING WRITES FROM 1 BY 1 UNTIL WRITES &gt; 10
+<span class="seq">000210</span>         <span class="kw">MOVE</span> WRITES TO BIN-REC
+<span class="seq">000220</span>         <span class="kw">WRITE</span> BIN-REC
+<span class="seq">000230</span>         <span class="kw">DISPLAY</span> <span class="str">&quot;WRITE &quot;</span> WRITES <span class="str">&quot;: STATUS &quot;</span> FS <span class="str">&quot; BIN-NO &quot;</span> BIN-NO
+<span class="seq">000240</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000250</span>     <span class="kw">CLOSE</span> BINS
+<span class="seq">000260</span>     <span class="kw">OPEN</span> INPUT BINS
+<span class="seq">000270</span>     <span class="kw">PERFORM</span> UNTIL FS NOT = <span class="str">&quot;00&quot;</span>
+<span class="seq">000280</span>         <span class="kw">READ</span> BINS
+<span class="seq">000290</span>         <span class="kw">IF</span> FS = <span class="str">&quot;00&quot;</span>
+<span class="seq">000300</span>             <span class="kw">ADD</span> 1 TO RECORDS-READ
+<span class="seq">000310</span>         <span class="kw">END-IF</span>
+<span class="seq">000320</span>     <span class="kw">END-PERFORM</span>
+<span class="seq">000330</span>     <span class="kw">CLOSE</span> BINS
+<span class="seq">000340</span>     <span class="kw">DISPLAY</span> <span class="str">&quot;RECORDS IN THE FILE: &quot;</span> RECORDS-READ
+<span class="seq">000350</span>     <span class="kw">STOP</span> <span class="kw">RUN</span>.</code></pre>
+<div class="out-label">Output</div><pre class="output">WRITE 01: STATUS 00 BIN-NO 1
+WRITE 02: STATUS 00 BIN-NO 2
+WRITE 03: STATUS 00 BIN-NO 3
+WRITE 04: STATUS 00 BIN-NO 4
+WRITE 05: STATUS 00 BIN-NO 5
+WRITE 06: STATUS 00 BIN-NO 6
+WRITE 07: STATUS 00 BIN-NO 7
+WRITE 08: STATUS 00 BIN-NO 8
+WRITE 09: STATUS 00 BIN-NO 9
+WRITE 10: STATUS 24 BIN-NO 9
+RECORDS IN THE FILE: 09</pre>
+</figure>
+<p>BIN-NO has one digit, so it can number slots 1 to 9. The first nine WRITEs fill those
+slots. The tenth would go in slot 10, which BIN-NO can't hold: status 24, and the record is
+not written, so the file has nine records. Give the RELATIVE KEY enough digits for every slot
+the file will have. GnuCOBOL 3.2 prints something else here (see the notes below).</p>
+
 <h2>SP COBOL notes</h2>
 <p>As in GnuCOBOL 3.2, LINAGE files get blank lines rather than form feeds between pages, and
 lines end with CR LF.</p>
+<div class="warn">
+<p><b>Differs from GnuCOBOL 3.2, on purpose.</b> When a sequential WRITE reaches a slot
+number that doesn't fit the RELATIVE KEY, SP COBOL returns 24, the COBOL standard's code for
+it, and writes nothing. GnuCOBOL 3.2 returns 00, writes the record in the next slot anyway and
+sets the key to 0. See <a href="differences.html">Differences from GnuCOBOL</a>.</p>
+</div>
 
 <h2>See also</h2>
 <p><a href="read.html">READ</a>, <a href="rewrite.html">REWRITE</a>,

@@ -2706,6 +2706,16 @@ output_colseq_table (const char * const table_name,
 		     const cob_u8_t table[256])
 {
 	int i;
+	if (cb_flag_csharp) {
+		/* one pre-converted C# line (ALPHABET x IS EBCDIC / NATIVE): the
+		   filter translates line by line */
+		output_storage ("\001static readonly CobPtr %s = new CobPtr(new byte[] {", table_name);
+		for (i = 0; i < 256; i++) {
+			output_storage (i == 255 ? "%d" : "%d,", table ? table[i] : i);
+		}
+		output_storage ("}, 0);\n");
+		return;
+	}
 	output_storage ("static const unsigned char\t%s[256] = {", table_name);
 	for (i = 0; i < 256; i++) {
 		output_storage ("%s%#04x,",
@@ -2719,6 +2729,11 @@ static void
 output_colseq_table_field (const char * field_name, const char * table_name)
 {
 	const int i = lookup_attr (COB_TYPE_ALPHANUMERIC, 0, 0, 0, NULL, 0);
+	if (cb_flag_csharp) {
+		output_storage ("\001static readonly CobField %s = new CobField(256, %s, %s%d);\n",
+				field_name, table_name, CB_PREFIX_ATTR, i);
+		return;
+	}
 	output_storage ("static cob_field %s = { 256, (cob_u8_ptr)%s, &%s%d };\n",
 			field_name, table_name, CB_PREFIX_ATTR, i);
 }

@@ -661,3 +661,6 @@ Deliberately different (hand-checked expected output):
   we stop with one message and a hint, as GnuCOBOL does with -debug. Uncaught runtime
   errors now print `libcob: error:` + hint instead of a .NET stack trace (exit code 1);
   under the debugger Visual Studio still stops on the statement first.
+- (later the same day) ALPHABET x IS EBCDIC / NATIVE: the built-in translation tables were
+  multi-line C arrays too; now one C# line each, like a listed alphabet (EBCDCOLL, found by
+  the docs session).
